@@ -1,0 +1,153 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ada/config/providers.dart';
+import 'package:ada/config/account_providers.dart';
+import 'package:ada/config/billing_dependencies.dart';
+import 'package:ada/domain/use_cases/account/ada_retention.dart';
+import 'package:ada/domain/models/tasks/task_models.dart';
+import 'package:ada/domain/models/productivity/productivity_models.dart';
+import 'browse_summary.dart';
+import 'package:ada/domain/use_cases/tasks/project_list_data.dart';
+
+typedef BrowseState = ({
+  AsyncValue<ProductivitySummary> summary,
+  DateTime today,
+  BrowsePeriod period,
+  ({int completedTasks, int focusIntervals, int focusSeconds, int openTasks})?
+  numbers,
+});
+final browseViewModelProvider = NotifierProvider.autoDispose
+    .family<BrowseViewModel, BrowseState, Object>(BrowseViewModel.new);
+
+class BrowseViewModel extends Notifier<BrowseState> {
+  BrowseViewModel(this.identity);
+  final Object identity;
+  BrowsePeriod _period = BrowsePeriod.today;
+  @override
+  BrowseState build() {
+    final clock = ref.watch(clockProvider);
+    final today = ref.watch(
+      focusTickerProvider.select((tick) {
+        final now = (tick.value ?? clock.now()).toLocal();
+        return DateTime(now.year, now.month, now.day);
+      }),
+    );
+    final summary = ref.watch(productivitySummaryProvider);
+    return (
+      summary: summary,
+      today: today,
+      period: _period,
+      numbers: summary.hasValue ? browseSummary(summary.value!, _period) : null,
+    );
+  }
+
+  void setPeriod(BrowsePeriod period) {
+    _period = period;
+    ref.invalidateSelf();
+  }
+
+  void retry() => ref.invalidate(productivitySummaryProvider);
+}
+
+typedef BrowseProjectsState = ({
+  AsyncValue<List<ProjectItem>> projects,
+  AsyncValue<List<TaskItem>> tasks,
+  List<ProjectListRow> rows,
+  Map<String, int>? counts,
+});
+final browseProjectsViewModelProvider =
+    NotifierProvider.autoDispose<BrowseProjectsViewModel, BrowseProjectsState>(
+      BrowseProjectsViewModel.new,
+    );
+
+class BrowseProjectsViewModel extends Notifier<BrowseProjectsState> {
+  @override
+  BrowseProjectsState build() {
+    final projects = ref.watch(projectsProvider);
+    final tasks = ref.watch(tasksByQueryProvider(const TaskQuery.all()));
+    return (
+      projects: projects,
+      tasks: tasks,
+      rows: List.unmodifiable(
+        projectRows([
+          for (final p in projects.value ?? const <ProjectItem>[])
+            if (p.id != inboxProjectId && !p.isArchived && !p.isDeleted) p,
+        ]),
+      ),
+      counts: tasks.hasValue
+          ? Map.unmodifiable(countOpenTasksByProject(tasks.value!))
+          : null,
+    );
+  }
+
+  void retryProjects() => ref.invalidate(projectsProvider);
+  void retryTasks() =>
+      ref.invalidate(tasksByQueryProvider(const TaskQuery.all()));
+}
+
+final browseLabelsViewModelProvider =
+    NotifierProvider.autoDispose<
+      BrowseLabelsViewModel,
+      AsyncValue<List<LabelItem>>
+    >(BrowseLabelsViewModel.new);
+
+final labelTaskCountsViewModelProvider = Provider(
+  (ref) => ref.watch(labelTaskCountsProvider).value ?? const <String, int>{},
+);
+
+class BrowseLabelsViewModel extends Notifier<AsyncValue<List<LabelItem>>> {
+  @override
+  AsyncValue<List<LabelItem>> build() => ref.watch(labelsProvider);
+  void retry() => ref.invalidate(labelsProvider);
+}
+
+final syncQueueViewModelProvider =
+    NotifierProvider.autoDispose<SyncQueueViewModel, AsyncValue<int>>(
+      SyncQueueViewModel.new,
+    );
+
+final syncQueueStatusViewModelProvider = Provider(
+  (ref) => ref.watch(syncQueueStatusProvider),
+);
+
+class SyncQueueViewModel extends Notifier<AsyncValue<int>> {
+  @override
+  AsyncValue<int> build() => ref.watch(pendingSyncCommandCountProvider);
+  void retry() {
+    ref.invalidate(pendingSyncCommandCountProvider);
+    ref.invalidate(syncQueueStatusProvider);
+  }
+}
+
+final completedTasksViewModelProvider =
+    NotifierProvider.autoDispose<CompletedTasksViewModel, DateTime?>(
+      CompletedTasksViewModel.new,
+    );
+
+class CompletedTasksViewModel extends Notifier<DateTime?> {
+  @override
+  DateTime? build() {
+    final overview = ref.watch(accountOverviewProvider);
+    final billing = ref.watch(billingAccessProvider).value;
+    return overview.hasValue && billing != null && !billing.loading
+        ? adaTaskHistoryCutoff(
+            overview.value,
+            hasLocalPaidEntitlement: billing.hasActiveEntitlement,
+          )
+        : null;
+  }
+
+  bool includes(TaskItem task) =>
+      state == null ||
+      !(task.completedAt ?? task.updatedAt).toUtc().isBefore(state!);
+}
+
+final overdueViewModelProvider =
+    NotifierProvider.autoDispose<OverdueViewModel, AsyncValue<List<TaskItem>>>(
+      OverdueViewModel.new,
+    );
+
+class OverdueViewModel extends Notifier<AsyncValue<List<TaskItem>>> {
+  @override
+  AsyncValue<List<TaskItem>> build() => ref.watch(overdueTasksProvider);
+  void retry() => ref.invalidate(tasksByQueryProvider(const TaskQuery.all()));
+}

@@ -1,0 +1,188 @@
+import 'package:ada/ui/core/localization/app_date_formatter.dart';
+import 'package:ada/ui/core/view_models/app_date_format_view_model.dart';
+import 'package:ada/ui/core/widgets/shortcut_hints.dart';
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart'
+    show ShadApp, ShadAppBuilder, ShadTheme, GlobalShadLocalizations;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:multiview_desktop/multiview_desktop.dart';
+
+import 'package:ada/ui/tasks/widgets/quick_add_bar.dart';
+import 'package:ada/ui/core/localization/app_localizations.dart';
+import 'package:ada/ui/quick_add/view_models/global_quick_add_view_model.dart';
+import 'package:ada/ui/core/localization/app_locale.dart';
+import 'package:ada/ui/core/widgets/app_zoom.dart';
+import 'package:ada/ui/core/view_models/app_theme_mode_view_model.dart';
+import 'package:ada/ui/core/view_models/app_zoom_view_model.dart';
+import 'package:ada/ui/core/themes/app_theme.dart';
+import 'package:ada/ui/settings/view_models/theme_settings_view_model.dart';
+import 'package:ada/ui/core/themes/app_motion.dart';
+import 'package:ada/ui/core/themes/macos_glass.dart';
+import 'package:ada/ui/core/themes/theme_background.dart';
+import 'package:ada/ui/core/widgets/keyboard_dismiss_region.dart';
+
+class GlobalQuickAddWindowApp extends ConsumerWidget {
+  const GlobalQuickAddWindowApp({
+    required this.onClose,
+    required this.onVoiceModeChanged,
+    this.onCommentExpandedChanged,
+    this.onEditorModeChanged,
+    this.onPreferredWidthChanged,
+    this.onHeightRequirementsChanged,
+    super.key,
+  });
+
+  final VoidCallback onClose;
+  final ValueChanged<bool> onVoiceModeChanged;
+  final ValueChanged<bool>? onCommentExpandedChanged;
+  final Future<void> Function(bool)? onEditorModeChanged;
+  final void Function(double width, double viewportWidth)?
+  onPreferredWidthChanged;
+  final void Function(
+    double preferredHeight,
+    double minimumHeight,
+    double viewportHeight,
+  )?
+  onHeightRequirementsChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final language = ref.watch(quickAddWindowLanguageProvider);
+    final themeMode = ref.watch(appThemeModeProvider);
+    final dateFormat = ref.watch(appDateFormatProvider);
+    final rootBackground = ref.watch(
+      macosGlassRootBackgroundProvider(View.of(context).viewId),
+    );
+    final palettes = ref.watch(
+      appThemeSettingsProvider.select(
+        (settings) => (settings.activeTheme.light, settings.activeTheme.dark),
+      ),
+    );
+    final lightTheme = AppTheme.light(palette: palettes.$1);
+    final darkTheme = AppTheme.dark(palette: palettes.$2);
+    return ShadApp.custom(
+      theme: AppTheme.shadFromMaterial(lightTheme),
+      darkTheme: AppTheme.shadFromMaterial(darkTheme),
+      themeMode: themeMode.themeMode,
+      appBuilder: (context) => MaterialApp(
+        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: themeMode.themeMode,
+        themeAnimationDuration: AppMotion.duration(context, AppMotion.state),
+        themeAnimationCurve: AppMotion.curve,
+        locale: resolveAppLocale(language),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalShadLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        builder: (context, child) => AppDateFormatScope(
+          format: dateFormat,
+          child: ShadTheme(
+            data: AppTheme.shadFromMaterial(
+              Theme.of(context),
+              reduceMotion: MediaQuery.disableAnimationsOf(context),
+            ),
+            child: MacosGlassHost(
+              child: AppZoom(
+                child: ShadAppBuilder(
+                  backgroundColor: rootBackground,
+                  child: ShortcutHintsHost(
+                    child: KeyboardDismissRegion(
+                      child: child ?? const SizedBox.shrink(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        home: _QuickAddWindowFocus(
+          key: const Key('global-quick-add-focus'),
+          builder: (inputFocus) => ThemeBackground(
+            zone: ThemeBackgroundZone.quickAdd,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: SafeArea(
+                child: QuickAddComposer(
+                  focusNode: inputFocus,
+                  onCompleted: onClose,
+                  onCancel: onClose,
+                  onVoiceModeChanged: onVoiceModeChanged,
+                  onCommentExpandedChanged: onCommentExpandedChanged,
+                  onEditorModeChanged: onEditorModeChanged,
+                  onPreferredWidthChanged: (width) {
+                    final view = View.of(context);
+                    onPreferredWidthChanged?.call(
+                      width * ref.read(appZoomProvider) / 100,
+                      view.physicalSize.width / view.devicePixelRatio,
+                    );
+                  },
+                  onHeightRequirementsChanged: (preferred, minimum) {
+                    final view = View.of(context);
+                    final scale = ref.read(appZoomProvider) / 100;
+                    final safeInsets =
+                        (view.padding.top + view.padding.bottom) /
+                        view.devicePixelRatio;
+                    onHeightRequirementsChanged?.call(
+                      preferred * scale + safeInsets,
+                      minimum * scale + safeInsets,
+                      view.physicalSize.height / view.devicePixelRatio,
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Native activation and Flutter's shared-engine keyboard scope are independent.
+// Keep the composer in this window's scope when a different view last had focus.
+class _QuickAddWindowFocus extends StatefulWidget {
+  const _QuickAddWindowFocus({required this.builder, super.key});
+  final Widget Function(FocusNode) builder;
+
+  @override
+  State<_QuickAddWindowFocus> createState() => _QuickAddWindowFocusState();
+}
+
+class _QuickAddWindowFocusState extends State<_QuickAddWindowFocus>
+    with WindowListener {
+  final _inputFocus = FocusNode(debugLabel: 'Global Quick Add input');
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _inputFocus.requestFocus();
+    });
+  }
+
+  @override
+  void onWindowFocus() {
+    final inputContext = _inputFocus.context;
+    if (inputContext != null &&
+        ModalRoute.of(inputContext)?.isCurrent == true) {
+      _inputFocus.requestFocus();
+    }
+  }
+
+  @override
+  void dispose() {
+    _inputFocus.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.builder(_inputFocus);
+}

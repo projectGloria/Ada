@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Ada security check</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f7f7f8;
+        color: #19191c;
+      }
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+      }
+      main {
+        box-sizing: border-box;
+        width: min(420px, calc(100% - 32px));
+        padding: 28px;
+        border: 1px solid #dedee3;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 12px 40px rgb(0 0 0 / 8%);
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      p {
+        margin: 0;
+        color: #62626a;
+        line-height: 1.5;
+      }
+      #turnstile-widget {
+        min-height: 70px;
+        margin-top: 22px;
+        display: flex;
+        justify-content: center;
+      }
+      .actions {
+        display: grid;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      button {
+        min-height: 48px;
+        border: 0;
+        border-radius: 12px;
+        padding: 0 18px;
+        background: #dc342a;
+        color: #fff;
+        font: inherit;
+        font-weight: 650;
+        cursor: pointer;
+      }
+      button:focus-visible {
+        outline: 3px solid #ff8c84;
+        outline-offset: 3px;
+      }
+      [hidden] { display: none !important; }
+      @media (prefers-color-scheme: dark) {
+        :root { background: #171113; color: #f5f2f3; }
+        main { background: #241a1d; border-color: #47383d; box-shadow: none; }
+        p { color: #c9bec2; }
+      }
+    </style>
+    <script src="/config.js"></script>
+  </head>
+  <body data-status="loading">
+    <main id="ada-captcha-challenge">
+      <h1 id="title">Ada security check</h1>
+      <p id="status" role="status" aria-live="polite">
+        Loading verification…
+      </p>
+      <div id="turnstile-widget"></div>
+      <div class="actions">
+        <button id="retry-verification" type="button" hidden>Try again</button>
+        <button id="return-to-app" type="button" hidden>
+          Return to Ada
+        </button>
+      </div>
+      <noscript>JavaScript is required for this security check.</noscript>
+    </main>
+    <script>
+      (() => {
+        "use strict";
+
+        const copies = {
+  "pt-BR": {
+    "title": "Verificação de segurança do Ada",
+    "loading": "Carregando verificação…",
+    "prompt": "Confirme que você é uma pessoa para continuar o login.",
+    "invalid": "Este link de verificação é inválido. Volte ao Ada e tente entrar novamente.",
+    "error": "Não foi possível carregar a verificação. Verifique sua conexão e tente novamente.",
+    "expired": "A verificação expirou. Tente novamente.",
+    "returning": "Verificação concluída. Voltando ao Ada…",
+    "retry": "Tentar verificar novamente",
+    "back": "Voltar ao Ada"
+  },
+  "ja": {
+    "title": "Adaのセキュリティ確認",
+    "loading": "認証を読み込み中…",
+    "prompt": "ログインを続けるには、人間であることを確認してください。",
+    "invalid": "この認証リンクは無効です。Adaに戻り、もう一度ログインしてください。",
+    "error": "認証を読み込めませんでした。接続を確認して再試行してください。",
+    "expired": "認証の有効期限が切れました。再試行してください。",
+    "returning": "認証が完了しました。Adaに戻っています…",
+    "retry": "認証を再試行",
+    "back": "Adaに戻る"
+  },
+  "ko": {
+    "title": "Ada 보안 확인",
+    "loading": "인증을 불러오는 중…",
+    "prompt": "로그인을 계속하려면 사람임을 확인하세요.",
+    "invalid": "인증 링크가 올바르지 않습니다. Ada로 돌아가 다시 로그인하세요.",
+    "error": "인증을 불러오지 못했습니다. 연결을 확인하고 다시 시도하세요.",
+    "expired": "인증이 만료되었습니다. 다시 시도하세요.",
+    "returning": "인증이 완료되었습니다. Ada로 돌아가는 중…",
+    "retry": "인증 다시 시도",
+    "back": "Ada로 돌아가기"
+  }
+,
+          en: {
+            title: "Ada security check",
+            loading: "Loading verification…",
+            prompt: "Confirm you are human to continue signing in.",
+            invalid: "This verification link is invalid. Return to Ada and try signing in again.",
+            error: "The verification could not load. Check your connection and try again.",
+            expired: "The verification expired. Please try again.",
+            returning: "Verification complete. Returning to Ada…",
+            retry: "Try verification again",
+            back: "Return to Ada",
+          },
+          ru: {
+            title: "Проверка безопасности Ada",
+            loading: "Загружаем проверку…",
+            prompt: "Подтвердите, что вы человек, чтобы продолжить вход.",
+            invalid: "Ссылка проверки недействительна. Вернитесь в Ada и попробуйте войти ещё раз.",
+            error: "Не удалось загрузить проверку. Проверьте интернет-соединение и повторите попытку.",
+            expired: "Время проверки истекло. Повторите попытку.",
+            returning: "Проверка завершена. Возвращаемся в Ada…",
+            retry: "Повторить проверку",
+            back: "Вернуться в Ada",
+          },
+          de: {
+            title: "Ada-Sicherheitsprüfung",
+            loading: "Prüfung wird geladen…",
+            prompt: "Bestätige, dass du ein Mensch bist, um fortzufahren.",
+            invalid: "Dieser Prüfungslink ist ungültig. Kehre zu Ada zurück und versuche es erneut.",
+            error: "Die Prüfung konnte nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.",
+            expired: "Die Prüfung ist abgelaufen. Versuche es erneut.",
+            returning: "Prüfung abgeschlossen. Zurück zu Ada…",
+            retry: "Prüfung erneut versuchen",
+            back: "Zurück zu Ada",
+          },
+          es: {
+            title: "Verificación de seguridad de Ada",
+            loading: "Cargando la verificación…",
+            prompt: "Confirma que eres una persona para continuar.",
+            invalid: "Este enlace de verificación no es válido. Vuelve a Ada e inténtalo de nuevo.",
+            error: "No se pudo cargar la verificación. Revisa tu conexión e inténtalo de nuevo.",
+            expired: "La verificación ha caducado. Inténtalo de nuevo.",
+            returning: "Verificación completada. Volviendo a Ada…",
+            retry: "Reintentar verificación",
+            back: "Volver a Ada",
+          },
+          fr: {
+            title: "Vérification de sécurité Ada",
+            loading: "Chargement de la vérification…",
+            prompt: "Confirmez que vous êtes une personne pour continuer.",
+            invalid: "Ce lien de vérification est invalide. Revenez dans Ada et réessayez.",
+            error: "Impossible de charger la vérification. Vérifiez votre connexion et réessayez.",
+            expired: "La vérification a expiré. Réessayez.",
+            returning: "Vérification terminée. Retour dans Ada…",
+            retry: "Réessayer la vérification",
+            back: "Revenir à Ada",
+          },
+          ar: {
+            title: "تحقق أمان Ada",
+            loading: "جارٍ تحميل التحقق…",
+            prompt: "أكد أنك إنسان للمتابعة.",
+            invalid: "رابط التحقق غير صالح. عُد إلى Ada وحاول مجددًا.",
+            error: "تعذر تحميل التحقق. تحقق من اتصالك وحاول مجددًا.",
+            expired: "انتهت صلاحية التحقق. حاول مجددًا.",
+            returning: "اكتمل التحقق. جارٍ الرجوع إلى Ada…",
+            retry: "إعادة محاولة التحقق",
+            back: "العودة إلى Ada",
+          },
+          zh: {
+            title: "Ada 安全验证",
+            loading: "正在加载验证…",
+            prompt: "请确认你是真人以继续。",
+            invalid: "此验证链接无效。请返回 Ada 后重试。",
+            error: "无法加载验证。请检查网络后重试。",
+            expired: "验证已过期。请重试。",
+            returning: "验证完成。正在返回 Ada…",
+            retry: "重新验证",
+            back: "返回 Ada",
+          },
+        };
+        const requestedLanguage = new URLSearchParams(location.search).get("lang");
+        const language = [requestedLanguage, ...(navigator.languages || [navigator.language])]
+          .map((value) => String(value || '').toLowerCase().replaceAll('_', '-'))
+          .map((value) => value.split('-')[0] === 'pt' ? 'pt-BR' : value.split('-')[0])
+          .find((value) => Object.hasOwn(copies, value)) || "en";
+        const copy = copies[language];
+        document.documentElement.lang = language;
+        document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+        const title = document.getElementById("title");
+        const status = document.getElementById("status");
+        const widget = document.getElementById("turnstile-widget");
+        const retry = document.getElementById("retry-verification");
+        const back = document.getElementById("return-to-app");
+        const query = new URLSearchParams(location.search);
+        const fragment = new URLSearchParams(location.hash.slice(1));
+        const queryKeys = [...query.keys()];
+        const fragmentKeys = [...fragment.keys()];
+        const state = fragment.get("state") || "";
+        const returnTo = query.get("returnTo") || "";
+        let returnTarget;
+        try {
+          returnTarget = new URL(returnTo);
+        } catch (_) {
+          returnTarget = null;
+        }
+        const appSchemes = ["ada:", "ada-stg:", "ada-dev:"];
+        const loopbackHosts = ["127.0.0.1", "[::1]"];
+        const loopbackPort = Number(returnTarget?.port || "0");
+        const customProtocolTarget = returnTarget !== null &&
+          appSchemes.includes(returnTarget.protocol) &&
+          returnTarget.hostname === "captcha-callback" &&
+          returnTarget.pathname === "" && returnTarget.port === "";
+        const desktopLoopbackTarget = returnTarget !== null &&
+          returnTarget.protocol === "http:" &&
+          loopbackHosts.includes(returnTarget.hostname) &&
+          returnTarget.pathname === "/captcha-callback" &&
+          Number.isInteger(loopbackPort) &&
+          loopbackPort >= 1024 && loopbackPort <= 65535;
+        // The desktop broker compares the callback against the target it
+        // registered, so extra parameters are rejected like any other mismatch.
+        const validReturnTarget = returnTarget !== null &&
+          returnTarget.href === returnTo &&
+          (customProtocolTarget || desktopLoopbackTarget) &&
+          returnTarget.username === "" && returnTarget.password === "" &&
+          returnTarget.search === "" && returnTarget.hash === "";
+        const validRequest = location.pathname === "/auth/challenge" &&
+          queryKeys.every((key) => key === "returnTo" || key === "lang") &&
+          query.getAll("lang").length <= 1 &&
+          (!query.has("lang") || Object.hasOwn(copies, query.get("lang"))) &&
+          query.getAll("returnTo").length === 1 &&
+          validReturnTarget &&
+          fragmentKeys.length === 1 && fragmentKeys[0] === "state" &&
+          fragment.getAll("state").length === 1 &&
+          state.length >= 32 && state.length <= 128 &&
+          /^[A-Za-z0-9_-]+$/.test(state);
+        let generation = 0;
+        let timeout;
+        let callbackUrl;
+        let widgetId;
+
+        document.title = copy.title;
+        title.textContent = copy.title;
+        retry.textContent = copy.retry;
+        back.textContent = copy.back;
+
+        const setStatus = (name, message) => {
+          document.body.dataset.status = name;
+          status.textContent = message;
+        };
+        const showError = (message) => {
+          setStatus("error", message);
+          retry.hidden = false;
+        };
+        const removeTurnstile = () => {
+          clearTimeout(timeout);
+          document.getElementById("ada-turnstile-script")?.remove();
+          if (widgetId !== undefined && window.turnstile) {
+            try { window.turnstile.remove(widgetId); } catch (_) {}
+          }
+          widgetId = undefined;
+          widget.replaceChildren();
+        };
+        const finish = (token) => {
+          if (callbackUrl || typeof token !== "string" || token.length === 0 ||
+              token.length > 2048 || /[\u0000-\u001f\u007f-\u009f]/.test(token)) {
+            if (!callbackUrl) showError(copy.error);
+            return;
+          }
+          callbackUrl = new URL(returnTarget.href);
+          callbackUrl.searchParams.set("state", state);
+          callbackUrl.searchParams.set("token", token);
+          setStatus("success", copy.returning);
+          widget.hidden = true;
+          retry.hidden = true;
+          back.hidden = false;
+          requestAnimationFrame(() => location.replace(callbackUrl.href));
+        };
+        const loadTurnstile = () => {
+          const current = ++generation;
+          removeTurnstile();
+          retry.hidden = true;
+          widget.hidden = false;
+          setStatus("loading", copy.loading);
+          const siteKey = window.adaRuntimeConfig?.turnstileSiteKey;
+          if (typeof siteKey !== "string" || siteKey.length === 0) {
+            showError(copy.error);
+            return;
+          }
+          const script = document.createElement("script");
+          script.id = "ada-turnstile-script";
+          script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+          script.async = true;
+          script.defer = true;
+          script.onerror = () => {
+            clearTimeout(timeout);
+            if (generation === current) showError(copy.error);
+          };
+          script.onload = () => {
+            clearTimeout(timeout);
+            if (generation !== current) return;
+            try {
+              setStatus("ready", copy.prompt);
+              widgetId = window.turnstile.render(widget, {
+                sitekey: siteKey,
+                language,
+                callback: finish,
+                "expired-callback": () => showError(copy.expired),
+                "error-callback": () => showError(copy.error),
+              });
+            } catch (_) {
+              showError(copy.error);
+            }
+          };
+          timeout = setTimeout(() => {
+            if (generation === current) showError(copy.error);
+          }, 10000);
+          document.head.append(script);
+        };
+
+        retry.addEventListener("click", loadTurnstile);
+        back.addEventListener("click", () => {
+          if (callbackUrl) location.href = callbackUrl.href;
+        });
+        if (!validRequest) {
+          setStatus("invalid", copy.invalid);
+          widget.hidden = true;
+          return;
+        }
+        loadTurnstile();
+      })();
+    </script>
+  </body>
+</html>

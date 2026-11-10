@@ -1,0 +1,109 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ada/config/task_preferences_dependencies.dart';
+import 'package:ada/data/repositories/settings/task_preferences_repository.dart';
+import 'package:ada/domain/models/settings/task_preferences.dart';
+import 'package:ada/domain/models/tasks/task_time.dart';
+
+final taskListSettingsViewModelProvider =
+    NotifierProvider<
+      TaskListSettingsViewModel,
+      ({
+        TaskDetailLayout detailLayout,
+        TaskListStyle style,
+        TaskRowSpacing spacing,
+        TaskBranchStyle branchStyle,
+      })
+    >(TaskListSettingsViewModel.new);
+
+class TaskListSettingsViewModel
+    extends
+        Notifier<
+          ({
+            TaskDetailLayout detailLayout,
+            TaskListStyle style,
+            TaskRowSpacing spacing,
+            TaskBranchStyle branchStyle,
+          })
+        > {
+  late TaskPreferencesRepository _repository;
+  @override
+  ({
+    TaskDetailLayout detailLayout,
+    TaskListStyle style,
+    TaskRowSpacing spacing,
+    TaskBranchStyle branchStyle,
+  })
+  build() {
+    _repository = ref.watch(taskPreferencesRepositoryProvider);
+    final preferences = ref.watch(taskPreferencesStateProvider);
+    return (
+      detailLayout: preferences.detailLayout,
+      style: preferences.listStyle,
+      spacing: preferences.rowSpacing,
+      branchStyle: preferences.branchStyle,
+    );
+  }
+
+  Future<void> setDetailLayout(TaskDetailLayout layout) async =>
+      (await _repository.setDetailLayout(layout)).getOrThrow();
+  Future<void> setStyle(TaskListStyle style) async =>
+      (await _repository.setListStyle(style)).getOrThrow();
+  Future<void> setBranchStyle(TaskBranchStyle style) async =>
+      (await _repository.setBranchStyle(style)).getOrThrow();
+  Future<void> setSpacing(TaskRowSpacing spacing) async =>
+      (await _repository.setRowSpacing(spacing)).getOrThrow();
+}
+
+final class TaskDurationSettingsState {
+  const TaskDurationSettingsState({
+    required this.minutes,
+    required this.timeDisplayMode,
+    this.invalidInput = false,
+  });
+  final int minutes;
+  final TaskTimeDisplayMode timeDisplayMode;
+  final bool invalidInput;
+}
+
+final taskDurationSettingsViewModelProvider =
+    NotifierProvider.autoDispose<
+      TaskDurationSettingsViewModel,
+      TaskDurationSettingsState
+    >(TaskDurationSettingsViewModel.new);
+
+class TaskDurationSettingsViewModel
+    extends Notifier<TaskDurationSettingsState> {
+  late TaskPreferencesRepository _repository;
+  @override
+  TaskDurationSettingsState build() {
+    _repository = ref.watch(taskPreferencesRepositoryProvider);
+    final preferences = ref.watch(taskPreferencesStateProvider);
+    return TaskDurationSettingsState(
+      minutes: preferences.quickAddMinutes,
+      timeDisplayMode: preferences.timeDisplayMode,
+    );
+  }
+
+  Future<void> setMinutes(int value) async =>
+      (await _repository.setQuickAddMinutes(value)).getOrThrow();
+  Future<void> setTimeDisplayMode(TaskTimeDisplayMode mode) async =>
+      (await _repository.setTimeDisplayMode(mode)).getOrThrow();
+  Future<void> saveCustomMinutes(String raw) async {
+    final minutes = int.tryParse(raw);
+    if (minutes == null ||
+        minutes < minQuickAddTimedBlockMinutes ||
+        minutes > maxQuickAddTimedBlockMinutes) {
+      state = TaskDurationSettingsState(
+        minutes: state.minutes,
+        timeDisplayMode: state.timeDisplayMode,
+        invalidInput: true,
+      );
+      return;
+    }
+    state = TaskDurationSettingsState(
+      minutes: state.minutes,
+      timeDisplayMode: state.timeDisplayMode,
+    );
+    await setMinutes(minutes);
+  }
+}

@@ -1,0 +1,35 @@
+import 'dart:typed_data';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ada/config/task_preferences_dependencies.dart';
+import 'package:ada/data/repositories/settings/theme_image_repository.dart';
+import 'package:ada/data/repositories/settings/theme_image_import_repository.dart';
+import 'package:ada/data/repositories/settings/theme_image_import_repository_impl.dart';
+import 'package:ada/data/repositories/settings/stored_theme_image_repository.dart';
+import 'package:ada/data/repositories/settings/theme_settings_repository.dart';
+import 'package:ada/data/repositories/settings/theme_settings_repository_impl.dart';
+import 'package:ada/data/services/local/theme_image_store.dart';
+import 'package:ada/data/services/platform/theme_image_file_service.dart';
+import 'package:ada/domain/use_cases/settings/theme_settings_storage_use_case.dart';
+import 'package:ada/ui/core/themes/theme_image_preparation.dart';
+
+final themeSettingsRepositoryProvider = Provider<ThemeSettingsRepository>(
+  (ref) => LocalThemeSettingsRepository(ref.watch(preferencesServiceProvider)),
+);
+final themeImageRepositoryProvider = Provider<ThemeImageRepository>(
+  (ref) => StoredThemeImageRepository(createThemeImageStore()),
+);
+final themeImagePreparerProvider =
+    Provider<Future<Uint8List> Function(Uint8List)>((ref) => prepareThemeImage);
+final themeImageImportRepositoryProvider = Provider<ThemeImageImportRepository>(
+  (ref) => FileThemeImageImportRepository(
+    ThemeImageFileService(ref.watch(themeImagePreparerProvider)),
+  ),
+);
+final themeSettingsStorageUseCaseProvider =
+    Provider<ThemeSettingsStorageUseCase>(
+      (ref) => ThemeSettingsStorageUseCase(
+        ref.watch(themeSettingsRepositoryProvider),
+        ref.watch(themeImageRepositoryProvider),
+      ),
+    );

@@ -1,0 +1,9011 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_ar.dart';
+import 'app_localizations_de.dart';
+import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_ja.dart';
+import 'app_localizations_ko.dart';
+import 'app_localizations_pt.dart';
+import 'app_localizations_ru.dart';
+import 'app_localizations_zh.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'localization/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
+    Locale('de'),
+    Locale('en'),
+    Locale('es'),
+    Locale('fr'),
+    Locale('ja'),
+    Locale('ko'),
+    Locale('pt'),
+    Locale('pt', 'BR'),
+    Locale('ru'),
+    Locale('zh'),
+  ];
+
+  /// No description provided for @settingsDateFormatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get settingsDateFormatTitle;
+
+  /// No description provided for @settingsDateFormatSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic follows the app language.'**
+  String get settingsDateFormatSubtitle;
+
+  /// No description provided for @settingsDateFormatAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get settingsDateFormatAutomatic;
+
+  /// No description provided for @settingsDateFormatDayMonthYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Day.month.year'**
+  String get settingsDateFormatDayMonthYear;
+
+  /// No description provided for @settingsDateFormatMonthDayYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Month/day/year'**
+  String get settingsDateFormatMonthDayYear;
+
+  /// No description provided for @settingsDateFormatYearMonthDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Year-month-day'**
+  String get settingsDateFormatYearMonthDay;
+
+  /// No description provided for @settingsDateFormatLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Month in words'**
+  String get settingsDateFormatLong;
+
+  /// No description provided for @settingsSectionGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsSectionGeneral;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsSectionTasksFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks and Focus'**
+  String get settingsSectionTasksFocus;
+
+  /// No description provided for @settingsSectionPomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada'**
+  String get settingsSectionPomo;
+
+  /// No description provided for @settingsSectionIntegrations.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrations and data'**
+  String get settingsSectionIntegrations;
+
+  /// No description provided for @settingsSectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account and Pro'**
+  String get settingsSectionAccount;
+
+  /// No description provided for @settingsThemeColorsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Colors'**
+  String get settingsThemeColorsTab;
+
+  /// No description provided for @settingsThemeBackgroundsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Backgrounds'**
+  String get settingsThemeBackgroundsTab;
+
+  /// No description provided for @settingsRefreshAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh account'**
+  String get settingsRefreshAccount;
+
+  /// No description provided for @settingsSubscriptionActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription options'**
+  String get settingsSubscriptionActions;
+
+  /// No description provided for @settingsSubscriptionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not refresh your subscription. Previously confirmed access is retained.'**
+  String get settingsSubscriptionError;
+
+  /// No description provided for @settingsVersionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the version.'**
+  String get settingsVersionError;
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada'**
+  String get appTitle;
+
+  /// No description provided for @commonAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get commonAdd;
+
+  /// No description provided for @commonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get commonCancel;
+
+  /// No description provided for @commonSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get commonSave;
+
+  /// No description provided for @commonDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get commonDelete;
+
+  /// No description provided for @commonUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get commonUndo;
+
+  /// No description provided for @commonOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get commonOpen;
+
+  /// No description provided for @commonBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get commonBack;
+
+  /// No description provided for @commonClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get commonClose;
+
+  /// No description provided for @commonCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get commonCreate;
+
+  /// No description provided for @commonClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get commonClear;
+
+  /// No description provided for @commonStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get commonStop;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @onboardingLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose language'**
+  String get onboardingLanguageTitle;
+
+  /// No description provided for @onboardingLanguageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the language Ada should use.'**
+  String get onboardingLanguageSubtitle;
+
+  /// No description provided for @onboardingTimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your focus'**
+  String get onboardingTimerTitle;
+
+  /// No description provided for @onboardingTimerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your timer style and session display.'**
+  String get onboardingTimerSubtitle;
+
+  /// No description provided for @onboardingPaywallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Ada'**
+  String get onboardingPaywallTitle;
+
+  /// No description provided for @onboardingPaywallSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The Lifetime offer is available for 24 hours every week.'**
+  String get onboardingPaywallSubtitle;
+
+  /// No description provided for @onboardingAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get onboardingAccountTitle;
+
+  /// No description provided for @onboardingAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync tasks, focus history, and settings between devices.'**
+  String get onboardingAccountSubtitle;
+
+  /// No description provided for @startupPreparingTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your tasks'**
+  String get startupPreparingTasks;
+
+  /// No description provided for @operationTakingLonger.
+  ///
+  /// In en, this message translates to:
+  /// **'This is taking longer than usual. The operation is still running.'**
+  String get operationTakingLonger;
+
+  /// No description provided for @onboardingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
+
+  /// No description provided for @onboardingMaybeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get onboardingMaybeLater;
+
+  /// No description provided for @onboardingFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get onboardingFinish;
+
+  /// No description provided for @billingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada Pro'**
+  String get billingTitle;
+
+  /// No description provided for @billingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dictate tasks in natural language, and Ada turns your words into tasks. Task history is saved forever.'**
+  String get billingSubtitle;
+
+  /// No description provided for @billingSubtitleHighlight.
+  ///
+  /// In en, this message translates to:
+  /// **'natural language'**
+  String get billingSubtitleHighlight;
+
+  /// No description provided for @billingCancelAnytime.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime.'**
+  String get billingCancelAnytime;
+
+  /// No description provided for @billingMonthlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get billingMonthlyTitle;
+
+  /// No description provided for @billingAnnualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get billingAnnualTitle;
+
+  /// No description provided for @billingPricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/month'**
+  String billingPricePerMonth(String price);
+
+  /// No description provided for @billingPricePerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/year'**
+  String billingPricePerYear(String price);
+
+  /// No description provided for @billingMonthlyIntroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'First 3 months, then {price}.'**
+  String billingMonthlyIntroSubtitle(String price);
+
+  /// No description provided for @billingAnnualIntroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Then {price}.'**
+  String billingAnnualIntroSubtitle(String price);
+
+  /// No description provided for @billingLifetimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get billingLifetimeTitle;
+
+  /// No description provided for @billingLifetimeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One payment forever.'**
+  String get billingLifetimeSubtitle;
+
+  /// No description provided for @billingBestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best value'**
+  String get billingBestValue;
+
+  /// No description provided for @billingChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get billingChoose;
+
+  /// No description provided for @billingActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada Pro is active on this device.'**
+  String get billingActive;
+
+  /// No description provided for @billingActiveShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get billingActiveShort;
+
+  /// No description provided for @billingRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get billingRestore;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Use'**
+  String get termsOfUse;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @billingManageLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage through Link'**
+  String get billingManageLink;
+
+  /// No description provided for @billingExternalBrowserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment opens in your browser'**
+  String get billingExternalBrowserTitle;
+
+  /// No description provided for @billingExternalBrowserMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada will open Stripe Checkout in Safari or your default browser. Allow the browser window to continue.'**
+  String get billingExternalBrowserMessage;
+
+  /// No description provided for @billingAppleOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases are available on iPhone, iPad, and Mac.'**
+  String get billingAppleOnly;
+
+  /// No description provided for @billingStoreUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The App Store is not available right now.'**
+  String get billingStoreUnavailable;
+
+  /// No description provided for @billingStoreConnectionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off your VPN and try again.'**
+  String get billingStoreConnectionFailed;
+
+  /// No description provided for @billingPurchaseError.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase error: {error}'**
+  String billingPurchaseError(String error);
+
+  /// No description provided for @billingStripeAuthenticationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Ada and try again.'**
+  String get billingStripeAuthenticationRequired;
+
+  /// No description provided for @billingStripeDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments are not available yet. Try again later.'**
+  String get billingStripeDisabled;
+
+  /// No description provided for @billingStripeAlreadyEntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada Pro is already active. Refresh your account status.'**
+  String get billingStripeAlreadyEntitled;
+
+  /// No description provided for @billingStripeOfferExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer has expired. Choose another available plan.'**
+  String get billingStripeOfferExpired;
+
+  /// No description provided for @billingStripeManagedPaymentsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Stripe payments are temporarily unavailable. Try again later or contact support.'**
+  String get billingStripeManagedPaymentsUnavailable;
+
+  /// No description provided for @billingStripeCheckoutFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start payment. Try again.'**
+  String get billingStripeCheckoutFailed;
+
+  /// Checkout is still being prepared or a previous payment is being confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'A payment is being prepared or confirmed. Try again shortly.'**
+  String get billingStripeCheckoutPending;
+
+  /// No description provided for @purchaseSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro is active'**
+  String get purchaseSuccessTitle;
+
+  /// No description provided for @purchaseSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for supporting Ada. All Pro features are ready to use.'**
+  String get purchaseSuccessMessage;
+
+  /// No description provided for @purchaseSuccessContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get purchaseSuccessContinue;
+
+  /// No description provided for @purchaseProcessingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment is processing'**
+  String get purchaseProcessingTitle;
+
+  /// No description provided for @purchaseProcessingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment is being confirmed. If Pro does not appear shortly, refresh again later.'**
+  String get purchaseProcessingMessage;
+
+  /// No description provided for @purchaseOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Ada'**
+  String get purchaseOpenApp;
+
+  /// No description provided for @launchOfferEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} left on Lifetime offer'**
+  String launchOfferEndsIn(String time);
+
+  /// No description provided for @accountApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple'**
+  String get accountApple;
+
+  /// No description provided for @accountGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google'**
+  String get accountGoogle;
+
+  /// No description provided for @accountEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get accountEmail;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Ada'**
+  String get loginTitle;
+
+  /// No description provided for @accountChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your account'**
+  String get accountChecking;
+
+  /// No description provided for @oauthConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect an agent'**
+  String get oauthConsentTitle;
+
+  /// No description provided for @oauthConsentLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the connection request'**
+  String get oauthConsentLoading;
+
+  /// No description provided for @oauthConsentInvalidAuthorization.
+  ///
+  /// In en, this message translates to:
+  /// **'This connection request is missing or invalid.'**
+  String get oauthConsentInvalidAuthorization;
+
+  /// No description provided for @oauthConsentLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the connection request.'**
+  String get oauthConsentLoadError;
+
+  /// No description provided for @oauthConsentActionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete the request. Try again.'**
+  String get oauthConsentActionError;
+
+  /// No description provided for @oauthConsentRedirectError.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada received an unsafe or missing return address. Access was not handed off.'**
+  String get oauthConsentRedirectError;
+
+  /// No description provided for @oauthConsentClientFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent'**
+  String get oauthConsentClientFallback;
+
+  /// No description provided for @oauthConsentClientRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'{clientName} wants to access Ada'**
+  String oauthConsentClientRequest(String clientName);
+
+  /// No description provided for @oauthConsentRedirectOrigin.
+  ///
+  /// In en, this message translates to:
+  /// **'Return address'**
+  String get oauthConsentRedirectOrigin;
+
+  /// No description provided for @oauthConsentCapabilitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This agent can'**
+  String get oauthConsentCapabilitiesTitle;
+
+  /// No description provided for @oauthConsentManagePlanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Read and manage tasks, habits, projects, user labels, and Kanban. Read and change shortcuts and appearance on a selected online device.'**
+  String get oauthConsentManagePlanning;
+
+  /// No description provided for @oauthConsentReadInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Read completed focus history, productivity reports, and achievements.'**
+  String get oauthConsentReadInsights;
+
+  /// No description provided for @oauthConsentUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This agent cannot'**
+  String get oauthConsentUnavailableTitle;
+
+  /// No description provided for @oauthConsentUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your account or billing, Google Calendar, or the live focus timer.'**
+  String get oauthConsentUnavailable;
+
+  /// No description provided for @oauthConsentUnsupportedScopes.
+  ///
+  /// In en, this message translates to:
+  /// **'This request asks for unsupported account access and cannot be approved.'**
+  String get oauthConsentUnsupportedScopes;
+
+  /// No description provided for @oauthConsentApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get oauthConsentApprove;
+
+  /// No description provided for @oauthConsentDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get oauthConsentDeny;
+
+  /// No description provided for @oauthConsentApproving.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowing access…'**
+  String get oauthConsentApproving;
+
+  /// No description provided for @oauthConsentDenying.
+  ///
+  /// In en, this message translates to:
+  /// **'Denying access…'**
+  String get oauthConsentDenying;
+
+  /// No description provided for @oauthConsentRedirecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Returning to the agent…'**
+  String get oauthConsentRedirecting;
+
+  /// No description provided for @loginCreateAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'No account yet?'**
+  String get loginCreateAccountPrompt;
+
+  /// No description provided for @loginCreateAccountAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get loginCreateAccountAction;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get registerTitle;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync tasks, focus history, and settings between devices.'**
+  String get registerSubtitle;
+
+  /// No description provided for @registerPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get registerPassword;
+
+  /// No description provided for @registerSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get registerSubmit;
+
+  /// No description provided for @registerSignInPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get registerSignInPrompt;
+
+  /// No description provided for @registerSignInAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get registerSignInAction;
+
+  /// No description provided for @registerCheckEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get registerCheckEmailTitle;
+
+  /// No description provided for @registerCheckEmailMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'If this address needs confirmation, you will receive an email with a link. If you already have an account, sign in or reset your password.'**
+  String get registerCheckEmailMessage;
+
+  /// No description provided for @registerError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create account: {error}'**
+  String registerError(Object error);
+
+  /// No description provided for @authEmailSignInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with email'**
+  String get authEmailSignInTitle;
+
+  /// No description provided for @authWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Ada'**
+  String get authWelcomeTitle;
+
+  /// No description provided for @authWelcomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your tasks and focus, on every device.'**
+  String get authWelcomeDescription;
+
+  /// No description provided for @authSignInWithLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with a link'**
+  String get authSignInWithLink;
+
+  /// No description provided for @authForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get authForgotPassword;
+
+  /// No description provided for @authBackToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
+  String get authBackToSignIn;
+
+  /// No description provided for @authNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'No account yet?'**
+  String get authNoAccount;
+
+  /// No description provided for @authHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get authHaveAccount;
+
+  /// No description provided for @authShowPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get authShowPassword;
+
+  /// No description provided for @authHidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get authHidePassword;
+
+  /// No description provided for @authResetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get authResetTitle;
+
+  /// No description provided for @authResetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your account email. We will send a link to change your password.'**
+  String get authResetDescription;
+
+  /// No description provided for @authResetEmailSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get authResetEmailSentTitle;
+
+  /// No description provided for @authResetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for this email, you will receive a password reset link.'**
+  String get authResetEmailSent;
+
+  /// No description provided for @authResetSendAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Send again'**
+  String get authResetSendAgain;
+
+  /// No description provided for @authResetEditEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Change email'**
+  String get authResetEditEmail;
+
+  /// No description provided for @authNewPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a new password'**
+  String get authNewPasswordTitle;
+
+  /// No description provided for @authNewPasswordDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a password you do not use for other accounts.'**
+  String get authNewPasswordDescription;
+
+  /// No description provided for @authNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get authNewPassword;
+
+  /// No description provided for @authConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat password'**
+  String get authConfirmPassword;
+
+  /// No description provided for @authSavePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Save password'**
+  String get authSavePassword;
+
+  /// No description provided for @authPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The passwords do not match.'**
+  String get authPasswordMismatch;
+
+  /// No description provided for @authPasswordUnchanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a different password from your current one.'**
+  String get authPasswordUnchanged;
+
+  /// No description provided for @authPasswordUpdatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated'**
+  String get authPasswordUpdatedTitle;
+
+  /// No description provided for @authPasswordUpdatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new password is saved. You can continue using Ada.'**
+  String get authPasswordUpdatedMessage;
+
+  /// No description provided for @authResetLinkExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This password reset link is invalid or expired. Request a new link.'**
+  String get authResetLinkExpired;
+
+  /// No description provided for @authUnexpectedReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send the password reset email. Try again.'**
+  String get authUnexpectedReset;
+
+  /// No description provided for @authUnexpectedPasswordUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your new password. Try again.'**
+  String get authUnexpectedPasswordUpdate;
+
+  /// No description provided for @authCheckingResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your password reset link…'**
+  String get authCheckingResetLink;
+
+  /// No description provided for @authSignInAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get authSignInAction;
+
+  /// No description provided for @authSendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send link'**
+  String get authSendLink;
+
+  /// No description provided for @authMagicLinkSent.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for this address, you will receive a sign-in link. Check your inbox and spam folder.'**
+  String get authMagicLinkSent;
+
+  /// No description provided for @authAccountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created.'**
+  String get authAccountCreated;
+
+  /// No description provided for @authSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in.'**
+  String get authSignedIn;
+
+  /// No description provided for @authEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email.'**
+  String get authEmailRequired;
+
+  /// No description provided for @authEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the email address, for example name@example.com.'**
+  String get authEmailInvalid;
+
+  /// No description provided for @authPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password.'**
+  String get authPasswordRequired;
+
+  /// No description provided for @authInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'The email or password is incorrect. Check the address, reset your password, or create an account.'**
+  String get authInvalidCredentials;
+
+  /// No description provided for @authEmailUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your email using the link we sent, then sign in again.'**
+  String get authEmailUnconfirmed;
+
+  /// No description provided for @authWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'This password is too easy to guess. Use a longer, less predictable password.'**
+  String get authWeakPassword;
+
+  /// No description provided for @authAccountMayExist.
+  ///
+  /// In en, this message translates to:
+  /// **'An account may already use this email. Sign in or reset your password.'**
+  String get authAccountMayExist;
+
+  /// No description provided for @authRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a few minutes and try again.'**
+  String get authRateLimited;
+
+  /// No description provided for @authEmailRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many emails were requested. Wait a few minutes before requesting another.'**
+  String get authEmailRateLimited;
+
+  /// No description provided for @authOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the account service. Check your internet connection and try again.'**
+  String get authOffline;
+
+  /// No description provided for @authTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The account service is taking too long to respond. Try again.'**
+  String get authTimeout;
+
+  /// No description provided for @authServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The account service is temporarily unavailable. Try again later.'**
+  String get authServiceUnavailable;
+
+  /// No description provided for @authCaptchaRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the security check to continue.'**
+  String get authCaptchaRequired;
+
+  /// No description provided for @authCaptchaExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'The security check expired. Complete it again.'**
+  String get authCaptchaExpired;
+
+  /// No description provided for @authCaptchaFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The security check failed. Try the verification again.'**
+  String get authCaptchaFailed;
+
+  /// No description provided for @authCaptchaCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'The security check was cancelled. Start it again to continue.'**
+  String get authCaptchaCancelled;
+
+  /// No description provided for @authCaptchaUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The security check is unavailable right now. Check your connection and try again.'**
+  String get authCaptchaUnavailable;
+
+  /// No description provided for @authCaptchaOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada could not open the security check in your browser. Check your default browser and try again.'**
+  String get authCaptchaOpenFailed;
+
+  /// No description provided for @authProviderFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'this provider'**
+  String get authProviderFallback;
+
+  /// No description provided for @authProviderUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in with {provider} is unavailable right now. Try again or use another method.'**
+  String authProviderUnavailable(String provider);
+
+  /// No description provided for @authProviderUnavailableHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in with {provider} is unavailable here. Use another sign-in method.'**
+  String authProviderUnavailableHere(String provider);
+
+  /// No description provided for @authSignUpDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Account creation with email is temporarily unavailable. Try another sign-in method.'**
+  String get authSignUpDisabled;
+
+  /// No description provided for @authAccountRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'This account cannot sign in right now. Contact support if you think this is a mistake.'**
+  String get authAccountRestricted;
+
+  /// No description provided for @authLinkExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in link is invalid or expired. Request a new link.'**
+  String get authLinkExpired;
+
+  /// No description provided for @authUnexpectedSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sign in. Try again.'**
+  String get authUnexpectedSignIn;
+
+  /// No description provided for @authUnexpectedSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create the account. Try again.'**
+  String get authUnexpectedSignUp;
+
+  /// No description provided for @authUnexpectedMagicLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send the sign-in link. Try again.'**
+  String get authUnexpectedMagicLink;
+
+  /// No description provided for @authResendConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend confirmation'**
+  String get authResendConfirmation;
+
+  /// No description provided for @authConfirmationSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send the confirmation email. Try again later.'**
+  String get authConfirmationSendFailed;
+
+  /// No description provided for @authRetryVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Try verification again'**
+  String get authRetryVerification;
+
+  /// No description provided for @captchaSecurityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Security verification'**
+  String get captchaSecurityLabel;
+
+  /// No description provided for @captchaChallengeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada security check'**
+  String get captchaChallengeTitle;
+
+  /// No description provided for @captchaChallengePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm you are human to continue in Ada.'**
+  String get captchaChallengePrompt;
+
+  /// No description provided for @captchaChallengeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This security verification link is invalid. Return to Ada and try again.'**
+  String get captchaChallengeInvalid;
+
+  /// No description provided for @captchaChallengeHandoffHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'If Ada did not open, use the button below. If the app is not installed, close this page and return to the device where you started.'**
+  String get captchaChallengeHandoffHelp;
+
+  /// No description provided for @captchaReturnToApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Ada'**
+  String get captchaReturnToApp;
+
+  /// No description provided for @navSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get navSearch;
+
+  /// No description provided for @navInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Inbox'**
+  String get navInbox;
+
+  /// No description provided for @navPriorityMatrix.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Matrix'**
+  String get navPriorityMatrix;
+
+  /// No description provided for @navCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get navCalendar;
+
+  /// No description provided for @calendarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your day. Leave room for life.'**
+  String get calendarSubtitle;
+
+  /// No description provided for @calendarDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get calendarDay;
+
+  /// No description provided for @calendarWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get calendarWeek;
+
+  /// No description provided for @calendarMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get calendarMonth;
+
+  /// No description provided for @calendarRoutine.
+  ///
+  /// In en, this message translates to:
+  /// **'Routine'**
+  String get calendarRoutine;
+
+  /// No description provided for @calendarRhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'Rhythm'**
+  String get calendarRhythm;
+
+  /// No description provided for @calendarCollapseMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse month'**
+  String get calendarCollapseMonth;
+
+  /// No description provided for @calendarExpandMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Show month'**
+  String get calendarExpandMonth;
+
+  /// No description provided for @calendarOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Day overview'**
+  String get calendarOverview;
+
+  /// No description provided for @calendarOpenMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Open month'**
+  String get calendarOpenMonth;
+
+  /// No description provided for @calendarUnscheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Unscheduled'**
+  String get calendarUnscheduled;
+
+  /// No description provided for @calendarAllProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'All projects'**
+  String get calendarAllProjects;
+
+  /// No description provided for @calendarRoutineDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'My usual day'**
+  String get calendarRoutineDefault;
+
+  /// No description provided for @calendarRoutineDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks are grouped by start time. Customize periods to suit your day.'**
+  String get calendarRoutineDescription;
+
+  /// No description provided for @calendarEditRoutine.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure periods'**
+  String get calendarEditRoutine;
+
+  /// No description provided for @calendarRoutineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your daily routine'**
+  String get calendarRoutineTitle;
+
+  /// No description provided for @calendarRoutineName.
+  ///
+  /// In en, this message translates to:
+  /// **'Routine name'**
+  String get calendarRoutineName;
+
+  /// No description provided for @calendarPeriodName.
+  ///
+  /// In en, this message translates to:
+  /// **'Period name'**
+  String get calendarPeriodName;
+
+  /// No description provided for @calendarAddPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Add period'**
+  String get calendarAddPeriod;
+
+  /// No description provided for @calendarRemovePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove period'**
+  String get calendarRemovePeriod;
+
+  /// No description provided for @calendarPeriodStart.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get calendarPeriodStart;
+
+  /// No description provided for @calendarPeriodEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Until'**
+  String get calendarPeriodEnd;
+
+  /// No description provided for @calendarRoutineInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Name the routine and its periods. End times must follow start times, and periods cannot overlap.'**
+  String get calendarRoutineInvalid;
+
+  /// No description provided for @calendarOutsideRoutine.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside routine periods'**
+  String get calendarOutsideRoutine;
+
+  /// No description provided for @calendarFreeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Free time'**
+  String get calendarFreeTime;
+
+  /// No description provided for @calendarMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get calendarMorning;
+
+  /// No description provided for @calendarAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon'**
+  String get calendarAfternoon;
+
+  /// No description provided for @calendarEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get calendarEvening;
+
+  /// No description provided for @calendarNewPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'New period'**
+  String get calendarNewPeriod;
+
+  /// No description provided for @calendarResize.
+  ///
+  /// In en, this message translates to:
+  /// **'Resize task'**
+  String get calendarResize;
+
+  /// No description provided for @calendarPreviousPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous period'**
+  String get calendarPreviousPeriod;
+
+  /// No description provided for @calendarNextPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Next period'**
+  String get calendarNextPeriod;
+
+  /// No description provided for @calendarSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save calendar settings'**
+  String get calendarSaveFailed;
+
+  /// No description provided for @calendarNoActiveFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'No active focus session'**
+  String get calendarNoActiveFocus;
+
+  /// No description provided for @calendarCurrentTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Current task'**
+  String get calendarCurrentTask;
+
+  /// No description provided for @navTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get navTimeline;
+
+  /// No description provided for @navKanban.
+  ///
+  /// In en, this message translates to:
+  /// **'Kanban'**
+  String get navKanban;
+
+  /// No description provided for @kanbanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Kanban'**
+  String get kanbanTitle;
+
+  /// No description provided for @kanbanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Visualize your workflow and focus on what matters now.'**
+  String get kanbanSubtitle;
+
+  /// No description provided for @kanbanDefaultBacklog.
+  ///
+  /// In en, this message translates to:
+  /// **'Backlog'**
+  String get kanbanDefaultBacklog;
+
+  /// No description provided for @kanbanDefaultTodo.
+  ///
+  /// In en, this message translates to:
+  /// **'To do'**
+  String get kanbanDefaultTodo;
+
+  /// No description provided for @kanbanDefaultInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get kanbanDefaultInProgress;
+
+  /// No description provided for @kanbanDefaultDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get kanbanDefaultDone;
+
+  /// No description provided for @kanbanSearchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Kanban'**
+  String get kanbanSearchTooltip;
+
+  /// No description provided for @kanbanSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tasks or projects'**
+  String get kanbanSearchHint;
+
+  /// No description provided for @kanbanHideDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Done'**
+  String get kanbanHideDone;
+
+  /// No description provided for @kanbanShowDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Done'**
+  String get kanbanShowDone;
+
+  /// No description provided for @kanbanProjectsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects on this board'**
+  String get kanbanProjectsTitle;
+
+  /// No description provided for @kanbanAddToStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to {status}'**
+  String kanbanAddToStatus(String status);
+
+  /// No description provided for @kanbanTaskField.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get kanbanTaskField;
+
+  /// No description provided for @kanbanProjectField.
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get kanbanProjectField;
+
+  /// No description provided for @kanbanChooseProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a project.'**
+  String get kanbanChooseProject;
+
+  /// No description provided for @kanbanTaskActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Task actions'**
+  String get kanbanTaskActions;
+
+  /// No description provided for @kanbanDragTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag task'**
+  String get kanbanDragTask;
+
+  /// No description provided for @kanbanMoveTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to {status}'**
+  String kanbanMoveTo(String status);
+
+  /// No description provided for @kanbanRestoreBeforeFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore the task before starting Focus.'**
+  String get kanbanRestoreBeforeFocus;
+
+  /// No description provided for @kanbanCouldNotStartFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start Focus: {error}'**
+  String kanbanCouldNotStartFocus(Object error);
+
+  /// No description provided for @kanbanCouldNotLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load Kanban: {error}'**
+  String kanbanCouldNotLoad(Object error);
+
+  /// No description provided for @commonRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get commonRetry;
+
+  /// No description provided for @commonContinueWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue waiting'**
+  String get commonContinueWaiting;
+
+  /// No description provided for @kanbanTasksCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} tasks'**
+  String kanbanTasksCount(int count);
+
+  /// No description provided for @kanbanSubtasksProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} subtasks'**
+  String kanbanSubtasksProgress(int completed, int total);
+
+  /// No description provided for @kanbanFocusIntervalsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} focus intervals'**
+  String kanbanFocusIntervalsProgress(int completed, int total);
+
+  /// No description provided for @kanbanActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get kanbanActive;
+
+  /// No description provided for @kanbanPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority {priority}'**
+  String kanbanPriority(int priority);
+
+  /// No description provided for @kanbanMoveAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved to {status}'**
+  String kanbanMoveAnnouncement(String status);
+
+  /// No description provided for @kanbanFocusStartedAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus started for {task}'**
+  String kanbanFocusStartedAnnouncement(String task);
+
+  /// No description provided for @kanbanNoTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks yet'**
+  String get kanbanNoTasks;
+
+  /// No description provided for @navToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get navToday;
+
+  /// No description provided for @navUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get navUpcoming;
+
+  /// No description provided for @navBrowse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get navBrowse;
+
+  /// No description provided for @navIntegrations.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrations'**
+  String get navIntegrations;
+
+  /// No description provided for @navReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get navReports;
+
+  /// No description provided for @navFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get navFocus;
+
+  /// No description provided for @navProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects'**
+  String get navProjects;
+
+  /// No description provided for @navSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navSettings;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAboutTitle;
+
+  /// No description provided for @settingsFocusCompletionCelebrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus completion celebration'**
+  String get settingsFocusCompletionCelebrationTitle;
+
+  /// No description provided for @settingsFocusCompletionCelebrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a full-screen celebration after the final break.'**
+  String get settingsFocusCompletionCelebrationSubtitle;
+
+  /// No description provided for @settingsVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersionLabel;
+
+  /// No description provided for @settingsPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get settingsPlanLabel;
+
+  /// No description provided for @settingsPlanFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get settingsPlanFree;
+
+  /// No description provided for @settingsPlanPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada Pro'**
+  String get settingsPlanPro;
+
+  /// No description provided for @settingsShortcutsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keyboard shortcuts'**
+  String get settingsShortcutsTitle;
+
+  /// No description provided for @settingsShortcutsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize commands available from a hardware keyboard.'**
+  String get settingsShortcutsSubtitle;
+
+  /// No description provided for @settingsShortcutsToggleSidebar.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle sidebar'**
+  String get settingsShortcutsToggleSidebar;
+
+  /// No description provided for @settingsShortcutsToggleTaskDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle task details'**
+  String get settingsShortcutsToggleTaskDetails;
+
+  /// No description provided for @settingsShortcutsToggleTaskDetailsAlternate.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle task details (second shortcut)'**
+  String get settingsShortcutsToggleTaskDetailsAlternate;
+
+  /// No description provided for @settingsShortcutsFocusAlternate.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus (second shortcut)'**
+  String get settingsShortcutsFocusAlternate;
+
+  /// No description provided for @settingsShortcutsGlobalQuickAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Global quick add'**
+  String get settingsShortcutsGlobalQuickAdd;
+
+  /// No description provided for @settingsShortcutsGlobalQuickAddSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Works even when Ada is not active.'**
+  String get settingsShortcutsGlobalQuickAddSubtitle;
+
+  /// No description provided for @settingsShortcutsRecordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Press a shortcut'**
+  String get settingsShortcutsRecordTitle;
+
+  /// No description provided for @settingsShortcutsRecordPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a key with Command, Control, or Alt. Press Esc to cancel.'**
+  String get settingsShortcutsRecordPrompt;
+
+  /// No description provided for @settingsShortcutsInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Include Command, Control, or Alt.'**
+  String get settingsShortcutsInvalid;
+
+  /// No description provided for @settingsShortcutsConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'This shortcut is already in use.'**
+  String get settingsShortcutsConflict;
+
+  /// No description provided for @settingsShortcutsGlobalError.
+  ///
+  /// In en, this message translates to:
+  /// **'That global shortcut is unavailable. The previous shortcut is still active.'**
+  String get settingsShortcutsGlobalError;
+
+  /// No description provided for @settingsShortcutsResetAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all'**
+  String get settingsShortcutsResetAll;
+
+  /// No description provided for @settingsShortcutsResetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Keyboard shortcuts reset.'**
+  String get settingsShortcutsResetDone;
+
+  /// No description provided for @csvExportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export all tasks to CSV'**
+  String get csvExportTitle;
+
+  /// No description provided for @csvExportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Local personal and shared tasks, including completed tasks. This format is for viewing, not re-importing.'**
+  String get csvExportSubtitle;
+
+  /// No description provided for @csvExportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export CSV'**
+  String get csvExportButton;
+
+  /// No description provided for @csvExportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV file is ready.'**
+  String get csvExportSuccess;
+
+  /// No description provided for @csvExportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export CSV. Please try again.'**
+  String get csvExportError;
+
+  /// No description provided for @csvImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import tasks from CSV'**
+  String get csvImportTitle;
+
+  /// No description provided for @csvImportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review a CSV file before creating tasks, projects, labels, and workflow statuses.'**
+  String get csvImportSubtitle;
+
+  /// No description provided for @csvImportSelectFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose CSV file'**
+  String get csvImportSelectFile;
+
+  /// No description provided for @csvImportHumanGuideButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide for people'**
+  String get csvImportHumanGuideButton;
+
+  /// No description provided for @csvImportAgentGuideButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide for agents'**
+  String get csvImportAgentGuideButton;
+
+  /// No description provided for @csvImportHumanGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to prepare a CSV file'**
+  String get csvImportHumanGuideTitle;
+
+  /// No description provided for @csvImportAgentGuideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV contract for an agent'**
+  String get csvImportAgentGuideTitle;
+
+  /// No description provided for @csvImportCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get csvImportCopy;
+
+  /// No description provided for @csvImportCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard.'**
+  String get csvImportCopied;
+
+  /// No description provided for @csvImportPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review import'**
+  String get csvImportPreviewTitle;
+
+  /// No description provided for @csvImportPreviewTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get csvImportPreviewTasks;
+
+  /// No description provided for @csvImportPreviewSubtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtasks'**
+  String get csvImportPreviewSubtasks;
+
+  /// No description provided for @csvImportPreviewNewProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'New projects'**
+  String get csvImportPreviewNewProjects;
+
+  /// No description provided for @csvImportPreviewNewLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'New labels'**
+  String get csvImportPreviewNewLabels;
+
+  /// No description provided for @csvImportPreviewNewStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'New workflow statuses'**
+  String get csvImportPreviewNewStatuses;
+
+  /// No description provided for @csvImportNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get csvImportNone;
+
+  /// No description provided for @csvImportDuplicateWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Importing the same file again will create duplicate tasks.'**
+  String get csvImportDuplicateWarning;
+
+  /// No description provided for @csvImportConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get csvImportConfirm;
+
+  /// No description provided for @csvImportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks imported'**
+  String get csvImportSuccess;
+
+  /// No description provided for @csvImportErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV import failed'**
+  String get csvImportErrorTitle;
+
+  /// No description provided for @csvImportUnexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be imported.'**
+  String get csvImportUnexpectedError;
+
+  /// No description provided for @csvImportHumanGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Save the file as UTF-8 CSV. Use a comma (recommended) or semicolon as the separator.\n\n2. The content column is required. You may also use: key, description, project, labels, priority, due_date, start_at, end_at, time_zone, recurrence, recurrence_interval, deadline, estimate, kanban_status, parent_key.\n\n3. Put one open task on each row. Separate labels with |. Priority is 1–4; an empty value means 4. An empty project means Inbox and an empty workflow status means Backlog. Missing projects, labels, and open statuses are created automatically.\n\n4. For an all-day task, use due_date in YYYY-MM-DD format. For a timed task, fill start_at and end_at as RFC3339 values with a UTC offset and provide an IANA time_zone, for example Europe/Moscow.\n\n5. To create subtasks, give the parent row a unique key and put that value in the child\'s parent_key. Parents may appear later in the file. A child must use the same project as its parent.\n\n6. Ada validates the whole file and shows a preview before importing. Nothing is saved if any row is invalid. Re-importing creates duplicate tasks.'**
+  String get csvImportHumanGuide;
+
+  /// No description provided for @settingsConnectedAgentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected agents'**
+  String get settingsConnectedAgentsTitle;
+
+  /// No description provided for @settingsConnectedAgentsLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading connected agents…'**
+  String get settingsConnectedAgentsLoading;
+
+  /// No description provided for @settingsConnectedAgentsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No agents are connected.'**
+  String get settingsConnectedAgentsEmpty;
+
+  /// No description provided for @settingsConnectedAgentsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load connected agents.'**
+  String get settingsConnectedAgentsLoadError;
+
+  /// No description provided for @settingsConnectedAgentsUnknownClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent'**
+  String get settingsConnectedAgentsUnknownClient;
+
+  /// No description provided for @settingsConnectedAgentsConnectedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected on {date}'**
+  String settingsConnectedAgentsConnectedOn(String date);
+
+  /// No description provided for @settingsConnectedAgentsRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke access'**
+  String get settingsConnectedAgentsRevoke;
+
+  /// No description provided for @settingsConnectedAgentsRevokeConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke agent access?'**
+  String get settingsConnectedAgentsRevokeConfirmTitle;
+
+  /// No description provided for @settingsConnectedAgentsRevokeConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke Ada access for {clientName}?'**
+  String settingsConnectedAgentsRevokeConfirmMessage(String clientName);
+
+  /// No description provided for @settingsConnectedAgentsRevokeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not revoke access. Try again.'**
+  String get settingsConnectedAgentsRevokeError;
+
+  /// No description provided for @settingsLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageTitle;
+
+  /// No description provided for @settingsLanguageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the app language.'**
+  String get settingsLanguageSubtitle;
+
+  /// No description provided for @settingsLanguageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get settingsLanguageSystem;
+
+  /// No description provided for @settingsVoiceTranscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice transcription'**
+  String get settingsVoiceTranscriptionTitle;
+
+  /// No description provided for @settingsVoiceTranscriptionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how recordings are converted to text on this device.'**
+  String get settingsVoiceTranscriptionSubtitle;
+
+  /// No description provided for @settingsVoiceTranscriptionSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System (Apple)'**
+  String get settingsVoiceTranscriptionSystem;
+
+  /// No description provided for @settingsVoiceTranscriptionCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud'**
+  String get settingsVoiceTranscriptionCloud;
+
+  /// No description provided for @settingsVoiceTranscriptionCloudDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud transcription sends audio to Ada and requires an internet connection.'**
+  String get settingsVoiceTranscriptionCloudDescription;
+
+  /// No description provided for @settingsVoiceTranscriptionCloudRequiresSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to use cloud transcription. System transcription is active until then.'**
+  String get settingsVoiceTranscriptionCloudRequiresSignIn;
+
+  /// No description provided for @settingsThemeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsThemeTitle;
+
+  /// No description provided for @settingsThemeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the app appearance.'**
+  String get settingsThemeSubtitle;
+
+  /// No description provided for @settingsThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeSystem;
+
+  /// No description provided for @settingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeLight;
+
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
+
+  /// No description provided for @settingsTimerVisualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pomodoro timer'**
+  String get settingsTimerVisualTitle;
+
+  /// No description provided for @settingsTimerVisualSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how progress is shown on the focus screen.'**
+  String get settingsTimerVisualSubtitle;
+
+  /// No description provided for @settingsTimerVisualBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Bar'**
+  String get settingsTimerVisualBar;
+
+  /// No description provided for @settingsTimerVisualCircle.
+  ///
+  /// In en, this message translates to:
+  /// **'Circle'**
+  String get settingsTimerVisualCircle;
+
+  /// No description provided for @settingsReturnRemindersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Return reminders'**
+  String get settingsReturnRemindersTitle;
+
+  /// No description provided for @settingsReturnRemindersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'An evening reminder at 20:30 if you have not completed any tasks today.'**
+  String get settingsReturnRemindersSubtitle;
+
+  /// No description provided for @settingsDefaultTimedBlockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Default calendar block duration'**
+  String get settingsDefaultTimedBlockTitle;
+
+  /// No description provided for @settingsDefaultTimedBlockSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When only a time is entered, new tasks use this calendar duration.'**
+  String get settingsDefaultTimedBlockSubtitle;
+
+  /// No description provided for @settingsDefaultTimedBlockCustomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom duration'**
+  String get settingsDefaultTimedBlockCustomLabel;
+
+  /// No description provided for @settingsDefaultTimedBlockError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 1 to 480 minutes.'**
+  String get settingsDefaultTimedBlockError;
+
+  /// No description provided for @settingsTaskTimeDisplayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Task time display'**
+  String get settingsTaskTimeDisplayTitle;
+
+  /// No description provided for @settingsTaskTimeDisplaySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how timed task schedules are shown.'**
+  String get settingsTaskTimeDisplaySubtitle;
+
+  /// No description provided for @settingsTaskTimeDisplaySmart.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart'**
+  String get settingsTaskTimeDisplaySmart;
+
+  /// No description provided for @settingsTaskTimeDisplayRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Start and end time'**
+  String get settingsTaskTimeDisplayRange;
+
+  /// No description provided for @settingsTaskTimeDisplayStartOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time only'**
+  String get settingsTaskTimeDisplayStartOnly;
+
+  /// No description provided for @taskTimeStatusFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get taskTimeStatusFuture;
+
+  /// No description provided for @taskTimeStatusFocused.
+  ///
+  /// In en, this message translates to:
+  /// **'In focus'**
+  String get taskTimeStatusFocused;
+
+  /// No description provided for @taskTimeStatusCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get taskTimeStatusCurrent;
+
+  /// No description provided for @taskTimeStatusOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get taskTimeStatusOverdue;
+
+  /// No description provided for @taskTimeStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get taskTimeStatusCompleted;
+
+  /// No description provided for @menuTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get menuTooltip;
+
+  /// No description provided for @localUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Local User'**
+  String get localUser;
+
+  /// No description provided for @addTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Add task'**
+  String get addTask;
+
+  /// No description provided for @quickAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Task name tomorrow p2 #Project @label 2p'**
+  String get quickAddHint;
+
+  /// No description provided for @couldNotAddTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add task: {error}'**
+  String couldNotAddTask(Object error);
+
+  /// No description provided for @taskCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create the task. Try again.'**
+  String get taskCreateFailed;
+
+  /// No description provided for @couldNotAddProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add project: {error}'**
+  String couldNotAddProject(Object error);
+
+  /// No description provided for @tasksCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Added 1 task} other{Added {count} tasks}}'**
+  String tasksCreated(int count);
+
+  /// No description provided for @voiceQuickAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice quick add'**
+  String get voiceQuickAdd;
+
+  /// No description provided for @voiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice add'**
+  String get voiceTitle;
+
+  /// No description provided for @voiceRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get voiceRecord;
+
+  /// No description provided for @voiceAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get voiceAgain;
+
+  /// No description provided for @voiceStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get voiceStop;
+
+  /// No description provided for @voiceAddCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {count}'**
+  String voiceAddCount(int count);
+
+  /// No description provided for @voiceTaskLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Task {index}'**
+  String voiceTaskLabel(int index);
+
+  /// No description provided for @voiceRemoveTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get voiceRemoveTask;
+
+  /// No description provided for @voiceInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap record and dictate tasks.'**
+  String get voiceInstruction;
+
+  /// No description provided for @voiceStatusIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Built-in microphone input only'**
+  String get voiceStatusIdle;
+
+  /// No description provided for @voiceStatusRequestingPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Requesting access'**
+  String get voiceStatusRequestingPermission;
+
+  /// No description provided for @voiceStatusRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening to the built-in microphone'**
+  String get voiceStatusRecording;
+
+  /// No description provided for @voiceStatusTranscribing.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcribing recording'**
+  String get voiceStatusTranscribing;
+
+  /// No description provided for @voiceStatusCanceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording canceled'**
+  String get voiceStatusCanceled;
+
+  /// No description provided for @voiceStatusUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform is not supported'**
+  String get voiceStatusUnsupported;
+
+  /// No description provided for @voiceStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not recognize speech'**
+  String get voiceStatusError;
+
+  /// No description provided for @voiceStatusAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Splitting into tasks'**
+  String get voiceStatusAnalyzing;
+
+  /// No description provided for @voiceStatusReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review tasks before adding'**
+  String get voiceStatusReview;
+
+  /// No description provided for @voiceStepRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get voiceStepRecord;
+
+  /// No description provided for @voiceStepText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get voiceStepText;
+
+  /// No description provided for @voiceStepAnalyze.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze'**
+  String get voiceStepAnalyze;
+
+  /// No description provided for @voiceStepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get voiceStepReview;
+
+  /// No description provided for @voiceAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada is splitting speech into tasks'**
+  String get voiceAnalyzing;
+
+  /// No description provided for @voiceFallbackError.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada could not process speech; kept a draft for manual editing.'**
+  String get voiceFallbackError;
+
+  /// No description provided for @voiceMicrophoneUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The microphone is currently unavailable. End any active call or voice chat, then try again.'**
+  String get voiceMicrophoneUnavailable;
+
+  /// No description provided for @voiceSmartMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart mode'**
+  String get voiceSmartMode;
+
+  /// No description provided for @voiceRetryTranscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry transcription'**
+  String get voiceRetryTranscription;
+
+  /// No description provided for @voiceRecordingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording saved on this device. You can retry without recording again.'**
+  String get voiceRecordingSaved;
+
+  /// No description provided for @voiceAllowAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow access'**
+  String get voiceAllowAccess;
+
+  /// No description provided for @voiceOpenMicrophoneSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open microphone settings'**
+  String get voiceOpenMicrophoneSettings;
+
+  /// No description provided for @voiceOpenSpeechSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open speech recognition settings'**
+  String get voiceOpenSpeechSettings;
+
+  /// No description provided for @voiceEnableDictation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Dictation'**
+  String get voiceEnableDictation;
+
+  /// No description provided for @voiceUseCloudTranscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use cloud transcription'**
+  String get voiceUseCloudTranscription;
+
+  /// No description provided for @voiceMicrophoneDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow microphone access in system settings.'**
+  String get voiceMicrophoneDenied;
+
+  /// No description provided for @voiceSpeechDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow speech recognition in system settings.'**
+  String get voiceSpeechDenied;
+
+  /// No description provided for @voiceAccessRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Access is restricted by your administrator or Screen Time settings.'**
+  String get voiceAccessRestricted;
+
+  /// No description provided for @voiceDictationDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Dictation in System Settings → Keyboard → Dictation and select your language. Then retry.'**
+  String get voiceDictationDisabled;
+
+  /// No description provided for @voiceServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition is unavailable. Check your connection. On Mac, also check System Settings → Keyboard → Dictation and your language.'**
+  String get voiceServiceUnavailable;
+
+  /// No description provided for @voiceCloudServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud transcription failed. Check your internet connection and retry the saved recording.'**
+  String get voiceCloudServiceUnavailable;
+
+  /// No description provided for @voiceLocaleUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'System speech recognition does not support the selected language on this device.'**
+  String get voiceLocaleUnsupported;
+
+  /// No description provided for @voiceNetworkUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition needs an internet connection for this language. Reconnect and retry.'**
+  String get voiceNetworkUnavailable;
+
+  /// No description provided for @voiceSettingsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open settings. Open system settings manually and check microphone and speech recognition access. On Mac, check Keyboard → Dictation too.'**
+  String get voiceSettingsFailed;
+
+  /// No description provided for @voiceRetryAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry analysis'**
+  String get voiceRetryAnalysis;
+
+  /// No description provided for @screenInboxSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture tasks before organizing them.'**
+  String get screenInboxSubtitle;
+
+  /// No description provided for @priorityMatrixSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag tasks between priorities. Dates only sort tasks inside a priority.'**
+  String get priorityMatrixSubtitle;
+
+  /// No description provided for @priorityMatrixP1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Do now'**
+  String get priorityMatrixP1Title;
+
+  /// No description provided for @priorityMatrixP2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get priorityMatrixP2Title;
+
+  /// No description provided for @priorityMatrixP3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delegate'**
+  String get priorityMatrixP3Title;
+
+  /// No description provided for @priorityMatrixP4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop'**
+  String get priorityMatrixP4Title;
+
+  /// No description provided for @priorityMatrixAxisUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get priorityMatrixAxisUrgent;
+
+  /// No description provided for @priorityMatrixAxisNotUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Not urgent'**
+  String get priorityMatrixAxisNotUrgent;
+
+  /// No description provided for @priorityMatrixAxisImportant.
+  ///
+  /// In en, this message translates to:
+  /// **'Important'**
+  String get priorityMatrixAxisImportant;
+
+  /// No description provided for @priorityMatrixAxisNotImportant.
+  ///
+  /// In en, this message translates to:
+  /// **'Not important'**
+  String get priorityMatrixAxisNotImportant;
+
+  /// No description provided for @timelineSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan one day on a time grid.'**
+  String get timelineSubtitle;
+
+  /// No description provided for @timelineAllDay.
+  ///
+  /// In en, this message translates to:
+  /// **'All-day'**
+  String get timelineAllDay;
+
+  /// No description provided for @timelineBeforeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Before visible hours'**
+  String get timelineBeforeHours;
+
+  /// No description provided for @timelineAfterHours.
+  ///
+  /// In en, this message translates to:
+  /// **'After visible hours'**
+  String get timelineAfterHours;
+
+  /// No description provided for @timelineVisibleHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible hours'**
+  String get timelineVisibleHours;
+
+  /// No description provided for @timelineStartHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get timelineStartHour;
+
+  /// No description provided for @timelineEndHour.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get timelineEndHour;
+
+  /// No description provided for @timelineZoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get timelineZoomOut;
+
+  /// No description provided for @timelineZoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get timelineZoomIn;
+
+  /// No description provided for @timelineAddTimedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Task for {time}'**
+  String timelineAddTimedHint(String time);
+
+  /// No description provided for @timelineAddAllDayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All-day task'**
+  String get timelineAddAllDayHint;
+
+  /// No description provided for @timelineNoAllDayTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No all-day tasks'**
+  String get timelineNoAllDayTasks;
+
+  /// No description provided for @timelineNoTimedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No timed tasks'**
+  String get timelineNoTimedTasks;
+
+  /// No description provided for @timelinePreviousDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day'**
+  String get timelinePreviousDay;
+
+  /// No description provided for @timelineNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Next day'**
+  String get timelineNextDay;
+
+  /// No description provided for @timelinePickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date'**
+  String get timelinePickDate;
+
+  /// No description provided for @upcomingPreviousPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous period'**
+  String get upcomingPreviousPeriod;
+
+  /// No description provided for @upcomingNextPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Next period'**
+  String get upcomingNextPeriod;
+
+  /// No description provided for @upcomingOpenDatePicker.
+  ///
+  /// In en, this message translates to:
+  /// **'Open date picker'**
+  String get upcomingOpenDatePicker;
+
+  /// No description provided for @upcomingTaskCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No tasks} =1{1 task} other{{count} tasks}}'**
+  String upcomingTaskCount(int count);
+
+  /// No description provided for @screenTodayFocusSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus load: {planned} intervals - Done: {completed} - Focus: {focus}'**
+  String screenTodayFocusSummary(int planned, int completed, String focus);
+
+  /// No description provided for @screenUpcomingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned tasks after today.'**
+  String get screenUpcomingSubtitle;
+
+  /// No description provided for @screenUpcomingSelectedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks scheduled for {date}.'**
+  String screenUpcomingSelectedSubtitle(String date);
+
+  /// No description provided for @noTasksHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks here'**
+  String get noTasksHere;
+
+  /// No description provided for @noUpcomingTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No dated tasks'**
+  String get noUpcomingTasks;
+
+  /// No description provided for @noTasksForDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks scheduled for this day'**
+  String get noTasksForDay;
+
+  /// No description provided for @failedToLoadTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load tasks: {error}'**
+  String failedToLoadTasks(Object error);
+
+  /// No description provided for @searchTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tasks'**
+  String get searchTasks;
+
+  /// No description provided for @searchStartTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing to search tasks'**
+  String get searchStartTyping;
+
+  /// No description provided for @searchNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching tasks'**
+  String get searchNoMatches;
+
+  /// No description provided for @failedToSearchTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to search tasks: {error}'**
+  String failedToSearchTasks(Object error);
+
+  /// No description provided for @previousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
+  /// No description provided for @nextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
+
+  /// No description provided for @clearDateFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear date filter'**
+  String get clearDateFilter;
+
+  /// No description provided for @weekMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get weekMon;
+
+  /// No description provided for @weekTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get weekTue;
+
+  /// No description provided for @weekWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get weekWed;
+
+  /// No description provided for @weekThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get weekThu;
+
+  /// No description provided for @weekFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get weekFri;
+
+  /// No description provided for @weekSat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get weekSat;
+
+  /// No description provided for @weekSun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get weekSun;
+
+  /// No description provided for @browseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get browseTitle;
+
+  /// No description provided for @unifiedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Unified Account'**
+  String get unifiedAccount;
+
+  /// No description provided for @accountUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Account unavailable: {error}'**
+  String accountUnavailable(Object error);
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account, cloud data, and local tasks, projects, and focus history. This cannot be undone. Store subscriptions are not canceled automatically. If you used Sign in with Apple, revoke Ada access separately in your Apple Account settings.'**
+  String get deleteAccountConfirmation;
+
+  /// No description provided for @manageSignInWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Sign in with Apple'**
+  String get manageSignInWithApple;
+
+  /// No description provided for @deleteAccountFinalConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you absolutely sure? This is your final confirmation.'**
+  String get deleteAccountFinalConfirmation;
+
+  /// No description provided for @deleteAccountError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete account: {error}'**
+  String deleteAccountError(Object error);
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted.'**
+  String get accountDeleted;
+
+  /// No description provided for @accountDeletedLocalCleanupError.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was deleted, but local data could not be cleared. Clear the app\'s data before using this device again.'**
+  String get accountDeletedLocalCleanupError;
+
+  /// No description provided for @browseSevenDays.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get browseSevenDays;
+
+  /// No description provided for @browseOpenNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open now'**
+  String get browseOpenNow;
+
+  /// No description provided for @browseQueueLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading pending changes…'**
+  String get browseQueueLoading;
+
+  /// No description provided for @browseQueueUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load pending changes.'**
+  String get browseQueueUnavailable;
+
+  /// No description provided for @browseQueueExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'This shows local changes waiting to be sent. An empty queue does not confirm that all devices are up to date.'**
+  String get browseQueueExplanation;
+
+  /// No description provided for @productivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Productivity'**
+  String get productivityTitle;
+
+  /// No description provided for @achievementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievementsTitle;
+
+  /// No description provided for @allTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get allTimeLabel;
+
+  /// No description provided for @lastSevenDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get lastSevenDaysLabel;
+
+  /// No description provided for @noWeeklyStatsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No focus or task data yet'**
+  String get noWeeklyStatsLabel;
+
+  /// No description provided for @completedFocuses.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed focuses'**
+  String get completedFocuses;
+
+  /// No description provided for @completedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed tasks'**
+  String get completedTasks;
+
+  /// No description provided for @unlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked'**
+  String get unlocked;
+
+  /// No description provided for @locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get locked;
+
+  /// No description provided for @progressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progressLabel;
+
+  /// No description provided for @focusAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus achievements'**
+  String get focusAchievements;
+
+  /// No description provided for @taskAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Task achievements'**
+  String get taskAchievements;
+
+  /// No description provided for @comboAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo achievements'**
+  String get comboAchievements;
+
+  /// No description provided for @focusIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus intervals'**
+  String get focusIntervals;
+
+  /// No description provided for @focusTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus time'**
+  String get focusTime;
+
+  /// No description provided for @openTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Open tasks'**
+  String get openTasks;
+
+  /// No description provided for @plannedIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned intervals'**
+  String get plannedIntervals;
+
+  /// No description provided for @labelsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels'**
+  String get labelsTitle;
+
+  /// No description provided for @newProject.
+  ///
+  /// In en, this message translates to:
+  /// **'New project'**
+  String get newProject;
+
+  /// No description provided for @newLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New label'**
+  String get newLabel;
+
+  /// No description provided for @syncReadyQueue.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync-ready queue'**
+  String get syncReadyQueue;
+
+  /// No description provided for @pendingLocalCommands.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No pending local commands} =1{1 pending local command} other{{count} pending local commands}}'**
+  String pendingLocalCommands(int count);
+
+  /// No description provided for @failedToLoadProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load projects: {error}'**
+  String failedToLoadProjects(Object error);
+
+  /// No description provided for @failedToLoadLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load labels: {error}'**
+  String failedToLoadLabels(Object error);
+
+  /// No description provided for @addProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Add project'**
+  String get addProject;
+
+  /// No description provided for @projectName.
+  ///
+  /// In en, this message translates to:
+  /// **'Project name'**
+  String get projectName;
+
+  /// No description provided for @addLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add label'**
+  String get addLabel;
+
+  /// No description provided for @labelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Label name'**
+  String get labelName;
+
+  /// No description provided for @couldNotAddLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add label: {error}'**
+  String couldNotAddLabel(Object error);
+
+  /// No description provided for @projectsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects unavailable: {error}'**
+  String projectsUnavailable(Object error);
+
+  /// No description provided for @projectsUnavailableShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects unavailable'**
+  String get projectsUnavailableShort;
+
+  /// No description provided for @noProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'No projects'**
+  String get noProjects;
+
+  /// No description provided for @searchProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Search projects'**
+  String get searchProjects;
+
+  /// No description provided for @searchLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'Search labels'**
+  String get searchLabels;
+
+  /// No description provided for @archivedProjectsOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived projects only'**
+  String get archivedProjectsOnly;
+
+  /// No description provided for @projectsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 project} other{{count} projects}}'**
+  String projectsCount(int count);
+
+  /// No description provided for @noLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'No labels'**
+  String get noLabels;
+
+  /// No description provided for @labelsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 label} other{{count} labels}}'**
+  String labelsCount(int count);
+
+  /// No description provided for @renameProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename project'**
+  String get renameProject;
+
+  /// No description provided for @archiveProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive project'**
+  String get archiveProject;
+
+  /// No description provided for @restoreProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from archive'**
+  String get restoreProject;
+
+  /// No description provided for @deleteProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete project'**
+  String get deleteProject;
+
+  /// No description provided for @deleteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete label'**
+  String get deleteLabel;
+
+  /// No description provided for @deleteProjectConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\"? Tasks in this project will move to Inbox.'**
+  String deleteProjectConfirmation(String name);
+
+  /// No description provided for @deleteLabelConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\"?'**
+  String deleteLabelConfirmation(String name);
+
+  /// No description provided for @couldNotDeleteProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete project: {error}'**
+  String couldNotDeleteProject(Object error);
+
+  /// No description provided for @couldNotDeleteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete label: {error}'**
+  String couldNotDeleteLabel(Object error);
+
+  /// No description provided for @projectsCountCompact.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects: {count}'**
+  String projectsCountCompact(int count);
+
+  /// No description provided for @collapseProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse projects'**
+  String get collapseProjects;
+
+  /// No description provided for @expandProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand projects'**
+  String get expandProjects;
+
+  /// No description provided for @projectFallbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get projectFallbackTitle;
+
+  /// No description provided for @projectSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'List view - board and calendar are roadmap items.'**
+  String get projectSubtitle;
+
+  /// No description provided for @reportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reportsTitle;
+
+  /// No description provided for @reportsFocusedDay.
+  ///
+  /// In en, this message translates to:
+  /// **'A focused day so far'**
+  String get reportsFocusedDay;
+
+  /// No description provided for @reportsThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Your week in focus'**
+  String get reportsThisWeek;
+
+  /// No description provided for @reportsNextAchievement.
+  ///
+  /// In en, this message translates to:
+  /// **'Next achievement'**
+  String get reportsNextAchievement;
+
+  /// No description provided for @viewAllAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'View all achievements'**
+  String get viewAllAchievements;
+
+  /// No description provided for @viewAllAchievementsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'View all {count}'**
+  String viewAllAchievementsCount(int count);
+
+  /// No description provided for @allAchievementsUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'All achievements unlocked'**
+  String get allAchievementsUnlocked;
+
+  /// No description provided for @noAchievementsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No achievements yet'**
+  String get noAchievementsYet;
+
+  /// No description provided for @failedToLoadAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load achievements: {error}'**
+  String failedToLoadAchievements(Object error);
+
+  /// No description provided for @backToReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to reports'**
+  String get backToReports;
+
+  /// No description provided for @reportsIntervalProgressSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {target} focus intervals completed'**
+  String reportsIntervalProgressSemantics(int completed, int target);
+
+  /// No description provided for @reportsIntervalCountSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} focus intervals completed; no task estimates'**
+  String reportsIntervalCountSemantics(int completed);
+
+  /// No description provided for @reportsWeeklyChartSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus time for the last 7 days: {summary}'**
+  String reportsWeeklyChartSemantics(String summary);
+
+  /// No description provided for @failedToLoadReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load reports: {error}'**
+  String failedToLoadReports(Object error);
+
+  /// No description provided for @taskNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Task not found'**
+  String get taskNotFound;
+
+  /// No description provided for @taskTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Task title'**
+  String get taskTitleHint;
+
+  /// No description provided for @taskComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get taskComment;
+
+  /// No description provided for @taskCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a comment'**
+  String get taskCommentHint;
+
+  /// No description provided for @subtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-tasks'**
+  String get subtasks;
+
+  /// No description provided for @addSubtask.
+  ///
+  /// In en, this message translates to:
+  /// **'Add sub-task'**
+  String get addSubtask;
+
+  /// No description provided for @addSubtaskHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a sub-task'**
+  String get addSubtaskHint;
+
+  /// No description provided for @noSubtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No sub-tasks yet.'**
+  String get noSubtasks;
+
+  /// No description provided for @makeParentTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Make parent task'**
+  String get makeParentTask;
+
+  /// No description provided for @couldNotMoveTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not move task: {error}'**
+  String couldNotMoveTask(Object error);
+
+  /// No description provided for @scheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get scheduleTitle;
+
+  /// No description provided for @allDay.
+  ///
+  /// In en, this message translates to:
+  /// **'All-day'**
+  String get allDay;
+
+  /// No description provided for @timedBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Timed block'**
+  String get timedBlock;
+
+  /// No description provided for @recurrenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get recurrenceTitle;
+
+  /// No description provided for @recurrenceNeedsSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a date or time before repeating.'**
+  String get recurrenceNeedsSchedule;
+
+  /// No description provided for @recurrenceIntervalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval'**
+  String get recurrenceIntervalLabel;
+
+  /// No description provided for @recurrenceUnitDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get recurrenceUnitDay;
+
+  /// No description provided for @recurrenceUnitWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Weeks'**
+  String get recurrenceUnitWeek;
+
+  /// No description provided for @recurrenceUnitMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Months'**
+  String get recurrenceUnitMonth;
+
+  /// No description provided for @recurrenceInvalidInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 1 to 999.'**
+  String get recurrenceInvalidInterval;
+
+  /// No description provided for @recurrenceEveryDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{interval, plural, =1{every day} other{every {interval} days}}'**
+  String recurrenceEveryDays(int interval);
+
+  /// No description provided for @recurrenceEveryWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'{interval, plural, =1{every week} other{every {interval} weeks}}'**
+  String recurrenceEveryWeeks(int interval);
+
+  /// No description provided for @recurrenceEveryMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{interval, plural, =1{every month} other{every {interval} months}}'**
+  String recurrenceEveryMonths(int interval);
+
+  /// No description provided for @noDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No date'**
+  String get noDate;
+
+  /// No description provided for @calendarNotLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar not linked'**
+  String get calendarNotLinked;
+
+  /// No description provided for @calendarLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar linked'**
+  String get calendarLinked;
+
+  /// No description provided for @focusProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} focus'**
+  String focusProgress(int completed, int total);
+
+  /// No description provided for @startFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Start focus'**
+  String get startFocus;
+
+  /// No description provided for @focusStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus started'**
+  String get focusStarted;
+
+  /// No description provided for @taskReopened.
+  ///
+  /// In en, this message translates to:
+  /// **'Task reopened'**
+  String get taskReopened;
+
+  /// No description provided for @taskCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Task completed'**
+  String get taskCompleted;
+
+  /// No description provided for @taskDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Task deleted'**
+  String get taskDeleted;
+
+  /// No description provided for @recurringDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete recurring task?'**
+  String get recurringDeleteTitle;
+
+  /// No description provided for @recurringDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This task belongs to a recurring series.'**
+  String get recurringDeleteMessage;
+
+  /// No description provided for @recurringDeleteThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this task'**
+  String get recurringDeleteThis;
+
+  /// No description provided for @recurringDeleteThisAndFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this and following'**
+  String get recurringDeleteThisAndFollowing;
+
+  /// No description provided for @markOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark open'**
+  String get markOpen;
+
+  /// No description provided for @markComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark complete'**
+  String get markComplete;
+
+  /// No description provided for @focusHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus history'**
+  String get focusHistory;
+
+  /// No description provided for @failedToLoadTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load task: {error}'**
+  String failedToLoadTask(Object error);
+
+  /// No description provided for @noFocusIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'No focus intervals yet.'**
+  String get noFocusIntervals;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @clearDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear date'**
+  String get clearDate;
+
+  /// No description provided for @priority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority {priority}'**
+  String priority(int priority);
+
+  /// No description provided for @focusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get focusTitle;
+
+  /// No description provided for @focusLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load focus: {error}'**
+  String focusLoadError(Object error);
+
+  /// No description provided for @focusViewFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get focusViewFull;
+
+  /// No description provided for @focusViewMinimal.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimal'**
+  String get focusViewMinimal;
+
+  /// No description provided for @focusSwitchToFullView.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Full'**
+  String get focusSwitchToFullView;
+
+  /// No description provided for @focusSwitchToMinimalView.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Minimal'**
+  String get focusSwitchToMinimalView;
+
+  /// No description provided for @focusActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update Focus. Try again.'**
+  String get focusActionFailed;
+
+  /// No description provided for @noActiveSession.
+  ///
+  /// In en, this message translates to:
+  /// **'No active session'**
+  String get noActiveSession;
+
+  /// No description provided for @focusIdleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a standalone focus interval or launch focus from a task.'**
+  String get focusIdleSubtitle;
+
+  /// No description provided for @noPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'No preset'**
+  String get noPreset;
+
+  /// No description provided for @preparingFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing focus'**
+  String get preparingFocus;
+
+  /// No description provided for @moreFocusOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More focus options'**
+  String get moreFocusOptions;
+
+  /// No description provided for @moreFocusActions.
+  ///
+  /// In en, this message translates to:
+  /// **'More focus actions'**
+  String get moreFocusActions;
+
+  /// No description provided for @preset.
+  ///
+  /// In en, this message translates to:
+  /// **'Preset'**
+  String get preset;
+
+  /// No description provided for @newPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'New preset'**
+  String get newPreset;
+
+  /// No description provided for @customize.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize'**
+  String get customize;
+
+  /// No description provided for @customizePreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize preset'**
+  String get customizePreset;
+
+  /// No description provided for @startInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Start interval'**
+  String get startInterval;
+
+  /// No description provided for @intervalStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval started'**
+  String get intervalStarted;
+
+  /// No description provided for @intervalCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval completed'**
+  String get intervalCompleted;
+
+  /// No description provided for @focusStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus stopped'**
+  String get focusStopped;
+
+  /// No description provided for @focusCompletionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Beautiful work!'**
+  String get focusCompletionTitle;
+
+  /// No description provided for @focusCompletionLinkedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All planned focus intervals for this task are complete.'**
+  String get focusCompletionLinkedSubtitle;
+
+  /// No description provided for @focusCompletionStandaloneSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your focus cycle is complete.'**
+  String get focusCompletionStandaloneSubtitle;
+
+  /// No description provided for @focusCompletionQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to complete this task?'**
+  String get focusCompletionQuestion;
+
+  /// No description provided for @focusCompletionCompleteTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete task'**
+  String get focusCompletionCompleteTask;
+
+  /// No description provided for @focusCompletionKeepOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep task open'**
+  String get focusCompletionKeepOpen;
+
+  /// No description provided for @focusCompletionDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get focusCompletionDone;
+
+  /// No description provided for @focusCompletionNextTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Next scheduled task'**
+  String get focusCompletionNextTask;
+
+  /// No description provided for @focusCompletionTaskError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete task: {error}'**
+  String focusCompletionTaskError(Object error);
+
+  /// No description provided for @completeInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete interval'**
+  String get completeInterval;
+
+  /// No description provided for @logDistraction.
+  ///
+  /// In en, this message translates to:
+  /// **'Log distraction'**
+  String get logDistraction;
+
+  /// No description provided for @workInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Work interval'**
+  String get workInterval;
+
+  /// No description provided for @work.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get work;
+
+  /// No description provided for @shortBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Short break'**
+  String get shortBreak;
+
+  /// No description provided for @breakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get breakLabel;
+
+  /// No description provided for @longBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break'**
+  String get longBreak;
+
+  /// No description provided for @readyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready: {label}'**
+  String readyLabel(String label);
+
+  /// No description provided for @readyShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get readyShort;
+
+  /// No description provided for @focusTimerTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'of {duration}'**
+  String focusTimerTotal(String duration);
+
+  /// No description provided for @focusSessionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Session {current} of {total}'**
+  String focusSessionProgress(int current, int total);
+
+  /// No description provided for @focusRhythmPreviewSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus rhythm preview, {count} steps'**
+  String focusRhythmPreviewSummary(int count);
+
+  /// No description provided for @focusRhythmSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus rhythm, step {current} of {total}: {phase}, {status}'**
+  String focusRhythmSummary(
+    int current,
+    int total,
+    String phase,
+    String status,
+  );
+
+  /// No description provided for @focusTimerSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{phase}, {status}, {remaining} remaining, {total} total'**
+  String focusTimerSummary(
+    String phase,
+    String status,
+    String remaining,
+    String total,
+  );
+
+  /// No description provided for @focusStatusRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get focusStatusRunning;
+
+  /// No description provided for @focusStatusPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get focusStatusPaused;
+
+  /// No description provided for @focusWorkProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} work'**
+  String focusWorkProgress(int completed, int total);
+
+  /// No description provided for @intervalNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval {number}'**
+  String intervalNumber(int number);
+
+  /// No description provided for @focusIntervalSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} work - Interval {number}'**
+  String focusIntervalSummary(int completed, int total, int number);
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resume;
+
+  /// No description provided for @presetForNextIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Preset for next intervals'**
+  String get presetForNextIntervals;
+
+  /// No description provided for @usePreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {name}'**
+  String usePreset(String name);
+
+  /// No description provided for @minutesWork.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m work'**
+  String minutesWork(int minutes);
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m short'**
+  String minutesShort(int minutes);
+
+  /// No description provided for @minutesLong.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m long'**
+  String minutesLong(int minutes);
+
+  /// No description provided for @longEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'Long every {count}'**
+  String longEvery(int count);
+
+  /// No description provided for @autoBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto breaks'**
+  String get autoBreaks;
+
+  /// No description provided for @autoWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto work'**
+  String get autoWork;
+
+  /// No description provided for @noPause.
+  ///
+  /// In en, this message translates to:
+  /// **'No pause'**
+  String get noPause;
+
+  /// No description provided for @focusPauseUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause unavailable for this preset'**
+  String get focusPauseUnavailable;
+
+  /// No description provided for @strict.
+  ///
+  /// In en, this message translates to:
+  /// **'Strict'**
+  String get strict;
+
+  /// No description provided for @flexible.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible'**
+  String get flexible;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @workField.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get workField;
+
+  /// No description provided for @shortField.
+  ///
+  /// In en, this message translates to:
+  /// **'Short'**
+  String get shortField;
+
+  /// No description provided for @longField.
+  ///
+  /// In en, this message translates to:
+  /// **'Long'**
+  String get longField;
+
+  /// No description provided for @every.
+  ///
+  /// In en, this message translates to:
+  /// **'Every'**
+  String get every;
+
+  /// No description provided for @minutesSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get minutesSuffix;
+
+  /// No description provided for @makeDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Make default'**
+  String get makeDefault;
+
+  /// No description provided for @autoStartBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-start breaks'**
+  String get autoStartBreaks;
+
+  /// No description provided for @autoStartWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-start work'**
+  String get autoStartWork;
+
+  /// No description provided for @allowPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow pause'**
+  String get allowPause;
+
+  /// No description provided for @strictMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Strict mode'**
+  String get strictMode;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get nameRequired;
+
+  /// No description provided for @nameMustBeUnique.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be unique'**
+  String get nameMustBeUnique;
+
+  /// No description provided for @googleCalendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Calendar'**
+  String get googleCalendarTitle;
+
+  /// No description provided for @googleCalendarConnectedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-way sync is active for the Ada calendar.'**
+  String get googleCalendarConnectedSubtitle;
+
+  /// No description provided for @googleCalendarDisconnectedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect a Google account to sync scheduled tasks.'**
+  String get googleCalendarDisconnectedSubtitle;
+
+  /// No description provided for @googleCalendarConnectedOnAnotherDeviceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Calendar sync is running on another device. Ada data still syncs here.'**
+  String get googleCalendarConnectedOnAnotherDeviceSubtitle;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @useThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this device'**
+  String get useThisDevice;
+
+  /// No description provided for @connect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connect;
+
+  /// No description provided for @disconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect'**
+  String get disconnect;
+
+  /// No description provided for @failedToLoadIntegration.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load integration: {error}'**
+  String failedToLoadIntegration(Object error);
+
+  /// No description provided for @googleCalendarFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Calendar failed: {message}'**
+  String googleCalendarFailed(String message);
+
+  /// No description provided for @googleAuthRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Calendar authorization is required. Sign in again and run Sync now.'**
+  String get googleAuthRequired;
+
+  /// No description provided for @googleCalendarRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Calendar request limit reached. Wait a few minutes before syncing again.'**
+  String get googleCalendarRateLimited;
+
+  /// No description provided for @googleCalendarSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Calendar sync failed. Try again later.'**
+  String get googleCalendarSyncFailed;
+
+  /// No description provided for @googleSignInNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Sign-In is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_REVERSED_CLIENT_ID for this iOS target.'**
+  String get googleSignInNotConfigured;
+
+  /// No description provided for @googleCallbackNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Sign-In callback is not configured. Set GOOGLE_REVERSED_CLIENT_ID in ios/Flutter/GoogleOAuth.xcconfig.'**
+  String get googleCallbackNotConfigured;
+
+  /// No description provided for @googleWebButtonFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'On web, click the Google sign-in button first, then Connect.'**
+  String get googleWebButtonFirst;
+
+  /// No description provided for @googleAccessDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Google access is denied. Add this Google account as an OAuth test user, or publish and verify the OAuth app.'**
+  String get googleAccessDenied;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendar;
+
+  /// No description provided for @calendarId.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar ID'**
+  String get calendarId;
+
+  /// No description provided for @lastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync'**
+  String get lastSync;
+
+  /// No description provided for @notConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get notConnected;
+
+  /// No description provided for @notCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not created'**
+  String get notCreated;
+
+  /// No description provided for @never.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get never;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m'**
+  String durationMinutes(int minutes);
+
+  /// No description provided for @durationHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String durationHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @projectIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Project icon'**
+  String get projectIcon;
+
+  /// No description provided for @projectIconOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon {number}'**
+  String projectIconOption(int number);
+
+  /// No description provided for @projectColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Project color'**
+  String get projectColor;
+
+  /// No description provided for @projectColorOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Color {number}'**
+  String projectColorOption(int number);
+
+  /// No description provided for @addProjectToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Add project to favorites'**
+  String get addProjectToFavorites;
+
+  /// No description provided for @removeProjectFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove project from favorites'**
+  String get removeProjectFromFavorites;
+
+  /// No description provided for @timelineProjectsMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Timeline projects'**
+  String get timelineProjectsMenu;
+
+  /// No description provided for @timelineShowProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Show project in Timeline'**
+  String get timelineShowProject;
+
+  /// No description provided for @timelineHideProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide temporary project'**
+  String get timelineHideProject;
+
+  /// No description provided for @timelineCollapseProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse project branch'**
+  String get timelineCollapseProject;
+
+  /// No description provided for @timelineExpandProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand project branch'**
+  String get timelineExpandProject;
+
+  /// No description provided for @timelineCurrentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Current time'**
+  String get timelineCurrentTime;
+
+  /// No description provided for @couldNotUpdateProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update project: {error}'**
+  String couldNotUpdateProject(Object error);
+
+  /// No description provided for @commonDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get commonDone;
+
+  /// No description provided for @taskSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get taskSelect;
+
+  /// No description provided for @taskSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 selected} =1{1 selected} other{{count} selected}}'**
+  String taskSelectedCount(int count);
+
+  /// No description provided for @taskSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get taskSelectAll;
+
+  /// No description provided for @taskDeselectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect all'**
+  String get taskDeselectAll;
+
+  /// No description provided for @taskDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get taskDue;
+
+  /// No description provided for @taskProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get taskProject;
+
+  /// No description provided for @taskLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels'**
+  String get taskLabels;
+
+  /// No description provided for @taskPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get taskPriority;
+
+  /// No description provided for @taskMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get taskMore;
+
+  /// No description provided for @taskSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get taskSchedule;
+
+  /// No description provided for @taskMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get taskMove;
+
+  /// No description provided for @taskChangeProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Change project'**
+  String get taskChangeProject;
+
+  /// No description provided for @taskDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get taskDuplicate;
+
+  /// No description provided for @taskDuplicateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate tasks'**
+  String get taskDuplicateTitle;
+
+  /// No description provided for @taskDuplicateSelectedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected only'**
+  String get taskDuplicateSelectedOnly;
+
+  /// No description provided for @taskDuplicateWithSubtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'With subtasks'**
+  String get taskDuplicateWithSubtasks;
+
+  /// No description provided for @taskWeekend.
+  ///
+  /// In en, this message translates to:
+  /// **'This weekend'**
+  String get taskWeekend;
+
+  /// No description provided for @taskNextWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Next week'**
+  String get taskNextWeek;
+
+  /// No description provided for @taskEnterDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter due date or time'**
+  String get taskEnterDue;
+
+  /// No description provided for @taskInvalidDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid date or time'**
+  String get taskInvalidDue;
+
+  /// No description provided for @taskClearDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear due'**
+  String get taskClearDue;
+
+  /// No description provided for @taskDeleteSelectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected tasks?'**
+  String get taskDeleteSelectedTitle;
+
+  /// No description provided for @taskDeleteSelectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can undo this action for 7 seconds.'**
+  String get taskDeleteSelectedMessage;
+
+  /// No description provided for @taskCompleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete selected'**
+  String get taskCompleteSelected;
+
+  /// No description provided for @taskReopenSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen selected'**
+  String get taskReopenSelected;
+
+  /// No description provided for @taskActionFailedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 task could not be updated} other{{count} tasks could not be updated}}'**
+  String taskActionFailedCount(int count);
+
+  /// No description provided for @voiceCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse voice panel'**
+  String get voiceCollapse;
+
+  /// No description provided for @voiceExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand voice panel'**
+  String get voiceExpand;
+
+  /// No description provided for @voiceMovePanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Move voice panel'**
+  String get voiceMovePanel;
+
+  /// No description provided for @themeClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get themeClassic;
+
+  /// No description provided for @themeOcean.
+  ///
+  /// In en, this message translates to:
+  /// **'Ocean'**
+  String get themeOcean;
+
+  /// No description provided for @themeForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get themeForest;
+
+  /// No description provided for @themeCustomize.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize'**
+  String get themeCustomize;
+
+  /// No description provided for @themeEditorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit theme'**
+  String get themeEditorTitle;
+
+  /// No description provided for @themeLivePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes appear throughout the app. Cancel restores your previous theme.'**
+  String get themeLivePreview;
+
+  /// No description provided for @themeSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the theme. Your changes are still here; try again.'**
+  String get themeSaveError;
+
+  /// No description provided for @themeLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your themes.'**
+  String get themeLoadError;
+
+  /// No description provided for @themeColorsSurfaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Background and surfaces'**
+  String get themeColorsSurfaces;
+
+  /// No description provided for @themeColorsText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get themeColorsText;
+
+  /// No description provided for @themeColorsAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent'**
+  String get themeColorsAccent;
+
+  /// No description provided for @themeColorsStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status colors'**
+  String get themeColorsStatus;
+
+  /// No description provided for @themeInvalidHex.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a six-digit HEX color, for example #2563EB.'**
+  String get themeInvalidHex;
+
+  /// No description provided for @themeLowContrast.
+  ///
+  /// In en, this message translates to:
+  /// **'Low contrast: some text may be difficult to read.'**
+  String get themeLowContrast;
+
+  /// No description provided for @themePreviewTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your day'**
+  String get themePreviewTask;
+
+  /// No description provided for @themePreviewSecondary.
+  ///
+  /// In en, this message translates to:
+  /// **'A little focus, every day.'**
+  String get themePreviewSecondary;
+
+  /// No description provided for @themeColorCanvas.
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get themeColorCanvas;
+
+  /// No description provided for @themeColorSurface.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface'**
+  String get themeColorSurface;
+
+  /// No description provided for @themeColorSurfaceTint.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary surface'**
+  String get themeColorSurfaceTint;
+
+  /// No description provided for @themeColorSurfaceHover.
+  ///
+  /// In en, this message translates to:
+  /// **'Hover surface'**
+  String get themeColorSurfaceHover;
+
+  /// No description provided for @themeColorPrimaryText.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary text'**
+  String get themeColorPrimaryText;
+
+  /// No description provided for @themeColorSecondaryText.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary text'**
+  String get themeColorSecondaryText;
+
+  /// No description provided for @themeColorMutedText.
+  ///
+  /// In en, this message translates to:
+  /// **'Muted text'**
+  String get themeColorMutedText;
+
+  /// No description provided for @themeColorBorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Border'**
+  String get themeColorBorder;
+
+  /// No description provided for @themeColorAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent text and icons'**
+  String get themeColorAccent;
+
+  /// No description provided for @themeColorAccentFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent fill'**
+  String get themeColorAccentFill;
+
+  /// No description provided for @themeColorAccentTint.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft accent fill'**
+  String get themeColorAccentTint;
+
+  /// No description provided for @themeColorWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get themeColorWarning;
+
+  /// No description provided for @themeColorInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get themeColorInfo;
+
+  /// No description provided for @themeColorSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get themeColorSuccess;
+
+  /// No description provided for @themeColorError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get themeColorError;
+
+  /// No description provided for @themeColorOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get themeColorOverdue;
+
+  /// No description provided for @themeColorOnAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'Text on accent fill'**
+  String get themeColorOnAccent;
+
+  /// No description provided for @themeColorOnError.
+  ///
+  /// In en, this message translates to:
+  /// **'Text on error fill'**
+  String get themeColorOnError;
+
+  /// No description provided for @todayTaskSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{tasks, plural, one{1 task} other{{tasks} tasks}} · {planned, plural, one{1 planned session} other{{planned} planned sessions}} · {time} focused'**
+  String todayTaskSummary(int tasks, int planned, String time);
+
+  /// No description provided for @todayFocusingOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Focusing on'**
+  String get todayFocusingOn;
+
+  /// No description provided for @openFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Focus'**
+  String get openFocus;
+
+  /// No description provided for @todayCompletedTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed today · {count}'**
+  String todayCompletedTasks(int count);
+
+  /// No description provided for @sidebarDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get sidebarDaily;
+
+  /// No description provided for @sidebarViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get sidebarViews;
+
+  /// No description provided for @quickAddResetDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Use default'**
+  String get quickAddResetDetails;
+
+  /// No description provided for @quickAddChangeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Change time'**
+  String get quickAddChangeTime;
+
+  /// No description provided for @quickAddProjectNameUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This project name cannot be inserted without changing it.'**
+  String get quickAddProjectNameUnsupported;
+
+  /// No description provided for @themeSepia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sepia'**
+  String get themeSepia;
+
+  /// No description provided for @themeGraphite.
+  ///
+  /// In en, this message translates to:
+  /// **'Graphite'**
+  String get themeGraphite;
+
+  /// No description provided for @themeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get themeCustom;
+
+  /// No description provided for @themeResetToClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to Classic'**
+  String get themeResetToClassic;
+
+  /// No description provided for @themeBackgroundKindTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get themeBackgroundKindTitle;
+
+  /// No description provided for @themeBackgroundColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get themeBackgroundColor;
+
+  /// No description provided for @themeBackgroundPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get themeBackgroundPhoto;
+
+  /// No description provided for @themeBackgroundGlass.
+  ///
+  /// In en, this message translates to:
+  /// **'macOS glass'**
+  String get themeBackgroundGlass;
+
+  /// No description provided for @themeBackgroundGlassHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Applies to the entire app and Quick Add. macOS controls the blur; the slider adjusts the palette tint.'**
+  String get themeBackgroundGlassHint;
+
+  /// No description provided for @themeBackgroundGlassUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available in the macOS app. A solid background is used on this platform.'**
+  String get themeBackgroundGlassUnavailable;
+
+  /// No description provided for @themeBackgroundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Background image'**
+  String get themeBackgroundTitle;
+
+  /// No description provided for @themeBackgroundMainOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Main area only'**
+  String get themeBackgroundMainOnly;
+
+  /// No description provided for @themeBackgroundWholeApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Entire app'**
+  String get themeBackgroundWholeApp;
+
+  /// No description provided for @themeBackgroundSeparate.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate backgrounds'**
+  String get themeBackgroundSeparate;
+
+  /// No description provided for @themeBackgroundMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Main area'**
+  String get themeBackgroundMain;
+
+  /// No description provided for @themeBackgroundSidebar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sidebar'**
+  String get themeBackgroundSidebar;
+
+  /// No description provided for @themeBackgroundQuickAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Add'**
+  String get themeBackgroundQuickAdd;
+
+  /// No description provided for @themeBackgroundChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photo'**
+  String get themeBackgroundChoose;
+
+  /// No description provided for @themeBackgroundReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace photo'**
+  String get themeBackgroundReplace;
+
+  /// No description provided for @themeBackgroundRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get themeBackgroundRemove;
+
+  /// No description provided for @themeBackgroundDim.
+  ///
+  /// In en, this message translates to:
+  /// **'Dimming'**
+  String get themeBackgroundDim;
+
+  /// No description provided for @themeBackgroundBlur.
+  ///
+  /// In en, this message translates to:
+  /// **'Blur'**
+  String get themeBackgroundBlur;
+
+  /// No description provided for @themeBackgroundEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No photo'**
+  String get themeBackgroundEmpty;
+
+  /// No description provided for @themeBackgroundImageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open this image. Choose another photo.'**
+  String get themeBackgroundImageError;
+
+  /// No description provided for @themeBackgroundTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an image no larger than 50 MB.'**
+  String get themeBackgroundTooLarge;
+
+  /// No description provided for @themeBackgroundLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing image…'**
+  String get themeBackgroundLoading;
+
+  /// No description provided for @settingsTaskListStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Task row style'**
+  String get settingsTaskListStyle;
+
+  /// No description provided for @settingsTaskListStyleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the new layout or keep the familiar classic rows.'**
+  String get settingsTaskListStyleDescription;
+
+  /// No description provided for @settingsTaskListModern.
+  ///
+  /// In en, this message translates to:
+  /// **'Modern'**
+  String get settingsTaskListModern;
+
+  /// No description provided for @settingsTaskListClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get settingsTaskListClassic;
+
+  /// No description provided for @settingsTaskRowSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Task spacing'**
+  String get settingsTaskRowSpacing;
+
+  /// No description provided for @settingsTaskRowSpacingCompact.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact'**
+  String get settingsTaskRowSpacingCompact;
+
+  /// No description provided for @settingsTaskRowSpacingComfortable.
+  ///
+  /// In en, this message translates to:
+  /// **'Comfortable'**
+  String get settingsTaskRowSpacingComfortable;
+
+  /// No description provided for @settingsTaskRowSpacingSpacious.
+  ///
+  /// In en, this message translates to:
+  /// **'Spacious'**
+  String get settingsTaskRowSpacingSpacious;
+
+  /// No description provided for @settingsSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the setting. Please try again.'**
+  String get settingsSaveError;
+
+  /// No description provided for @focusCompletionCompleteAndNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete and start next'**
+  String get focusCompletionCompleteAndNext;
+
+  /// No description provided for @focusCompletionStartNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Start next task'**
+  String get focusCompletionStartNext;
+
+  /// No description provided for @focusCompletionRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get focusCompletionRetry;
+
+  /// No description provided for @searchAllProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'All projects'**
+  String get searchAllProjects;
+
+  /// No description provided for @searchStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get searchStatusOpen;
+
+  /// No description provided for @searchStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get searchStatusCompleted;
+
+  /// No description provided for @searchStatusAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All statuses'**
+  String get searchStatusAll;
+
+  /// No description provided for @searchClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get searchClearFilters;
+
+  /// No description provided for @searchEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a task by its title or description, then narrow it by project or status.'**
+  String get searchEmptyDescription;
+
+  /// No description provided for @searchNoMatchesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different phrase or clear filters. You can also turn this text into a new task.'**
+  String get searchNoMatchesDescription;
+
+  /// No description provided for @searchCreateTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Create task from text'**
+  String get searchCreateTask;
+
+  /// No description provided for @taskListLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load tasks. Please try again.'**
+  String get taskListLoadError;
+
+  /// No description provided for @inboxEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your inbox is clear'**
+  String get inboxEmptyTitle;
+
+  /// No description provided for @inboxEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture an idea here and decide when to work on it later.'**
+  String get inboxEmptyDescription;
+
+  /// No description provided for @todayEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing scheduled for today'**
+  String get todayEmptyTitle;
+
+  /// No description provided for @todayEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a task to give today a starting point.'**
+  String get todayEmptyDescription;
+
+  /// No description provided for @todayEmptyCompletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today’s list is clear'**
+  String get todayEmptyCompletedTitle;
+
+  /// No description provided for @todayEmptyCompletedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your completed tasks are saved below. Add another task when you are ready.'**
+  String get todayEmptyCompletedDescription;
+
+  /// No description provided for @projectEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks in this project yet'**
+  String get projectEmptyTitle;
+
+  /// No description provided for @projectEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the first step toward your project’s goal.'**
+  String get projectEmptyDescription;
+
+  /// No description provided for @commandSearchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tasks, projects, and actions'**
+  String get commandSearchPlaceholder;
+
+  /// No description provided for @commandSearchTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get commandSearchTasks;
+
+  /// No description provided for @commandSearchActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get commandSearchActions;
+
+  /// No description provided for @commandSearchDictateTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Dictate task'**
+  String get commandSearchDictateTask;
+
+  /// No description provided for @commandSearchAllResults.
+  ///
+  /// In en, this message translates to:
+  /// **'See all results'**
+  String get commandSearchAllResults;
+
+  /// No description provided for @commandSearchEnablePomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Ada'**
+  String get commandSearchEnablePomo;
+
+  /// No description provided for @commandSearchDisablePomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable Ada'**
+  String get commandSearchDisablePomo;
+
+  /// No description provided for @commandSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'↑ ↓ Navigate · Enter Open · Esc Close'**
+  String get commandSearchHint;
+
+  /// No description provided for @commandSearchNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching tasks or projects.'**
+  String get commandSearchNoMatches;
+
+  /// No description provided for @overdueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get overdueTitle;
+
+  /// No description provided for @overdueTaskCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} overdue task} other{{count} overdue tasks}}'**
+  String overdueTaskCount(int count);
+
+  /// No description provided for @overdueReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get overdueReview;
+
+  /// No description provided for @overdueEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No overdue tasks'**
+  String get overdueEmpty;
+
+  /// No description provided for @taskFocusSwitchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Focus?'**
+  String get taskFocusSwitchTitle;
+
+  /// No description provided for @taskFocusSwitchMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The current session will stop. Start Focus on “{task}”?'**
+  String taskFocusSwitchMessage(String task);
+
+  /// No description provided for @taskFocusSwitchConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch'**
+  String get taskFocusSwitchConfirm;
+
+  /// No description provided for @labelIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Label icon'**
+  String get labelIcon;
+
+  /// No description provided for @labelUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update label. Try again.'**
+  String get labelUpdateFailed;
+
+  /// No description provided for @labelNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Label not found'**
+  String get labelNotFound;
+
+  /// No description provided for @labelTasksSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks with this label from all projects'**
+  String get labelTasksSubtitle;
+
+  /// No description provided for @labelIconOption.
+  ///
+  /// In en, this message translates to:
+  /// **'{icon, select, tag{Tag} bookmark{Bookmark} flag{Flag} bolt{Bolt} lightbulb{Light bulb} clock{Clock} bell{Bell} pin{Pin} phone{Phone} mail{Mail} link{Link} wrench{Wrench} other{Tag}}'**
+  String labelIconOption(String icon);
+
+  /// No description provided for @addSubproject.
+  ///
+  /// In en, this message translates to:
+  /// **'Create subproject'**
+  String get addSubproject;
+
+  /// No description provided for @moveProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Move project'**
+  String get moveProject;
+
+  /// No description provided for @projectTopLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Top level'**
+  String get projectTopLevel;
+
+  /// No description provided for @projectMoveUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get projectMoveUp;
+
+  /// No description provided for @projectMoveDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get projectMoveDown;
+
+  /// No description provided for @projectParentName.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent project: {name}'**
+  String projectParentName(String name);
+
+  /// No description provided for @deleteProjectWithChildrenConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\"? Its subprojects will move up one level. Only tasks in this project will move to Inbox.'**
+  String deleteProjectWithChildrenConfirmation(String name);
+
+  /// No description provided for @accountNickname.
+  ///
+  /// In en, this message translates to:
+  /// **'Nickname'**
+  String get accountNickname;
+
+  /// No description provided for @accountChangeNickname.
+  ///
+  /// In en, this message translates to:
+  /// **'Change nickname'**
+  String get accountChangeNickname;
+
+  /// No description provided for @accountNicknameSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your nickname. Please try again.'**
+  String get accountNicknameSaveError;
+
+  /// No description provided for @notificationTaskStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Task starting'**
+  String get notificationTaskStarting;
+
+  /// No description provided for @notificationReturnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada misses you'**
+  String get notificationReturnTitle;
+
+  /// No description provided for @notificationReturnBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have the energy, finish one small task.'**
+  String get notificationReturnBody;
+
+  /// No description provided for @notificationReturnTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada checking in'**
+  String get notificationReturnTitle2;
+
+  /// No description provided for @notificationReturnBody2.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the easiest item on your list — one is enough.'**
+  String get notificationReturnBody2;
+
+  /// No description provided for @notificationReturnTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada is here'**
+  String get notificationReturnTitle3;
+
+  /// No description provided for @notificationReturnBody3.
+  ///
+  /// In en, this message translates to:
+  /// **'You can start with a task you can finish today.'**
+  String get notificationReturnBody3;
+
+  /// No description provided for @notificationReturnTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'An evening with Ada'**
+  String get notificationReturnTitle4;
+
+  /// No description provided for @notificationReturnBody4.
+  ///
+  /// In en, this message translates to:
+  /// **'One finished task is already a good step.'**
+  String get notificationReturnBody4;
+
+  /// No description provided for @notificationReturnTitle5.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder from Ada'**
+  String get notificationReturnTitle5;
+
+  /// No description provided for @notificationReturnBody5.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your list and pick one manageable thing for tonight.'**
+  String get notificationReturnBody5;
+
+  /// No description provided for @notificationFocusChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get notificationFocusChannel;
+
+  /// No description provided for @notificationFocusDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus interval completion notifications'**
+  String get notificationFocusDescription;
+
+  /// No description provided for @notificationReturnChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Return reminders'**
+  String get notificationReturnChannel;
+
+  /// No description provided for @notificationReturnDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle reminders to return to Ada'**
+  String get notificationReturnDescription;
+
+  /// No description provided for @notificationTaskChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Task start'**
+  String get notificationTaskChannel;
+
+  /// No description provided for @notificationTaskDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Task start notifications'**
+  String get notificationTaskDescription;
+
+  /// No description provided for @notificationOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Ada'**
+  String get notificationOpenApp;
+
+  /// No description provided for @notificationFocusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus interval completed'**
+  String get notificationFocusCompleted;
+
+  /// No description provided for @notificationLongBreakCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break completed'**
+  String get notificationLongBreakCompleted;
+
+  /// No description provided for @notificationBreakCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Break completed'**
+  String get notificationBreakCompleted;
+
+  /// No description provided for @updateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada update'**
+  String get updateTitle;
+
+  /// No description provided for @updateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateAction;
+
+  /// No description provided for @updateCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get updateCheck;
+
+  /// No description provided for @updateSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates'**
+  String get updateSettings;
+
+  /// No description provided for @updateReceiveRc.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive release candidates (RC)'**
+  String get updateReceiveRc;
+
+  /// No description provided for @updateStableChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel: stable releases'**
+  String get updateStableChannel;
+
+  /// No description provided for @updateRcChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel: stable releases and RC'**
+  String get updateRcChannel;
+
+  /// No description provided for @updateRcHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'RC releases may contain bugs. Alpha and beta versions are excluded.'**
+  String get updateRcHelp;
+
+  /// No description provided for @updateRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'The app will restart. Your data will be preserved.'**
+  String get updateRestart;
+
+  /// No description provided for @updateNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Release notes'**
+  String get updateNotes;
+
+  /// No description provided for @updateOwnerManaged.
+  ///
+  /// In en, this message translates to:
+  /// **'This build is updated by its owner to preserve its server configuration. Ask them for the latest version.'**
+  String get updateOwnerManaged;
+
+  /// No description provided for @updateUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic updates are available in the official Linux AppImage. Use your package manager for other builds.'**
+  String get updateUnsupported;
+
+  /// No description provided for @updateVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {value}'**
+  String updateVersion(String value);
+
+  /// No description provided for @updatePhaseIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can check at any time.'**
+  String get updatePhaseIdle;
+
+  /// No description provided for @updatePhaseChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking releases…'**
+  String get updatePhaseChecking;
+
+  /// No description provided for @updatePhaseAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version is available'**
+  String get updatePhaseAvailable;
+
+  /// No description provided for @updatePhaseDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading update…'**
+  String get updatePhaseDownloading;
+
+  /// No description provided for @updatePhaseVerifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying integrity…'**
+  String get updatePhaseVerifying;
+
+  /// No description provided for @updatePhaseInstalling.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing installation and restart…'**
+  String get updatePhaseInstalling;
+
+  /// No description provided for @updatePhaseUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the latest compatible version.'**
+  String get updatePhaseUpToDate;
+
+  /// No description provided for @updatePhaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The update could not be completed'**
+  String get updatePhaseFailed;
+
+  /// No description provided for @achievementFocusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Complete 1 work focus} other{Complete {count} work focuses}}'**
+  String achievementFocusSubtitle(int count);
+
+  /// No description provided for @achievementTaskSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Complete 1 task} other{Complete {count} tasks}}'**
+  String achievementTaskSubtitle(int count);
+
+  /// No description provided for @achievementDayNotWastedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a focus and a task in one day'**
+  String get achievementDayNotWastedSubtitle;
+
+  /// No description provided for @achievementFocusPlusCheckSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish 3 focuses and 3 tasks in one day'**
+  String get achievementFocusPlusCheckSubtitle;
+
+  /// No description provided for @achievementNoFussSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish 5 focuses in a day without stops'**
+  String get achievementNoFussSubtitle;
+
+  /// No description provided for @achievementCleanEntrySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a task after its linked focus'**
+  String get achievementCleanEntrySubtitle;
+
+  /// No description provided for @achievementTomatoClosedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a task on the day of its work focus'**
+  String get achievementTomatoClosedSubtitle;
+
+  /// No description provided for @achievementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{id, select, focus_1{First tomato} focus_5{Warm-up} focus_10{Focus caught} focus_25{Tomato shift} focus_50{Mode on} focus_100{Red belt} focus_250{Deep roots} focus_500{Timer authority} focus_1000{Thousandth tomato} focus_5000{Focus farmer} focus_10000{Attention plantation} focus_50000{Tomato empire} focus_100000{Red supermind} focus_1000000{Tomato singularity} task_1{First check} task_5{The list flinched} task_10{Happy checkbox} task_25{Clearing the pile} task_50{Checkmark master} task_100{Tail closer} task_250{List under control} task_500{Office knockout} task_1000{Thousand checks} task_5000{Victory archivist} task_10000{Checkbox machine} task_50000{Bureau of closed questions} task_100000{List ruler} task_1000000{Final check} combo_day_not_wasted{Day not wasted} combo_focus_plus_check{Focus + check} combo_no_fuss{No fuss} combo_clean_entry{Clean entry} combo_tomato_closed_question{Tomato closed it} other{Achievement}}'**
+  String achievementTitle(String id);
+
+  /// No description provided for @focusPresetDeepWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Work'**
+  String get focusPresetDeepWork;
+
+  /// No description provided for @focusPresetShortSprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Short Sprint'**
+  String get focusPresetShortSprint;
+
+  /// No description provided for @csvImportIssueRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Row {row}: {message}'**
+  String csvImportIssueRow(int row, String message);
+
+  /// No description provided for @csvImportIssueMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{code, select, fileTooLarge{CSV file exceeds 16 MiB.} invalidUtf8{CSV must be valid UTF-8.} missingHeader{CSV header is missing.} malformed{Malformed CSV.} unknownHeader{Unknown header \"{value}\".} duplicateHeader{Duplicate header \"{value}\".} contentHeaderRequired{content header is required.} tooManyTasks{CSV cannot contain more than 1000 tasks.} tooManyFields{Row has more fields than the header.} contentRequired{content is required.} invalidPriority{priority must be an integer from 1 to 4.} invalidDate{{value} must use YYYY-MM-DD.} mixedSchedule{Due date cannot be combined with a timed schedule.} timedFieldsRequired{A timed schedule requires start_at, end_at and time_zone.} invalidTimestamp{{value} must be RFC3339 with an explicit UTC offset.} invalidTimeZone{time_zone must be a valid IANA name.} endBeforeStart{end_at must be after start_at.} invalidRecurrence{recurrence must be day, week or month.} invalidInteger{{value} must be an integer from 1 to 999.} intervalWithoutRecurrence{recurrence_interval requires recurrence.} recurrenceWithoutSchedule{recurrence requires a schedule.} doneTask{Done tasks cannot be imported.} invalidKey{{value} has an invalid format.} empty{CSV contains no tasks.} duplicateKey{Duplicate key \"{value}\".} parentCycle{parent_key references form a cycle.} missingParent{parent_key \"{value}\" does not exist.} childProject{A child task must use the same project as its parent.} other{The file could not be imported.}}'**
+  String csvImportIssueMessage(String code, String value);
+
+  /// No description provided for @billingOfferDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {1 day} other {{count} days}}'**
+  String billingOfferDays(int count);
+
+  /// No description provided for @billingOfferMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {1 month} other {{count} months}}'**
+  String billingOfferMonths(int count);
+
+  /// No description provided for @billingOfferYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {1 year} other {{count} years}}'**
+  String billingOfferYears(int count);
+
+  /// No description provided for @billingTrialFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free for {duration}'**
+  String billingTrialFree(String duration);
+
+  /// No description provided for @billingTrialRenewal.
+  ///
+  /// In en, this message translates to:
+  /// **'Then {price}. Renews automatically unless cancelled.'**
+  String billingTrialRenewal(String price);
+
+  /// No description provided for @billingReturnBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Pro'**
+  String get billingReturnBadge;
+
+  /// No description provided for @billingReturnSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For {duration}, then {price}. Renews automatically unless cancelled.'**
+  String billingReturnSubtitle(String duration, String price);
+
+  /// No description provided for @billingReturnPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your discount is reserved until {date}. If the purchase was cancelled, you can retry after that time.'**
+  String billingReturnPending(String date);
+
+  /// No description provided for @billingReturnFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not verify your return offer. Retry to check the discount.'**
+  String get billingReturnFailed;
+
+  /// No description provided for @billingTryFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Try free'**
+  String get billingTryFree;
+
+  /// No description provided for @collaborationShareProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Share project'**
+  String get collaborationShareProject;
+
+  /// No description provided for @collaborationShareIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite people to work on this project together. Members can edit, observers can view.'**
+  String get collaborationShareIntro;
+
+  /// No description provided for @collaborationShareStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get collaborationShareStart;
+
+  /// No description provided for @collaborationShareInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing… syncing your latest changes'**
+  String get collaborationShareInProgress;
+
+  /// No description provided for @collaborationMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get collaborationMembers;
+
+  /// No description provided for @collaborationPendingInvitations.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending invitations'**
+  String get collaborationPendingInvitations;
+
+  /// No description provided for @collaborationRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get collaborationRevoke;
+
+  /// No description provided for @collaborationPublicLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Public link'**
+  String get collaborationPublicLink;
+
+  /// No description provided for @collaborationPublicLinkHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone with the link can view this project'**
+  String get collaborationPublicLinkHint;
+
+  /// No description provided for @collaborationCopyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get collaborationCopyLink;
+
+  /// No description provided for @collaborationLeaveProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave project'**
+  String get collaborationLeaveProject;
+
+  /// No description provided for @collaborationDeleteSharedProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete for everyone'**
+  String get collaborationDeleteSharedProject;
+
+  /// No description provided for @collaborationMakePrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Make private'**
+  String get collaborationMakePrivate;
+
+  /// No description provided for @collaborationOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get collaborationOwner;
+
+  /// No description provided for @collaborationTransferOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer ownership'**
+  String get collaborationTransferOwnership;
+
+  /// No description provided for @collaborationRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get collaborationRemoveMember;
+
+  /// No description provided for @collaborationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get collaborationEmail;
+
+  /// No description provided for @collaborationInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get collaborationInvite;
+
+  /// No description provided for @collaborationProjectShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Project shared'**
+  String get collaborationProjectShared;
+
+  /// No description provided for @collaborationInviteEmailFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation saved, but the email could not be sent'**
+  String get collaborationInviteEmailFailed;
+
+  /// No description provided for @collaborationInviteSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent to {email}'**
+  String collaborationInviteSent(String email);
+
+  /// No description provided for @collaborationInvitationRevoked.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation revoked'**
+  String get collaborationInvitationRevoked;
+
+  /// No description provided for @collaborationRoleUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Role updated'**
+  String get collaborationRoleUpdated;
+
+  /// No description provided for @collaborationRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from this project?'**
+  String collaborationRemoveConfirm(String name);
+
+  /// No description provided for @collaborationMemberRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed'**
+  String get collaborationMemberRemoved;
+
+  /// No description provided for @collaborationTransferConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Make {name} the owner of this project?'**
+  String collaborationTransferConfirm(String name);
+
+  /// No description provided for @collaborationOwnershipTransferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Ownership transferred'**
+  String get collaborationOwnershipTransferred;
+
+  /// No description provided for @collaborationLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this shared project?'**
+  String get collaborationLeaveConfirm;
+
+  /// No description provided for @collaborationLeftProject.
+  ///
+  /// In en, this message translates to:
+  /// **'You left the project'**
+  String get collaborationLeftProject;
+
+  /// No description provided for @collaborationDeleteSharedConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this shared project for all members? This cannot be undone.'**
+  String get collaborationDeleteSharedConfirm;
+
+  /// No description provided for @collaborationSharedProjectDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared project deleted'**
+  String get collaborationSharedProjectDeleted;
+
+  /// No description provided for @collaborationMakePrivateConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop sharing this project?'**
+  String get collaborationMakePrivateConfirm;
+
+  /// No description provided for @collaborationMakePrivateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The project and its content return to your personal account. Other participants lose access immediately.'**
+  String get collaborationMakePrivateDescription;
+
+  /// No description provided for @collaborationProjectMadePrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Project is private again'**
+  String get collaborationProjectMadePrivate;
+
+  /// No description provided for @collaborationLinkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get collaborationLinkCopied;
+
+  /// No description provided for @collaborationRoleAdministrator.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator'**
+  String get collaborationRoleAdministrator;
+
+  /// No description provided for @collaborationRoleMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get collaborationRoleMember;
+
+  /// No description provided for @collaborationRoleObserver.
+  ///
+  /// In en, this message translates to:
+  /// **'Observer'**
+  String get collaborationRoleObserver;
+
+  /// No description provided for @collaborationForbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to do that'**
+  String get collaborationForbidden;
+
+  /// No description provided for @collaborationSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to use shared projects'**
+  String get collaborationSignedOut;
+
+  /// No description provided for @collaborationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared projects are unavailable right now'**
+  String get collaborationUnavailable;
+
+  /// No description provided for @collaborationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Try again'**
+  String get collaborationError;
+
+  /// No description provided for @collaborationSyncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish synchronizing this project before sharing'**
+  String get collaborationSyncPending;
+
+  /// No description provided for @collaborationMemberFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get collaborationMemberFallback;
+
+  /// No description provided for @collaborationInboxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared projects & invitations'**
+  String get collaborationInboxTitle;
+
+  /// No description provided for @collaborationInboxSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept invitations and review shared project activity'**
+  String get collaborationInboxSubtitle;
+
+  /// No description provided for @collaborationInvitations.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations'**
+  String get collaborationInvitations;
+
+  /// No description provided for @collaborationNoInvitations.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending invitations'**
+  String get collaborationNoInvitations;
+
+  /// No description provided for @collaborationAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get collaborationAccept;
+
+  /// No description provided for @collaborationNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get collaborationNotifications;
+
+  /// No description provided for @collaborationMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get collaborationMarkAllRead;
+
+  /// No description provided for @collaborationNoNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get collaborationNoNotifications;
+
+  /// No description provided for @collaborationNotificationInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation to a shared project'**
+  String get collaborationNotificationInvitation;
+
+  /// No description provided for @collaborationNotificationDiscussion.
+  ///
+  /// In en, this message translates to:
+  /// **'New comment in a shared project'**
+  String get collaborationNotificationDiscussion;
+
+  /// No description provided for @collaborationNotificationAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'You were assigned a task'**
+  String get collaborationNotificationAssignment;
+
+  /// No description provided for @collaborationNotificationGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared project activity'**
+  String get collaborationNotificationGeneric;
+
+  /// No description provided for @collaborationInvitationAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation accepted'**
+  String get collaborationInvitationAccepted;
+
+  /// No description provided for @collaborationAssignees.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignees'**
+  String get collaborationAssignees;
+
+  /// No description provided for @collaborationEditAssignees.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit assignees'**
+  String get collaborationEditAssignees;
+
+  /// No description provided for @collaborationNoAssignees.
+  ///
+  /// In en, this message translates to:
+  /// **'No assignees'**
+  String get collaborationNoAssignees;
+
+  /// No description provided for @collaborationComments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get collaborationComments;
+
+  /// No description provided for @collaborationCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment'**
+  String get collaborationCommentHint;
+
+  /// No description provided for @collaborationCommentSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get collaborationCommentSend;
+
+  /// No description provided for @collaborationCommentDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete comment'**
+  String get collaborationCommentDelete;
+
+  /// No description provided for @collaborationSharedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared project'**
+  String get collaborationSharedBadge;
+
+  /// No description provided for @collaborationJoinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Project invitation'**
+  String get collaborationJoinTitle;
+
+  /// No description provided for @collaborationJoinDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You have been invited to join a shared project. Accept the invitation to add it to your projects.'**
+  String get collaborationJoinDescription;
+
+  /// No description provided for @collaborationJoinRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role'**
+  String get collaborationJoinRole;
+
+  /// No description provided for @collaborationJoinAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept invitation'**
+  String get collaborationJoinAccept;
+
+  /// No description provided for @collaborationJoinOpenProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Open project'**
+  String get collaborationJoinOpenProject;
+
+  /// No description provided for @collaborationJoinInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This invitation link is not valid'**
+  String get collaborationJoinInvalid;
+
+  /// No description provided for @collaborationJoinUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This invitation is no longer available for your account'**
+  String get collaborationJoinUnavailable;
+
+  /// No description provided for @collaborationPublicNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only view shared by a Ada member'**
+  String get collaborationPublicNotice;
+
+  /// No description provided for @collaborationPublicUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This shared link is no longer available'**
+  String get collaborationPublicUnavailable;
+
+  /// No description provided for @collaborationPublicEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing has been shared yet'**
+  String get collaborationPublicEmpty;
+
+  /// No description provided for @collaborationPublicOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Ada'**
+  String get collaborationPublicOpen;
+
+  /// No description provided for @collaborationPublicTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get collaborationPublicTasks;
+
+  /// No description provided for @projectInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About project'**
+  String get projectInfoTitle;
+
+  /// No description provided for @projectInfoPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal project'**
+  String get projectInfoPersonal;
+
+  /// No description provided for @projectInfoYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get projectInfoYou;
+
+  /// No description provided for @focusSessionDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Session display'**
+  String get focusSessionDisplay;
+
+  /// No description provided for @focusSessionCompact.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact'**
+  String get focusSessionCompact;
+
+  /// No description provided for @focusSessionIcons.
+  ///
+  /// In en, this message translates to:
+  /// **'Icons'**
+  String get focusSessionIcons;
+
+  /// No description provided for @focusNextInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {phase} · {duration}'**
+  String focusNextInterval(String phase, String duration);
+
+  /// No description provided for @bottomNavigationEditingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel edit mode'**
+  String get bottomNavigationEditingTitle;
+
+  /// No description provided for @bottomNavigationEditingHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag the icons below or use the arrows. Tap an icon to replace it.'**
+  String get bottomNavigationEditingHelp;
+
+  /// No description provided for @bottomNavigationReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace with'**
+  String get bottomNavigationReplace;
+
+  /// No description provided for @bottomNavigationEditHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to customize the bottom panel.'**
+  String get bottomNavigationEditHint;
+
+  /// No description provided for @settingsBottomNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Bottom navigation'**
+  String get settingsBottomNavigation;
+
+  /// No description provided for @settingsBottomNavigationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose up to five sections, their order, and the navigation style. Saved on this device.'**
+  String get settingsBottomNavigationDescription;
+
+  /// No description provided for @settingsBottomNavigationSoft.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft accent'**
+  String get settingsBottomNavigationSoft;
+
+  /// No description provided for @settingsBottomNavigationLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'With labels'**
+  String get settingsBottomNavigationLabels;
+
+  /// No description provided for @settingsBottomNavigationPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get settingsBottomNavigationPreview;
+
+  /// No description provided for @settingsBottomNavigationEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The bottom panel is hidden. All sections and these settings remain available from the top menu.'**
+  String get settingsBottomNavigationEmpty;
+
+  /// No description provided for @settingsBottomNavigationCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max} sections'**
+  String settingsBottomNavigationCount(int count, int max);
+
+  /// No description provided for @settingsBottomNavigationEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Move earlier'**
+  String get settingsBottomNavigationEarlier;
+
+  /// No description provided for @settingsBottomNavigationLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Move later'**
+  String get settingsBottomNavigationLater;
+
+  /// No description provided for @settingsBottomNavigationAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a section'**
+  String get settingsBottomNavigationAdd;
+
+  /// No description provided for @settingsBottomNavigationClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all'**
+  String get settingsBottomNavigationClear;
+
+  /// No description provided for @settingsBottomNavigationDefaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Use defaults'**
+  String get settingsBottomNavigationDefaults;
+
+  /// No description provided for @settingsBottomNavigationLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load navigation settings. Please try again.'**
+  String get settingsBottomNavigationLoadError;
+
+  /// No description provided for @settingsBottomNavigationEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize'**
+  String get settingsBottomNavigationEdit;
+
+  /// No description provided for @settingsBottomNavigationRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get settingsBottomNavigationRemove;
+
+  /// No description provided for @editLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit label'**
+  String get editLabel;
+
+  /// No description provided for @labelNameTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'A label with this name already exists'**
+  String get labelNameTaken;
+
+  /// No description provided for @labelBulkAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to tasks'**
+  String get labelBulkAdd;
+
+  /// No description provided for @labelBulkRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from tasks'**
+  String get labelBulkRemove;
+
+  /// No description provided for @labelColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Label color'**
+  String get labelColor;
+
+  /// No description provided for @taskParentUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtask · parent unavailable'**
+  String get taskParentUnavailable;
+
+  /// No description provided for @taskExpandSubtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand subtasks'**
+  String get taskExpandSubtasks;
+
+  /// No description provided for @taskCollapseSubtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse subtasks'**
+  String get taskCollapseSubtasks;
+
+  /// Progress across all descendant levels, including filtered tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'All descendants: {completed} of {total} complete'**
+  String taskAllSubtasksProgress(int completed, int total);
+
+  /// Mobile task menu action opening the accessible parent task.
+  ///
+  /// In en, this message translates to:
+  /// **'Open parent task'**
+  String get taskOpenParent;
+
+  /// No description provided for @taskOpenFullBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Open all subtasks'**
+  String get taskOpenFullBranch;
+
+  /// Known ancestor task titles separated by slashes.
+  ///
+  /// In en, this message translates to:
+  /// **'Part of: {path}'**
+  String taskParentPath(String path);
+
+  /// No description provided for @projectViewList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get projectViewList;
+
+  /// No description provided for @projectViewMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get projectViewMap;
+
+  /// No description provided for @projectShowCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Show completed'**
+  String get projectShowCompleted;
+
+  /// No description provided for @projectExpandBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand branch'**
+  String get projectExpandBranch;
+
+  /// No description provided for @projectCollapseBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse branch'**
+  String get projectCollapseBranch;
+
+  /// No description provided for @projectPlaceInside.
+  ///
+  /// In en, this message translates to:
+  /// **'Move inside'**
+  String get projectPlaceInside;
+
+  /// No description provided for @projectPlaceBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Move before'**
+  String get projectPlaceBefore;
+
+  /// No description provided for @projectPlaceAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Move after'**
+  String get projectPlaceAfter;
+
+  /// No description provided for @projectCatalogSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search projects and tasks'**
+  String get projectCatalogSearch;
+
+  /// No description provided for @settingsTaskBranchStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtask appearance'**
+  String get settingsTaskBranchStyle;
+
+  /// No description provided for @settingsTaskBranchConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting lines'**
+  String get settingsTaskBranchConnected;
+
+  /// No description provided for @settingsTaskBranchGrouped.
+  ///
+  /// In en, this message translates to:
+  /// **'Grouped branch'**
+  String get settingsTaskBranchGrouped;
+
+  /// No description provided for @onboardingTasksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your list. Your rhythm.'**
+  String get onboardingTasksTitle;
+
+  /// No description provided for @onboardingTasksSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the look and spacing of your tasks.'**
+  String get onboardingTasksSubtitle;
+
+  /// No description provided for @onboardingThemeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What color is your day?'**
+  String get onboardingThemeTitle;
+
+  /// No description provided for @onboardingThemeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a palette you enjoy working in.'**
+  String get onboardingThemeSubtitle;
+
+  /// No description provided for @onboardingModernDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Emphasized titles'**
+  String get onboardingModernDescription;
+
+  /// No description provided for @onboardingClassicDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Understated rows'**
+  String get onboardingClassicDescription;
+
+  /// No description provided for @onboardingAppearanceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change all of this later in Settings.'**
+  String get onboardingAppearanceHint;
+
+  /// No description provided for @onboardingClassicThemeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The familiar red accent'**
+  String get onboardingClassicThemeDescription;
+
+  /// No description provided for @onboardingOceanDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool blue'**
+  String get onboardingOceanDescription;
+
+  /// No description provided for @onboardingForestDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm green'**
+  String get onboardingForestDescription;
+
+  /// No description provided for @onboardingSepiaDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm paper'**
+  String get onboardingSepiaDescription;
+
+  /// No description provided for @onboardingGraphiteDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Just the essentials'**
+  String get onboardingGraphiteDescription;
+
+  /// No description provided for @onboardingThemeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can create your own palette and background later in Settings.'**
+  String get onboardingThemeHint;
+
+  /// No description provided for @onboardingPreviewSubtask.
+  ///
+  /// In en, this message translates to:
+  /// **'Write down your first ideas'**
+  String get onboardingPreviewSubtask;
+
+  /// No description provided for @learningTourInvitationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a quick look around Ada?'**
+  String get learningTourInvitationTitle;
+
+  /// No description provided for @learningTourInvitationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'See how to add tasks, use Focus, and organize projects. About a minute.'**
+  String get learningTourInvitationBody;
+
+  /// No description provided for @learningTourStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get learningTourStart;
+
+  /// No description provided for @learningTourLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get learningTourLater;
+
+  /// No description provided for @learningTourClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close tour'**
+  String get learningTourClose;
+
+  /// No description provided for @learningTourSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the app tour'**
+  String get learningTourSettings;
+
+  /// No description provided for @learningTourAddTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Add task to see where new tasks begin. You do not need to save a test task.'**
+  String get learningTourAddTask;
+
+  /// No description provided for @learningTourFocusNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Focus to see where a work session starts.'**
+  String get learningTourFocusNavigation;
+
+  /// No description provided for @learningTourFocusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a task and work in intervals. You do not need to start the timer now.'**
+  String get learningTourFocusReady;
+
+  /// No description provided for @learningTourProjectsNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Projects to see where related tasks belong.'**
+  String get learningTourProjectsNavigation;
+
+  /// No description provided for @learningTourProjectsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects keep tasks for one goal together.'**
+  String get learningTourProjectsReady;
+
+  /// No description provided for @learningTourSkipStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip step'**
+  String get learningTourSkipStep;
+
+  /// No description provided for @learningTourOpenAddTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Add task'**
+  String get learningTourOpenAddTask;
+
+  /// No description provided for @learningTourOpenFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Focus'**
+  String get learningTourOpenFocus;
+
+  /// No description provided for @learningTourOpenProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Projects'**
+  String get learningTourOpenProjects;
+
+  /// No description provided for @filesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get filesTitle;
+
+  /// No description provided for @filesAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add file'**
+  String get filesAdd;
+
+  /// No description provided for @filesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No files yet'**
+  String get filesEmpty;
+
+  /// No description provided for @filesSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search files'**
+  String get filesSearch;
+
+  /// No description provided for @filesList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get filesList;
+
+  /// No description provided for @filesGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get filesGallery;
+
+  /// No description provided for @filesAllTogether.
+  ///
+  /// In en, this message translates to:
+  /// **'All together'**
+  String get filesAllTogether;
+
+  /// No description provided for @filesByTask.
+  ///
+  /// In en, this message translates to:
+  /// **'By tasks'**
+  String get filesByTask;
+
+  /// No description provided for @filesProjectGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Project files'**
+  String get filesProjectGroup;
+
+  /// No description provided for @filesAllTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'All types'**
+  String get filesAllTypes;
+
+  /// No description provided for @filesImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get filesImages;
+
+  /// No description provided for @filesDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get filesDocuments;
+
+  /// No description provided for @filesOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other files'**
+  String get filesOther;
+
+  /// No description provided for @filesDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get filesDownload;
+
+  /// No description provided for @filesDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete file'**
+  String get filesDelete;
+
+  /// No description provided for @filesDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete this file?'**
+  String get filesDeleteConfirm;
+
+  /// No description provided for @filesUploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed. Try again.'**
+  String get filesUploadFailed;
+
+  /// No description provided for @filesRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get filesRetry;
+
+  /// No description provided for @filesProRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading files requires Pro.'**
+  String get filesProRequired;
+
+  /// No description provided for @filesReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'You have read-only access.'**
+  String get filesReadOnly;
+
+  /// No description provided for @filesUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'File storage is unavailable. Check your connection and try again.'**
+  String get filesUnavailable;
+
+  /// No description provided for @filesSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to access files.'**
+  String get filesSignIn;
+
+  /// No description provided for @filesTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Files must be 20 MB or smaller.'**
+  String get filesTooLarge;
+
+  /// No description provided for @filesQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your file upload allowance has been reached.'**
+  String get filesQuotaExceeded;
+
+  /// No description provided for @filesDeleteProjectWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Files attached directly to this project will be permanently deleted.'**
+  String get filesDeleteProjectWarning;
+
+  /// No description provided for @filesUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading'**
+  String get filesUpload;
+
+  /// No description provided for @filesFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finishing upload'**
+  String get filesFinish;
+
+  /// No description provided for @filesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load files.'**
+  String get filesLoadError;
+
+  /// No description provided for @filesPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get filesPreview;
+
+  /// No description provided for @settingsTaskCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Task card'**
+  String get settingsTaskCard;
+
+  /// No description provided for @settingsTaskCardTabs.
+  ///
+  /// In en, this message translates to:
+  /// **'Tabs'**
+  String get settingsTaskCardTabs;
+
+  /// No description provided for @settingsTaskCardDescriptionFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Description first'**
+  String get settingsTaskCardDescriptionFirst;
+
+  /// No description provided for @taskDetailsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get taskDetailsTab;
+
+  /// No description provided for @taskDiscussionTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion'**
+  String get taskDiscussionTab;
+
+  /// No description provided for @taskProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Properties'**
+  String get taskProperties;
+
+  /// No description provided for @filesGrouping.
+  ///
+  /// In en, this message translates to:
+  /// **'Grouping'**
+  String get filesGrouping;
+
+  /// No description provided for @taskDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a description'**
+  String get taskDescriptionHint;
+
+  /// Tooltip for expanding the project or catalog map to fill the app viewport.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand map to full screen'**
+  String get projectMapExpand;
+
+  /// Tooltip for returning from the full-screen map to the ordinary layout.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit full-screen map'**
+  String get projectMapCollapse;
+
+  /// No description provided for @navHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Habits'**
+  String get navHabits;
+
+  /// No description provided for @habitsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Small steps, every day'**
+  String get habitsSubtitle;
+
+  /// No description provided for @habitHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 5 days'**
+  String get habitHistory;
+
+  /// No description provided for @habitNotScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Not scheduled'**
+  String get habitNotScheduled;
+
+  /// No description provided for @habitsCompletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Habits completed'**
+  String get habitsCompletedLabel;
+
+  /// No description provided for @habitNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New habit'**
+  String get habitNew;
+
+  /// No description provided for @habitEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit habit'**
+  String get habitEdit;
+
+  /// No description provided for @habitsActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get habitsActive;
+
+  /// No description provided for @habitsFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished'**
+  String get habitsFinished;
+
+  /// No description provided for @habitsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your habits start here. Add your first habit.'**
+  String get habitsEmpty;
+
+  /// No description provided for @habitsFinishedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No finished habits yet.'**
+  String get habitsFinishedEmpty;
+
+  /// No description provided for @habitsFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'Future days are view only.'**
+  String get habitsFuture;
+
+  /// No description provided for @habitName.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit name'**
+  String get habitName;
+
+  /// No description provided for @habitDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get habitDaily;
+
+  /// No description provided for @habitWeekdays.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected weekdays'**
+  String get habitWeekdays;
+
+  /// No description provided for @habitFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get habitFrequency;
+
+  /// No description provided for @habitTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Times per day'**
+  String get habitTarget;
+
+  /// No description provided for @habitStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get habitStart;
+
+  /// No description provided for @habitEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get habitEnd;
+
+  /// No description provided for @habitForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Forever'**
+  String get habitForever;
+
+  /// No description provided for @habitCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date'**
+  String get habitCustom;
+
+  /// No description provided for @habitProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get habitProject;
+
+  /// No description provided for @habitNoProject.
+  ///
+  /// In en, this message translates to:
+  /// **'No project'**
+  String get habitNoProject;
+
+  /// No description provided for @habitReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get habitReminder;
+
+  /// No description provided for @habitReminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder time'**
+  String get habitReminderTime;
+
+  /// No description provided for @habitReminderDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are disabled. Allow them in system settings.'**
+  String get habitReminderDenied;
+
+  /// No description provided for @habitReminderUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Background reminders are unavailable on this platform.'**
+  String get habitReminderUnavailable;
+
+  /// No description provided for @habitReminderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update reminders. Try again.'**
+  String get habitReminderFailed;
+
+  /// No description provided for @habitDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this habit and its history?'**
+  String get habitDeleteConfirm;
+
+  /// No description provided for @habitLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load habits.'**
+  String get habitLoadError;
+
+  /// No description provided for @habitSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save changes. Check the fields and try again.'**
+  String get habitSaveError;
+
+  /// No description provided for @habitAddCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Add one completion'**
+  String get habitAddCheckIn;
+
+  /// No description provided for @habitUndoCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo last completion'**
+  String get habitUndoCheckIn;
+
+  /// No description provided for @habitPreviousWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous week'**
+  String get habitPreviousWeek;
+
+  /// No description provided for @habitNextWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Next week'**
+  String get habitNextWeek;
+
+  /// No description provided for @notificationHabitChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Habits'**
+  String get notificationHabitChannel;
+
+  /// No description provided for @notificationHabitDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders for unfinished habits'**
+  String get notificationHabitDescription;
+
+  /// No description provided for @notificationHabitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for your habit'**
+  String get notificationHabitTitle;
+
+  /// No description provided for @habitsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {planned} habits completed'**
+  String habitsSummary(int completed, int planned);
+
+  /// No description provided for @habitDurationDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String habitDurationDays(int days);
+
+  /// Read-only example in Appearance settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get settingsAppearancePreview;
+
+  /// Read-only example in Appearance settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get settingsPreviewProject;
+
+  /// Read-only example in Appearance settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare materials and plan the next steps'**
+  String get settingsPreviewLongTask;
+
+  /// Read-only example in Appearance settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Review notes'**
+  String get settingsPreviewCompletedTask;
+
+  /// No description provided for @habitsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get habitsRemaining;
+
+  /// No description provided for @habitsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get habitsDone;
+
+  /// No description provided for @habitsPlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get habitsPlanned;
+
+  /// No description provided for @habitDayPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Part of day'**
+  String get habitDayPeriod;
+
+  /// No description provided for @habitPeriodAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get habitPeriodAutomatic;
+
+  /// No description provided for @habitPeriodAnytime.
+  ///
+  /// In en, this message translates to:
+  /// **'Throughout the day'**
+  String get habitPeriodAnytime;
+
+  /// No description provided for @habitPeriodNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get habitPeriodNight;
+
+  /// No description provided for @habitPeriodMultipleReason.
+  ///
+  /// In en, this message translates to:
+  /// **'The goal has multiple repetitions across the day.'**
+  String get habitPeriodMultipleReason;
+
+  /// No description provided for @habitPeriodNoTimeReason.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder time is set.'**
+  String get habitPeriodNoTimeReason;
+
+  /// No description provided for @habitPeriodReminderReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on the reminder time.'**
+  String get habitPeriodReminderReason;
+
+  /// Resolved automatic habit group and the reason for choosing it.
+  ///
+  /// In en, this message translates to:
+  /// **'{period}: {reason}'**
+  String habitPeriodExplanation(String period, String reason);
+
+  /// No description provided for @habitPeriodCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'By parts of day'**
+  String get habitPeriodCustom;
+
+  /// No description provided for @habitPeriodTargetsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose one or more parts of day and set a goal for each. Daily total: 1–99.'**
+  String get habitPeriodTargetsHint;
+
+  /// No description provided for @accountAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get accountAvatar;
+
+  /// No description provided for @accountChangeAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Change avatar'**
+  String get accountChangeAvatar;
+
+  /// No description provided for @accountAvatarInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter or paste an emoji'**
+  String get accountAvatarInput;
+
+  /// No description provided for @accountAvatarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an emoji below or paste one from your keyboard.'**
+  String get accountAvatarHint;
+
+  /// No description provided for @accountAvatarInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter one emoji.'**
+  String get accountAvatarInvalid;
+
+  /// No description provided for @accountAvatarSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your avatar. Please try again.'**
+  String get accountAvatarSaveError;
+
+  /// No description provided for @accountAvatarReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset avatar'**
+  String get accountAvatarReset;
+
+  /// No description provided for @accountAvatarSkinTone.
+  ///
+  /// In en, this message translates to:
+  /// **'Skin tone'**
+  String get accountAvatarSkinTone;
+
+  /// No description provided for @accountAvatarSmileys.
+  ///
+  /// In en, this message translates to:
+  /// **'Smileys and people'**
+  String get accountAvatarSmileys;
+
+  /// No description provided for @accountAvatarAnimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Animals and nature'**
+  String get accountAvatarAnimals;
+
+  /// No description provided for @accountAvatarFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food and drink'**
+  String get accountAvatarFood;
+
+  /// No description provided for @accountAvatarActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities'**
+  String get accountAvatarActivities;
+
+  /// No description provided for @accountAvatarTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel and places'**
+  String get accountAvatarTravel;
+
+  /// No description provided for @accountAvatarObjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Objects'**
+  String get accountAvatarObjects;
+
+  /// No description provided for @accountAvatarSymbols.
+  ///
+  /// In en, this message translates to:
+  /// **'Symbols'**
+  String get accountAvatarSymbols;
+
+  /// No description provided for @accountAvatarFlags.
+  ///
+  /// In en, this message translates to:
+  /// **'Flags'**
+  String get accountAvatarFlags;
+
+  /// No description provided for @reportsPlanEstimates.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimates for open tasks due today or earlier'**
+  String get reportsPlanEstimates;
+
+  /// No description provided for @reportsDayInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Today is still in progress'**
+  String get reportsDayInProgress;
+
+  /// No description provided for @reportsTimeByProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Where your time went'**
+  String get reportsTimeByProject;
+
+  /// No description provided for @reportsNoProject.
+  ///
+  /// In en, this message translates to:
+  /// **'No project'**
+  String get reportsNoProject;
+
+  /// No description provided for @reportsNoTask.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked task'**
+  String get reportsNoTask;
+
+  /// No description provided for @reportsUnavailableName.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (unavailable)'**
+  String reportsUnavailableName(String name);
+
+  /// No description provided for @reportsUnknownProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable project'**
+  String get reportsUnknownProject;
+
+  /// No description provided for @reportsUnknownTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable task'**
+  String get reportsUnknownTask;
+
+  /// No description provided for @reportsNoProjectFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed focus sessions in this period'**
+  String get reportsNoProjectFocus;
+
+  /// No description provided for @reportsProjectShare.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of focus time'**
+  String reportsProjectShare(String percent);
+
+  /// No description provided for @habitIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit icon'**
+  String get habitIcon;
+
+  /// No description provided for @habitIconEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Emoji'**
+  String get habitIconEmoji;
+
+  /// No description provided for @habitIconIcons.
+  ///
+  /// In en, this message translates to:
+  /// **'Icons'**
+  String get habitIconIcons;
+
+  /// No description provided for @habitIconReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset icon'**
+  String get habitIconReset;
+
+  /// Accessible habit icon name
+  ///
+  /// In en, this message translates to:
+  /// **'{icon, select, bookOpen{Reading} dumbbell{Exercise} footprints{Walking} glassWater{Water} moon{Sleep} sun{Sun} heart{Health} brain{Learning} apple{Nutrition} coffee{Coffee} music{Music} pencil{Writing} code{Coding} leaf{Nature} target{Goal} bike{Cycling} other{Habit icon}}'**
+  String habitIconOption(String icon);
+
+  /// No description provided for @settingsSynchronization.
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronization'**
+  String get settingsSynchronization;
+
+  /// No description provided for @settingsRestartSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart synchronization'**
+  String get settingsRestartSync;
+
+  /// No description provided for @settingsSyncRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking and syncing your data…'**
+  String get settingsSyncRunning;
+
+  /// No description provided for @settingsSyncComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronization completed.'**
+  String get settingsSyncComplete;
+
+  /// No description provided for @settingsSyncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Some changes are still pending or need recovery.'**
+  String get settingsSyncPending;
+
+  /// No description provided for @settingsSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronization is incomplete. We will retry automatically.'**
+  String get settingsSyncFailed;
+
+  /// No description provided for @syncUnresolvedChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected: {rejected}. Awaiting recovery: {repair}.'**
+  String syncUnresolvedChanges(int rejected, int repair);
+
+  /// No description provided for @outlookCalendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlook Calendar'**
+  String get outlookCalendarTitle;
+
+  /// No description provided for @calendarDisconnectedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect an account to sync scheduled tasks.'**
+  String get calendarDisconnectedSubtitle;
+
+  /// No description provided for @calendarFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar error: {message}'**
+  String calendarFailed(String message);
+
+  /// No description provided for @calendarAuthRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect this calendar to continue syncing.'**
+  String get calendarAuthRequired;
+
+  /// No description provided for @calendarRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar request limit reached. Wait a few minutes before syncing again.'**
+  String get calendarRateLimited;
+
+  /// No description provided for @calendarSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar sync failed. Try again later.'**
+  String get calendarSyncFailed;
+
+  /// No description provided for @calendarUnsupportedEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Some linked events are recurring or were moved. Resolve them in the calendar to resume syncing.'**
+  String get calendarUnsupportedEvent;
+
+  /// No description provided for @settingsFocusSoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus sounds'**
+  String get settingsFocusSoundTitle;
+
+  /// No description provided for @settingsFocusSoundSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the sounds for starting, pausing, resuming, and completing a focus interval.'**
+  String get settingsFocusSoundSubtitle;
+
+  /// No description provided for @settingsFocusSoundPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get settingsFocusSoundPreview;
+
+  /// No description provided for @settingsFocusSoundPreviewError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not play the sample. Try again.'**
+  String get settingsFocusSoundPreviewError;
+
+  /// No description provided for @pomoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada companion'**
+  String get pomoTitle;
+
+  /// No description provided for @pomoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A little companion for your desktop.'**
+  String get pomoDescription;
+
+  /// No description provided for @pomoFocusOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only during Focus'**
+  String get pomoFocusOnly;
+
+  /// No description provided for @pomoQuiet.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet mode'**
+  String get pomoQuiet;
+
+  /// No description provided for @pomoQuietDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Static reactions without background animation.'**
+  String get pomoQuietDescription;
+
+  /// No description provided for @pomoReduceMotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce companion motion'**
+  String get pomoReduceMotion;
+
+  /// No description provided for @pomoShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Ada'**
+  String get pomoShow;
+
+  /// No description provided for @pomoOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open application'**
+  String get pomoOpenApp;
+
+  /// No description provided for @pomoHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Ada'**
+  String get pomoHide;
+
+  /// No description provided for @pomoResetPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset position'**
+  String get pomoResetPosition;
+
+  /// No description provided for @pomoInteract.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada: react and toggle controls. Drag to move.'**
+  String get pomoInteract;
+
+  /// No description provided for @pomoQuickAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a task'**
+  String get pomoQuickAdd;
+
+  /// No description provided for @pomoError.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada could not finish this action. Try showing Ada again in Settings.'**
+  String get pomoError;
+
+  /// No description provided for @pomoShowTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Show timer'**
+  String get pomoShowTimer;
+
+  /// No description provided for @pomoSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada settings'**
+  String get pomoSettings;
+
+  /// No description provided for @pomoSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get pomoSize;
+
+  /// No description provided for @pomoSizeDecrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Make Ada smaller'**
+  String get pomoSizeDecrease;
+
+  /// No description provided for @pomoSizeIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Make Ada larger'**
+  String get pomoSizeIncrease;
+
+  /// No description provided for @pomoSizeReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to 100%'**
+  String get pomoSizeReset;
+
+  /// No description provided for @pomoSizeEffective.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown at {percent}% to fit this screen'**
+  String pomoSizeEffective(int percent);
+
+  /// No description provided for @appIconTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App icon'**
+  String get appIconTitle;
+
+  /// No description provided for @appIconPomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada'**
+  String get appIconPomo;
+
+  /// No description provided for @appIconClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get appIconClassic;
+
+  /// No description provided for @appIconError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not apply or save the app icon. Please try again.'**
+  String get appIconError;
+
+  /// No description provided for @appIconMacosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes the Dock icon while Ada is running. Finder uses Ada.'**
+  String get appIconMacosHint;
+
+  /// No description provided for @appIconDesktopHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes the app icon and Ada shortcuts. Pinned copies may update later.'**
+  String get appIconDesktopHint;
+
+  /// No description provided for @appIconWebHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes the browser tab icon. Installed web app icons are managed by your browser.'**
+  String get appIconWebHint;
+
+  /// No description provided for @quickAddFocusEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pomodoro estimate'**
+  String get quickAddFocusEstimate;
+
+  /// No description provided for @quickAddEstimatedPomodoros.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 Pomodoro} other{{count} Pomodoros}}'**
+  String quickAddEstimatedPomodoros(int count);
+
+  /// No description provided for @quickAddDecreaseEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease estimate'**
+  String get quickAddDecreaseEstimate;
+
+  /// No description provided for @quickAddIncreaseEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase estimate'**
+  String get quickAddIncreaseEstimate;
+
+  /// No description provided for @quickAddEstimateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a whole number from 1 to 999.'**
+  String get quickAddEstimateRange;
+
+  /// No description provided for @quickAddEstimateFocusTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} × {workMinutes} min = {totalMinutes} min focus'**
+  String quickAddEstimateFocusTime(
+    String count,
+    String workMinutes,
+    String totalMinutes,
+  );
+
+  /// No description provided for @quickAddEstimateAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on task duration'**
+  String get quickAddEstimateAutomatic;
+
+  /// No description provided for @quickAddClearEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear estimate'**
+  String get quickAddClearEstimate;
+
+  /// No description provided for @pomoLinuxChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your desktop environment…'**
+  String get pomoLinuxChecking;
+
+  /// No description provided for @pomoLinuxUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada is not yet available in your desktop environment: {environment}. Email support@Ada.com and include your environment.'**
+  String pomoLinuxUnavailable(String environment);
+
+  /// No description provided for @pomoLinuxWrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Write'**
+  String get pomoLinuxWrite;
+
+  /// No description provided for @pomoLinuxCopyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy environment details'**
+  String get pomoLinuxCopyDetails;
+
+  /// No description provided for @pomoLinuxCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Environment details copied.'**
+  String get pomoLinuxCopied;
+
+  /// No description provided for @pomoLinuxMailError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open your email app. Copy the environment details and email support@Ada.com.'**
+  String get pomoLinuxMailError;
+
+  /// No description provided for @pomoLinuxDisplayMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada display'**
+  String get pomoLinuxDisplayMode;
+
+  /// No description provided for @pomoLinuxFollowUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow my screen'**
+  String get pomoLinuxFollowUser;
+
+  /// No description provided for @pomoLinuxPinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a monitor'**
+  String get pomoLinuxPinned;
+
+  /// No description provided for @pomoLinuxMonitor.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor'**
+  String get pomoLinuxMonitor;
+
+  /// No description provided for @pomoLinuxSelectMonitor.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a monitor'**
+  String get pomoLinuxSelectMonitor;
+
+  /// No description provided for @pomoLinuxMonitorUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{monitor} (disconnected)'**
+  String pomoLinuxMonitorUnavailable(String monitor);
+
+  /// No description provided for @pomoLinuxCrossDisplayDrag.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow dragging between monitors'**
+  String get pomoLinuxCrossDisplayDrag;
+
+  /// No description provided for @pomoLinuxCrossDisplayDragDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag Ada to another monitor without changing its display mode.'**
+  String get pomoLinuxCrossDisplayDragDescription;
+
+  /// No description provided for @pomoLinuxCrossDisplayDragPinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada stays on the chosen monitor. Your drag preference is kept for automatic mode.'**
+  String get pomoLinuxCrossDisplayDragPinned;
+
+  /// No description provided for @pomoLinuxWorkspaceFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'On Sway, Ada follows the active workspace.'**
+  String get pomoLinuxWorkspaceFollow;
+
+  /// No description provided for @pomoLinuxFollowUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic following is unavailable in this environment. Choose a monitor to keep Ada on a fixed display.'**
+  String get pomoLinuxFollowUnavailable;
+
+  /// No description provided for @pomoLinuxUnknownEnvironment.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown desktop environment'**
+  String get pomoLinuxUnknownEnvironment;
+
+  /// No description provided for @pomoGnomeInstallDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada needs its GNOME Shell extension to appear on your desktop. Install the bundled extension for your user account.'**
+  String get pomoGnomeInstallDescription;
+
+  /// No description provided for @pomoGnomeEnableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable the Ada extension in GNOME Shell. If user extensions are disabled globally, turn them on in the Extensions app first.'**
+  String get pomoGnomeEnableDescription;
+
+  /// No description provided for @pomoGnomeReloginDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The extension is installed. Sign out and sign in again to let GNOME Shell load this version, then check again.'**
+  String get pomoGnomeReloginDescription;
+
+  /// No description provided for @pomoGnomeUpdateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the Ada GNOME Shell extension to use this version of Ada.'**
+  String get pomoGnomeUpdateDescription;
+
+  /// No description provided for @pomoGnomeIncompatibleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This GNOME Shell version is not supported by the bundled Ada extension.'**
+  String get pomoGnomeIncompatibleDescription;
+
+  /// No description provided for @pomoGnomeErrorDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The Ada GNOME Shell extension could not start. Check its status or copy the environment details for support.'**
+  String get pomoGnomeErrorDescription;
+
+  /// No description provided for @pomoGnomePausedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Ada is temporarily unavailable in GNOME Shell. It will return when the desktop connection is ready.'**
+  String get pomoGnomePausedDescription;
+
+  /// No description provided for @pomoGnomeInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Install extension'**
+  String get pomoGnomeInstall;
+
+  /// No description provided for @pomoGnomeEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable extension'**
+  String get pomoGnomeEnable;
+
+  /// No description provided for @pomoGnomeUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update extension'**
+  String get pomoGnomeUpdate;
+
+  /// No description provided for @pomoGnomeCheckAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get pomoGnomeCheckAgain;
+
+  /// No description provided for @pomoGnomeXWaylandDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'XWayland is unavailable in this GNOME session. Ada needs XWayland together with its Shell extension. Enable XWayland and restart Ada, then check again.'**
+  String get pomoGnomeXWaylandDescription;
+
+  /// No description provided for @pomoGnomeUserExtensionsDisabledDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'GNOME user extensions are turned off for this session. Open the Extensions app and turn on user extensions, then check again. Ada will keep this system setting unchanged.'**
+  String get pomoGnomeUserExtensionsDisabledDescription;
+
+  /// No description provided for @settingsSyncRecoveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover local data'**
+  String get settingsSyncRecoveryTitle;
+
+  /// No description provided for @settingsSyncRecoveryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {count} personal records in an older local archive. Confirm that this data belongs to {account} before merging it with this account. Newer cloud changes and confirmed deletions will be preserved. The archive will remain as a backup.'**
+  String settingsSyncRecoveryBody(int count, String account);
+
+  /// No description provided for @settingsSyncRecoveryConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover my data'**
+  String get settingsSyncRecoveryConfirm;
+
+  /// No description provided for @settingsSyncRecoveryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Local data recovery is incomplete. The archive has been preserved. Try restarting synchronization again.'**
+  String get settingsSyncRecoveryFailed;
+
+  /// No description provided for @aiQuotaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI usage'**
+  String get aiQuotaTitle;
+
+  /// No description provided for @aiQuotaUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the AI limit.'**
+  String get aiQuotaUnavailable;
+
+  /// No description provided for @aiQuotaUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {limit} requests used · {remaining} remaining'**
+  String aiQuotaUsage(int used, int limit, int remaining);
+
+  /// No description provided for @aiQuotaReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Resets {date}'**
+  String aiQuotaReset(String date);
+
+  /// No description provided for @aiQuotaExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Task analysis and new automatic categories share this monthly limit. Cached categories and manual corrections are free.'**
+  String get aiQuotaExplanation;
+
+  /// No description provided for @distractionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Distraction blocking'**
+  String get distractionTitle;
+
+  /// No description provided for @distractionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what to block during Focus. Unknown resources stay allowed until you assign a category.'**
+  String get distractionDescription;
+
+  /// No description provided for @distractionProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection profile'**
+  String get distractionProfile;
+
+  /// No description provided for @distractionBeforeStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile selection applies to the next Focus. Categories and exceptions can be corrected at any time.'**
+  String get distractionBeforeStart;
+
+  /// No description provided for @distractionNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No blocking profile'**
+  String get distractionNone;
+
+  /// No description provided for @distractionAddProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add profile'**
+  String get distractionAddProfile;
+
+  /// No description provided for @distractionEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get distractionEditProfile;
+
+  /// No description provided for @distractionProfileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name'**
+  String get distractionProfileName;
+
+  /// No description provided for @distractionStrictExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Strict Focus exit'**
+  String get distractionStrictExit;
+
+  /// No description provided for @distractionStrictDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Used when the selected Focus preset has strict mode enabled.'**
+  String get distractionStrictDescription;
+
+  /// No description provided for @distractionWait60.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait 60 seconds'**
+  String get distractionWait60;
+
+  /// No description provided for @distractionConfirmImmediately.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm immediately'**
+  String get distractionConfirmImmediately;
+
+  /// No description provided for @distractionDiscovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover used apps'**
+  String get distractionDiscovery;
+
+  /// No description provided for @distractionDiscoveryPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Only foreground app identities and product names are stored locally. No disk scan, document names or window titles.'**
+  String get distractionDiscoveryPrivacy;
+
+  /// No description provided for @distractionAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Save distraction attempts'**
+  String get distractionAttempts;
+
+  /// No description provided for @distractionAttemptsPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional local events, with repeated attempts combined. Usage time and page content are not recorded.'**
+  String get distractionAttemptsPrivacy;
+
+  /// No description provided for @distractionAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic categories'**
+  String get distractionAutomatic;
+
+  /// No description provided for @distractionAutomaticDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Search determines the category. Manual choices take priority.'**
+  String get distractionAutomaticDescription;
+
+  /// No description provided for @distractionLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Focus · this computer'**
+  String get distractionLocal;
+
+  /// No description provided for @distractionShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared Focus · connected'**
+  String get distractionShared;
+
+  /// No description provided for @distractionOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline · protection ends at the confirmed deadline'**
+  String get distractionOffline;
+
+  /// No description provided for @distractionNativeApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Application protection applied'**
+  String get distractionNativeApplied;
+
+  /// No description provided for @distractionNativeReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Application protection available'**
+  String get distractionNativeReady;
+
+  /// No description provided for @distractionNativeUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Application protection unavailable'**
+  String get distractionNativeUnavailable;
+
+  /// No description provided for @distractionChrome.
+  ///
+  /// In en, this message translates to:
+  /// **'Chrome extension'**
+  String get distractionChrome;
+
+  /// No description provided for @distractionPairDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable protection in Chrome and pair this desktop using a one-time code. The code expires after two minutes.'**
+  String get distractionPairDescription;
+
+  /// No description provided for @distractionPair.
+  ///
+  /// In en, this message translates to:
+  /// **'Show pairing code'**
+  String get distractionPair;
+
+  /// No description provided for @distractionPairCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code {code} · port {port}'**
+  String distractionPairCode(String code, int port);
+
+  /// No description provided for @distractionConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'A shared Focus is already running on another device. Choose which session to continue.'**
+  String get distractionConflict;
+
+  /// No description provided for @distractionJoinShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Join shared Focus'**
+  String get distractionJoinShared;
+
+  /// No description provided for @distractionFinishLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish local Focus'**
+  String get distractionFinishLocal;
+
+  /// No description provided for @distractionStopEverywhere.
+  ///
+  /// In en, this message translates to:
+  /// **'End Focus on all devices'**
+  String get distractionStopEverywhere;
+
+  /// No description provided for @distractionResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources and exceptions'**
+  String get distractionResources;
+
+  /// No description provided for @distractionAddSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Add site'**
+  String get distractionAddSite;
+
+  /// No description provided for @distractionNoResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable app discovery or add a site. Chrome discovers domains only after you grant permission.'**
+  String get distractionNoResources;
+
+  /// No description provided for @distractionCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get distractionCategory;
+
+  /// No description provided for @distractionException.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile exception'**
+  String get distractionException;
+
+  /// No description provided for @distractionUseCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Use category'**
+  String get distractionUseCategory;
+
+  /// No description provided for @distractionAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Always allow'**
+  String get distractionAllow;
+
+  /// No description provided for @distractionBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Always block'**
+  String get distractionBlock;
+
+  /// No description provided for @distractionClassify.
+  ///
+  /// In en, this message translates to:
+  /// **'Find category · Pro'**
+  String get distractionClassify;
+
+  /// No description provided for @distractionAutomaticSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic category · manual corrections take priority'**
+  String get distractionAutomaticSource;
+
+  /// No description provided for @distractionDetached.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection disabled here'**
+  String get distractionDetached;
+
+  /// No description provided for @distractionLastSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Last confirmation: {date}'**
+  String distractionLastSeen(String date);
+
+  /// No description provided for @distractionInvalidDomain.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a public domain, such as youtube.com.'**
+  String get distractionInvalidDomain;
+
+  /// No description provided for @distractionOnPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Block during pauses'**
+  String get distractionOnPause;
+
+  /// No description provided for @distractionOnShortBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Block during short breaks'**
+  String get distractionOnShortBreak;
+
+  /// No description provided for @distractionOnLongBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Block during long breaks'**
+  String get distractionOnLongBreak;
+
+  /// No description provided for @distractionExitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'End strict Focus?'**
+  String get distractionExitTitle;
+
+  /// No description provided for @distractionExitCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit available in {seconds} seconds. You can cancel and return to Focus.'**
+  String distractionExitCountdown(int seconds);
+
+  /// No description provided for @distractionExitConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'The interval will be interrupted without a completion reward.'**
+  String get distractionExitConfirm;
+
+  /// No description provided for @distractionExitConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm exit'**
+  String get distractionExitConfirmButton;
+
+  /// No description provided for @distractionExitCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep focusing'**
+  String get distractionExitCancel;
+
+  /// No description provided for @distractionSocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Social media'**
+  String get distractionSocial;
+
+  /// No description provided for @distractionMessaging.
+  ///
+  /// In en, this message translates to:
+  /// **'Messaging'**
+  String get distractionMessaging;
+
+  /// No description provided for @distractionVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get distractionVideo;
+
+  /// No description provided for @distractionMusic.
+  ///
+  /// In en, this message translates to:
+  /// **'Music'**
+  String get distractionMusic;
+
+  /// No description provided for @distractionGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get distractionGames;
+
+  /// No description provided for @distractionNews.
+  ///
+  /// In en, this message translates to:
+  /// **'News'**
+  String get distractionNews;
+
+  /// No description provided for @distractionShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get distractionShopping;
+
+  /// No description provided for @distractionEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get distractionEducation;
+
+  /// No description provided for @distractionDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'Development'**
+  String get distractionDevelopment;
+
+  /// No description provided for @distractionProductivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Work tools'**
+  String get distractionProductivity;
+
+  /// No description provided for @distractionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get distractionOther;
+
+  /// No description provided for @distractionUnclassified.
+  ///
+  /// In en, this message translates to:
+  /// **'Unclassified'**
+  String get distractionUnclassified;
+
+  /// No description provided for @distractionConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get distractionConnected;
+
+  /// No description provided for @distractionDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get distractionDisconnected;
+
+  /// No description provided for @distractionProtected.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected · rules confirmed'**
+  String get distractionProtected;
+
+  /// No description provided for @distractionNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules not confirmed'**
+  String get distractionNotConfirmed;
+
+  /// No description provided for @distractionIncognito.
+  ///
+  /// In en, this message translates to:
+  /// **'Incognito access: {status}'**
+  String distractionIncognito(String status);
+
+  /// No description provided for @blockingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocking'**
+  String get blockingTitle;
+
+  /// No description provided for @blockingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your work rhythm and its boundaries, together.'**
+  String get blockingDescription;
+
+  /// No description provided for @blockingRhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'{work} min focus · {short} min break · {long} min long break after {count} intervals'**
+  String blockingRhythm(int work, int short, int long, int count);
+
+  /// No description provided for @blockingSharedPresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by: {presets}. Profile changes apply to all of them.'**
+  String blockingSharedPresets(String presets);
+
+  /// No description provided for @blockingProfileMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'The assigned profile is unavailable. Reload or choose another profile.'**
+  String get blockingProfileMissing;
+
+  /// No description provided for @blockingWhatToClose.
+  ///
+  /// In en, this message translates to:
+  /// **'What to close'**
+  String get blockingWhatToClose;
+
+  /// No description provided for @blockingWhatToKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'What to keep available'**
+  String get blockingWhatToKeep;
+
+  /// No description provided for @blockingBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile behavior'**
+  String get blockingBehavior;
+
+  /// No description provided for @blockingApps.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps'**
+  String get blockingApps;
+
+  /// No description provided for @blockingEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get blockingEnabled;
+
+  /// No description provided for @blockingDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get blockingDisabled;
+
+  /// No description provided for @blockingDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'This computer and Chrome'**
+  String get blockingDevices;
+
+  /// No description provided for @blockingDeviceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices and privacy'**
+  String get blockingDeviceDetails;
+
+  /// No description provided for @blockingSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get blockingSaving;
+
+  /// No description provided for @blockingCurrentFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to current Focus'**
+  String get blockingCurrentFocus;
+
+  /// No description provided for @blockingReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to focus'**
+  String get blockingReady;
+
+  /// No description provided for @shortcutHintsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keyboard hints'**
+  String get shortcutHintsTitle;
+
+  /// No description provided for @shortcutHintsNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation'**
+  String get shortcutHintsNavigation;
+
+  /// No description provided for @shortcutHintsHeld.
+  ///
+  /// In en, this message translates to:
+  /// **'{key} held · Release to hide'**
+  String shortcutHintsHeld(String key);
+
+  /// No description provided for @shortcutHintsRelease.
+  ///
+  /// In en, this message translates to:
+  /// **'Release {key} first to use these keys'**
+  String shortcutHintsRelease(String key);
+
+  /// No description provided for @shortcutHintsSwitchFocusView.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Focus view'**
+  String get shortcutHintsSwitchFocusView;
+
+  /// No description provided for @shortcutHintsNavigate.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate'**
+  String get shortcutHintsNavigate;
+
+  /// No description provided for @shortcutHintsAcceptSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept suggestion'**
+  String get shortcutHintsAcceptSuggestion;
+
+  /// No description provided for @blockingShowAllPresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get blockingShowAllPresets;
+
+  /// No description provided for @blockingCollapsePresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get blockingCollapsePresets;
+
+  /// No description provided for @taskNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get taskNew;
+
+  /// No description provided for @taskCreateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Create task'**
+  String get taskCreateAction;
+
+  /// No description provided for @taskDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get taskDescription;
+
+  /// No description provided for @taskExpandEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand editor'**
+  String get taskExpandEditor;
+
+  /// No description provided for @taskCollapseEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse editor'**
+  String get taskCollapseEditor;
+
+  /// No description provided for @taskVisibleToYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible only to you'**
+  String get taskVisibleToYou;
+
+  /// No description provided for @taskVisibleToTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible to team members'**
+  String get taskVisibleToTeam;
+
+  /// No description provided for @taskCreatedFilesPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Task created. Retry uploading the remaining files, or remove them to finish.'**
+  String get taskCreatedFilesPending;
+
+  /// No description provided for @taskFormatBold.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold (Markdown)'**
+  String get taskFormatBold;
+
+  /// No description provided for @taskFormatItalic.
+  ///
+  /// In en, this message translates to:
+  /// **'Italic (Markdown)'**
+  String get taskFormatItalic;
+
+  /// No description provided for @taskFormatList.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulleted list'**
+  String get taskFormatList;
+
+  /// No description provided for @taskFormatLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Link (Markdown)'**
+  String get taskFormatLink;
+
+  /// No description provided for @settingsShortcutsTogglePomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable / disable Ada'**
+  String get settingsShortcutsTogglePomo;
+
+  /// No description provided for @settingsMenuBarTimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu bar timer'**
+  String get settingsMenuBarTimerTitle;
+
+  /// No description provided for @settingsMenuBarTimerClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Old'**
+  String get settingsMenuBarTimerClassic;
+
+  /// No description provided for @settingsMenuBarTimerModern.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get settingsMenuBarTimerModern;
+
+  /// No description provided for @settingsMenuBarTimerError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update the menu bar timer. Please try again.'**
+  String get settingsMenuBarTimerError;
+
+  /// No description provided for @quickAddEnterEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number'**
+  String get quickAddEnterEstimate;
+
+  /// No description provided for @quickAddEstimateTotalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min focus'**
+  String quickAddEstimateTotalTime(String minutes);
+
+  /// No description provided for @quickAddEstimateInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min each'**
+  String quickAddEstimateInterval(String minutes);
+
+  /// No description provided for @habitCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in'**
+  String get habitCheckIn;
+
+  /// No description provided for @habitWeekHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get habitWeekHistory;
+
+  /// Heading for habit progress on the selected local calendar date.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} progress'**
+  String habitProgressOn(String date);
+
+  /// No description provided for @habitsDayRhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'Day rhythm'**
+  String get habitsDayRhythm;
+
+  /// No description provided for @habitsProgressCircle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress circle'**
+  String get habitsProgressCircle;
+
+  /// No description provided for @habitsPresentationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not remember this view.'**
+  String get habitsPresentationError;
+
+  /// No description provided for @habitsRemainingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining today'**
+  String get habitsRemainingToday;
+
+  /// No description provided for @habitsCompletedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed today'**
+  String get habitsCompletedToday;
+
+  /// Habit dashboard section heading for the selected calendar date.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining on {date}'**
+  String habitsRemainingOn(String date);
+
+  /// Habit dashboard section heading for the selected calendar date.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed on {date}'**
+  String habitsCompletedOn(String date);
+
+  /// No description provided for @habitsProgressCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'habits completed'**
+  String get habitsProgressCaption;
+
+  /// No description provided for @priorityUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get priorityUrgent;
+
+  /// No description provided for @priorityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get priorityHigh;
+
+  /// No description provided for @priorityNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get priorityNormal;
+
+  /// No description provided for @priorityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get priorityLow;
+
+  /// No description provided for @pickerDateAndTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time'**
+  String get pickerDateAndTime;
+
+  /// No description provided for @pickerInOneWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'In one week'**
+  String get pickerInOneWeek;
+
+  /// No description provided for @pickerEnterTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter time'**
+  String get pickerEnterTime;
+
+  /// No description provided for @pickerTimeWheels.
+  ///
+  /// In en, this message translates to:
+  /// **'Time wheels'**
+  String get pickerTimeWheels;
+
+  /// No description provided for @pickerMinuteOffset.
+  ///
+  /// In en, this message translates to:
+  /// **'{offset} min'**
+  String pickerMinuteOffset(String offset);
+
+  /// No description provided for @pickerIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get pickerIncrease;
+
+  /// No description provided for @pickerDecrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get pickerDecrease;
+
+  /// No description provided for @taskStatusBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get taskStatusBlocked;
+
+  /// No description provided for @taskStatusUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get taskStatusUrgent;
+
+  /// No description provided for @blockingControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Dependencies and urgency'**
+  String get blockingControls;
+
+  /// No description provided for @blockingUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent for me'**
+  String get blockingUrgent;
+
+  /// No description provided for @blockingRepeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep future occurrences urgent'**
+  String get blockingRepeat;
+
+  /// No description provided for @blockingCascade.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority order'**
+  String get blockingCascade;
+
+  /// No description provided for @blockingSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a prerequisite'**
+  String get blockingSearch;
+
+  /// No description provided for @blockingDependency.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for prerequisites'**
+  String get blockingDependency;
+
+  /// No description provided for @blockingPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher-priority tasks first'**
+  String get blockingPriority;
+
+  /// No description provided for @blockingUrgentReason.
+  ///
+  /// In en, this message translates to:
+  /// **'An urgent task comes first'**
+  String get blockingUrgentReason;
+
+  /// No description provided for @blockingUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is unavailable. Refresh and try again.'**
+  String get blockingUnavailable;
+
+  /// No description provided for @blockingDeleteWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting this task releases dependent tasks.'**
+  String get blockingDeleteWarning;
+
+  /// No description provided for @blockingNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No available prerequisites'**
+  String get blockingNoMatches;
+
+  /// No description provided for @blockingSyncConflictDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'The server rejected completion because this task was blocked. Its status has been restored; accumulated Focus is preserved.'**
+  String get blockingSyncConflictDetails;
+
+  /// No description provided for @blockingSyncConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync conflict'**
+  String get blockingSyncConflict;
+
+  /// No description provided for @focusDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get focusDuration;
+
+  /// No description provided for @focusPlannedDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan · {duration}'**
+  String focusPlannedDuration(String duration);
+
+  /// No description provided for @focusShortenDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'−5 min'**
+  String get focusShortenDuration;
+
+  /// No description provided for @focusExtendDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'+5 min'**
+  String get focusExtendDuration;
+
+  /// No description provided for @focusFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get focusFinish;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) => <String>[
+    'ar',
+    'de',
+    'en',
+    'es',
+    'fr',
+    'ja',
+    'ko',
+    'pt',
+    'ru',
+    'zh',
+  ].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'pt':
+      {
+        switch (locale.countryCode) {
+          case 'BR':
+            return AppLocalizationsPtBr();
+        }
+        break;
+      }
+  }
+
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'de':
+      return AppLocalizationsDe();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'ja':
+      return AppLocalizationsJa();
+    case 'ko':
+      return AppLocalizationsKo();
+    case 'pt':
+      return AppLocalizationsPt();
+    case 'ru':
+      return AppLocalizationsRu();
+    case 'zh':
+      return AppLocalizationsZh();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}

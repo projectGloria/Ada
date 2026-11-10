@@ -1,0 +1,115 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ada/config/account_providers.dart';
+import 'package:ada/config/project_collaboration.dart';
+import 'package:ada/config/providers.dart';
+import 'package:ada/data/repositories/collaboration/collaboration_repository.dart';
+import 'package:ada/data/repositories/collaboration/drift_collaboration_repository.dart';
+import 'package:ada/data/services/collaboration/collaboration_api.dart';
+import 'package:ada/data/services/local/shared_access.dart';
+import 'package:ada/domain/models/collaboration/collaboration_models.dart';
+import 'package:ada/domain/models/collaboration/collaboration_responses.dart';
+
+export 'package:ada/config/providers.dart' show projectRepositoryProvider;
+
+/// Supplies the account-backed collaboration behaviour that
+/// `projectRepositoryProvider` reads. This file may import both the account
+/// layer and `providers.dart`, so the wiring lives here; reading the account
+/// lazily keeps a signed-out or unconfigured client from building an API.
+final projectCollaborationOverride = projectCollaborationProvider.overrideWith((
+  ref,
+) {
+  final account = ref.watch(accountClientProvider);
+  return ProjectCollaboration(
+    api: account == null ? null : CollaborationApi.account(account),
+    synchronize: () async {
+      await ref.read(accountSyncEngineProvider)?.syncNow();
+    },
+  );
+});
+
+final collaborationRepositoryProvider = Provider<CollaborationRepository?>((
+  ref,
+) {
+  final account = ref.watch(accountClientProvider);
+  final authState = ref.watch(accountAuthStateProvider).value;
+  final signedIn =
+      (authState?.signedIn ?? false) || account?.currentUserId != null;
+  if (account == null || !signedIn) return null;
+  return DriftCollaborationRepository(
+    db: ref.watch(appDatabaseProvider),
+    api: CollaborationApi.account(account),
+    queue: ref.watch(syncQueueRepositoryProvider),
+    synchronize: () async {
+      await ref.read(accountSyncEngineProvider)?.syncNow();
+    },
+  );
+});
+
+final sharedScopesProvider = StreamProvider<List<SharedScope>>(
+  (ref) =>
+      ref.watch(collaborationRepositoryProvider)?.watchScopes() ??
+      Stream.value([]),
+);
+
+final collaborationCommentsProvider =
+    StreamProvider.family<
+      List<CollaborationComment>,
+      ({String scopeId, String? taskId})
+    >(
+      (ref, query) =>
+          ref
+              .watch(collaborationRepositoryProvider)
+              ?.watchComments(query.scopeId, taskId: query.taskId) ??
+          Stream.value(const []),
+    );
+
+final collaborationFocusContributionsProvider =
+    StreamProvider.family<
+      List<CollaborationFocusContribution>,
+      ({String scopeId, String? taskId})
+    >(
+      (ref, query) =>
+          ref
+              .watch(collaborationRepositoryProvider)
+              ?.watchFocusContributions(query.scopeId, taskId: query.taskId) ??
+          Stream.value(const []),
+    );
+
+final collaborationActorIdProvider = FutureProvider<String>(
+  (ref) => SharedAccess(ref.watch(appDatabaseProvider)).actorId(),
+);
+
+final sharedScopeForProjectProvider = Provider.family<SharedScope?, String>((
+  ref,
+  projectId,
+) {
+  final scopes = ref.watch(sharedScopesProvider).value ?? const <SharedScope>[];
+  for (final scope in scopes) {
+    if (scope.rootProjectId == projectId) return scope;
+  }
+  return null;
+});
+
+final sharedScopeProvider = Provider.family<SharedScope?, String>((
+  ref,
+  scopeId,
+) {
+  final scopes = ref.watch(sharedScopesProvider).value ?? const <SharedScope>[];
+  for (final scope in scopes) {
+    if (scope.id == scopeId) return scope;
+  }
+  return null;
+});
+
+// Anonymous project links use the configured client without requiring a session.
+final publicCollaborationRepositoryProvider =
+    Provider<CollaborationRepository?>((ref) {
+      final account = ref.watch(accountClientProvider);
+      if (account == null) return null;
+      return DriftCollaborationRepository(
+        db: ref.watch(appDatabaseProvider),
+        api: CollaborationApi.account(account),
+        queue: ref.watch(syncQueueRepositoryProvider),
+        synchronize: () async {},
+      );
+    });

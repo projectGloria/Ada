@@ -1,0 +1,626 @@
+import Cocoa
+import Carbon.HIToolbox
+import FlutterMacOS
+import XCTest
+
+class RunnerTests: XCTestCase {
+
+  func testStatusItemStyleDefaultsAndRestoresSelection() {
+    let suite = "status-style-\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suite)!
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let controller = statusStyleController(defaults: defaults)
+    XCTAssertEqual(controller.style, .classic)
+    XCTAssertEqual(controller.statusItem.button?.attributedTitle.string, "\u{25EF} 25:00")
+    XCTAssertNil(controller.statusItem.button?.image)
+
+    for value in ["modern", "classic"] {
+      controller.handleStyleCall(FlutterMethodCall(methodName: "setStyle", arguments: value)) { reply in
+        XCTAssertEqual(reply as? String, value)
+      }
+      XCTAssertEqual(defaults.string(forKey: "focus.statusItem.style"), value)
+      let restored = statusStyleController(defaults: defaults)
+      XCTAssertEqual(restored.style.rawValue, value)
+      XCTAssertEqual(restored.statusItem.button?.image != nil, value == "modern")
+      XCTAssertEqual(restored.statusItem.button?.attributedTitle.string,
+        value == "classic" ? "\u{25EF} 25:00" : "25:00")
+    }
+    defaults.set("unknown", forKey: "focus.statusItem.style")
+    XCTAssertEqual(statusStyleController(defaults: defaults).style, .classic)
+  }
+
+  func testStatusItemStyleRejectsMalformedInputAndPreservesColor() {
+    let suite = "status-style-\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suite)!
+    defer { defaults.removePersistentDomain(forName: suite) }
+    defaults.set("blue", forKey: adaTimerColorDefaultsKey)
+    let controller = statusStyleController(defaults: defaults)
+    for value: Any in ["unknown", 12, ["style": "modern"]] {
+      controller.handleStyleCall(FlutterMethodCall(methodName: "setStyle", arguments: value)) { reply in
+        XCTAssertEqual((reply as? FlutterError)?.code, "invalid_style")
+      }
+      XCTAssertEqual(controller.style, .classic)
+      XCTAssertNil(defaults.object(forKey: "focus.statusItem.style"))
+    }
+    controller.handleStyleCall(FlutterMethodCall(methodName: "setStyle", arguments: "modern")) { _ in }
+    controller.handleStyleCall(FlutterMethodCall(methodName: "getStyle", arguments: nil)) { reply in
+      XCTAssertEqual(reply as? String, "modern")
+    }
+    XCTAssertEqual(defaults.string(forKey: adaTimerColorDefaultsKey), "blue")
+    XCTAssertEqual(controller.statusItem.button?.attributedTitle.attribute(.foregroundColor, at: 0,
+      effectiveRange: nil) as? NSColor, .systemBlue)
+    controller.menuWillOpen(controller.statusItem.menu!)
+    let styleMenu = controller.statusItem.menu!.items.first { $0.submenu?.items.first?.representedObject as? String == "classic" }!.submenu!
+    XCTAssertEqual(styleMenu.items.map(\.state), [.off, .on])
+    NSApp.sendAction(styleMenu.items[0].action!, to: styleMenu.items[0].target, from: styleMenu.items[0])
+    XCTAssertEqual(controller.style, .classic)
+    XCTAssertNil(controller.statusItem.button?.image)
+  }
+
+  func testStatusItemStyleSwitchKeepsRunningAndPausedSnapshots() throws {
+    let suite = "status-style-\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suite)!
+    defer { defaults.removePersistentDomain(forName: suite) }
+    defaults.set("automatic", forKey: adaTimerColorDefaultsKey)
+    for status in ["running", "paused"] {
+      let timestamp = AdaDateCoding.string(from: Date())
+      let focus = activeFocus(interval: interval(
+        type: "work", status: status, plannedSeconds: 25 * 60,
+        startedAt: timestamp, pausedAt: status == "paused" ? timestamp : nil
+      ))
+      let snapshot = AdaSnapshot(version: 1, generatedAt: timestamp, focus: focus)
+      let data = try JSONEncoder().encode(snapshot)
+      defaults.set(data, forKey: adaFocusSnapshotDefaultsKey)
+      defaults.set("classic", forKey: "focus.statusItem.style")
+      let controller = statusStyleController(defaults: defaults)
+      XCTAssertTrue(controller.statusItem.button!.attributedTitle.string.hasPrefix("\u{25EF} "))
+      controller.handleStyleCall(FlutterMethodCall(methodName: "setStyle", arguments: "modern")) { _ in }
+      XCTAssertFalse(controller.statusItem.button!.attributedTitle.string.hasPrefix("\u{25EF} "))
+      if status == "paused" {
+        XCTAssertEqual(controller.statusItem.button?.attributedTitle.string, "25:00")
+      }
+      XCTAssertEqual(controller.statusItem.button?.attributedTitle.attribute(.foregroundColor, at: 0,
+        effectiveRange: nil) as? NSColor, .labelColor)
+      XCTAssertNotNil(controller.statusItem.button?.accessibilityValue())
+      XCTAssertEqual(AdaFocusSnapshotStore(defaults: defaults, fileURL: nil).load(), snapshot)
+      controller.handleStyleCall(FlutterMethodCall(methodName: "setStyle", arguments: "classic")) { _ in }
+      XCTAssertNil(controller.statusItem.button?.image)
+      XCTAssertEqual(defaults.data(forKey: adaFocusSnapshotDefaultsKey), data)
+    }
+  }
+
+  private func statusStyleController(defaults: UserDefaults) -> FocusStatusItemController {
+    _ = NSApplication.shared
+    let viewController = FlutterViewController()
+    let messenger = viewController.engine.binaryMessenger
+    return FocusStatusItemController(
+      channel: FlutterMethodChannel(name: UUID().uuidString, binaryMessenger: messenger),
+      styleChannel: FlutterMethodChannel(name: UUID().uuidString, binaryMessenger: messenger),
+      store: AdaFocusSnapshotStore(defaults: defaults, fileURL: nil),
+      defaults: defaults
+    )
+  }
+
+  func testDistractionShieldAllowsKeyFocusAndConsumesDismissalShortcuts() {
+    _ = NSApplication.shared
+    let panel = DistractionShieldPanel(frame: NSRect(x: 0, y: 0, width: 640, height: 480))
+    defer { panel.close() }
+    XCTAssertTrue(panel.canBecomeKey)
+    XCTAssertFalse(panel.styleMask.contains(.nonactivatingPanel))
+    XCTAssertFalse(panel.becomesKeyOnlyIfNeeded)
+    XCTAssertTrue(panel.hidesOnDeactivate)
+    let close = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: [.command],
+      timestamp: 0, windowNumber: panel.windowNumber, context: nil,
+      characters: "w", charactersIgnoringModifiers: "w", isARepeat: false, keyCode: 13)!
+    XCTAssertTrue(panel.performKeyEquivalent(with: close))
+    let escape = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: [],
+      timestamp: 0, windowNumber: panel.windowNumber, context: nil,
+      characters: "\u{1b}", charactersIgnoringModifiers: "\u{1b}", isARepeat: false, keyCode: 53)!
+    XCTAssertTrue(panel.performKeyEquivalent(with: escape))
+    for (text, code, modifiers) in [
+      ("\t", UInt16(48), NSEvent.ModifierFlags()),
+      ("\t", UInt16(48), NSEvent.ModifierFlags.shift),
+      ("\r", UInt16(36), NSEvent.ModifierFlags()),
+      ("q", UInt16(12), NSEvent.ModifierFlags.command),
+    ] {
+      let event = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: modifiers,
+        timestamp: 0, windowNumber: panel.windowNumber, context: nil,
+        characters: text, charactersIgnoringModifiers: text, isARepeat: false, keyCode: code)!
+      XCTAssertFalse(panel.performKeyEquivalent(with: event))
+    }
+  }
+
+  func testQuickAddGlobalShortcutDefaultsAndRoundTrips() {
+    let defaults = UserDefaults(suiteName: UUID().uuidString)!
+    let expected = QuickAddGlobalShortcut.default
+
+    XCTAssertEqual(QuickAddGlobalShortcut.load(from: defaults), expected)
+    XCTAssertEqual(
+      QuickAddGlobalShortcut(dictionary: expected.dictionary),
+      expected
+    )
+    XCTAssertEqual(expected.displayLabel, "⌥Space")
+  }
+
+  func testFailedQuickAddShortcutRegistrationKeepsStoredBinding() {
+    let defaults = UserDefaults(suiteName: UUID().uuidString)!
+    let viewController = FlutterViewController()
+    let channel = FlutterMethodChannel(
+      name: UUID().uuidString,
+      binaryMessenger: viewController.engine.binaryMessenger
+    )
+    let controller = QuickAddHotKeyController(channel: channel, defaults: defaults)
+    let candidate = QuickAddGlobalShortcut(
+      keyCode: UInt32(kVK_ANSI_J),
+      modifiers: UInt32(cmdKey),
+      keyLabel: "J"
+    )
+    var attempts: [QuickAddGlobalShortcut] = []
+
+    let status = controller.applyShortcut(candidate) { shortcut in
+      attempts.append(shortcut)
+      return shortcut == candidate ? OSStatus(-1) : noErr
+    }
+
+    XCTAssertEqual(status, OSStatus(-1))
+    XCTAssertEqual(attempts, [candidate, .default])
+    XCTAssertEqual(controller.currentShortcut, .default)
+    XCTAssertEqual(QuickAddGlobalShortcut.load(from: defaults), .default)
+  }
+
+  func testSuccessfulQuickAddShortcutRegistrationPersistsBinding() {
+    let defaults = UserDefaults(suiteName: UUID().uuidString)!
+    let viewController = FlutterViewController()
+    let channel = FlutterMethodChannel(
+      name: UUID().uuidString,
+      binaryMessenger: viewController.engine.binaryMessenger
+    )
+    let controller = QuickAddHotKeyController(channel: channel, defaults: defaults)
+    let candidate = QuickAddGlobalShortcut(
+      keyCode: UInt32(kVK_ANSI_J),
+      modifiers: UInt32(cmdKey | shiftKey),
+      keyLabel: "J"
+    )
+
+    XCTAssertEqual(controller.applyShortcut(candidate) { _ in noErr }, noErr)
+    XCTAssertEqual(controller.currentShortcut, candidate)
+    XCTAssertEqual(QuickAddGlobalShortcut.load(from: defaults), candidate)
+  }
+
+  func testAppMenuInstallsAndUpdatesMainActionsWithoutDuplicates() {
+    let viewController = FlutterViewController()
+    let channel = FlutterMethodChannel(
+      name: UUID().uuidString,
+      binaryMessenger: viewController.engine.binaryMessenger
+    )
+    let mainMenu = appMenuFixture()
+    let controller = AppMenuController(channel: channel, mainMenu: mainMenu)
+
+    controller.applyCommands(appMenuCommands())
+
+    XCTAssertEqual(
+      mainMenu.items.map(\.title),
+      ["ada", "File", "Edit", "View", "Go", "Window", "Help"]
+    )
+    XCTAssertEqual(mainMenu.item(withTitle: "File")?.submenu?.items.map(\.title), ["Add task…"])
+    XCTAssertEqual(
+      mainMenu.item(withTitle: "Go")?.submenu?.items.filter { !$0.isSeparatorItem }.map(\.title),
+      [
+        "Browse", "Search", "Today", "Upcoming", "Focus", "Inbox",
+        "Priority Matrix", "Timeline", "Kanban", "Reports",
+      ]
+    )
+    XCTAssertEqual(mainMenu.item(withTitle: "View")?.submenu?.items.first?.title, "Toggle sidebar")
+    XCTAssertEqual(mainMenu.items.first?.submenu?.item(withTitle: "Settings…")?.keyEquivalent, "1")
+
+    controller.applyCommands(appMenuCommands(quickAddKey: "J", quickAddShift: true))
+
+    XCTAssertEqual(mainMenu.items.filter { $0.title == "File" }.count, 1)
+    XCTAssertEqual(mainMenu.items.filter { $0.title == "Go" }.count, 1)
+    let quickAdd = mainMenu.item(withTitle: "File")?.submenu?.items.first
+    XCTAssertEqual(quickAdd?.keyEquivalent, "j")
+    XCTAssertEqual(quickAdd?.keyEquivalentModifierMask, [.command, .shift])
+  }
+
+  func testAppMenuMapsStandardSpecialShortcutKeys() {
+    let viewController = FlutterViewController()
+    let channel = FlutterMethodChannel(
+      name: UUID().uuidString,
+      binaryMessenger: viewController.engine.binaryMessenger
+    )
+    let mainMenu = appMenuFixture()
+    let controller = AppMenuController(channel: channel, mainMenu: mainMenu)
+
+    controller.applyCommands(appMenuCommands(quickAddKey: "Arrow Up"))
+    XCTAssertEqual(
+      mainMenu.item(withTitle: "File")?.submenu?.items.first?.keyEquivalent,
+      String(Character(UnicodeScalar(NSUpArrowFunctionKey)!))
+    )
+
+    controller.applyCommands(appMenuCommands(quickAddKey: "F5"))
+    XCTAssertEqual(
+      mainMenu.item(withTitle: "File")?.submenu?.items.first?.keyEquivalent,
+      String(Character(UnicodeScalar(NSF5FunctionKey)!))
+    )
+  }
+
+  func testDisablingQuickAddUnregistersTheHotKey() {
+    let defaults = UserDefaults(suiteName: UUID().uuidString)!
+    let viewController = FlutterViewController()
+    let channel = FlutterMethodChannel(
+      name: UUID().uuidString,
+      binaryMessenger: viewController.engine.binaryMessenger
+    )
+    let controller = QuickAddHotKeyController(channel: channel, defaults: defaults)
+    var unregisterCount = 0
+
+    XCTAssertEqual(
+      controller.applyEnabled(false) {
+        unregisterCount += 1
+        return noErr
+      },
+      noErr
+    )
+    XCTAssertFalse(controller.isEnabled)
+    XCTAssertEqual(unregisterCount, 1)
+  }
+
+  func testResolvesFlutterControllerFromApplicationWindows() {
+    let expected = FlutterViewController()
+    let window = NSWindow()
+    window.contentViewController = expected
+
+    XCTAssertTrue(
+      resolveFlutterViewController(mainWindow: nil, windows: [window]) === expected
+    )
+  }
+
+  func testDecodesFocusSnapshot() {
+    let snapshot = AdaSnapshot.decode(from: [
+      "version": 1,
+      "generatedAt": "2026-07-09T12:00:00.000Z",
+      "focus": [
+        "active": false,
+        "presetId": "deep-work",
+        "presetName": "Deep Work",
+        "preset": [
+          "id": "deep-work",
+          "name": "Deep Work",
+          "workSeconds": 50 * 60,
+          "shortBreakSeconds": 10 * 60,
+          "longBreakSeconds": 25 * 60,
+          "intervalsBeforeLongBreak": 4,
+          "allowPause": true,
+          "strictMode": false,
+        ],
+      ],
+      "tasks": [:],
+      "projects": [],
+      "sync": [:],
+    ])
+
+    XCTAssertEqual(snapshot?.focus.presetName, "Deep Work")
+    XCTAssertEqual(snapshot?.focus.preset?.workSeconds, 50 * 60)
+    XCTAssertEqual(
+      AdaFocusDisplay.title(
+        now: Date(timeIntervalSince1970: 0),
+        focus: snapshot?.focus ?? .empty
+      ),
+      "\u{25EF} 50:00"
+    )
+  }
+
+  func testSnapshotStoreReadsSharedFileWithoutDefaultsCache() {
+    let fileURL = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+    let defaults = UserDefaults(suiteName: UUID().uuidString)!
+    defer { try? FileManager.default.removeItem(at: fileURL) }
+    let store = AdaFocusSnapshotStore(defaults: defaults, fileURL: fileURL)
+
+    store.save(dictionary: [
+      "version": 1,
+      "focus": [
+        "active": false,
+        "presetId": "classic",
+        "presetName": "Classic",
+        "preset": [
+          "id": "classic",
+          "name": "Classic",
+          "workSeconds": 25 * 60,
+          "shortBreakSeconds": 5 * 60,
+          "longBreakSeconds": 15 * 60,
+          "intervalsBeforeLongBreak": 4,
+          "allowPause": true,
+          "strictMode": false,
+        ],
+      ],
+    ])
+    defaults.removeObject(forKey: adaFocusSnapshotDefaultsKey)
+
+    XCTAssertEqual(store.load().focus.presetName, "Classic")
+  }
+
+  func testRemainingTimeUsesRunningClock() {
+    let now = date("2026-07-09T12:08:00.000Z")
+    let interval = interval(
+      type: "work",
+      status: "running",
+      plannedSeconds: 25 * 60,
+      startedAt: "2026-07-09T12:00:00.000Z",
+      pausedTotalSeconds: 60
+    )
+
+    XCTAssertEqual(
+      AdaFocusDisplay.remainingSeconds(now: now, interval: interval),
+      18 * 60
+    )
+  }
+
+  func testStatusTitleFormattingForFocusStates() {
+    let now = date("2026-07-09T12:20:00.000Z")
+
+    XCTAssertEqual(
+      AdaFocusDisplay.title(now: now, focus: idleFocus(workSeconds: 25 * 60)),
+      "\u{25EF} 25:00"
+    )
+    XCTAssertEqual(
+      AdaFocusDisplay.title(
+        now: now,
+        focus: activeFocus(
+          interval: interval(
+            type: "work",
+            status: "running",
+            plannedSeconds: 25 * 60,
+            startedAt: "2026-07-09T12:00:00.000Z"
+          )
+        )
+      ),
+      "\u{25EF} 05:00"
+    )
+    XCTAssertEqual(
+      AdaFocusDisplay.title(
+        now: now,
+        focus: activeFocus(
+          interval: interval(
+            type: "work",
+            status: "paused",
+            plannedSeconds: 25 * 60,
+            startedAt: "2026-07-09T12:00:00.000Z",
+            pausedAt: "2026-07-09T12:04:00.000Z"
+          )
+        )
+      ),
+      "\u{25EF} 21:00"
+    )
+    XCTAssertEqual(
+      AdaFocusDisplay.title(
+        now: now,
+        focus: activeFocus(
+          interval: interval(
+            type: "shortBreak",
+            status: "running",
+            plannedSeconds: 5 * 60,
+            startedAt: "2026-07-09T12:17:00.000Z"
+          )
+        )
+      ),
+      "\u{25EF} 02:00"
+    )
+  }
+
+  func testFocusAppGroupComesFromTheBundle() {
+    // The identifier is read from Info.plist so each flavor resolves its own
+    // App Group. The fallback is empty rather than the production group: a
+    // build that cannot resolve the key must fall back to .standard, not write
+    // its focus snapshot into another flavor's shared container.
+    let plistValue = Bundle.main.object(forInfoDictionaryKey: "AdaAppGroup") as? String
+    XCTAssertEqual(adaFocusAppGroupIdentifier, plistValue ?? "")
+  }
+
+  func testTimerColorPresetsMatchMenuContract() {
+    XCTAssertEqual(
+      AdaTimerColor.allCases.map(\.rawValue),
+      ["white", "black", "red", "green", "blue", "orange", "purple"]
+    )
+  }
+
+  func testCompleteCommandMatchesCompanionContract() {
+    XCTAssertEqual(AdaFocusCommand.complete, "focus.complete")
+  }
+
+  func testStartCommandIsOnlyAvailableWhenItCanSucceed() {
+    let running = activeFocus(
+      interval: interval(
+        type: "work",
+        status: "running",
+        plannedSeconds: 25 * 60,
+        startedAt: "2026-07-09T12:00:00.000Z"
+      )
+    )
+    let paused = activeFocus(
+      interval: interval(
+        type: "work",
+        status: "paused",
+        plannedSeconds: 25 * 60,
+        startedAt: "2026-07-09T12:00:00.000Z",
+        pausedAt: "2026-07-09T12:05:00.000Z"
+      )
+    )
+    let ready = activeFocus(
+      interval: interval(
+        type: "shortBreak",
+        status: "ready",
+        plannedSeconds: 5 * 60,
+        startedAt: "2026-07-09T12:25:00.000Z"
+      )
+    )
+
+    XCTAssertEqual(
+      AdaFocusDisplay.primaryStartCommand(focus: idleFocus(workSeconds: 25 * 60)),
+      AdaFocusCommand.startDefault
+    )
+    XCTAssertNil(AdaFocusDisplay.primaryStartCommand(focus: running))
+    XCTAssertNil(AdaFocusDisplay.primaryStartCommand(focus: paused))
+    XCTAssertEqual(
+      AdaFocusDisplay.primaryStartCommand(focus: ready),
+      AdaFocusCommand.restartInterval
+    )
+  }
+
+  func testRunningWidgetTimelineAdvancesProgressEachMinute() {
+    let now = date("2026-07-09T12:00:00.000Z")
+    let focus = activeFocus(
+      interval: interval(
+        type: "work",
+        status: "running",
+        plannedSeconds: 3 * 60,
+        startedAt: "2026-07-09T12:00:00.000Z"
+      )
+    )
+
+    XCTAssertEqual(
+      AdaFocusDisplay.timelineDates(now: now, focus: focus),
+      [
+        now,
+        now.addingTimeInterval(60),
+        now.addingTimeInterval(120),
+        now.addingTimeInterval(180),
+      ]
+    )
+    XCTAssertEqual(
+      AdaFocusDisplay.timelineDates(
+        now: now,
+        focus: idleFocus(workSeconds: 25 * 60)
+      ),
+      [now]
+    )
+  }
+
+  private func idleFocus(workSeconds: Int) -> AdaFocusSnapshot {
+    AdaFocusSnapshot(
+      active: false,
+      presetId: "classic",
+      presetName: "Classic",
+      preset: preset(workSeconds: workSeconds),
+      run: nil,
+      interval: nil
+    )
+  }
+
+  private func appMenuFixture() -> NSMenu {
+    let mainMenu = NSMenu(title: "Main Menu")
+    let application = NSMenuItem(title: "ada", action: nil, keyEquivalent: "")
+    let applicationMenu = NSMenu(title: "ada")
+    applicationMenu.addItem(NSMenuItem(title: "About ada", action: nil, keyEquivalent: ""))
+    applicationMenu.addItem(.separator())
+    applicationMenu.addItem(NSMenuItem(title: "Preferences…", action: nil, keyEquivalent: ","))
+    application.submenu = applicationMenu
+    mainMenu.addItem(application)
+    mainMenu.addItem(topLevelMenu(title: "Edit"))
+    mainMenu.addItem(
+      topLevelMenu(
+        title: "View",
+        items: [NSMenuItem(title: "Enter Full Screen", action: nil, keyEquivalent: "f")]
+      )
+    )
+    mainMenu.addItem(topLevelMenu(title: "Window"))
+    mainMenu.addItem(topLevelMenu(title: "Help"))
+    return mainMenu
+  }
+
+  private func topLevelMenu(title: String, items: [NSMenuItem] = []) -> NSMenuItem {
+    let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+    let submenu = NSMenu(title: title)
+    items.forEach(submenu.addItem)
+    item.submenu = submenu
+    return item
+  }
+
+  private func appMenuCommands(
+    quickAddKey: String = "N",
+    quickAddShift: Bool = false
+  ) -> [String: Any] {
+    func command(_ label: String, _ key: String, shift: Bool = false) -> [String: Any] {
+      [
+        "label": label,
+        "keyLabel": key,
+        "meta": true,
+        "control": false,
+        "alt": false,
+        "shift": shift,
+      ]
+    }
+
+    return [
+      "toggleSidebar": command("Toggle sidebar", "B"),
+      "quickAdd": command("Add task", quickAddKey, shift: quickAddShift),
+      "browse": command("Browse", "1"),
+      "search": command("Search", "2"),
+      "today": command("Today", "3"),
+      "upcoming": command("Upcoming", "4"),
+      "focus": command("Focus", "5"),
+      "inbox": command("Inbox", "6"),
+      "priorityMatrix": command("Priority Matrix", "7"),
+      "timeline": command("Timeline", "8"),
+      "kanban": command("Kanban", "9"),
+      "reports": command("Reports", "0"),
+      "settings": command("Settings", "1", shift: true),
+    ]
+  }
+
+  private func activeFocus(interval: AdaFocusInterval) -> AdaFocusSnapshot {
+    AdaFocusSnapshot(
+      active: true,
+      presetId: "classic",
+      presetName: "Classic",
+      preset: preset(workSeconds: 25 * 60),
+      run: AdaFocusRun(
+        id: "run-1",
+        status: interval.status == "paused" ? "paused" : "active",
+        taskId: nil,
+        projectId: nil,
+        startedAt: interval.startedAt,
+        completedWorkIntervals: 1,
+        targetWorkIntervals: 4
+      ),
+      interval: interval
+    )
+  }
+
+  private func preset(workSeconds: Int) -> AdaFocusPreset {
+    AdaFocusPreset(
+      id: "classic",
+      name: "Classic",
+      workSeconds: workSeconds,
+      shortBreakSeconds: 5 * 60,
+      longBreakSeconds: 15 * 60,
+      intervalsBeforeLongBreak: 4,
+      allowPause: true,
+      strictMode: false
+    )
+  }
+
+  private func interval(
+    type: String,
+    status: String,
+    plannedSeconds: Int,
+    startedAt: String,
+    pausedAt: String? = nil,
+    pausedTotalSeconds: Int = 0
+  ) -> AdaFocusInterval {
+    AdaFocusInterval(
+      id: "interval-1",
+      type: type,
+      status: status,
+      plannedSeconds: plannedSeconds,
+      startedAt: startedAt,
+      pausedAt: pausedAt,
+      pausedTotalSeconds: pausedTotalSeconds,
+      sequenceNumber: 1
+    )
+  }
+
+  private func date(_ value: String) -> Date {
+    AdaDateCoding.date(from: value) ?? Date(timeIntervalSince1970: 0)
+  }
+}

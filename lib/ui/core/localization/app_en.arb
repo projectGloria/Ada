@@ -1,0 +1,2614 @@
+{
+  "settingsDateFormatTitle": "Date format",
+  "settingsDateFormatSubtitle": "Automatic follows the app language.",
+  "settingsDateFormatAutomatic": "Automatic",
+  "settingsDateFormatDayMonthYear": "Day.month.year",
+  "settingsDateFormatMonthDayYear": "Month/day/year",
+  "settingsDateFormatYearMonthDay": "Year-month-day",
+  "settingsDateFormatLong": "Month in words",
+  "settingsSectionGeneral": "General",
+  "settingsSectionAppearance": "Appearance",
+  "settingsSectionTasksFocus": "Tasks and Focus",
+  "settingsSectionPomo": "Ada",
+  "settingsSectionIntegrations": "Integrations and data",
+  "settingsSectionAccount": "Account and Pro",
+  "settingsThemeColorsTab": "Colors",
+  "settingsThemeBackgroundsTab": "Backgrounds",
+  "settingsRefreshAccount": "Refresh account",
+  "settingsSubscriptionActions": "Subscription options",
+  "settingsSubscriptionError": "Could not refresh your subscription. Previously confirmed access is retained.",
+  "settingsVersionError": "Could not load the version.",
+  "@@locale": "en",
+  "appTitle": "Ada",
+  "commonAdd": "Add",
+  "commonCancel": "Cancel",
+  "commonSave": "Save",
+  "commonDelete": "Delete",
+  "commonUndo": "Undo",
+  "commonOpen": "Open",
+  "commonBack": "Back",
+  "commonClose": "Close",
+  "commonCreate": "Create",
+  "commonClear": "Clear",
+  "commonStop": "Stop",
+  "skip": "Skip",
+  "onboardingLanguageTitle": "Choose language",
+  "onboardingLanguageSubtitle": "Pick the language Ada should use.",
+  "onboardingTimerTitle": "Set up your focus",
+  "onboardingTimerSubtitle": "Choose your timer style and session display.",
+  "onboardingPaywallTitle": "Unlock Ada",
+  "onboardingPaywallSubtitle": "The Lifetime offer is available for 24 hours every week.",
+  "onboardingAccountTitle": "Create an account",
+  "onboardingAccountSubtitle": "Sign in to sync tasks, focus history, and settings between devices.",
+  "startupPreparingTasks": "Preparing your tasks",
+  "operationTakingLonger": "This is taking longer than usual. The operation is still running.",
+  "onboardingContinue": "Continue",
+  "onboardingMaybeLater": "Maybe later",
+  "onboardingFinish": "Finish",
+  "billingTitle": "Ada Pro",
+  "billingSubtitle": "Dictate tasks in natural language, and Ada turns your words into tasks. Task history is saved forever.",
+  "billingSubtitleHighlight": "natural language",
+  "billingCancelAnytime": "Cancel anytime.",
+  "billingMonthlyTitle": "Monthly",
+  "billingAnnualTitle": "Annual",
+  "billingPricePerMonth": "{price}/month",
+  "@billingPricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingPricePerYear": "{price}/year",
+  "@billingPricePerYear": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingMonthlyIntroSubtitle": "First 3 months, then {price}.",
+  "@billingMonthlyIntroSubtitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingAnnualIntroSubtitle": "Then {price}.",
+  "@billingAnnualIntroSubtitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingLifetimeTitle": "Lifetime",
+  "billingLifetimeSubtitle": "One payment forever.",
+  "billingBestValue": "Best value",
+  "billingChoose": "Choose",
+  "billingActive": "Ada Pro is active on this device.",
+  "billingActiveShort": "Active",
+  "billingRestore": "Restore purchases",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Terms of Use",
+  "support": "Support",
+  "billingManageLink": "Manage through Link",
+  "billingExternalBrowserTitle": "Payment opens in your browser",
+  "billingExternalBrowserMessage": "Ada will open Stripe Checkout in Safari or your default browser. Allow the browser window to continue.",
+  "billingAppleOnly": "Purchases are available on iPhone, iPad, and Mac.",
+  "billingStoreUnavailable": "The App Store is not available right now.",
+  "billingStoreConnectionFailed": "Turn off your VPN and try again.",
+  "billingPurchaseError": "Purchase error: {error}",
+  "@billingPurchaseError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "billingStripeAuthenticationRequired": "Sign in to Ada and try again.",
+  "billingStripeDisabled": "Payments are not available yet. Try again later.",
+  "billingStripeAlreadyEntitled": "Ada Pro is already active. Refresh your account status.",
+  "billingStripeOfferExpired": "This offer has expired. Choose another available plan.",
+  "billingStripeManagedPaymentsUnavailable": "Stripe payments are temporarily unavailable. Try again later or contact support.",
+  "billingStripeCheckoutFailed": "Could not start payment. Try again.",
+  "billingStripeCheckoutPending": "A payment is being prepared or confirmed. Try again shortly.",
+  "@billingStripeCheckoutPending": {
+    "description": "Checkout is still being prepared or a previous payment is being confirmed."
+  },
+  "purchaseSuccessTitle": "Pro is active",
+  "purchaseSuccessMessage": "Thanks for supporting Ada. All Pro features are ready to use.",
+  "purchaseSuccessContinue": "Continue",
+  "purchaseProcessingTitle": "Payment is processing",
+  "purchaseProcessingMessage": "Your payment is being confirmed. If Pro does not appear shortly, refresh again later.",
+  "purchaseOpenApp": "Open Ada",
+  "launchOfferEndsIn": "{time} left on Lifetime offer",
+  "@launchOfferEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "accountApple": "Apple",
+  "accountGoogle": "Google",
+  "accountEmail": "Email",
+  "loginTitle": "Sign in to Ada",
+  "accountChecking": "Checking your account",
+  "oauthConsentTitle": "Connect an agent",
+  "oauthConsentLoading": "Checking the connection request",
+  "oauthConsentInvalidAuthorization": "This connection request is missing or invalid.",
+  "oauthConsentLoadError": "Could not load the connection request.",
+  "oauthConsentActionError": "Could not complete the request. Try again.",
+  "oauthConsentRedirectError": "Ada received an unsafe or missing return address. Access was not handed off.",
+  "oauthConsentClientFallback": "Agent",
+  "oauthConsentClientRequest": "{clientName} wants to access Ada",
+  "@oauthConsentClientRequest": {
+    "placeholders": {
+      "clientName": {
+        "type": "String"
+      }
+    }
+  },
+  "oauthConsentRedirectOrigin": "Return address",
+  "oauthConsentCapabilitiesTitle": "This agent can",
+  "oauthConsentManagePlanning": "Read and manage tasks, habits, projects, user labels, and Kanban. Read and change shortcuts and appearance on a selected online device.",
+  "oauthConsentReadInsights": "Read completed focus history, productivity reports, and achievements.",
+  "oauthConsentUnavailableTitle": "This agent cannot",
+  "oauthConsentUnavailable": "Access your account or billing, Google Calendar, or the live focus timer.",
+  "oauthConsentUnsupportedScopes": "This request asks for unsupported account access and cannot be approved.",
+  "oauthConsentApprove": "Allow",
+  "oauthConsentDeny": "Deny",
+  "oauthConsentApproving": "Allowing access…",
+  "oauthConsentDenying": "Denying access…",
+  "oauthConsentRedirecting": "Returning to the agent…",
+  "loginCreateAccountPrompt": "No account yet?",
+  "loginCreateAccountAction": "Create account",
+  "registerTitle": "Create an account",
+  "registerSubtitle": "Sync tasks, focus history, and settings between devices.",
+  "registerPassword": "Password",
+  "registerSubmit": "Create account",
+  "registerSignInPrompt": "Already have an account?",
+  "registerSignInAction": "Sign in",
+  "registerCheckEmailTitle": "Check your email",
+  "registerCheckEmailMessage": "If this address needs confirmation, you will receive an email with a link. If you already have an account, sign in or reset your password.",
+  "registerError": "Could not create account: {error}",
+  "@registerError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "authEmailSignInTitle": "Sign in with email",
+  "authWelcomeTitle": "Sign in to Ada",
+  "authWelcomeDescription": "Your tasks and focus, on every device.",
+  "authSignInWithLink": "Sign in with a link",
+  "authForgotPassword": "Forgot password?",
+  "authBackToSignIn": "Back to sign in",
+  "authNoAccount": "No account yet?",
+  "authHaveAccount": "Already have an account?",
+  "authShowPassword": "Show password",
+  "authHidePassword": "Hide password",
+  "authResetTitle": "Reset your password",
+  "authResetDescription": "Enter your account email. We will send a link to change your password.",
+  "authResetEmailSentTitle": "Check your email",
+  "authResetEmailSent": "If an account exists for this email, you will receive a password reset link.",
+  "authResetSendAgain": "Send again",
+  "authResetEditEmail": "Change email",
+  "authNewPasswordTitle": "Choose a new password",
+  "authNewPasswordDescription": "Use a password you do not use for other accounts.",
+  "authNewPassword": "New password",
+  "authConfirmPassword": "Repeat password",
+  "authSavePassword": "Save password",
+  "authPasswordMismatch": "The passwords do not match.",
+  "authPasswordUnchanged": "Choose a different password from your current one.",
+  "authPasswordUpdatedTitle": "Password updated",
+  "authPasswordUpdatedMessage": "Your new password is saved. You can continue using Ada.",
+  "authResetLinkExpired": "This password reset link is invalid or expired. Request a new link.",
+  "authUnexpectedReset": "Could not send the password reset email. Try again.",
+  "authUnexpectedPasswordUpdate": "Could not save your new password. Try again.",
+  "authCheckingResetLink": "Checking your password reset link…",
+  "authSignInAction": "Sign in",
+  "authSendLink": "Send link",
+  "authMagicLinkSent": "If an account exists for this address, you will receive a sign-in link. Check your inbox and spam folder.",
+  "authAccountCreated": "Account created.",
+  "authSignedIn": "Signed in.",
+  "authEmailRequired": "Enter your email.",
+  "authEmailInvalid": "Check the email address, for example name@example.com.",
+  "authPasswordRequired": "Enter your password.",
+  "authInvalidCredentials": "The email or password is incorrect. Check the address, reset your password, or create an account.",
+  "authEmailUnconfirmed": "Confirm your email using the link we sent, then sign in again.",
+  "authWeakPassword": "This password is too easy to guess. Use a longer, less predictable password.",
+  "authAccountMayExist": "An account may already use this email. Sign in or reset your password.",
+  "authRateLimited": "Too many attempts. Wait a few minutes and try again.",
+  "authEmailRateLimited": "Too many emails were requested. Wait a few minutes before requesting another.",
+  "authOffline": "Could not reach the account service. Check your internet connection and try again.",
+  "authTimeout": "The account service is taking too long to respond. Try again.",
+  "authServiceUnavailable": "The account service is temporarily unavailable. Try again later.",
+  "authCaptchaRequired": "Complete the security check to continue.",
+  "authCaptchaExpired": "The security check expired. Complete it again.",
+  "authCaptchaFailed": "The security check failed. Try the verification again.",
+  "authCaptchaCancelled": "The security check was cancelled. Start it again to continue.",
+  "authCaptchaUnavailable": "The security check is unavailable right now. Check your connection and try again.",
+  "authCaptchaOpenFailed": "Ada could not open the security check in your browser. Check your default browser and try again.",
+  "authProviderFallback": "this provider",
+  "authProviderUnavailable": "Sign-in with {provider} is unavailable right now. Try again or use another method.",
+  "authProviderUnavailableHere": "Sign-in with {provider} is unavailable here. Use another sign-in method.",
+  "@authProviderUnavailableHere": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "@authProviderUnavailable": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "authSignUpDisabled": "Account creation with email is temporarily unavailable. Try another sign-in method.",
+  "authAccountRestricted": "This account cannot sign in right now. Contact support if you think this is a mistake.",
+  "authLinkExpired": "This sign-in link is invalid or expired. Request a new link.",
+  "authUnexpectedSignIn": "Could not sign in. Try again.",
+  "authUnexpectedSignUp": "Could not create the account. Try again.",
+  "authUnexpectedMagicLink": "Could not send the sign-in link. Try again.",
+  "authResendConfirmation": "Resend confirmation",
+  "authConfirmationSendFailed": "Could not send the confirmation email. Try again later.",
+  "authRetryVerification": "Try verification again",
+  "captchaSecurityLabel": "Security verification",
+  "captchaChallengeTitle": "Ada security check",
+  "captchaChallengePrompt": "Confirm you are human to continue in Ada.",
+  "captchaChallengeInvalid": "This security verification link is invalid. Return to Ada and try again.",
+  "captchaChallengeHandoffHelp": "If Ada did not open, use the button below. If the app is not installed, close this page and return to the device where you started.",
+  "captchaReturnToApp": "Return to Ada",
+  "navSearch": "Search",
+  "navInbox": "Inbox",
+  "navPriorityMatrix": "Priority Matrix",
+  "navCalendar": "Calendar",
+  "calendarSubtitle": "Plan your day. Leave room for life.",
+  "calendarDay": "Day",
+  "calendarWeek": "Week",
+  "calendarMonth": "Month",
+  "calendarRoutine": "Routine",
+  "calendarRhythm": "Rhythm",
+  "calendarCollapseMonth": "Collapse month",
+  "calendarExpandMonth": "Show month",
+  "calendarOverview": "Day overview",
+  "calendarOpenMonth": "Open month",
+  "calendarUnscheduled": "Unscheduled",
+  "calendarAllProjects": "All projects",
+  "calendarRoutineDefault": "My usual day",
+  "calendarRoutineDescription": "Tasks are grouped by start time. Customize periods to suit your day.",
+  "calendarEditRoutine": "Configure periods",
+  "calendarRoutineTitle": "Your daily routine",
+  "calendarRoutineName": "Routine name",
+  "calendarPeriodName": "Period name",
+  "calendarAddPeriod": "Add period",
+  "calendarRemovePeriod": "Remove period",
+  "calendarPeriodStart": "From",
+  "calendarPeriodEnd": "Until",
+  "calendarRoutineInvalid": "Name the routine and its periods. End times must follow start times, and periods cannot overlap.",
+  "calendarOutsideRoutine": "Outside routine periods",
+  "calendarFreeTime": "Free time",
+  "calendarMorning": "Morning",
+  "calendarAfternoon": "Afternoon",
+  "calendarEvening": "Evening",
+  "calendarNewPeriod": "New period",
+  "calendarResize": "Resize task",
+  "calendarPreviousPeriod": "Previous period",
+  "calendarNextPeriod": "Next period",
+  "calendarSaveFailed": "Could not save calendar settings",
+  "calendarNoActiveFocus": "No active focus session",
+  "calendarCurrentTask": "Current task",
+  "navTimeline": "Timeline",
+  "navKanban": "Kanban",
+  "kanbanTitle": "Kanban",
+  "kanbanSubtitle": "Visualize your workflow and focus on what matters now.",
+  "kanbanDefaultBacklog": "Backlog",
+  "kanbanDefaultTodo": "To do",
+  "kanbanDefaultInProgress": "In progress",
+  "kanbanDefaultDone": "Done",
+  "kanbanSearchTooltip": "Search Kanban",
+  "kanbanSearchHint": "Search tasks or projects",
+  "kanbanHideDone": "Hide Done",
+  "kanbanShowDone": "Show Done",
+  "kanbanProjectsTitle": "Projects on this board",
+  "kanbanAddToStatus": "Add to {status}",
+  "@kanbanAddToStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanTaskField": "Task",
+  "kanbanProjectField": "Project",
+  "kanbanChooseProject": "Choose a project.",
+  "kanbanTaskActions": "Task actions",
+  "kanbanDragTask": "Drag task",
+  "kanbanMoveTo": "Move to {status}",
+  "@kanbanMoveTo": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanRestoreBeforeFocus": "Restore the task before starting Focus.",
+  "kanbanCouldNotStartFocus": "Could not start Focus: {error}",
+  "@kanbanCouldNotStartFocus": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "kanbanCouldNotLoad": "Could not load Kanban: {error}",
+  "@kanbanCouldNotLoad": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "commonRetry": "Retry",
+  "commonContinueWaiting": "Continue waiting",
+  "kanbanTasksCount": "{count} tasks",
+  "@kanbanTasksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanSubtasksProgress": "{completed} of {total} subtasks",
+  "@kanbanSubtasksProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanFocusIntervalsProgress": "{completed} of {total} focus intervals",
+  "@kanbanFocusIntervalsProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanActive": "Active",
+  "kanbanPriority": "Priority {priority}",
+  "@kanbanPriority": {
+    "placeholders": {
+      "priority": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanMoveAnnouncement": "Moved to {status}",
+  "@kanbanMoveAnnouncement": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanFocusStartedAnnouncement": "Focus started for {task}",
+  "@kanbanFocusStartedAnnouncement": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanNoTasks": "No tasks yet",
+  "navToday": "Today",
+  "navUpcoming": "Upcoming",
+  "navBrowse": "Browse",
+  "navIntegrations": "Integrations",
+  "navReports": "Reports",
+  "navFocus": "Focus",
+  "navProjects": "Projects",
+  "navSettings": "Settings",
+  "settingsTitle": "Settings",
+  "settingsAboutTitle": "About",
+  "settingsFocusCompletionCelebrationTitle": "Focus completion celebration",
+  "settingsFocusCompletionCelebrationSubtitle": "Show a full-screen celebration after the final break.",
+  "settingsVersionLabel": "Version",
+  "settingsPlanLabel": "Plan",
+  "settingsPlanFree": "Free",
+  "settingsPlanPro": "Ada Pro",
+  "settingsShortcutsTitle": "Keyboard shortcuts",
+  "settingsShortcutsSubtitle": "Customize commands available from a hardware keyboard.",
+  "settingsShortcutsToggleSidebar": "Toggle sidebar",
+  "settingsShortcutsToggleTaskDetails": "Toggle task details",
+  "settingsShortcutsToggleTaskDetailsAlternate": "Toggle task details (second shortcut)",
+  "settingsShortcutsFocusAlternate": "Focus (second shortcut)",
+  "settingsShortcutsGlobalQuickAdd": "Global quick add",
+  "settingsShortcutsGlobalQuickAddSubtitle": "Works even when Ada is not active.",
+  "settingsShortcutsRecordTitle": "Press a shortcut",
+  "settingsShortcutsRecordPrompt": "Use a key with Command, Control, or Alt. Press Esc to cancel.",
+  "settingsShortcutsInvalid": "Include Command, Control, or Alt.",
+  "settingsShortcutsConflict": "This shortcut is already in use.",
+  "settingsShortcutsGlobalError": "That global shortcut is unavailable. The previous shortcut is still active.",
+  "settingsShortcutsResetAll": "Reset all",
+  "settingsShortcutsResetDone": "Keyboard shortcuts reset.",
+  "csvExportTitle": "Export all tasks to CSV",
+  "csvExportSubtitle": "Local personal and shared tasks, including completed tasks. This format is for viewing, not re-importing.",
+  "csvExportButton": "Export CSV",
+  "csvExportSuccess": "CSV file is ready.",
+  "csvExportError": "Could not export CSV. Please try again.",
+  "csvImportTitle": "Import tasks from CSV",
+  "csvImportSubtitle": "Review a CSV file before creating tasks, projects, labels, and workflow statuses.",
+  "csvImportSelectFile": "Choose CSV file",
+  "csvImportHumanGuideButton": "Guide for people",
+  "csvImportAgentGuideButton": "Guide for agents",
+  "csvImportHumanGuideTitle": "How to prepare a CSV file",
+  "csvImportAgentGuideTitle": "CSV contract for an agent",
+  "csvImportCopy": "Copy",
+  "csvImportCopied": "Copied to clipboard.",
+  "csvImportPreviewTitle": "Review import",
+  "csvImportPreviewTasks": "Tasks",
+  "csvImportPreviewSubtasks": "Subtasks",
+  "csvImportPreviewNewProjects": "New projects",
+  "csvImportPreviewNewLabels": "New labels",
+  "csvImportPreviewNewStatuses": "New workflow statuses",
+  "csvImportNone": "None",
+  "csvImportDuplicateWarning": "Importing the same file again will create duplicate tasks.",
+  "csvImportConfirm": "Import",
+  "csvImportSuccess": "Tasks imported",
+  "csvImportErrorTitle": "CSV import failed",
+  "csvImportUnexpectedError": "The file could not be imported.",
+  "csvImportHumanGuide": "1. Save the file as UTF-8 CSV. Use a comma (recommended) or semicolon as the separator.\n\n2. The content column is required. You may also use: key, description, project, labels, priority, due_date, start_at, end_at, time_zone, recurrence, recurrence_interval, deadline, estimate, kanban_status, parent_key.\n\n3. Put one open task on each row. Separate labels with |. Priority is 1–4; an empty value means 4. An empty project means Inbox and an empty workflow status means Backlog. Missing projects, labels, and open statuses are created automatically.\n\n4. For an all-day task, use due_date in YYYY-MM-DD format. For a timed task, fill start_at and end_at as RFC3339 values with a UTC offset and provide an IANA time_zone, for example Europe/Moscow.\n\n5. To create subtasks, give the parent row a unique key and put that value in the child's parent_key. Parents may appear later in the file. A child must use the same project as its parent.\n\n6. Ada validates the whole file and shows a preview before importing. Nothing is saved if any row is invalid. Re-importing creates duplicate tasks.",
+  "settingsConnectedAgentsTitle": "Connected agents",
+  "settingsConnectedAgentsLoading": "Loading connected agents…",
+  "settingsConnectedAgentsEmpty": "No agents are connected.",
+  "settingsConnectedAgentsLoadError": "Could not load connected agents.",
+  "settingsConnectedAgentsUnknownClient": "Agent",
+  "settingsConnectedAgentsConnectedOn": "Connected on {date}",
+  "@settingsConnectedAgentsConnectedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConnectedAgentsRevoke": "Revoke access",
+  "settingsConnectedAgentsRevokeConfirmTitle": "Revoke agent access?",
+  "settingsConnectedAgentsRevokeConfirmMessage": "Revoke Ada access for {clientName}?",
+  "@settingsConnectedAgentsRevokeConfirmMessage": {
+    "placeholders": {
+      "clientName": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConnectedAgentsRevokeError": "Could not revoke access. Try again.",
+  "settingsLanguageTitle": "Language",
+  "settingsLanguageSubtitle": "Choose the app language.",
+  "settingsLanguageSystem": "System default",
+  "settingsVoiceTranscriptionTitle": "Voice transcription",
+  "settingsVoiceTranscriptionSubtitle": "Choose how recordings are converted to text on this device.",
+  "settingsVoiceTranscriptionSystem": "System (Apple)",
+  "settingsVoiceTranscriptionCloud": "Cloud",
+  "settingsVoiceTranscriptionCloudDescription": "Cloud transcription sends audio to Ada and requires an internet connection.",
+  "settingsVoiceTranscriptionCloudRequiresSignIn": "Sign in to use cloud transcription. System transcription is active until then.",
+  "settingsThemeTitle": "Theme",
+  "settingsThemeSubtitle": "Choose the app appearance.",
+  "settingsThemeSystem": "System",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsTimerVisualTitle": "Pomodoro timer",
+  "settingsTimerVisualSubtitle": "Choose how progress is shown on the focus screen.",
+  "settingsTimerVisualBar": "Bar",
+  "settingsTimerVisualCircle": "Circle",
+  "settingsReturnRemindersTitle": "Return reminders",
+  "settingsReturnRemindersSubtitle": "An evening reminder at 20:30 if you have not completed any tasks today.",
+  "settingsDefaultTimedBlockTitle": "Default calendar block duration",
+  "settingsDefaultTimedBlockSubtitle": "When only a time is entered, new tasks use this calendar duration.",
+  "settingsDefaultTimedBlockCustomLabel": "Custom duration",
+  "settingsDefaultTimedBlockError": "Enter 1 to 480 minutes.",
+  "settingsTaskTimeDisplayTitle": "Task time display",
+  "settingsTaskTimeDisplaySubtitle": "Choose how timed task schedules are shown.",
+  "settingsTaskTimeDisplaySmart": "Smart",
+  "settingsTaskTimeDisplayRange": "Start and end time",
+  "settingsTaskTimeDisplayStartOnly": "Start time only",
+  "taskTimeStatusFuture": "Upcoming",
+  "taskTimeStatusFocused": "In focus",
+  "taskTimeStatusCurrent": "In progress",
+  "taskTimeStatusOverdue": "Overdue",
+  "taskTimeStatusCompleted": "Completed",
+  "menuTooltip": "Menu",
+  "localUser": "Local User",
+  "addTask": "Add task",
+  "quickAddHint": "Task name tomorrow p2 #Project @label 2p",
+  "couldNotAddTask": "Could not add task: {error}",
+  "@couldNotAddTask": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "taskCreateFailed": "Could not create the task. Try again.",
+  "couldNotAddProject": "Could not add project: {error}",
+  "@couldNotAddProject": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "tasksCreated": "{count, plural, =1{Added 1 task} other{Added {count} tasks}}",
+  "@tasksCreated": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceQuickAdd": "Voice quick add",
+  "voiceTitle": "Voice add",
+  "voiceRecord": "Record",
+  "voiceAgain": "Again",
+  "voiceStop": "Stop",
+  "voiceAddCount": "Add {count}",
+  "@voiceAddCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceTaskLabel": "Task {index}",
+  "@voiceTaskLabel": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceRemoveTask": "Remove",
+  "voiceInstruction": "Tap record and dictate tasks.",
+  "voiceStatusIdle": "Built-in microphone input only",
+  "voiceStatusRequestingPermission": "Requesting access",
+  "voiceStatusRecording": "Listening to the built-in microphone",
+  "voiceStatusTranscribing": "Transcribing recording",
+  "voiceStatusCanceled": "Recording canceled",
+  "voiceStatusUnsupported": "Platform is not supported",
+  "voiceStatusError": "Could not recognize speech",
+  "voiceStatusAnalyzing": "Splitting into tasks",
+  "voiceStatusReview": "Review tasks before adding",
+  "voiceStepRecord": "Record",
+  "voiceStepText": "Text",
+  "voiceStepAnalyze": "Analyze",
+  "voiceStepReview": "Review",
+  "voiceAnalyzing": "Ada is splitting speech into tasks",
+  "voiceFallbackError": "Ada could not process speech; kept a draft for manual editing.",
+  "voiceMicrophoneUnavailable": "The microphone is currently unavailable. End any active call or voice chat, then try again.",
+  "voiceSmartMode": "Smart mode",
+  "voiceRetryTranscription": "Retry transcription",
+  "voiceRecordingSaved": "Recording saved on this device. You can retry without recording again.",
+  "voiceAllowAccess": "Allow access",
+  "voiceOpenMicrophoneSettings": "Open microphone settings",
+  "voiceOpenSpeechSettings": "Open speech recognition settings",
+  "voiceEnableDictation": "Enable Dictation",
+  "voiceUseCloudTranscription": "Use cloud transcription",
+  "voiceMicrophoneDenied": "Allow microphone access in system settings.",
+  "voiceSpeechDenied": "Allow speech recognition in system settings.",
+  "voiceAccessRestricted": "Access is restricted by your administrator or Screen Time settings.",
+  "voiceDictationDisabled": "Enable Dictation in System Settings → Keyboard → Dictation and select your language. Then retry.",
+  "voiceServiceUnavailable": "Speech recognition is unavailable. Check your connection. On Mac, also check System Settings → Keyboard → Dictation and your language.",
+  "voiceCloudServiceUnavailable": "Cloud transcription failed. Check your internet connection and retry the saved recording.",
+  "voiceLocaleUnsupported": "System speech recognition does not support the selected language on this device.",
+  "voiceNetworkUnavailable": "Speech recognition needs an internet connection for this language. Reconnect and retry.",
+  "voiceSettingsFailed": "Could not open settings. Open system settings manually and check microphone and speech recognition access. On Mac, check Keyboard → Dictation too.",
+  "voiceRetryAnalysis": "Retry analysis",
+  "screenInboxSubtitle": "Capture tasks before organizing them.",
+  "priorityMatrixSubtitle": "Drag tasks between priorities. Dates only sort tasks inside a priority.",
+  "priorityMatrixP1Title": "Do now",
+  "priorityMatrixP2Title": "Schedule",
+  "priorityMatrixP3Title": "Delegate",
+  "priorityMatrixP4Title": "Drop",
+  "priorityMatrixAxisUrgent": "Urgent",
+  "priorityMatrixAxisNotUrgent": "Not urgent",
+  "priorityMatrixAxisImportant": "Important",
+  "priorityMatrixAxisNotImportant": "Not important",
+  "timelineSubtitle": "Plan one day on a time grid.",
+  "timelineAllDay": "All-day",
+  "timelineBeforeHours": "Before visible hours",
+  "timelineAfterHours": "After visible hours",
+  "timelineVisibleHours": "Visible hours",
+  "timelineStartHour": "Start",
+  "timelineEndHour": "End",
+  "timelineZoomOut": "Zoom out",
+  "timelineZoomIn": "Zoom in",
+  "timelineAddTimedHint": "Task for {time}",
+  "@timelineAddTimedHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineAddAllDayHint": "All-day task",
+  "timelineNoAllDayTasks": "No all-day tasks",
+  "timelineNoTimedTasks": "No timed tasks",
+  "timelinePreviousDay": "Previous day",
+  "timelineNextDay": "Next day",
+  "timelinePickDate": "Pick date",
+  "upcomingPreviousPeriod": "Previous period",
+  "upcomingNextPeriod": "Next period",
+  "upcomingOpenDatePicker": "Open date picker",
+  "upcomingTaskCount": "{count, plural, =0{No tasks} =1{1 task} other{{count} tasks}}",
+  "@upcomingTaskCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "screenTodayFocusSummary": "Focus load: {planned} intervals - Done: {completed} - Focus: {focus}",
+  "@screenTodayFocusSummary": {
+    "placeholders": {
+      "planned": {
+        "type": "int"
+      },
+      "completed": {
+        "type": "int"
+      },
+      "focus": {
+        "type": "String"
+      }
+    }
+  },
+  "screenUpcomingSubtitle": "Planned tasks after today.",
+  "screenUpcomingSelectedSubtitle": "Tasks scheduled for {date}.",
+  "@screenUpcomingSelectedSubtitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noTasksHere": "No tasks here",
+  "noUpcomingTasks": "No dated tasks",
+  "noTasksForDay": "No tasks scheduled for this day",
+  "failedToLoadTasks": "Failed to load tasks: {error}",
+  "@failedToLoadTasks": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "searchTasks": "Search tasks",
+  "searchStartTyping": "Start typing to search tasks",
+  "searchNoMatches": "No matching tasks",
+  "failedToSearchTasks": "Failed to search tasks: {error}",
+  "@failedToSearchTasks": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "previousMonth": "Previous month",
+  "nextMonth": "Next month",
+  "clearDateFilter": "Clear date filter",
+  "weekMon": "Mon",
+  "weekTue": "Tue",
+  "weekWed": "Wed",
+  "weekThu": "Thu",
+  "weekFri": "Fri",
+  "weekSat": "Sat",
+  "weekSun": "Sun",
+  "browseTitle": "Browse",
+  "unifiedAccount": "Unified Account",
+  "accountUnavailable": "Account unavailable: {error}",
+  "@accountUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "signOut": "Sign out",
+  "deleteAccount": "Delete account",
+  "deleteAccountConfirmation": "This permanently deletes your account, cloud data, and local tasks, projects, and focus history. This cannot be undone. Store subscriptions are not canceled automatically. If you used Sign in with Apple, revoke Ada access separately in your Apple Account settings.",
+  "manageSignInWithApple": "Manage Sign in with Apple",
+  "deleteAccountFinalConfirmation": "Are you absolutely sure? This is your final confirmation.",
+  "deleteAccountError": "Could not delete account: {error}",
+  "@deleteAccountError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "accountDeleted": "Account deleted.",
+  "accountDeletedLocalCleanupError": "Your account was deleted, but local data could not be cleared. Clear the app's data before using this device again.",
+  "browseSevenDays": "7 days",
+  "browseOpenNow": "Open now",
+  "browseQueueLoading": "Loading pending changes…",
+  "browseQueueUnavailable": "Could not load pending changes.",
+  "browseQueueExplanation": "This shows local changes waiting to be sent. An empty queue does not confirm that all devices are up to date.",
+  "productivityTitle": "Productivity",
+  "achievementsTitle": "Achievements",
+  "allTimeLabel": "All time",
+  "lastSevenDaysLabel": "Last 7 days",
+  "noWeeklyStatsLabel": "No focus or task data yet",
+  "completedFocuses": "Completed focuses",
+  "completedTasks": "Completed tasks",
+  "unlocked": "Unlocked",
+  "locked": "Locked",
+  "progressLabel": "Progress",
+  "focusAchievements": "Focus achievements",
+  "taskAchievements": "Task achievements",
+  "comboAchievements": "Combo achievements",
+  "focusIntervals": "Focus intervals",
+  "focusTime": "Focus time",
+  "openTasks": "Open tasks",
+  "plannedIntervals": "Planned intervals",
+  "labelsTitle": "Labels",
+  "newProject": "New project",
+  "newLabel": "New label",
+  "syncReadyQueue": "Sync-ready queue",
+  "pendingLocalCommands": "{count, plural, =0{No pending local commands} =1{1 pending local command} other{{count} pending local commands}}",
+  "@pendingLocalCommands": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToLoadProjects": "Failed to load projects: {error}",
+  "@failedToLoadProjects": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "failedToLoadLabels": "Failed to load labels: {error}",
+  "@failedToLoadLabels": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "addProject": "Add project",
+  "projectName": "Project name",
+  "addLabel": "Add label",
+  "labelName": "Label name",
+  "couldNotAddLabel": "Could not add label: {error}",
+  "@couldNotAddLabel": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "projectsUnavailable": "Projects unavailable: {error}",
+  "@projectsUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "projectsUnavailableShort": "Projects unavailable",
+  "noProjects": "No projects",
+  "searchProjects": "Search projects",
+  "searchLabels": "Search labels",
+  "archivedProjectsOnly": "Archived projects only",
+  "projectsCount": "{count, plural, =1{1 project} other{{count} projects}}",
+  "@projectsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noLabels": "No labels",
+  "labelsCount": "{count, plural, =1{1 label} other{{count} labels}}",
+  "@labelsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "renameProject": "Rename project",
+  "archiveProject": "Archive project",
+  "restoreProject": "Restore from archive",
+  "deleteProject": "Delete project",
+  "deleteLabel": "Delete label",
+  "deleteProjectConfirmation": "Delete \"{name}\"? Tasks in this project will move to Inbox.",
+  "@deleteProjectConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteLabelConfirmation": "Delete \"{name}\"?",
+  "@deleteLabelConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotDeleteProject": "Could not delete project: {error}",
+  "@couldNotDeleteProject": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "couldNotDeleteLabel": "Could not delete label: {error}",
+  "@couldNotDeleteLabel": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "projectsCountCompact": "Projects: {count}",
+  "@projectsCountCompact": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "collapseProjects": "Collapse projects",
+  "expandProjects": "Expand projects",
+  "projectFallbackTitle": "Project",
+  "projectSubtitle": "List view - board and calendar are roadmap items.",
+  "reportsTitle": "Reports",
+  "reportsFocusedDay": "A focused day so far",
+  "reportsThisWeek": "Your week in focus",
+  "reportsNextAchievement": "Next achievement",
+  "viewAllAchievements": "View all achievements",
+  "viewAllAchievementsCount": "View all {count}",
+  "@viewAllAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allAchievementsUnlocked": "All achievements unlocked",
+  "noAchievementsYet": "No achievements yet",
+  "failedToLoadAchievements": "Failed to load achievements: {error}",
+  "@failedToLoadAchievements": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "backToReports": "Back to reports",
+  "reportsIntervalProgressSemantics": "{completed} of {target} focus intervals completed",
+  "@reportsIntervalProgressSemantics": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsIntervalCountSemantics": "{completed} focus intervals completed; no task estimates",
+  "@reportsIntervalCountSemantics": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsWeeklyChartSemantics": "Focus time for the last 7 days: {summary}",
+  "@reportsWeeklyChartSemantics": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToLoadReports": "Failed to load reports: {error}",
+  "@failedToLoadReports": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "taskNotFound": "Task not found",
+  "taskTitleHint": "Task title",
+  "taskComment": "Comment",
+  "taskCommentHint": "Add a comment",
+  "subtasks": "Sub-tasks",
+  "addSubtask": "Add sub-task",
+  "addSubtaskHint": "Add a sub-task",
+  "noSubtasks": "No sub-tasks yet.",
+  "makeParentTask": "Make parent task",
+  "couldNotMoveTask": "Could not move task: {error}",
+  "@couldNotMoveTask": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "scheduleTitle": "Schedule",
+  "allDay": "All-day",
+  "timedBlock": "Timed block",
+  "recurrenceTitle": "Repeat",
+  "recurrenceNeedsSchedule": "Add a date or time before repeating.",
+  "recurrenceIntervalLabel": "Interval",
+  "recurrenceUnitDay": "Days",
+  "recurrenceUnitWeek": "Weeks",
+  "recurrenceUnitMonth": "Months",
+  "recurrenceInvalidInterval": "Enter 1 to 999.",
+  "recurrenceEveryDays": "{interval, plural, =1{every day} other{every {interval} days}}",
+  "@recurrenceEveryDays": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "recurrenceEveryWeeks": "{interval, plural, =1{every week} other{every {interval} weeks}}",
+  "@recurrenceEveryWeeks": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "recurrenceEveryMonths": "{interval, plural, =1{every month} other{every {interval} months}}",
+  "@recurrenceEveryMonths": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "noDate": "No date",
+  "calendarNotLinked": "Calendar not linked",
+  "calendarLinked": "Calendar linked",
+  "focusProgress": "{completed}/{total} focus",
+  "@focusProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "startFocus": "Start focus",
+  "focusStarted": "Focus started",
+  "taskReopened": "Task reopened",
+  "taskCompleted": "Task completed",
+  "taskDeleted": "Task deleted",
+  "recurringDeleteTitle": "Delete recurring task?",
+  "recurringDeleteMessage": "This task belongs to a recurring series.",
+  "recurringDeleteThis": "Delete this task",
+  "recurringDeleteThisAndFollowing": "Delete this and following",
+  "markOpen": "Mark open",
+  "markComplete": "Mark complete",
+  "focusHistory": "Focus history",
+  "failedToLoadTask": "Failed to load task: {error}",
+  "@failedToLoadTask": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "noFocusIntervals": "No focus intervals yet.",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "yesterday": "Yesterday",
+  "clearDate": "Clear date",
+  "priority": "Priority {priority}",
+  "@priority": {
+    "placeholders": {
+      "priority": {
+        "type": "int"
+      }
+    }
+  },
+  "focusTitle": "Focus",
+  "focusLoadError": "Could not load focus: {error}",
+  "@focusLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "focusViewFull": "Full",
+  "focusViewMinimal": "Minimal",
+  "focusSwitchToFullView": "Switch to Full",
+  "focusSwitchToMinimalView": "Switch to Minimal",
+  "focusActionFailed": "Could not update Focus. Try again.",
+  "noActiveSession": "No active session",
+  "focusIdleSubtitle": "Start a standalone focus interval or launch focus from a task.",
+  "noPreset": "No preset",
+  "preparingFocus": "Preparing focus",
+  "moreFocusOptions": "More focus options",
+  "moreFocusActions": "More focus actions",
+  "preset": "Preset",
+  "newPreset": "New preset",
+  "customize": "Customize",
+  "customizePreset": "Customize preset",
+  "startInterval": "Start interval",
+  "intervalStarted": "Interval started",
+  "intervalCompleted": "Interval completed",
+  "focusStopped": "Focus stopped",
+  "focusCompletionTitle": "Beautiful work!",
+  "focusCompletionLinkedSubtitle": "All planned focus intervals for this task are complete.",
+  "focusCompletionStandaloneSubtitle": "Your focus cycle is complete.",
+  "focusCompletionQuestion": "Ready to complete this task?",
+  "focusCompletionCompleteTask": "Complete task",
+  "focusCompletionKeepOpen": "Keep task open",
+  "focusCompletionDone": "Done",
+  "focusCompletionNextTask": "Next scheduled task",
+  "focusCompletionTaskError": "Could not complete task: {error}",
+  "@focusCompletionTaskError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "completeInterval": "Complete interval",
+  "logDistraction": "Log distraction",
+  "workInterval": "Work interval",
+  "work": "Work",
+  "shortBreak": "Short break",
+  "breakLabel": "Break",
+  "longBreak": "Long break",
+  "readyLabel": "Ready: {label}",
+  "@readyLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "readyShort": "Ready",
+  "focusTimerTotal": "of {duration}",
+  "@focusTimerTotal": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "focusSessionProgress": "Session {current} of {total}",
+  "@focusSessionProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "focusRhythmPreviewSummary": "Focus rhythm preview, {count} steps",
+  "@focusRhythmPreviewSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusRhythmSummary": "Focus rhythm, step {current} of {total}: {phase}, {status}",
+  "@focusRhythmSummary": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "phase": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "focusTimerSummary": "{phase}, {status}, {remaining} remaining, {total} total",
+  "@focusTimerSummary": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "focusStatusRunning": "Running",
+  "focusStatusPaused": "Paused",
+  "focusWorkProgress": "{completed}/{total} work",
+  "@focusWorkProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "intervalNumber": "Interval {number}",
+  "@intervalNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "focusIntervalSummary": "{completed}/{total} work - Interval {number}",
+  "@focusIntervalSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "pause": "Pause",
+  "resume": "Resume",
+  "presetForNextIntervals": "Preset for next intervals",
+  "usePreset": "Use {name}",
+  "@usePreset": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesWork": "{minutes}m work",
+  "@minutesWork": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesShort": "{minutes}m short",
+  "@minutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesLong": "{minutes}m long",
+  "@minutesLong": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "longEvery": "Long every {count}",
+  "@longEvery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "autoBreaks": "Auto breaks",
+  "autoWork": "Auto work",
+  "noPause": "No pause",
+  "focusPauseUnavailable": "Pause unavailable for this preset",
+  "strict": "Strict",
+  "flexible": "Flexible",
+  "name": "Name",
+  "workField": "Work",
+  "shortField": "Short",
+  "longField": "Long",
+  "every": "Every",
+  "minutesSuffix": "min",
+  "makeDefault": "Make default",
+  "autoStartBreaks": "Auto-start breaks",
+  "autoStartWork": "Auto-start work",
+  "allowPause": "Allow pause",
+  "strictMode": "Strict mode",
+  "nameRequired": "Name is required",
+  "nameMustBeUnique": "Name must be unique",
+  "googleCalendarTitle": "Google Calendar",
+  "googleCalendarConnectedSubtitle": "Two-way sync is active for the Ada calendar.",
+  "googleCalendarDisconnectedSubtitle": "Connect a Google account to sync scheduled tasks.",
+  "googleCalendarConnectedOnAnotherDeviceSubtitle": "Google Calendar sync is running on another device. Ada data still syncs here.",
+  "syncNow": "Sync now",
+  "useThisDevice": "Use this device",
+  "connect": "Connect",
+  "disconnect": "Disconnect",
+  "failedToLoadIntegration": "Failed to load integration: {error}",
+  "@failedToLoadIntegration": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "googleCalendarFailed": "Google Calendar failed: {message}",
+  "@googleCalendarFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "googleAuthRequired": "Google Calendar authorization is required. Sign in again and run Sync now.",
+  "googleCalendarRateLimited": "Google Calendar request limit reached. Wait a few minutes before syncing again.",
+  "googleCalendarSyncFailed": "Google Calendar sync failed. Try again later.",
+  "googleSignInNotConfigured": "Google Sign-In is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_REVERSED_CLIENT_ID for this iOS target.",
+  "googleCallbackNotConfigured": "Google Sign-In callback is not configured. Set GOOGLE_REVERSED_CLIENT_ID in ios/Flutter/GoogleOAuth.xcconfig.",
+  "googleWebButtonFirst": "On web, click the Google sign-in button first, then Connect.",
+  "googleAccessDenied": "Google access is denied. Add this Google account as an OAuth test user, or publish and verify the OAuth app.",
+  "status": "Status",
+  "account": "Account",
+  "calendar": "Calendar",
+  "calendarId": "Calendar ID",
+  "lastSync": "Last sync",
+  "notConnected": "Not connected",
+  "notCreated": "Not created",
+  "never": "Never",
+  "durationMinutes": "{minutes}m",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours}h {minutes}m",
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "projectIcon": "Project icon",
+  "projectIconOption": "Icon {number}",
+  "@projectIconOption": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "projectColor": "Project color",
+  "projectColorOption": "Color {number}",
+  "@projectColorOption": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "addProjectToFavorites": "Add project to favorites",
+  "removeProjectFromFavorites": "Remove project from favorites",
+  "timelineProjectsMenu": "Manage Timeline projects",
+  "timelineShowProject": "Show project in Timeline",
+  "timelineHideProject": "Hide temporary project",
+  "timelineCollapseProject": "Collapse project branch",
+  "timelineExpandProject": "Expand project branch",
+  "timelineCurrentTime": "Current time",
+  "couldNotUpdateProject": "Could not update project: {error}",
+  "@couldNotUpdateProject": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "commonDone": "Done",
+  "taskSelect": "Select",
+  "taskSelectedCount": "{count, plural, =0{0 selected} =1{1 selected} other{{count} selected}}",
+  "@taskSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskSelectAll": "Select all",
+  "taskDeselectAll": "Deselect all",
+  "taskDue": "Due",
+  "taskProject": "Project",
+  "taskLabels": "Labels",
+  "taskPriority": "Priority",
+  "taskMore": "More",
+  "taskSchedule": "Schedule",
+  "taskMove": "Move",
+  "taskChangeProject": "Change project",
+  "taskDuplicate": "Duplicate",
+  "taskDuplicateTitle": "Duplicate tasks",
+  "taskDuplicateSelectedOnly": "Selected only",
+  "taskDuplicateWithSubtasks": "With subtasks",
+  "taskWeekend": "This weekend",
+  "taskNextWeek": "Next week",
+  "taskEnterDue": "Enter due date or time",
+  "taskInvalidDue": "Enter a valid date or time",
+  "taskClearDue": "Clear due",
+  "taskDeleteSelectedTitle": "Delete selected tasks?",
+  "taskDeleteSelectedMessage": "You can undo this action for 7 seconds.",
+  "taskCompleteSelected": "Complete selected",
+  "taskReopenSelected": "Reopen selected",
+  "taskActionFailedCount": "{count, plural, =1{1 task could not be updated} other{{count} tasks could not be updated}}",
+  "@taskActionFailedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceCollapse": "Collapse voice panel",
+  "voiceExpand": "Expand voice panel",
+  "voiceMovePanel": "Move voice panel",
+  "themeClassic": "Classic",
+  "themeOcean": "Ocean",
+  "themeForest": "Forest",
+  "themeCustomize": "Customize",
+  "themeEditorTitle": "Edit theme",
+  "themeLivePreview": "Changes appear throughout the app. Cancel restores your previous theme.",
+  "themeSaveError": "Could not save the theme. Your changes are still here; try again.",
+  "themeLoadError": "Could not load your themes.",
+  "themeColorsSurfaces": "Background and surfaces",
+  "themeColorsText": "Text",
+  "themeColorsAccent": "Accent",
+  "themeColorsStatus": "Status colors",
+  "themeInvalidHex": "Enter a six-digit HEX color, for example #2563EB.",
+  "themeLowContrast": "Low contrast: some text may be difficult to read.",
+  "themePreviewTask": "Plan your day",
+  "themePreviewSecondary": "A little focus, every day.",
+  "themeColorCanvas": "Background",
+  "themeColorSurface": "Surface",
+  "themeColorSurfaceTint": "Secondary surface",
+  "themeColorSurfaceHover": "Hover surface",
+  "themeColorPrimaryText": "Primary text",
+  "themeColorSecondaryText": "Secondary text",
+  "themeColorMutedText": "Muted text",
+  "themeColorBorder": "Border",
+  "themeColorAccent": "Accent text and icons",
+  "themeColorAccentFill": "Accent fill",
+  "themeColorAccentTint": "Soft accent fill",
+  "themeColorWarning": "Warning",
+  "themeColorInfo": "Information",
+  "themeColorSuccess": "Success",
+  "themeColorError": "Error",
+  "themeColorOverdue": "Overdue",
+  "themeColorOnAccent": "Text on accent fill",
+  "themeColorOnError": "Text on error fill",
+  "todayTaskSummary": "{tasks, plural, one{1 task} other{{tasks} tasks}} · {planned, plural, one{1 planned session} other{{planned} planned sessions}} · {time} focused",
+  "todayFocusingOn": "Focusing on",
+  "openFocus": "Open Focus",
+  "todayCompletedTasks": "Completed today · {count}",
+  "@todayTaskSummary": {
+    "placeholders": {
+      "tasks": {
+        "type": "int"
+      },
+      "planned": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@todayCompletedTasks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sidebarDaily": "Daily",
+  "sidebarViews": "Views",
+  "quickAddResetDetails": "Use default",
+  "quickAddChangeTime": "Change time",
+  "quickAddProjectNameUnsupported": "This project name cannot be inserted without changing it.",
+  "themeSepia": "Sepia",
+  "themeGraphite": "Graphite",
+  "themeCustom": "Custom",
+  "themeResetToClassic": "Reset to Classic",
+  "themeBackgroundKindTitle": "Background",
+  "themeBackgroundColor": "Color",
+  "themeBackgroundPhoto": "Photo",
+  "themeBackgroundGlass": "macOS glass",
+  "themeBackgroundGlassHint": "Applies to the entire app and Quick Add. macOS controls the blur; the slider adjusts the palette tint.",
+  "themeBackgroundGlassUnavailable": "Available in the macOS app. A solid background is used on this platform.",
+  "themeBackgroundTitle": "Background image",
+  "themeBackgroundMainOnly": "Main area only",
+  "themeBackgroundWholeApp": "Entire app",
+  "themeBackgroundSeparate": "Separate backgrounds",
+  "themeBackgroundMain": "Main area",
+  "themeBackgroundSidebar": "Sidebar",
+  "themeBackgroundQuickAdd": "Quick Add",
+  "themeBackgroundChoose": "Choose photo",
+  "themeBackgroundReplace": "Replace photo",
+  "themeBackgroundRemove": "Remove photo",
+  "themeBackgroundDim": "Dimming",
+  "themeBackgroundBlur": "Blur",
+  "themeBackgroundEmpty": "No photo",
+  "themeBackgroundImageError": "Could not open this image. Choose another photo.",
+  "themeBackgroundTooLarge": "Choose an image no larger than 50 MB.",
+  "themeBackgroundLoading": "Preparing image…",
+  "settingsTaskListStyle": "Task row style",
+  "settingsTaskListStyleDescription": "Choose the new layout or keep the familiar classic rows.",
+  "settingsTaskListModern": "Modern",
+  "settingsTaskListClassic": "Classic",
+  "settingsTaskRowSpacing": "Task spacing",
+  "settingsTaskRowSpacingCompact": "Compact",
+  "settingsTaskRowSpacingComfortable": "Comfortable",
+  "settingsTaskRowSpacingSpacious": "Spacious",
+  "settingsSaveError": "Could not save the setting. Please try again.",
+  "focusCompletionCompleteAndNext": "Complete and start next",
+  "focusCompletionStartNext": "Start next task",
+  "focusCompletionRetry": "Retry",
+  "searchAllProjects": "All projects",
+  "searchStatusOpen": "Open",
+  "searchStatusCompleted": "Completed",
+  "searchStatusAll": "All statuses",
+  "searchClearFilters": "Clear filters",
+  "searchEmptyDescription": "Find a task by its title or description, then narrow it by project or status.",
+  "searchNoMatchesDescription": "Try a different phrase or clear filters. You can also turn this text into a new task.",
+  "searchCreateTask": "Create task from text",
+  "taskListLoadError": "Could not load tasks. Please try again.",
+  "inboxEmptyTitle": "Your inbox is clear",
+  "inboxEmptyDescription": "Capture an idea here and decide when to work on it later.",
+  "todayEmptyTitle": "Nothing scheduled for today",
+  "todayEmptyDescription": "Add a task to give today a starting point.",
+  "todayEmptyCompletedTitle": "Today’s list is clear",
+  "todayEmptyCompletedDescription": "Your completed tasks are saved below. Add another task when you are ready.",
+  "projectEmptyTitle": "No tasks in this project yet",
+  "projectEmptyDescription": "Add the first step toward your project’s goal.",
+  "commandSearchPlaceholder": "Search tasks, projects, and actions",
+  "commandSearchTasks": "Tasks",
+  "commandSearchActions": "Actions",
+  "commandSearchDictateTask": "Dictate task",
+  "commandSearchAllResults": "See all results",
+  "commandSearchEnablePomo": "Enable Ada",
+  "commandSearchDisablePomo": "Disable Ada",
+  "commandSearchHint": "↑ ↓ Navigate · Enter Open · Esc Close",
+  "commandSearchNoMatches": "No matching tasks or projects.",
+  "overdueTitle": "Overdue",
+  "overdueTaskCount": "{count, plural, one{{count} overdue task} other{{count} overdue tasks}}",
+  "overdueReview": "Review",
+  "overdueEmpty": "No overdue tasks",
+  "@overdueTaskCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskFocusSwitchTitle": "Switch Focus?",
+  "taskFocusSwitchMessage": "The current session will stop. Start Focus on “{task}”?",
+  "taskFocusSwitchConfirm": "Switch",
+  "@taskFocusSwitchMessage": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "labelIcon": "Label icon",
+  "labelUpdateFailed": "Could not update label. Try again.",
+  "labelNotFound": "Label not found",
+  "labelTasksSubtitle": "Tasks with this label from all projects",
+  "labelIconOption": "{icon, select, tag{Tag} bookmark{Bookmark} flag{Flag} bolt{Bolt} lightbulb{Light bulb} clock{Clock} bell{Bell} pin{Pin} phone{Phone} mail{Mail} link{Link} wrench{Wrench} other{Tag}}",
+  "@labelIconOption": {
+    "placeholders": {
+      "icon": {
+        "type": "String"
+      }
+    }
+  },
+  "addSubproject": "Create subproject",
+  "moveProject": "Move project",
+  "projectTopLevel": "Top level",
+  "projectMoveUp": "Move up",
+  "projectMoveDown": "Move down",
+  "projectParentName": "Parent project: {name}",
+  "@projectParentName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteProjectWithChildrenConfirmation": "Delete \"{name}\"? Its subprojects will move up one level. Only tasks in this project will move to Inbox.",
+  "@deleteProjectWithChildrenConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountNickname": "Nickname",
+  "accountChangeNickname": "Change nickname",
+  "accountNicknameSaveError": "Could not save your nickname. Please try again.",
+  "notificationTaskStarting": "Task starting",
+  "notificationReturnTitle": "Ada misses you",
+  "notificationReturnBody": "If you have the energy, finish one small task.",
+  "notificationReturnTitle2": "Ada checking in",
+  "notificationReturnBody2": "Choose the easiest item on your list — one is enough.",
+  "notificationReturnTitle3": "Ada is here",
+  "notificationReturnBody3": "You can start with a task you can finish today.",
+  "notificationReturnTitle4": "An evening with Ada",
+  "notificationReturnBody4": "One finished task is already a good step.",
+  "notificationReturnTitle5": "A reminder from Ada",
+  "notificationReturnBody5": "Check your list and pick one manageable thing for tonight.",
+  "notificationFocusChannel": "Focus",
+  "notificationFocusDescription": "Focus interval completion notifications",
+  "notificationReturnChannel": "Return reminders",
+  "notificationReturnDescription": "Gentle reminders to return to Ada",
+  "notificationTaskChannel": "Task start",
+  "notificationTaskDescription": "Task start notifications",
+  "notificationOpenApp": "Open Ada",
+  "notificationFocusCompleted": "Focus interval completed",
+  "notificationLongBreakCompleted": "Long break completed",
+  "notificationBreakCompleted": "Break completed",
+  "updateTitle": "Ada update",
+  "updateAction": "Update",
+  "updateCheck": "Check for updates",
+  "updateSettings": "Updates",
+  "updateReceiveRc": "Receive release candidates (RC)",
+  "updateStableChannel": "Channel: stable releases",
+  "updateRcChannel": "Channel: stable releases and RC",
+  "updateRcHelp": "RC releases may contain bugs. Alpha and beta versions are excluded.",
+  "updateRestart": "The app will restart. Your data will be preserved.",
+  "updateNotes": "Release notes",
+  "updateOwnerManaged": "This build is updated by its owner to preserve its server configuration. Ask them for the latest version.",
+  "updateUnsupported": "Automatic updates are available in the official Linux AppImage. Use your package manager for other builds.",
+  "updateVersion": "Version {value}",
+  "@updateVersion": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "updatePhaseIdle": "You can check at any time.",
+  "updatePhaseChecking": "Checking releases…",
+  "updatePhaseAvailable": "A new version is available",
+  "updatePhaseDownloading": "Downloading update…",
+  "updatePhaseVerifying": "Verifying integrity…",
+  "updatePhaseInstalling": "Preparing installation and restart…",
+  "updatePhaseUpToDate": "You have the latest compatible version.",
+  "updatePhaseFailed": "The update could not be completed",
+  "achievementFocusSubtitle": "{count, plural, =1{Complete 1 work focus} other{Complete {count} work focuses}}",
+  "@achievementFocusSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementTaskSubtitle": "{count, plural, =1{Complete 1 task} other{Complete {count} tasks}}",
+  "@achievementTaskSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementDayNotWastedSubtitle": "Finish a focus and a task in one day",
+  "achievementFocusPlusCheckSubtitle": "Finish 3 focuses and 3 tasks in one day",
+  "achievementNoFussSubtitle": "Finish 5 focuses in a day without stops",
+  "achievementCleanEntrySubtitle": "Complete a task after its linked focus",
+  "achievementTomatoClosedSubtitle": "Complete a task on the day of its work focus",
+  "achievementTitle": "{id, select, focus_1{First tomato} focus_5{Warm-up} focus_10{Focus caught} focus_25{Tomato shift} focus_50{Mode on} focus_100{Red belt} focus_250{Deep roots} focus_500{Timer authority} focus_1000{Thousandth tomato} focus_5000{Focus farmer} focus_10000{Attention plantation} focus_50000{Tomato empire} focus_100000{Red supermind} focus_1000000{Tomato singularity} task_1{First check} task_5{The list flinched} task_10{Happy checkbox} task_25{Clearing the pile} task_50{Checkmark master} task_100{Tail closer} task_250{List under control} task_500{Office knockout} task_1000{Thousand checks} task_5000{Victory archivist} task_10000{Checkbox machine} task_50000{Bureau of closed questions} task_100000{List ruler} task_1000000{Final check} combo_day_not_wasted{Day not wasted} combo_focus_plus_check{Focus + check} combo_no_fuss{No fuss} combo_clean_entry{Clean entry} combo_tomato_closed_question{Tomato closed it} other{Achievement}}",
+  "@achievementTitle": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "focusPresetDeepWork": "Deep Work",
+  "focusPresetShortSprint": "Short Sprint",
+  "csvImportIssueRow": "Row {row}: {message}",
+  "@csvImportIssueRow": {
+    "placeholders": {
+      "row": {
+        "type": "int"
+      },
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "csvImportIssueMessage": "{code, select, fileTooLarge{CSV file exceeds 16 MiB.} invalidUtf8{CSV must be valid UTF-8.} missingHeader{CSV header is missing.} malformed{Malformed CSV.} unknownHeader{Unknown header \"{value}\".} duplicateHeader{Duplicate header \"{value}\".} contentHeaderRequired{content header is required.} tooManyTasks{CSV cannot contain more than 1000 tasks.} tooManyFields{Row has more fields than the header.} contentRequired{content is required.} invalidPriority{priority must be an integer from 1 to 4.} invalidDate{{value} must use YYYY-MM-DD.} mixedSchedule{Due date cannot be combined with a timed schedule.} timedFieldsRequired{A timed schedule requires start_at, end_at and time_zone.} invalidTimestamp{{value} must be RFC3339 with an explicit UTC offset.} invalidTimeZone{time_zone must be a valid IANA name.} endBeforeStart{end_at must be after start_at.} invalidRecurrence{recurrence must be day, week or month.} invalidInteger{{value} must be an integer from 1 to 999.} intervalWithoutRecurrence{recurrence_interval requires recurrence.} recurrenceWithoutSchedule{recurrence requires a schedule.} doneTask{Done tasks cannot be imported.} invalidKey{{value} has an invalid format.} empty{CSV contains no tasks.} duplicateKey{Duplicate key \"{value}\".} parentCycle{parent_key references form a cycle.} missingParent{parent_key \"{value}\" does not exist.} childProject{A child task must use the same project as its parent.} other{The file could not be imported.}}",
+  "@csvImportIssueMessage": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "billingOfferDays": "{count, plural, one {1 day} other {{count} days}}",
+  "@billingOfferDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billingOfferMonths": "{count, plural, one {1 month} other {{count} months}}",
+  "@billingOfferMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billingOfferYears": "{count, plural, one {1 year} other {{count} years}}",
+  "@billingOfferYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billingTrialFree": "Free for {duration}",
+  "@billingTrialFree": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "billingTrialRenewal": "Then {price}. Renews automatically unless cancelled.",
+  "@billingTrialRenewal": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingReturnBadge": "Return to Pro",
+  "billingReturnSubtitle": "For {duration}, then {price}. Renews automatically unless cancelled.",
+  "@billingReturnSubtitle": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingReturnPending": "Your discount is reserved until {date}. If the purchase was cancelled, you can retry after that time.",
+  "@billingReturnPending": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billingReturnFailed": "Could not verify your return offer. Retry to check the discount.",
+  "billingTryFree": "Try free",
+  "collaborationShareProject": "Share project",
+  "collaborationShareIntro": "Invite people to work on this project together. Members can edit, observers can view.",
+  "collaborationShareStart": "Share",
+  "collaborationShareInProgress": "Sharing… syncing your latest changes",
+  "collaborationMembers": "Members",
+  "collaborationPendingInvitations": "Pending invitations",
+  "collaborationRevoke": "Revoke",
+  "collaborationPublicLink": "Public link",
+  "collaborationPublicLinkHint": "Anyone with the link can view this project",
+  "collaborationCopyLink": "Copy link",
+  "collaborationLeaveProject": "Leave project",
+  "collaborationDeleteSharedProject": "Delete for everyone",
+  "collaborationMakePrivate": "Make private",
+  "collaborationOwner": "Owner",
+  "collaborationTransferOwnership": "Transfer ownership",
+  "collaborationRemoveMember": "Remove member",
+  "collaborationEmail": "Email",
+  "collaborationInvite": "Invite",
+  "collaborationProjectShared": "Project shared",
+  "collaborationInviteEmailFailed": "Invitation saved, but the email could not be sent",
+  "collaborationInviteSent": "Invitation sent to {email}",
+  "@collaborationInviteSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "collaborationInvitationRevoked": "Invitation revoked",
+  "collaborationRoleUpdated": "Role updated",
+  "collaborationRemoveConfirm": "Remove {name} from this project?",
+  "@collaborationRemoveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "collaborationMemberRemoved": "Member removed",
+  "collaborationTransferConfirm": "Make {name} the owner of this project?",
+  "@collaborationTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "collaborationOwnershipTransferred": "Ownership transferred",
+  "collaborationLeaveConfirm": "Leave this shared project?",
+  "collaborationLeftProject": "You left the project",
+  "collaborationDeleteSharedConfirm": "Delete this shared project for all members? This cannot be undone.",
+  "collaborationSharedProjectDeleted": "Shared project deleted",
+  "collaborationMakePrivateConfirm": "Stop sharing this project?",
+  "collaborationMakePrivateDescription": "The project and its content return to your personal account. Other participants lose access immediately.",
+  "collaborationProjectMadePrivate": "Project is private again",
+  "collaborationLinkCopied": "Link copied",
+  "collaborationRoleAdministrator": "Administrator",
+  "collaborationRoleMember": "Member",
+  "collaborationRoleObserver": "Observer",
+  "collaborationForbidden": "You don't have permission to do that",
+  "collaborationSignedOut": "Sign in to use shared projects",
+  "collaborationUnavailable": "Shared projects are unavailable right now",
+  "collaborationError": "Something went wrong. Try again",
+  "collaborationSyncPending": "Finish synchronizing this project before sharing",
+  "collaborationMemberFallback": "Member",
+  "collaborationInboxTitle": "Shared projects & invitations",
+  "collaborationInboxSubtitle": "Accept invitations and review shared project activity",
+  "collaborationInvitations": "Invitations",
+  "collaborationNoInvitations": "No pending invitations",
+  "collaborationAccept": "Accept",
+  "collaborationNotifications": "Notifications",
+  "collaborationMarkAllRead": "Mark all as read",
+  "collaborationNoNotifications": "No notifications",
+  "collaborationNotificationInvitation": "Invitation to a shared project",
+  "collaborationNotificationDiscussion": "New comment in a shared project",
+  "collaborationNotificationAssignment": "You were assigned a task",
+  "collaborationNotificationGeneric": "Shared project activity",
+  "collaborationInvitationAccepted": "Invitation accepted",
+  "collaborationAssignees": "Assignees",
+  "collaborationEditAssignees": "Edit assignees",
+  "collaborationNoAssignees": "No assignees",
+  "collaborationComments": "Comments",
+  "collaborationCommentHint": "Write a comment",
+  "collaborationCommentSend": "Send",
+  "collaborationCommentDelete": "Delete comment",
+  "collaborationSharedBadge": "Shared project",
+  "collaborationJoinTitle": "Project invitation",
+  "collaborationJoinDescription": "You have been invited to join a shared project. Accept the invitation to add it to your projects.",
+  "collaborationJoinRole": "Your role",
+  "collaborationJoinAccept": "Accept invitation",
+  "collaborationJoinOpenProject": "Open project",
+  "collaborationJoinInvalid": "This invitation link is not valid",
+  "collaborationJoinUnavailable": "This invitation is no longer available for your account",
+  "collaborationPublicNotice": "Read-only view shared by a Ada member",
+  "collaborationPublicUnavailable": "This shared link is no longer available",
+  "collaborationPublicEmpty": "Nothing has been shared yet",
+  "collaborationPublicOpen": "Open Ada",
+  "collaborationPublicTasks": "Tasks",
+  "projectInfoTitle": "About project",
+  "projectInfoPersonal": "Personal project",
+  "projectInfoYou": "You",
+  "focusSessionDisplay": "Session display",
+  "focusSessionCompact": "Compact",
+  "focusSessionIcons": "Icons",
+  "focusNextInterval": "Next: {phase} · {duration}",
+  "@focusNextInterval": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "bottomNavigationEditingTitle": "Panel edit mode",
+  "bottomNavigationEditingHelp": "Drag the icons below or use the arrows. Tap an icon to replace it.",
+  "bottomNavigationReplace": "Replace with",
+  "bottomNavigationEditHint": "Hold to customize the bottom panel.",
+  "settingsBottomNavigation": "Bottom navigation",
+  "settingsBottomNavigationDescription": "Choose up to five sections, their order, and the navigation style. Saved on this device.",
+  "settingsBottomNavigationSoft": "Soft accent",
+  "settingsBottomNavigationLabels": "With labels",
+  "settingsBottomNavigationPreview": "Preview",
+  "settingsBottomNavigationEmpty": "The bottom panel is hidden. All sections and these settings remain available from the top menu.",
+  "settingsBottomNavigationCount": "{count} of {max} sections",
+  "settingsBottomNavigationEarlier": "Move earlier",
+  "settingsBottomNavigationLater": "Move later",
+  "settingsBottomNavigationAdd": "Add a section",
+  "settingsBottomNavigationClear": "Remove all",
+  "settingsBottomNavigationDefaults": "Use defaults",
+  "settingsBottomNavigationLoadError": "Could not load navigation settings. Please try again.",
+  "settingsBottomNavigationEdit": "Customize",
+  "settingsBottomNavigationRemove": "Remove",
+  "@settingsBottomNavigationCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "editLabel": "Edit label",
+  "labelNameTaken": "A label with this name already exists",
+  "labelBulkAdd": "Add to tasks",
+  "labelBulkRemove": "Remove from tasks",
+  "labelColor": "Label color",
+  "taskParentUnavailable": "Subtask · parent unavailable",
+  "taskExpandSubtasks": "Expand subtasks",
+  "taskCollapseSubtasks": "Collapse subtasks",
+  "taskAllSubtasksProgress": "All descendants: {completed} of {total} complete",
+  "taskOpenParent": "Open parent task",
+  "@taskOpenParent": {
+    "description": "Mobile task menu action opening the accessible parent task."
+  },
+  "taskOpenFullBranch": "Open all subtasks",
+  "taskParentPath": "Part of: {path}",
+  "@taskAllSubtasksProgress": {
+    "description": "Progress across all descendant levels, including filtered tasks.",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@taskParentPath": {
+    "description": "Known ancestor task titles separated by slashes.",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "projectViewList": "List",
+  "projectViewMap": "Map",
+  "projectShowCompleted": "Show completed",
+  "projectExpandBranch": "Expand branch",
+  "projectCollapseBranch": "Collapse branch",
+  "projectPlaceInside": "Move inside",
+  "projectPlaceBefore": "Move before",
+  "projectPlaceAfter": "Move after",
+  "projectCatalogSearch": "Search projects and tasks",
+  "settingsTaskBranchStyle": "Subtask appearance",
+  "settingsTaskBranchConnected": "Connecting lines",
+  "settingsTaskBranchGrouped": "Grouped branch",
+  "onboardingTasksTitle": "Your list. Your rhythm.",
+  "onboardingTasksSubtitle": "Choose the look and spacing of your tasks.",
+  "onboardingThemeTitle": "What color is your day?",
+  "onboardingThemeSubtitle": "Choose a palette you enjoy working in.",
+  "onboardingModernDescription": "Emphasized titles",
+  "onboardingClassicDescription": "Understated rows",
+  "onboardingAppearanceHint": "You can change all of this later in Settings.",
+  "onboardingClassicThemeDescription": "The familiar red accent",
+  "onboardingOceanDescription": "Cool blue",
+  "onboardingForestDescription": "Calm green",
+  "onboardingSepiaDescription": "Warm paper",
+  "onboardingGraphiteDescription": "Just the essentials",
+  "onboardingThemeHint": "You can create your own palette and background later in Settings.",
+  "onboardingPreviewSubtask": "Write down your first ideas",
+  "learningTourInvitationTitle": "Take a quick look around Ada?",
+  "learningTourInvitationBody": "See how to add tasks, use Focus, and organize projects. About a minute.",
+  "learningTourStart": "Start",
+  "learningTourLater": "Later",
+  "learningTourClose": "Close tour",
+  "learningTourSettings": "Take the app tour",
+  "learningTourAddTask": "Tap Add task to see where new tasks begin. You do not need to save a test task.",
+  "learningTourFocusNavigation": "Open Focus to see where a work session starts.",
+  "learningTourFocusReady": "Choose a task and work in intervals. You do not need to start the timer now.",
+  "learningTourProjectsNavigation": "Open Projects to see where related tasks belong.",
+  "learningTourProjectsReady": "Projects keep tasks for one goal together.",
+  "learningTourSkipStep": "Skip step",
+  "learningTourOpenAddTask": "Open Add task",
+  "learningTourOpenFocus": "Open Focus",
+  "learningTourOpenProjects": "Open Projects",
+  "filesTitle": "Files",
+  "filesAdd": "Add file",
+  "filesEmpty": "No files yet",
+  "filesSearch": "Search files",
+  "filesList": "List",
+  "filesGallery": "Gallery",
+  "filesAllTogether": "All together",
+  "filesByTask": "By tasks",
+  "filesProjectGroup": "Project files",
+  "filesAllTypes": "All types",
+  "filesImages": "Images",
+  "filesDocuments": "Documents",
+  "filesOther": "Other files",
+  "filesDownload": "Download",
+  "filesDelete": "Delete file",
+  "filesDeleteConfirm": "Permanently delete this file?",
+  "filesUploadFailed": "Upload failed. Try again.",
+  "filesRetry": "Retry",
+  "filesProRequired": "Uploading files requires Pro.",
+  "filesReadOnly": "You have read-only access.",
+  "filesUnavailable": "File storage is unavailable. Check your connection and try again.",
+  "filesSignIn": "Sign in to access files.",
+  "filesTooLarge": "Files must be 20 MB or smaller.",
+  "filesQuotaExceeded": "Your file upload allowance has been reached.",
+  "filesDeleteProjectWarning": "Files attached directly to this project will be permanently deleted.",
+  "filesUpload": "Uploading",
+  "filesFinish": "Finishing upload",
+  "filesLoadError": "Could not load files.",
+  "filesPreview": "Preview",
+  "settingsTaskCard": "Task card",
+  "settingsTaskCardTabs": "Tabs",
+  "settingsTaskCardDescriptionFirst": "Description first",
+  "taskDetailsTab": "Details",
+  "taskDiscussionTab": "Discussion",
+  "taskProperties": "Properties",
+  "filesGrouping": "Grouping",
+  "taskDescriptionHint": "Add a description",
+  "projectMapExpand": "Expand map to full screen",
+  "projectMapCollapse": "Exit full-screen map",
+  "@projectMapExpand": {
+    "description": "Tooltip for expanding the project or catalog map to fill the app viewport."
+  },
+  "@projectMapCollapse": {
+    "description": "Tooltip for returning from the full-screen map to the ordinary layout."
+  },
+  "navHabits": "Habits",
+  "habitsSubtitle": "Small steps, every day",
+  "habitHistory": "Last 5 days",
+  "habitNotScheduled": "Not scheduled",
+  "habitsCompletedLabel": "Habits completed",
+  "habitNew": "New habit",
+  "habitEdit": "Edit habit",
+  "habitsActive": "Active",
+  "habitsFinished": "Finished",
+  "habitsEmpty": "Your habits start here. Add your first habit.",
+  "habitsFinishedEmpty": "No finished habits yet.",
+  "habitsFuture": "Future days are view only.",
+  "habitName": "Habit name",
+  "habitDaily": "Every day",
+  "habitWeekdays": "Selected weekdays",
+  "habitFrequency": "Schedule",
+  "habitTarget": "Times per day",
+  "habitStart": "Start date",
+  "habitEnd": "End date",
+  "habitForever": "Forever",
+  "habitCustom": "Choose date",
+  "habitProject": "Project",
+  "habitNoProject": "No project",
+  "habitReminder": "Reminder",
+  "habitReminderTime": "Reminder time",
+  "habitReminderDenied": "Notifications are disabled. Allow them in system settings.",
+  "habitReminderUnavailable": "Background reminders are unavailable on this platform.",
+  "habitReminderFailed": "Could not update reminders. Try again.",
+  "habitDeleteConfirm": "Delete this habit and its history?",
+  "habitLoadError": "Could not load habits.",
+  "habitSaveError": "Could not save changes. Check the fields and try again.",
+  "habitAddCheckIn": "Add one completion",
+  "habitUndoCheckIn": "Undo last completion",
+  "habitPreviousWeek": "Previous week",
+  "habitNextWeek": "Next week",
+  "notificationHabitChannel": "Habits",
+  "notificationHabitDescription": "Reminders for unfinished habits",
+  "notificationHabitTitle": "Time for your habit",
+  "habitsSummary": "{completed} of {planned} habits completed",
+  "habitDurationDays": "{days} days",
+  "@habitsSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "planned": {
+        "type": "int"
+      }
+    }
+  },
+  "@habitDurationDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsAppearancePreview": "Preview",
+  "settingsPreviewProject": "Personal",
+  "settingsPreviewLongTask": "Prepare materials and plan the next steps",
+  "settingsPreviewCompletedTask": "Review notes",
+  "@settingsAppearancePreview": {
+    "description": "Read-only example in Appearance settings."
+  },
+  "@settingsPreviewProject": {
+    "description": "Read-only example in Appearance settings."
+  },
+  "@settingsPreviewLongTask": {
+    "description": "Read-only example in Appearance settings."
+  },
+  "@settingsPreviewCompletedTask": {
+    "description": "Read-only example in Appearance settings."
+  },
+  "habitsRemaining": "Remaining",
+  "habitsDone": "Done",
+  "habitsPlanned": "Planned",
+  "habitDayPeriod": "Part of day",
+  "habitPeriodAutomatic": "Automatic",
+  "habitPeriodAnytime": "Throughout the day",
+  "habitPeriodNight": "Night",
+  "habitPeriodMultipleReason": "The goal has multiple repetitions across the day.",
+  "habitPeriodNoTimeReason": "No reminder time is set.",
+  "habitPeriodReminderReason": "Based on the reminder time.",
+  "habitPeriodExplanation": "{period}: {reason}",
+  "@habitPeriodExplanation": {
+    "description": "Resolved automatic habit group and the reason for choosing it.",
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "habitPeriodCustom": "By parts of day",
+  "habitPeriodTargetsHint": "Choose one or more parts of day and set a goal for each. Daily total: 1–99.",
+  "accountAvatar": "Avatar",
+  "accountChangeAvatar": "Change avatar",
+  "accountAvatarInput": "Enter or paste an emoji",
+  "accountAvatarHint": "Choose an emoji below or paste one from your keyboard.",
+  "accountAvatarInvalid": "Enter one emoji.",
+  "accountAvatarSaveError": "Could not save your avatar. Please try again.",
+  "accountAvatarReset": "Reset avatar",
+  "accountAvatarSkinTone": "Skin tone",
+  "accountAvatarSmileys": "Smileys and people",
+  "accountAvatarAnimals": "Animals and nature",
+  "accountAvatarFood": "Food and drink",
+  "accountAvatarActivities": "Activities",
+  "accountAvatarTravel": "Travel and places",
+  "accountAvatarObjects": "Objects",
+  "accountAvatarSymbols": "Symbols",
+  "accountAvatarFlags": "Flags",
+  "reportsPlanEstimates": "Estimates for open tasks due today or earlier",
+  "reportsDayInProgress": "Today is still in progress",
+  "reportsTimeByProject": "Where your time went",
+  "reportsNoProject": "No project",
+  "reportsNoTask": "No linked task",
+  "reportsUnavailableName": "{name} (unavailable)",
+  "reportsUnknownProject": "Unavailable project",
+  "reportsUnknownTask": "Unavailable task",
+  "reportsNoProjectFocus": "No completed focus sessions in this period",
+  "reportsProjectShare": "{percent}% of focus time",
+  "@reportsUnavailableName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@reportsProjectShare": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "habitIcon": "Habit icon",
+  "habitIconEmoji": "Emoji",
+  "habitIconIcons": "Icons",
+  "habitIconReset": "Reset icon",
+  "habitIconOption": "{icon, select, bookOpen{Reading} dumbbell{Exercise} footprints{Walking} glassWater{Water} moon{Sleep} sun{Sun} heart{Health} brain{Learning} apple{Nutrition} coffee{Coffee} music{Music} pencil{Writing} code{Coding} leaf{Nature} target{Goal} bike{Cycling} other{Habit icon}}",
+  "@habitIconOption": {
+    "description": "Accessible habit icon name",
+    "placeholders": {
+      "icon": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSynchronization": "Synchronization",
+  "settingsRestartSync": "Restart synchronization",
+  "settingsSyncRunning": "Checking and syncing your data…",
+  "settingsSyncComplete": "Synchronization completed.",
+  "settingsSyncPending": "Some changes are still pending or need recovery.",
+  "settingsSyncFailed": "Synchronization is incomplete. We will retry automatically.",
+  "syncUnresolvedChanges": "Rejected: {rejected}. Awaiting recovery: {repair}.",
+  "@syncUnresolvedChanges": {
+    "placeholders": {
+      "rejected": {
+        "type": "int"
+      },
+      "repair": {
+        "type": "int"
+      }
+    }
+  },
+  "outlookCalendarTitle": "Outlook Calendar",
+  "calendarDisconnectedSubtitle": "Connect an account to sync scheduled tasks.",
+  "calendarFailed": "Calendar error: {message}",
+  "@calendarFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarAuthRequired": "Reconnect this calendar to continue syncing.",
+  "calendarRateLimited": "Calendar request limit reached. Wait a few minutes before syncing again.",
+  "calendarSyncFailed": "Calendar sync failed. Try again later.",
+  "calendarUnsupportedEvent": "Some linked events are recurring or were moved. Resolve them in the calendar to resume syncing.",
+  "settingsFocusSoundTitle": "Focus sounds",
+  "settingsFocusSoundSubtitle": "Choose the sounds for starting, pausing, resuming, and completing a focus interval.",
+  "settingsFocusSoundPreview": "Listen",
+  "settingsFocusSoundPreviewError": "Could not play the sample. Try again.",
+  "pomoTitle": "Ada companion",
+  "pomoDescription": "A little companion for your desktop.",
+  "pomoFocusOnly": "Only during Focus",
+  "pomoQuiet": "Quiet mode",
+  "pomoQuietDescription": "Static reactions without background animation.",
+  "pomoReduceMotion": "Reduce companion motion",
+  "pomoShow": "Show Ada",
+  "pomoOpenApp": "Open application",
+  "pomoHide": "Hide Ada",
+  "pomoResetPosition": "Reset position",
+  "pomoInteract": "Ada: react and toggle controls. Drag to move.",
+  "pomoQuickAdd": "Add a task",
+  "pomoError": "Ada could not finish this action. Try showing Ada again in Settings.",
+  "pomoShowTimer": "Show timer",
+  "pomoSettings": "Ada settings",
+  "pomoSize": "Size",
+  "pomoSizeDecrease": "Make Ada smaller",
+  "pomoSizeIncrease": "Make Ada larger",
+  "pomoSizeReset": "Reset to 100%",
+  "pomoSizeEffective": "Shown at {percent}% to fit this screen",
+  "@pomoSizeEffective": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "appIconTitle": "App icon",
+  "appIconPomo": "Ada",
+  "appIconClassic": "Classic",
+  "appIconError": "Could not apply or save the app icon. Please try again.",
+  "appIconMacosHint": "Changes the Dock icon while Ada is running. Finder uses Ada.",
+  "appIconDesktopHint": "Changes the app icon and Ada shortcuts. Pinned copies may update later.",
+  "appIconWebHint": "Changes the browser tab icon. Installed web app icons are managed by your browser.",
+  "quickAddFocusEstimate": "Pomodoro estimate",
+  "quickAddEstimatedPomodoros": "{count, plural, one{1 Pomodoro} other{{count} Pomodoros}}",
+  "quickAddDecreaseEstimate": "Decrease estimate",
+  "quickAddIncreaseEstimate": "Increase estimate",
+  "quickAddEstimateRange": "Enter a whole number from 1 to 999.",
+  "quickAddEstimateFocusTime": "{count} × {workMinutes} min = {totalMinutes} min focus",
+  "quickAddEstimateAutomatic": "Based on task duration",
+  "quickAddClearEstimate": "Clear estimate",
+  "@quickAddEstimatedPomodoros": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@quickAddEstimateFocusTime": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "workMinutes": {
+        "type": "String"
+      },
+      "totalMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "pomoLinuxChecking": "Checking your desktop environment…",
+  "pomoLinuxUnavailable": "Ada is not yet available in your desktop environment: {environment}. Email support@Ada.com and include your environment.",
+  "pomoLinuxWrite": "Write",
+  "pomoLinuxCopyDetails": "Copy environment details",
+  "pomoLinuxCopied": "Environment details copied.",
+  "pomoLinuxMailError": "Could not open your email app. Copy the environment details and email support@Ada.com.",
+  "pomoLinuxDisplayMode": "Ada display",
+  "pomoLinuxFollowUser": "Follow my screen",
+  "pomoLinuxPinned": "Choose a monitor",
+  "pomoLinuxMonitor": "Monitor",
+  "pomoLinuxSelectMonitor": "Select a monitor",
+  "pomoLinuxMonitorUnavailable": "{monitor} (disconnected)",
+  "pomoLinuxCrossDisplayDrag": "Allow dragging between monitors",
+  "pomoLinuxCrossDisplayDragDescription": "Drag Ada to another monitor without changing its display mode.",
+  "pomoLinuxCrossDisplayDragPinned": "Ada stays on the chosen monitor. Your drag preference is kept for automatic mode.",
+  "pomoLinuxWorkspaceFollow": "On Sway, Ada follows the active workspace.",
+  "pomoLinuxFollowUnavailable": "Automatic following is unavailable in this environment. Choose a monitor to keep Ada on a fixed display.",
+  "pomoLinuxUnknownEnvironment": "Unknown desktop environment",
+  "@pomoLinuxUnavailable": {
+    "placeholders": {
+      "environment": {
+        "type": "String"
+      }
+    }
+  },
+  "@pomoLinuxMonitorUnavailable": {
+    "placeholders": {
+      "monitor": {
+        "type": "String"
+      }
+    }
+  },
+  "pomoGnomeInstallDescription": "Ada needs its GNOME Shell extension to appear on your desktop. Install the bundled extension for your user account.",
+  "pomoGnomeEnableDescription": "Enable the Ada extension in GNOME Shell. If user extensions are disabled globally, turn them on in the Extensions app first.",
+  "pomoGnomeReloginDescription": "The extension is installed. Sign out and sign in again to let GNOME Shell load this version, then check again.",
+  "pomoGnomeUpdateDescription": "Update the Ada GNOME Shell extension to use this version of Ada.",
+  "pomoGnomeIncompatibleDescription": "This GNOME Shell version is not supported by the bundled Ada extension.",
+  "pomoGnomeErrorDescription": "The Ada GNOME Shell extension could not start. Check its status or copy the environment details for support.",
+  "pomoGnomePausedDescription": "Ada is temporarily unavailable in GNOME Shell. It will return when the desktop connection is ready.",
+  "pomoGnomeInstall": "Install extension",
+  "pomoGnomeEnable": "Enable extension",
+  "pomoGnomeUpdate": "Update extension",
+  "pomoGnomeCheckAgain": "Check again",
+  "pomoGnomeXWaylandDescription": "XWayland is unavailable in this GNOME session. Ada needs XWayland together with its Shell extension. Enable XWayland and restart Ada, then check again.",
+  "pomoGnomeUserExtensionsDisabledDescription": "GNOME user extensions are turned off for this session. Open the Extensions app and turn on user extensions, then check again. Ada will keep this system setting unchanged.",
+  "settingsSyncRecoveryTitle": "Recover local data",
+  "settingsSyncRecoveryBody": "Found {count} personal records in an older local archive. Confirm that this data belongs to {account} before merging it with this account. Newer cloud changes and confirmed deletions will be preserved. The archive will remain as a backup.",
+  "settingsSyncRecoveryConfirm": "Recover my data",
+  "@settingsSyncRecoveryBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSyncRecoveryFailed": "Local data recovery is incomplete. The archive has been preserved. Try restarting synchronization again.",
+  "aiQuotaTitle": "AI usage",
+  "aiQuotaUnavailable": "Could not load the AI limit.",
+  "aiQuotaUsage": "{used} of {limit} requests used · {remaining} remaining",
+  "aiQuotaReset": "Resets {date}",
+  "aiQuotaExplanation": "Task analysis and new automatic categories share this monthly limit. Cached categories and manual corrections are free.",
+  "@aiQuotaUsage": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "@aiQuotaReset": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "distractionTitle": "Distraction blocking",
+  "distractionDescription": "Choose what to block during Focus. Unknown resources stay allowed until you assign a category.",
+  "distractionProfile": "Protection profile",
+  "distractionBeforeStart": "Profile selection applies to the next Focus. Categories and exceptions can be corrected at any time.",
+  "distractionNone": "No blocking profile",
+  "distractionAddProfile": "Add profile",
+  "distractionEditProfile": "Edit profile",
+  "distractionProfileName": "Profile name",
+  "distractionStrictExit": "Strict Focus exit",
+  "distractionStrictDescription": "Used when the selected Focus preset has strict mode enabled.",
+  "distractionWait60": "Wait 60 seconds",
+  "distractionConfirmImmediately": "Confirm immediately",
+  "distractionDiscovery": "Discover used apps",
+  "distractionDiscoveryPrivacy": "Only foreground app identities and product names are stored locally. No disk scan, document names or window titles.",
+  "distractionAttempts": "Save distraction attempts",
+  "distractionAttemptsPrivacy": "Optional local events, with repeated attempts combined. Usage time and page content are not recorded.",
+  "distractionAutomatic": "Automatic categories",
+  "distractionAutomaticDescription": "Search determines the category. Manual choices take priority.",
+  "distractionLocal": "Local Focus · this computer",
+  "distractionShared": "Shared Focus · connected",
+  "distractionOffline": "Offline · protection ends at the confirmed deadline",
+  "distractionNativeApplied": "Application protection applied",
+  "distractionNativeReady": "Application protection available",
+  "distractionNativeUnavailable": "Application protection unavailable",
+  "distractionChrome": "Chrome extension",
+  "distractionPairDescription": "Enable protection in Chrome and pair this desktop using a one-time code. The code expires after two minutes.",
+  "distractionPair": "Show pairing code",
+  "distractionPairCode": "Code {code} · port {port}",
+  "distractionConflict": "A shared Focus is already running on another device. Choose which session to continue.",
+  "distractionJoinShared": "Join shared Focus",
+  "distractionFinishLocal": "Finish local Focus",
+  "distractionStopEverywhere": "End Focus on all devices",
+  "distractionResources": "Resources and exceptions",
+  "distractionAddSite": "Add site",
+  "distractionNoResources": "Enable app discovery or add a site. Chrome discovers domains only after you grant permission.",
+  "distractionCategory": "Category",
+  "distractionException": "Profile exception",
+  "distractionUseCategory": "Use category",
+  "distractionAllow": "Always allow",
+  "distractionBlock": "Always block",
+  "distractionClassify": "Find category · Pro",
+  "distractionAutomaticSource": "Automatic category · manual corrections take priority",
+  "distractionDetached": "Protection disabled here",
+  "distractionLastSeen": "Last confirmation: {date}",
+  "distractionInvalidDomain": "Enter a public domain, such as youtube.com.",
+  "distractionOnPause": "Block during pauses",
+  "distractionOnShortBreak": "Block during short breaks",
+  "distractionOnLongBreak": "Block during long breaks",
+  "distractionExitTitle": "End strict Focus?",
+  "distractionExitCountdown": "Exit available in {seconds} seconds. You can cancel and return to Focus.",
+  "distractionExitConfirm": "The interval will be interrupted without a completion reward.",
+  "distractionExitConfirmButton": "Confirm exit",
+  "distractionExitCancel": "Keep focusing",
+  "distractionSocial": "Social media",
+  "distractionMessaging": "Messaging",
+  "distractionVideo": "Video",
+  "distractionMusic": "Music",
+  "distractionGames": "Games",
+  "distractionNews": "News",
+  "distractionShopping": "Shopping",
+  "distractionEducation": "Education",
+  "distractionDevelopment": "Development",
+  "distractionProductivity": "Work tools",
+  "distractionOther": "Other",
+  "distractionUnclassified": "Unclassified",
+  "@distractionPairCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "port": {
+        "type": "int"
+      }
+    }
+  },
+  "@distractionLastSeen": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@distractionExitCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "distractionConnected": "Connected",
+  "distractionDisconnected": "Disconnected",
+  "distractionProtected": "Protected · rules confirmed",
+  "distractionNotConfirmed": "Rules not confirmed",
+  "distractionIncognito": "Incognito access: {status}",
+  "@distractionIncognito": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "blockingTitle": "Blocking",
+  "blockingDescription": "Your work rhythm and its boundaries, together.",
+  "blockingRhythm": "{work} min focus · {short} min break · {long} min long break after {count} intervals",
+  "blockingSharedPresets": "Used by: {presets}. Profile changes apply to all of them.",
+  "blockingProfileMissing": "The assigned profile is unavailable. Reload or choose another profile.",
+  "blockingWhatToClose": "What to close",
+  "blockingWhatToKeep": "What to keep available",
+  "blockingBehavior": "Profile behavior",
+  "blockingApps": "Apps",
+  "blockingEnabled": "Enabled",
+  "blockingDisabled": "Disabled",
+  "blockingDevices": "This computer and Chrome",
+  "blockingDeviceDetails": "Devices and privacy",
+  "blockingSaving": "Saving…",
+  "blockingCurrentFocus": "Go to current Focus",
+  "blockingReady": "Ready to focus",
+  "@blockingRhythm": {
+    "placeholders": {
+      "work": {
+        "type": "int"
+      },
+      "short": {
+        "type": "int"
+      },
+      "long": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@blockingSharedPresets": {
+    "placeholders": {
+      "presets": {
+        "type": "String"
+      }
+    }
+  },
+  "shortcutHintsTitle": "Keyboard hints",
+  "shortcutHintsNavigation": "Navigation",
+  "shortcutHintsHeld": "{key} held · Release to hide",
+  "shortcutHintsRelease": "Release {key} first to use these keys",
+  "shortcutHintsSwitchFocusView": "Switch Focus view",
+  "shortcutHintsNavigate": "Navigate",
+  "shortcutHintsAcceptSuggestion": "Accept suggestion",
+  "@shortcutHintsHeld": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "@shortcutHintsRelease": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "blockingShowAllPresets": "Show all",
+  "blockingCollapsePresets": "Collapse",
+  "taskNew": "New task",
+  "taskCreateAction": "Create task",
+  "taskDescription": "Description",
+  "taskExpandEditor": "Expand editor",
+  "taskCollapseEditor": "Collapse editor",
+  "taskVisibleToYou": "Visible only to you",
+  "taskVisibleToTeam": "Visible to team members",
+  "taskCreatedFilesPending": "Task created. Retry uploading the remaining files, or remove them to finish.",
+  "taskFormatBold": "Bold (Markdown)",
+  "taskFormatItalic": "Italic (Markdown)",
+  "taskFormatList": "Bulleted list",
+  "taskFormatLink": "Link (Markdown)",
+  "settingsShortcutsTogglePomo": "Enable / disable Ada",
+  "settingsMenuBarTimerTitle": "Menu bar timer",
+  "settingsMenuBarTimerClassic": "Old",
+  "settingsMenuBarTimerModern": "New",
+  "settingsMenuBarTimerError": "Could not update the menu bar timer. Please try again.",
+  "quickAddEnterEstimate": "Enter number",
+  "quickAddEstimateTotalTime": "{minutes} min focus",
+  "quickAddEstimateInterval": "{minutes} min each",
+  "@quickAddEstimateTotalTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "@quickAddEstimateInterval": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "habitCheckIn": "Check in",
+  "habitWeekHistory": "This week",
+  "habitProgressOn": "{date} progress",
+  "@habitProgressOn": {
+    "description": "Heading for habit progress on the selected local calendar date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "habitsDayRhythm": "Day rhythm",
+  "habitsProgressCircle": "Progress circle",
+  "habitsPresentationError": "Could not remember this view.",
+  "habitsRemainingToday": "Remaining today",
+  "habitsCompletedToday": "Completed today",
+  "habitsRemainingOn": "Remaining on {date}",
+  "habitsCompletedOn": "Completed on {date}",
+  "habitsProgressCaption": "habits completed",
+  "@habitsRemainingOn": {
+    "description": "Habit dashboard section heading for the selected calendar date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@habitsCompletedOn": {
+    "description": "Habit dashboard section heading for the selected calendar date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "priorityUrgent": "Urgent",
+  "priorityHigh": "High",
+  "priorityNormal": "Normal",
+  "priorityLow": "Low",
+  "pickerDateAndTime": "Date and time",
+  "pickerInOneWeek": "In one week",
+  "pickerEnterTime": "Enter time",
+  "pickerTimeWheels": "Time wheels",
+  "pickerMinuteOffset": "{offset} min",
+  "pickerIncrease": "Increase",
+  "pickerDecrease": "Decrease",
+  "@pickerMinuteOffset": {
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "taskStatusBlocked": "Blocked",
+  "taskStatusUrgent": "Urgent",
+  "blockingControls": "Dependencies and urgency",
+  "blockingUrgent": "Urgent for me",
+  "blockingRepeat": "Keep future occurrences urgent",
+  "blockingCascade": "Priority order",
+  "blockingSearch": "Find a prerequisite",
+  "blockingDependency": "Waiting for prerequisites",
+  "blockingPriority": "Higher-priority tasks first",
+  "blockingUrgentReason": "An urgent task comes first",
+  "blockingUnavailable": "This action is unavailable. Refresh and try again.",
+  "blockingDeleteWarning": "Deleting this task releases dependent tasks.",
+  "blockingNoMatches": "No available prerequisites",
+  "blockingSyncConflictDetails": "The server rejected completion because this task was blocked. Its status has been restored; accumulated Focus is preserved.",
+  "blockingSyncConflict": "Sync conflict",
+  "focusDuration": "Duration",
+  "focusPlannedDuration": "Plan · {duration}",
+  "focusShortenDuration": "−5 min",
+  "focusExtendDuration": "+5 min",
+  "focusFinish": "Finish",
+  "@focusPlannedDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  }
+}

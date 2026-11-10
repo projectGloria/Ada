@@ -1,0 +1,1 @@
+enum AdaSocialProvider { apple, google }

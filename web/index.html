@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Open-source task manager with a built-in Pomodoro focus timer.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Ada">
+  <link rel="apple-touch-icon" href="icons/production/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Ada</title>
+  <link rel="manifest" href="manifest.json">
+  <script src="config.js"></script>
+  <!--
+    One image serves every environment, so the flavor identity is chosen here at
+    runtime instead of at build time: `config.js` names the deployment
+    environment and the matching manifest, icons and display name are applied in
+    <head>, before the first paint.
+
+    The asset names are a contract with the icon pipeline. Every flavor needs:
+
+      development  manifest-development.json  icons/development/Icon-192.png
+                   icons/development/favicon.png
+      staging      manifest-staging.json      icons/staging/Icon-192.png
+                   icons/staging/favicon.png
+      production   manifest.json              icons/production/Icon-192.png
+                   favicon.png
+
+    The manifest is authoritative: its `icons`, `theme_color` and `name` are
+    adopted once it loads, and any missing or unreadable flavor asset falls back
+    to the production identity rather than leaving the page without an icon.
+  -->
+  <script>
+    (() => {
+      const flavors = {
+        development: {
+          manifest: 'manifest-development.json',
+          icon: 'icons/development/Icon-192.png',
+          favicon: 'icons/development/favicon.png',
+          title: 'Ada-Dev',
+        },
+        staging: {
+          manifest: 'manifest-staging.json',
+          icon: 'icons/staging/Icon-192.png',
+          favicon: 'icons/staging/favicon.png',
+          title: 'Ada-Stg',
+        },
+        production: {
+          manifest: 'manifest.json',
+          icon: 'icons/production/Icon-192.png',
+          favicon: 'favicon.png',
+          title: 'Ada',
+        },
+      };
+      const environments = {
+        local: 'development',
+        staging: 'staging',
+        production: 'production',
+        selfhosted: 'production',
+      };
+      const setLink = (rel, href) => {
+        const link = document.head.querySelector(`link[rel="${rel}"]`);
+        if (link) link.href = href;
+      };
+      const setMeta = (name, content) => {
+        let meta = document.head.querySelector(`meta[name="${name}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.name = name;
+          document.head.append(meta);
+        }
+        meta.content = content;
+      };
+      const apply = (name) => {
+        const flavor = flavors[name];
+        document.documentElement.dataset.flavor = name;
+        setLink('manifest', flavor.manifest);
+        if (!document.documentElement.dataset.appIcon) setLink('icon', flavor.favicon);
+        setLink('apple-touch-icon', flavor.icon);
+        setMeta('apple-mobile-web-app-title', flavor.title);
+        document.title = flavor.title;
+      };
+      const iconAvailable = (url) => new Promise((resolve) => {
+        const probe = new Image();
+        probe.onload = () => resolve(true);
+        probe.onerror = () => resolve(false);
+        probe.src = url;
+      });
+      const adoptManifest = async (name) => {
+        const flavor = flavors[name];
+        const response = await fetch(flavor.manifest, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`${flavor.manifest} ${response.status}`);
+        const manifest = await response.json();
+        const icons = Array.isArray(manifest.icons) ? manifest.icons : [];
+        const icon = icons.find((entry) => entry.sizes === '192x192') || icons[0];
+        if (!icon || !icon.src || !(await iconAvailable(icon.src))) {
+          throw new Error(`${flavor.manifest} has no usable icon`);
+        }
+        if (document.documentElement.dataset.appIconBuildMode) return;
+        if (!document.documentElement.dataset.appIcon) setLink('icon', icon.src);
+        setLink('apple-touch-icon', icon.src);
+        if (manifest.theme_color) setMeta('theme-color', manifest.theme_color);
+        if (manifest.name) document.title = manifest.name;
+      };
+
+      window.adaSetAppIcon = (icon, flavorName, mode = 'release') => {
+        if (!['icon-light-pomo', 'classic'].includes(icon) || !Object.keys(flavors).includes(flavorName) || !['debug', 'profile', 'release'].includes(mode)) {
+          throw new Error('Unsupported app icon');
+        }
+        document.documentElement.dataset.appIcon = icon;
+        document.documentElement.dataset.appIconBuildMode = mode;
+        const directory = `icons/${flavorName}${mode === 'release' ? '' : '/' + mode}`;
+        const selected = icon === 'classic'
+          ? `${directory}/classic.png`
+          : mode === 'release' ? flavors[flavorName].favicon : `${directory}/favicon.png`;
+        setLink('icon', selected);
+        setLink('manifest', mode === 'release' ? flavors[flavorName].manifest : `manifest-${flavorName}-${mode}.json`);
+        setLink('apple-touch-icon', `${directory}/Icon-192.png`);
+      };
+
+      const config = window.adaRuntimeConfig;
+      const environment =
+        (config && config.environment) || window.adaBuildEnvironment;
+      const flavor = environments[environment] || 'production';
+      apply(flavor);
+      if (flavor !== 'production') {
+        adoptManifest(flavor).catch(() => {
+          if (!document.documentElement.dataset.appIconBuildMode) apply('production');
+        });
+      }
+    })();
+  </script>
+  <script>
+    (() => {
+      const validPreferences = ['light', 'dark', 'system'];
+      const cookieTheme = document.cookie
+        .split(';')
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie.startsWith('ada-theme='))
+        ?.slice('ada-theme='.length);
+      let preference = validPreferences.includes(cookieTheme)
+        ? cookieTheme
+        : null;
+
+      if (!preference) {
+        try {
+          const encoded = localStorage.getItem('flutter.app.themeMode');
+          const stored = encoded ? JSON.parse(encoded) : null;
+          if (validPreferences.includes(stored)) {
+            preference = stored;
+            const hostname = window.location.hostname;
+            if (
+              hostname === 'ada.com' ||
+              hostname.endsWith('.ada.com')
+            ) {
+              document.cookie = `ada-theme=${preference}; Domain=ada.com; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
+            }
+          }
+        } catch (_) {
+          // Ignore unavailable or malformed legacy storage.
+        }
+      }
+
+      const useDark = preference === 'dark' || (
+        (!preference || preference === 'system') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      );
+      document.documentElement.dataset.theme = useDark ? 'dark' : 'light';
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --loader-background: #fffdfb;
+      --loader-text: #1e2227;
+      --loader-muted: #646b72;
+      --loader-track: #eadfda;
+      --loader-accent: #e34432;
+      background: var(--loader-background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --loader-background: #160d10;
+      --loader-text: #f7edee;
+      --loader-muted: #d1c1c5;
+      --loader-track: #342027;
+      --loader-accent: #ff6b5e;
+    }
+
+    #ada-web-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: grid;
+      place-items: center;
+      background: var(--loader-background);
+      color: var(--loader-text);
+      opacity: 1;
+      transition: opacity 180ms ease;
+    }
+
+    #ada-web-loader.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .ada-loading-content {
+      display: grid;
+      justify-items: center;
+      gap: 14px;
+      width: min(280px, calc(100vw - 48px));
+      text-align: center;
+    }
+
+    .ada-loading-brand {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .ada-loading-indicator {
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--loader-track);
+      border-top-color: var(--loader-accent);
+      border-radius: 50%;
+      animation: ada-spin 750ms linear infinite;
+    }
+
+    .ada-loading-stage {
+      margin: 0;
+      color: var(--loader-muted);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .ada-loading-reload {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: var(--loader-accent);
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    @keyframes ada-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="ada-web-loader" role="status" aria-live="polite">
+    <div class="ada-loading-content">
+      <div class="ada-loading-brand">Ada</div>
+      <div class="ada-loading-indicator" aria-hidden="true"></div>
+      <p class="ada-loading-stage" id="ada-web-loader-stage">Loading Ada</p>
+      <button
+        class="ada-loading-reload"
+        id="ada-web-loader-reload"
+        type="button"
+        hidden
+      ></button>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const loader = document.getElementById('ada-web-loader');
+      const stage = document.getElementById('ada-web-loader-stage');
+      const reload = document.getElementById('ada-web-loader-reload');
+      const copies = {
+  "en": {
+    "bootstrap": "Loading Ada",
+    "session": "Checking your session",
+    "app": "Opening the app",
+    "slow": "The first launch can take a little longer",
+    "failed": "Ada could not start. Please reload the page.",
+    "reload": "Reload page"
+  },
+  "ru": {
+    "bootstrap": "Загружаем Ada",
+    "session": "Проверяем сессию",
+    "app": "Открываем приложение",
+    "slow": "Первый запуск может занять немного больше времени",
+    "failed": "Не удалось запустить Ada. Обновите страницу.",
+    "reload": "Обновить страницу"
+  },
+  "de": {
+    "bootstrap": "Ada wird geladen",
+    "session": "Sitzung wird geprüft",
+    "app": "App wird geöffnet",
+    "slow": "Der erste Start kann etwas länger dauern",
+    "failed": "Ada konnte nicht starten. Lade die Seite neu.",
+    "reload": "Seite neu laden"
+  },
+  "es": {
+    "bootstrap": "Cargando Ada",
+    "session": "Comprobando tu sesión",
+    "app": "Abriendo la aplicación",
+    "slow": "El primer inicio puede tardar un poco más",
+    "failed": "Ada no pudo iniciarse. Recarga la página.",
+    "reload": "Recargar página"
+  },
+  "fr": {
+    "bootstrap": "Chargement de Ada",
+    "session": "Vérification de votre session",
+    "app": "Ouverture de l’application",
+    "slow": "Le premier lancement peut prendre un peu plus de temps",
+    "failed": "Ada n’a pas pu démarrer. Rechargez la page.",
+    "reload": "Recharger la page"
+  },
+  "zh": {
+    "bootstrap": "正在加载 Ada",
+    "session": "正在检查会话",
+    "app": "正在打开应用",
+    "slow": "首次启动可能需要稍长时间",
+    "failed": "无法启动 Ada。请重新加载页面。",
+    "reload": "重新加载页面"
+  },
+  "ar": {
+    "bootstrap": "جارٍ تحميل Ada",
+    "session": "جارٍ التحقق من جلستك",
+    "app": "جارٍ فتح التطبيق",
+    "slow": "قد يستغرق التشغيل الأول وقتًا أطول قليلًا",
+    "failed": "تعذر بدء Ada. أعد تحميل الصفحة.",
+    "reload": "إعادة تحميل الصفحة"
+  },
+  "pt-BR": {
+    "bootstrap": "Carregando Ada",
+    "session": "Verificando sua sessão",
+    "app": "Abrindo o app",
+    "slow": "A primeira abertura pode demorar um pouco mais",
+    "failed": "Não foi possível iniciar o Ada. Recarregue a página.",
+    "reload": "Recarregar página"
+  },
+  "ja": {
+    "bootstrap": "Adaを読み込み中",
+    "session": "セッションを確認中",
+    "app": "アプリを開いています",
+    "slow": "初回起動には少し時間がかかる場合があります",
+    "failed": "Adaを起動できませんでした。ページを再読み込みしてください。",
+    "reload": "ページを再読み込み"
+  },
+  "ko": {
+    "bootstrap": "Ada를 불러오는 중",
+    "session": "세션 확인 중",
+    "app": "앱을 여는 중",
+    "slow": "처음 실행할 때는 시간이 조금 더 걸릴 수 있습니다",
+    "failed": "Ada를 시작하지 못했습니다. 페이지를 새로고침하세요.",
+    "reload": "페이지 새로고침"
+  }
+};
+      const query = new URLSearchParams(location.search);
+      const requested = query.getAll('lang').length === 1 && Object.hasOwn(copies, query.get('lang')) ? query.get('lang') : null;
+      let stored;
+      try {
+        stored = localStorage.getItem('flutter.app.language') ?? localStorage.getItem('app.language');
+        try { stored = JSON.parse(stored); } catch (_) {}
+      } catch (_) {}
+      const storedLocale = ({ ptBR: 'pt-BR', zhHans: 'zh' })[stored] || stored;
+      const browserLocale = (navigator.languages || [navigator.language]).map(value => String(value).toLowerCase().split(/[-_]/)[0])
+        .map(value => value === 'pt' ? 'pt-BR' : value).find(value => Object.hasOwn(copies, value));
+      const language = requested || (Object.hasOwn(copies, storedLocale) ? storedLocale : null) || browserLocale || 'en';
+      const copy = copies[language];
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      let failed = false;
+      const fallback = window.setTimeout(() => {
+        stage.textContent = copy.slow;
+      }, 8000);
+      const watchdog = window.setTimeout(() => {
+        window.adaShowLoadingFailure();
+      }, 30000);
+
+      const clearLoadingTimers = () => {
+        window.clearTimeout(fallback);
+        window.clearTimeout(watchdog);
+      };
+
+      stage.textContent = copy.bootstrap;
+      reload.textContent = copy.reload;
+      reload.addEventListener('click', () => window.location.reload());
+      window.adaSetLoadingStage = (name) => {
+        if (!failed) stage.textContent = copy[name] || copy.bootstrap;
+      };
+      window.adaHideLoading = () => {
+        clearLoadingTimers();
+        loader.classList.add('is-hidden');
+        window.setTimeout(() => loader.remove(), 180);
+      };
+      window.adaShowLoadingFailure = () => {
+        clearLoadingTimers();
+        failed = true;
+        stage.textContent = copy.failed;
+        const indicator = loader.querySelector('.ada-loading-indicator');
+        if (indicator) indicator.hidden = true;
+        reload.hidden = false;
+      };
+    })();
+  </script>
+  <!--
+    You can customize the "flutter_bootstrap.js" script.
+    This is useful to provide a custom configuration to the Flutter loader
+    or to give the user feedback during the initialization process.
+
+    For more details:
+    * https://docs.flutter.dev/platform-integration/web/initialization
+  -->
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

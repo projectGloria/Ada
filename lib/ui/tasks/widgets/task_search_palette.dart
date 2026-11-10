@@ -1,0 +1,377 @@
+import 'package:ada/ui/core/widgets/shortcut_hints.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart' show LucideIcons, ShadInput;
+
+import 'package:ada/ui/core/localization/app_l10n.dart';
+import 'package:ada/ui/pomo/view_models/pomo_controller.dart';
+import 'package:ada/ui/tasks/widgets/project_localizations.dart';
+import 'package:ada/routing/task_detail_navigation.dart';
+import 'package:ada/ui/core/themes/app_motion.dart';
+import 'package:ada/ui/core/themes/app_theme.dart';
+import 'package:ada/ui/tasks/widgets/quick_add_dialog.dart';
+import 'package:ada/ui/tasks/view_models/task_search_palette_view_model.dart';
+import 'package:ada/ui/tasks/widgets/quick_add_bar.dart'
+    show showVoiceQuickAddSheet;
+
+Future<void> showTaskSearchPalette(BuildContext context, WidgetRef ref) async {
+  final previousFocus = FocusManager.instance.primaryFocus;
+  final container = ProviderScope.containerOf(context);
+  final result = await showDialog<({String id, String query})>(
+    context: context,
+    animationStyle: AnimationStyle(
+      duration: AppMotion.duration(context, AppMotion.popup),
+      reverseDuration: AppMotion.duration(context, AppMotion.popup),
+      curve: AppMotion.curve,
+    ),
+    builder: (_) => const _TaskSearchPalette(),
+  );
+  if (previousFocus?.context != null) previousFocus!.requestFocus();
+  if (!context.mounted || result == null) return;
+  if (result.id.startsWith('task:')) {
+    final id = result.id.substring(5);
+    if (container
+        .read(taskSearchPaletteViewModelProvider.notifier)
+        .resultExists(result.id)) {
+      openTaskDetails(context, id);
+    }
+  } else if (result.id.startsWith('project:')) {
+    final id = result.id.substring(8);
+    if (container
+        .read(taskSearchPaletteViewModelProvider.notifier)
+        .resultExists(result.id)) {
+      context.go(Uri(pathSegments: ['', 'project', id]).toString());
+    }
+  } else if (result.id == 'create') {
+    await showQuickAddDialog(context, initialText: result.query);
+  } else if (result.id == 'dictate') {
+    unawaited(showVoiceQuickAddSheet(context, ref));
+  } else if (result.id == 'focus') {
+    context.go('/focus');
+  } else if (result.id == 'all') {
+    context.go(
+      Uri(path: '/search', queryParameters: {'q': result.query}).toString(),
+    );
+  }
+}
+
+class _TaskSearchPalette extends ConsumerStatefulWidget {
+  const _TaskSearchPalette();
+
+  @override
+  ConsumerState<_TaskSearchPalette> createState() => _TaskSearchPaletteState();
+}
+
+class _TaskSearchPaletteState extends ConsumerState<_TaskSearchPalette> {
+  final _controller = TextEditingController();
+  final _inputFocus = FocusNode();
+  final _rowKeys = <String, GlobalKey>{};
+  String? _selected;
+  bool _selectFirstOnBuild = true;
+  String _renderedQuery = '';
+  bool _busy = false;
+  String? _error;
+
+  List<({String id, String title})> _results() => ref
+      .read(taskSearchPaletteViewModelProvider.notifier)
+      .results(
+        _controller.text,
+        projectTitle: (project) => project.displayName(context.l10n),
+      );
+
+  List<String> _ids() => [
+    for (final result in _results()) result.id,
+    'create',
+    'dictate',
+    'focus',
+    'all',
+    if (pomoSupported) 'pomo',
+  ];
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _inputFocus.dispose();
+    super.dispose();
+  }
+
+  Future<void> _activate(String id, String query) async {
+    if (_busy ||
+        !taskSearchPaletteCanActivate(_ids(), id, query, _controller.text) ||
+        !_controller.value.composing.isCollapsed) {
+      return;
+    }
+    if (id == 'focus' || id == 'pomo') {
+      setState(() {
+        _busy = true;
+        _error = null;
+      });
+      try {
+        if (id == 'pomo') {
+          final pomo = ref.read(pomoControllerProvider);
+          await pomo.toggleEnabled();
+          if (pomo.error != null) throw pomo.error!;
+        } else {
+          await ref
+              .read(taskSearchPaletteViewModelProvider.notifier)
+              .startFocusIfNeeded();
+        }
+      } catch (_) {
+        if (mounted) {
+          setState(() {
+            _busy = false;
+            _error = id == 'pomo'
+                ? context.l10n.pomoError
+                : context.l10n.focusActionFailed;
+          });
+        }
+        return;
+      }
+      if (!mounted) return;
+    }
+    _busy = true;
+    Navigator.of(context).pop((id: id, query: query));
+  }
+
+  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent || !_controller.value.composing.isCollapsed) {
+      return KeyEventResult.ignored;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.escape) {
+      if (!_busy) Navigator.of(context).pop();
+      return KeyEventResult.handled;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.arrowDown ||
+        event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      setState(
+        () => _selected = taskSearchPaletteSelection(
+          _ids(),
+          _selected,
+          event.logicalKey == LogicalKeyboardKey.arrowDown ? 1 : -1,
+        ),
+      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final rowContext = _rowKeys[_selected]?.currentContext;
+        if (mounted && rowContext != null) {
+          Scrollable.ensureVisible(
+            rowContext,
+            alignment: .5,
+            duration: AppMotion.duration(context, AppMotion.popup),
+          );
+        }
+      });
+      return KeyEventResult.handled;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.enter && _selected != null) {
+      _activate(_selected!, _renderedQuery);
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = ref.watch(taskSearchPaletteViewModelProvider);
+    final pomo = pomoSupported ? ref.watch(pomoControllerProvider) : null;
+    final results = _results();
+    final l10n = context.l10n;
+    final query = _controller.text;
+    _renderedQuery = query;
+    final ids = [
+      for (final result in results) result.id,
+      'create',
+      'dictate',
+      'focus',
+      'all',
+      if (pomoSupported) 'pomo',
+    ];
+    _selected = _selectFirstOnBuild
+        ? ids.first
+        : taskSearchPaletteSelection(ids, _selected, 0);
+    _selectFirstOnBuild = false;
+    final colors = context.appColors;
+
+    Widget heading(String label) => Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Text(
+        label,
+        style: Theme.of(
+          context,
+        ).textTheme.labelSmall?.copyWith(color: colors.secondaryText),
+      ),
+    );
+    Widget row(String id, String title, IconData icon) => Semantics(
+      selected: _selected == id,
+      child: ListTile(
+        key: _rowKeys.putIfAbsent(id, GlobalKey.new),
+        selected: _selected == id,
+        selectedTileColor: colors.surfaceHover,
+        leading: Icon(icon, size: 18),
+        title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+        enabled: !_busy,
+        onTap: () => _activate(id, query),
+        onFocusChange: (focused) {
+          if (focused) setState(() => _selected = id);
+        },
+      ),
+    );
+
+    return ShortcutHintsScope(
+      modal: true,
+      identity: (
+        _busy,
+        _selected != null,
+        _controller.value.composing.isCollapsed,
+      ),
+      hints: [
+        if (!_busy && _controller.value.composing.isCollapsed) ...[
+          ShortcutHint(l10n.commonClose, 'Esc'),
+          ShortcutHint(l10n.shortcutHintsNavigate, '↑ ↓'),
+          if (_selected != null) ShortcutHint(l10n.commonOpen, 'Enter'),
+        ],
+      ],
+      child: PopScope(
+        canPop: !_busy,
+        child: Dialog(
+          clipBehavior: Clip.antiAlias,
+          child: SizedBox(
+            width: 640,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height * .8,
+              ),
+              child: Focus(
+                onKeyEvent: _onKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const ShortcutHintsBar(),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ShadInput(
+                        controller: _controller,
+                        focusNode: _inputFocus,
+                        autofocus: true,
+                        enabled: !_busy,
+                        placeholder: Text(l10n.commandSearchPlaceholder),
+                        leading: const Icon(LucideIcons.search, size: 18),
+                        onChanged: (_) => setState(() {
+                          _selected = null;
+                          _selectFirstOnBuild = true;
+                          _error = null;
+                        }),
+                      ),
+                    ),
+                    if (_busy || palette.loading)
+                      const LinearProgressIndicator(),
+                    Flexible(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          if (palette.hasError)
+                            ListTile(
+                              title: Text(l10n.taskListLoadError),
+                              trailing: TextButton(
+                                onPressed: ref
+                                    .read(
+                                      taskSearchPaletteViewModelProvider
+                                          .notifier,
+                                    )
+                                    .retry,
+                                child: Text(l10n.commonRetry),
+                              ),
+                            ),
+                          if (query.trim().isNotEmpty &&
+                              results.isEmpty &&
+                              !palette.loading)
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(l10n.commandSearchNoMatches),
+                            ),
+                          if (results.any(
+                            (result) => result.id.startsWith('task:'),
+                          ))
+                            heading(l10n.commandSearchTasks),
+                          for (final result in results.where(
+                            (result) => result.id.startsWith('task:'),
+                          ))
+                            row(result.id, result.title, LucideIcons.circle),
+                          if (results.any(
+                            (result) => result.id.startsWith('project:'),
+                          ))
+                            heading(l10n.navProjects),
+                          for (final result in results.where(
+                            (result) => result.id.startsWith('project:'),
+                          ))
+                            row(result.id, result.title, LucideIcons.folder),
+                          heading(l10n.commandSearchActions),
+                          row(
+                            'create',
+                            query.trim().isEmpty
+                                ? l10n.addTask
+                                : l10n.searchCreateTask,
+                            LucideIcons.plus,
+                          ),
+                          row(
+                            'dictate',
+                            l10n.commandSearchDictateTask,
+                            LucideIcons.mic,
+                          ),
+                          row(
+                            'focus',
+                            palette.focusRunning
+                                ? l10n.openFocus
+                                : l10n.startFocus,
+                            LucideIcons.timer,
+                          ),
+                          row(
+                            'all',
+                            l10n.commandSearchAllResults,
+                            LucideIcons.search,
+                          ),
+                          if (pomo != null)
+                            row(
+                              'pomo',
+                              pomo.prefs.enabled
+                                  ? l10n.commandSearchDisablePomo
+                                  : l10n.commandSearchEnablePomo,
+                              LucideIcons.power,
+                            ),
+                          if (_error != null)
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Semantics(
+                                liveRegion: true,
+                                child: Text(
+                                  _error!,
+                                  style: TextStyle(color: colors.error),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        l10n.commandSearchHint,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: colors.secondaryText,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

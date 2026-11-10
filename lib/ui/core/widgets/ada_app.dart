@@ -1,0 +1,93 @@
+import 'package:ada/ui/core/localization/app_date_formatter.dart';
+import 'package:ada/ui/core/view_models/app_date_format_view_model.dart';
+import 'package:ada/ui/core/widgets/shortcut_hints.dart';
+import 'package:ada/ui/distractions/widgets/focus_exit_host.dart';
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart'
+    show ShadApp, ShadAppBuilder, ShadTheme, GlobalShadLocalizations;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ada/ui/core/localization/app_localizations.dart';
+
+import 'package:ada/ui/updates/widgets/update_widgets.dart';
+import 'package:ada/ui/core/localization/app_locale.dart';
+import 'package:ada/ui/core/widgets/app_zoom.dart';
+import 'package:ada/ui/core/view_models/app_view_model.dart';
+import 'package:ada/ui/core/view_models/app_theme_mode_view_model.dart';
+import 'package:ada/routing/router.dart';
+import 'package:ada/ui/core/themes/app_theme.dart';
+import 'package:ada/ui/settings/view_models/theme_settings_view_model.dart';
+import 'package:ada/ui/core/themes/app_motion.dart';
+import 'package:ada/ui/core/themes/macos_glass.dart';
+import 'package:ada/ui/core/widgets/keyboard_dismiss_region.dart';
+
+class AdaApp extends ConsumerWidget {
+  const AdaApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final app = ref.watch(appViewModelProvider);
+    final themeMode = ref.watch(appThemeModeProvider);
+    final dateFormat = ref.watch(appDateFormatProvider);
+    final router = ref.watch(routerProvider);
+    final rootBackground = ref.watch(
+      macosGlassRootBackgroundProvider(View.of(context).viewId),
+    );
+    final palettes = ref.watch(
+      appThemeSettingsProvider.select(
+        (settings) => (settings.activeTheme.light, settings.activeTheme.dark),
+      ),
+    );
+    final lightTheme = AppTheme.light(palette: palettes.$1);
+    final darkTheme = AppTheme.dark(palette: palettes.$2);
+    return ShadApp.custom(
+      theme: AppTheme.shadFromMaterial(lightTheme),
+      darkTheme: AppTheme.shadFromMaterial(darkTheme),
+      themeMode: themeMode.themeMode,
+      appBuilder: (context) => MaterialApp.router(
+        onGenerateTitle: (context) => 'Ada',
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: themeMode.themeMode,
+        themeAnimationDuration: AppMotion.duration(context, AppMotion.state),
+        themeAnimationCurve: AppMotion.curve,
+        routerConfig: router,
+        builder: (context, child) => AppDateFormatScope(
+          format: dateFormat,
+          child: ShadTheme(
+            data: AppTheme.shadFromMaterial(
+              Theme.of(context),
+              reduceMotion: MediaQuery.disableAnimationsOf(context),
+            ),
+            child: MacosGlassHost(
+              child: AppZoom(
+                child: ShadAppBuilder(
+                  backgroundColor: rootBackground,
+                  child: ShortcutHintsHost(
+                    child: KeyboardDismissRegion(
+                      child: DesktopUpdateHost(
+                        child: FocusExitHost(
+                          child: child ?? const SizedBox.shrink(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        locale: resolveAppLocale(app.language),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalShadLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+    );
+  }
+}

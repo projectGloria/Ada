@@ -1,0 +1,5199 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Spanish Castilian (`es`).
+class AppLocalizationsEs extends AppLocalizations {
+  AppLocalizationsEs([String locale = 'es']) : super(locale);
+
+  @override
+  String get settingsDateFormatTitle => 'Formato de fecha';
+
+  @override
+  String get settingsDateFormatSubtitle =>
+      'El formato automático sigue el idioma de la aplicación.';
+
+  @override
+  String get settingsDateFormatAutomatic => 'Automático';
+
+  @override
+  String get settingsDateFormatDayMonthYear => 'Día.mes.año';
+
+  @override
+  String get settingsDateFormatMonthDayYear => 'Mes/día/año';
+
+  @override
+  String get settingsDateFormatYearMonthDay => 'Año-mes-día';
+
+  @override
+  String get settingsDateFormatLong => 'Mes en letras';
+
+  @override
+  String get settingsSectionGeneral => 'General';
+
+  @override
+  String get settingsSectionAppearance => 'Apariencia';
+
+  @override
+  String get settingsSectionTasksFocus => 'Tareas y Enfoque';
+
+  @override
+  String get settingsSectionPomo => 'Ada';
+
+  @override
+  String get settingsSectionIntegrations => 'Integraciones y datos';
+
+  @override
+  String get settingsSectionAccount => 'Cuenta y Pro';
+
+  @override
+  String get settingsThemeColorsTab => 'Colores';
+
+  @override
+  String get settingsThemeBackgroundsTab => 'Fondos';
+
+  @override
+  String get settingsRefreshAccount => 'Actualizar cuenta';
+
+  @override
+  String get settingsSubscriptionActions => 'Gestionar suscripción';
+
+  @override
+  String get settingsSubscriptionError =>
+      'No se pudo actualizar la suscripción. Se conserva el acceso confirmado anteriormente.';
+
+  @override
+  String get settingsVersionError => 'No se pudo cargar la versión.';
+
+  @override
+  String get appTitle => 'Ada';
+
+  @override
+  String get commonAdd => 'Añadir';
+
+  @override
+  String get commonCancel => 'Cancelar';
+
+  @override
+  String get commonSave => 'Guardar';
+
+  @override
+  String get commonDelete => 'Eliminar';
+
+  @override
+  String get commonUndo => 'Deshacer';
+
+  @override
+  String get commonOpen => 'Abrir';
+
+  @override
+  String get commonBack => 'Atrás';
+
+  @override
+  String get commonClose => 'Cerrar';
+
+  @override
+  String get commonCreate => 'Crear';
+
+  @override
+  String get commonClear => 'Limpiar';
+
+  @override
+  String get commonStop => 'Detener';
+
+  @override
+  String get skip => 'Saltar';
+
+  @override
+  String get onboardingLanguageTitle => 'Elige idioma';
+
+  @override
+  String get onboardingLanguageSubtitle => 'Elige el idioma que debe usar Ada.';
+
+  @override
+  String get onboardingTimerTitle => 'Configura tu concentración';
+
+  @override
+  String get onboardingTimerSubtitle =>
+      'Elige el estilo del temporizador y la vista de las sesiones.';
+
+  @override
+  String get onboardingPaywallTitle => 'Desbloquea Ada';
+
+  @override
+  String get onboardingPaywallSubtitle =>
+      'La oferta de por vida está disponible durante 24 horas cada semana.';
+
+  @override
+  String get onboardingAccountTitle => 'Crea una cuenta';
+
+  @override
+  String get onboardingAccountSubtitle =>
+      'Inicia sesión para sincronizar tareas, historial de enfoque y ajustes entre dispositivos.';
+
+  @override
+  String get startupPreparingTasks => 'Estamos preparando tus tareas';
+
+  @override
+  String get operationTakingLonger =>
+      'La operación está tardando más de lo habitual, pero sigue en curso.';
+
+  @override
+  String get onboardingContinue => 'Continuar';
+
+  @override
+  String get onboardingMaybeLater => 'Quizá más tarde';
+
+  @override
+  String get onboardingFinish => 'Finalizar';
+
+  @override
+  String get billingTitle => 'Ada Pro';
+
+  @override
+  String get billingSubtitle =>
+      'Dicta tareas con lenguaje natural y Ada convierte tu voz en tareas. El historial de tareas se guarda para siempre.';
+
+  @override
+  String get billingSubtitleHighlight => 'lenguaje natural';
+
+  @override
+  String get billingCancelAnytime => 'Cancela cuando quieras.';
+
+  @override
+  String get billingMonthlyTitle => 'Mensual';
+
+  @override
+  String get billingAnnualTitle => 'Anual';
+
+  @override
+  String billingPricePerMonth(String price) {
+    return '$price/mes';
+  }
+
+  @override
+  String billingPricePerYear(String price) {
+    return '$price/año';
+  }
+
+  @override
+  String billingMonthlyIntroSubtitle(String price) {
+    return 'Primeros 3 meses, después $price.';
+  }
+
+  @override
+  String billingAnnualIntroSubtitle(String price) {
+    return 'Después $price.';
+  }
+
+  @override
+  String get billingLifetimeTitle => 'De por vida';
+
+  @override
+  String get billingLifetimeSubtitle => 'Un pago para siempre.';
+
+  @override
+  String get billingBestValue => 'Mejor valor';
+
+  @override
+  String get billingChoose => 'Elegir';
+
+  @override
+  String get billingActive => 'Ada Pro está activo en este dispositivo.';
+
+  @override
+  String get billingActiveShort => 'Activo';
+
+  @override
+  String get billingRestore => 'Restaurar compras';
+
+  @override
+  String get privacyPolicy => 'Política de privacidad';
+
+  @override
+  String get termsOfUse => 'Términos de uso';
+
+  @override
+  String get support => 'Soporte';
+
+  @override
+  String get billingManageLink => 'Gestionar mediante Link';
+
+  @override
+  String get billingExternalBrowserTitle => 'El pago se abrirá en el navegador';
+
+  @override
+  String get billingExternalBrowserMessage =>
+      'Ada abrirá Stripe Checkout en Safari o en tu navegador predeterminado. Permite que se abra la ventana para continuar.';
+
+  @override
+  String get billingAppleOnly =>
+      'Las compras están disponibles en iPhone, iPad y Mac.';
+
+  @override
+  String get billingStoreUnavailable =>
+      'El App Store no está disponible ahora.';
+
+  @override
+  String get billingStoreConnectionFailed =>
+      'Desactiva la VPN y vuelve a intentarlo.';
+
+  @override
+  String billingPurchaseError(String error) {
+    return 'Error de compra: $error';
+  }
+
+  @override
+  String get billingStripeAuthenticationRequired =>
+      'Inicia sesión en Ada y vuelve a intentarlo.';
+
+  @override
+  String get billingStripeDisabled =>
+      'Los pagos aún no están disponibles. Inténtalo de nuevo más tarde.';
+
+  @override
+  String get billingStripeAlreadyEntitled =>
+      'Ada Pro ya está activo. Actualiza el estado de tu cuenta.';
+
+  @override
+  String get billingStripeOfferExpired =>
+      'Esta oferta ha caducado. Elige otro plan disponible.';
+
+  @override
+  String get billingStripeManagedPaymentsUnavailable =>
+      'Los pagos con Stripe no están disponibles temporalmente. Inténtalo más tarde o contacta con soporte.';
+
+  @override
+  String get billingStripeCheckoutFailed =>
+      'No se pudo iniciar el pago. Inténtalo de nuevo.';
+
+  @override
+  String get billingStripeCheckoutPending =>
+      'Se está preparando o confirmando un pago. Inténtalo de nuevo en unos instantes.';
+
+  @override
+  String get purchaseSuccessTitle => 'Pro está activo';
+
+  @override
+  String get purchaseSuccessMessage =>
+      'Gracias por apoyar a Ada. Todas las funciones Pro ya están disponibles.';
+
+  @override
+  String get purchaseSuccessContinue => 'Continuar';
+
+  @override
+  String get purchaseProcessingTitle => 'El pago se está procesando';
+
+  @override
+  String get purchaseProcessingMessage =>
+      'Estamos confirmando el pago. Si Pro no aparece pronto, vuelve a actualizar más tarde.';
+
+  @override
+  String get purchaseOpenApp => 'Abrir Ada';
+
+  @override
+  String launchOfferEndsIn(String time) {
+    return '$time para que termine la oferta de por vida';
+  }
+
+  @override
+  String get accountApple => 'Apple';
+
+  @override
+  String get accountGoogle => 'Google';
+
+  @override
+  String get accountEmail => 'Email';
+
+  @override
+  String get loginTitle => 'Inicia sesión en Ada';
+
+  @override
+  String get accountChecking => 'Estamos comprobando tu cuenta';
+
+  @override
+  String get oauthConsentTitle => 'Conectar un agente';
+
+  @override
+  String get oauthConsentLoading => 'Comprobando la solicitud de conexión';
+
+  @override
+  String get oauthConsentInvalidAuthorization =>
+      'Esta solicitud de conexión falta o no es válida.';
+
+  @override
+  String get oauthConsentLoadError =>
+      'No se pudo cargar la solicitud de conexión.';
+
+  @override
+  String get oauthConsentActionError =>
+      'No se pudo completar la solicitud. Inténtalo de nuevo.';
+
+  @override
+  String get oauthConsentRedirectError =>
+      'Ada recibió una dirección de retorno insegura o vacía. No se transfirió el acceso.';
+
+  @override
+  String get oauthConsentClientFallback => 'Agente';
+
+  @override
+  String oauthConsentClientRequest(String clientName) {
+    return '$clientName quiere acceder a Ada';
+  }
+
+  @override
+  String get oauthConsentRedirectOrigin => 'Dirección de retorno';
+
+  @override
+  String get oauthConsentCapabilitiesTitle => 'Este agente puede';
+
+  @override
+  String get oauthConsentManagePlanning =>
+      'Leer y gestionar tareas, hábitos, proyectos, etiquetas propias y Kanban. Consultar y cambiar los atajos y la apariencia en un dispositivo seleccionado conectado.';
+
+  @override
+  String get oauthConsentReadInsights =>
+      'Leer el historial de enfoque completado, informes de productividad y logros.';
+
+  @override
+  String get oauthConsentUnavailableTitle => 'Este agente no puede';
+
+  @override
+  String get oauthConsentUnavailable =>
+      'Acceder a tu cuenta o pagos, Google Calendar ni al temporizador de enfoque activo.';
+
+  @override
+  String get oauthConsentUnsupportedScopes =>
+      'Esta solicitud pide acceso de cuenta no compatible y no se puede aprobar.';
+
+  @override
+  String get oauthConsentApprove => 'Permitir';
+
+  @override
+  String get oauthConsentDeny => 'Denegar';
+
+  @override
+  String get oauthConsentApproving => 'Permitiendo el acceso…';
+
+  @override
+  String get oauthConsentDenying => 'Denegando la solicitud…';
+
+  @override
+  String get oauthConsentRedirecting => 'Volviendo al agente…';
+
+  @override
+  String get loginCreateAccountPrompt => '¿Aún no tienes cuenta?';
+
+  @override
+  String get loginCreateAccountAction => 'Crear cuenta';
+
+  @override
+  String get registerTitle => 'Crea una cuenta';
+
+  @override
+  String get registerSubtitle =>
+      'Sincroniza tareas, historial de enfoque y ajustes entre dispositivos.';
+
+  @override
+  String get registerPassword => 'Contraseña';
+
+  @override
+  String get registerSubmit => 'Crear cuenta';
+
+  @override
+  String get registerSignInPrompt => '¿Ya tienes cuenta?';
+
+  @override
+  String get registerSignInAction => 'Iniciar sesión';
+
+  @override
+  String get registerCheckEmailTitle => 'Revisa tu email';
+
+  @override
+  String get registerCheckEmailMessage =>
+      'Si esta dirección necesita confirmación, recibirás un correo con un enlace. Si ya tienes una cuenta, inicia sesión o restablece tu contraseña.';
+
+  @override
+  String registerError(Object error) {
+    return 'No se pudo crear la cuenta: $error';
+  }
+
+  @override
+  String get authEmailSignInTitle => 'Iniciar sesión con email';
+
+  @override
+  String get authWelcomeTitle => 'Inicia sesión en Ada';
+
+  @override
+  String get authWelcomeDescription =>
+      'Tus tareas y tu concentración, en todos tus dispositivos.';
+
+  @override
+  String get authSignInWithLink => 'Iniciar sesión con un enlace';
+
+  @override
+  String get authForgotPassword => '¿Has olvidado la contraseña?';
+
+  @override
+  String get authBackToSignIn => 'Volver al inicio de sesión';
+
+  @override
+  String get authNoAccount => '¿Aún no tienes cuenta?';
+
+  @override
+  String get authHaveAccount => '¿Ya tienes una cuenta?';
+
+  @override
+  String get authShowPassword => 'Mostrar contraseña';
+
+  @override
+  String get authHidePassword => 'Ocultar contraseña';
+
+  @override
+  String get authResetTitle => 'Restablece tu contraseña';
+
+  @override
+  String get authResetDescription =>
+      'Introduce el email de tu cuenta. Te enviaremos un enlace para cambiar la contraseña.';
+
+  @override
+  String get authResetEmailSentTitle => 'Revisa tu email';
+
+  @override
+  String get authResetEmailSent =>
+      'Si existe una cuenta con este email, recibirás un enlace para restablecer la contraseña.';
+
+  @override
+  String get authResetSendAgain => 'Enviar de nuevo';
+
+  @override
+  String get authResetEditEmail => 'Cambiar email';
+
+  @override
+  String get authNewPasswordTitle => 'Elige una nueva contraseña';
+
+  @override
+  String get authNewPasswordDescription =>
+      'Usa una contraseña que no utilices en otras cuentas.';
+
+  @override
+  String get authNewPassword => 'Nueva contraseña';
+
+  @override
+  String get authConfirmPassword => 'Repite la contraseña';
+
+  @override
+  String get authSavePassword => 'Guardar contraseña';
+
+  @override
+  String get authPasswordMismatch => 'Las contraseñas no coinciden.';
+
+  @override
+  String get authPasswordUnchanged =>
+      'Elige una contraseña diferente de la actual.';
+
+  @override
+  String get authPasswordUpdatedTitle => 'Contraseña actualizada';
+
+  @override
+  String get authPasswordUpdatedMessage =>
+      'Tu nueva contraseña se ha guardado. Puedes seguir usando Ada.';
+
+  @override
+  String get authResetLinkExpired =>
+      'Este enlace para restablecer la contraseña no es válido o ha caducado. Solicita uno nuevo.';
+
+  @override
+  String get authUnexpectedReset =>
+      'No se pudo enviar el email para restablecer la contraseña. Inténtalo de nuevo.';
+
+  @override
+  String get authUnexpectedPasswordUpdate =>
+      'No se pudo guardar la nueva contraseña. Inténtalo de nuevo.';
+
+  @override
+  String get authCheckingResetLink =>
+      'Comprobando el enlace para restablecer la contraseña…';
+
+  @override
+  String get authSignInAction => 'Iniciar sesión';
+
+  @override
+  String get authSendLink => 'Enviar enlace';
+
+  @override
+  String get authMagicLinkSent =>
+      'Si existe una cuenta con esta dirección, recibirás un enlace para iniciar sesión. Revisa tu bandeja de entrada y la carpeta de spam.';
+
+  @override
+  String get authAccountCreated => 'Cuenta creada.';
+
+  @override
+  String get authSignedIn => 'Sesión iniciada.';
+
+  @override
+  String get authEmailRequired => 'Introduce tu email.';
+
+  @override
+  String get authEmailInvalid =>
+      'Revisa la dirección de email, por ejemplo name@example.com.';
+
+  @override
+  String get authPasswordRequired => 'Introduce tu contraseña.';
+
+  @override
+  String get authInvalidCredentials =>
+      'El correo o la contraseña son incorrectos. Comprueba la dirección, restablece tu contraseña o crea una cuenta.';
+
+  @override
+  String get authEmailUnconfirmed =>
+      'Confirma tu email con el enlace que enviamos y vuelve a iniciar sesión.';
+
+  @override
+  String get authWeakPassword =>
+      'Esta contraseña es demasiado fácil de adivinar. Usa una contraseña más larga y menos predecible.';
+
+  @override
+  String get authAccountMayExist =>
+      'Puede que ya exista una cuenta con este correo. Inicia sesión o restablece tu contraseña.';
+
+  @override
+  String get authRateLimited =>
+      'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.';
+
+  @override
+  String get authEmailRateLimited =>
+      'Se solicitaron demasiados emails. Espera unos minutos antes de pedir otro.';
+
+  @override
+  String get authOffline =>
+      'No se pudo conectar con el servicio de cuentas. Revisa Internet e inténtalo de nuevo.';
+
+  @override
+  String get authTimeout =>
+      'El servicio de cuentas está tardando demasiado. Inténtalo de nuevo.';
+
+  @override
+  String get authServiceUnavailable =>
+      'El servicio de cuentas no está disponible temporalmente. Inténtalo más tarde.';
+
+  @override
+  String get authCaptchaRequired =>
+      'Completa la verificación de seguridad para continuar.';
+
+  @override
+  String get authCaptchaExpired =>
+      'La verificación de seguridad ha caducado. Complétala de nuevo.';
+
+  @override
+  String get authCaptchaFailed =>
+      'La verificación de seguridad falló. Inténtalo de nuevo.';
+
+  @override
+  String get authCaptchaCancelled =>
+      'La verificación de seguridad se canceló. Iníciala de nuevo para continuar.';
+
+  @override
+  String get authCaptchaUnavailable =>
+      'La verificación de seguridad no está disponible ahora. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get authCaptchaOpenFailed =>
+      'Ada no pudo abrir la verificación de seguridad en el navegador. Revisa el navegador predeterminado e inténtalo de nuevo.';
+
+  @override
+  String get authProviderFallback => 'este proveedor';
+
+  @override
+  String authProviderUnavailable(String provider) {
+    return 'El acceso con $provider no está disponible ahora. Inténtalo de nuevo o usa otro método.';
+  }
+
+  @override
+  String authProviderUnavailableHere(String provider) {
+    return 'El acceso con $provider no está disponible aquí. Usa otro método de inicio de sesión.';
+  }
+
+  @override
+  String get authSignUpDisabled =>
+      'La creación de cuentas por email no está disponible temporalmente. Usa otro método de acceso.';
+
+  @override
+  String get authAccountRestricted =>
+      'No se puede iniciar sesión en esta cuenta ahora. Contacta con soporte si crees que es un error.';
+
+  @override
+  String get authLinkExpired =>
+      'Este enlace de acceso no es válido o ha caducado. Solicita uno nuevo.';
+
+  @override
+  String get authUnexpectedSignIn =>
+      'No se pudo iniciar sesión. Inténtalo de nuevo.';
+
+  @override
+  String get authUnexpectedSignUp =>
+      'No se pudo crear la cuenta. Inténtalo de nuevo.';
+
+  @override
+  String get authUnexpectedMagicLink =>
+      'No se pudo enviar el enlace de acceso. Inténtalo de nuevo.';
+
+  @override
+  String get authResendConfirmation => 'Reenviar confirmación';
+
+  @override
+  String get authConfirmationSendFailed =>
+      'No se pudo enviar el correo de confirmación. Inténtalo más tarde.';
+
+  @override
+  String get authRetryVerification => 'Reintentar verificación';
+
+  @override
+  String get captchaSecurityLabel => 'Verificación de seguridad';
+
+  @override
+  String get captchaChallengeTitle => 'Verificación de seguridad de Ada';
+
+  @override
+  String get captchaChallengePrompt =>
+      'Confirma que eres una persona para continuar en Ada.';
+
+  @override
+  String get captchaChallengeInvalid =>
+      'Este enlace de verificación no es válido. Vuelve a Ada e inténtalo de nuevo.';
+
+  @override
+  String get captchaChallengeHandoffHelp =>
+      'Si Ada no se abrió, usa el botón de abajo. Si la aplicación no está instalada, cierra esta página y vuelve al dispositivo donde empezaste.';
+
+  @override
+  String get captchaReturnToApp => 'Volver a Ada';
+
+  @override
+  String get navSearch => 'Buscar';
+
+  @override
+  String get navInbox => 'Bandeja';
+
+  @override
+  String get navPriorityMatrix => 'Matriz de prioridades';
+
+  @override
+  String get navCalendar => 'Calendario';
+
+  @override
+  String get calendarSubtitle => 'Planifica tu día. Deja espacio para la vida.';
+
+  @override
+  String get calendarDay => 'Día';
+
+  @override
+  String get calendarWeek => 'Semana';
+
+  @override
+  String get calendarMonth => 'Mes';
+
+  @override
+  String get calendarRoutine => 'Rutina';
+
+  @override
+  String get calendarRhythm => 'Ritmo';
+
+  @override
+  String get calendarCollapseMonth => 'Contraer mes';
+
+  @override
+  String get calendarExpandMonth => 'Mostrar mes';
+
+  @override
+  String get calendarOverview => 'Resumen del día';
+
+  @override
+  String get calendarOpenMonth => 'Abrir mes';
+
+  @override
+  String get calendarUnscheduled => 'Sin programar';
+
+  @override
+  String get calendarAllProjects => 'Todos los proyectos';
+
+  @override
+  String get calendarRoutineDefault => 'Mi día habitual';
+
+  @override
+  String get calendarRoutineDescription =>
+      'Las tareas se agrupan por hora de inicio. Adapta los periodos a tu día.';
+
+  @override
+  String get calendarEditRoutine => 'Configurar periodos';
+
+  @override
+  String get calendarRoutineTitle => 'Tu rutina diaria';
+
+  @override
+  String get calendarRoutineName => 'Nombre de la rutina';
+
+  @override
+  String get calendarPeriodName => 'Nombre del periodo';
+
+  @override
+  String get calendarAddPeriod => 'Añadir periodo';
+
+  @override
+  String get calendarRemovePeriod => 'Eliminar periodo';
+
+  @override
+  String get calendarPeriodStart => 'Desde';
+
+  @override
+  String get calendarPeriodEnd => 'Hasta';
+
+  @override
+  String get calendarRoutineInvalid =>
+      'Pon nombre a la rutina y sus periodos. La hora de fin debe ser posterior a la de inicio y los periodos no pueden solaparse.';
+
+  @override
+  String get calendarOutsideRoutine => 'Fuera de los periodos de rutina';
+
+  @override
+  String get calendarFreeTime => 'Tiempo libre';
+
+  @override
+  String get calendarMorning => 'Mañana';
+
+  @override
+  String get calendarAfternoon => 'Tarde';
+
+  @override
+  String get calendarEvening => 'Noche';
+
+  @override
+  String get calendarNewPeriod => 'Nuevo periodo';
+
+  @override
+  String get calendarResize => 'Cambiar duración de la tarea';
+
+  @override
+  String get calendarPreviousPeriod => 'Periodo anterior';
+
+  @override
+  String get calendarNextPeriod => 'Periodo siguiente';
+
+  @override
+  String get calendarSaveFailed =>
+      'No se pudo guardar la configuración del calendario';
+
+  @override
+  String get calendarNoActiveFocus => 'No hay sesión de concentración activa';
+
+  @override
+  String get calendarCurrentTask => 'Tarea actual';
+
+  @override
+  String get navTimeline => 'Cronología';
+
+  @override
+  String get navKanban => 'Kanban';
+
+  @override
+  String get kanbanTitle => 'Kanban';
+
+  @override
+  String get kanbanSubtitle =>
+      'Visualiza tu flujo y céntrate en lo que importa ahora.';
+
+  @override
+  String get kanbanDefaultBacklog => 'Pendientes';
+
+  @override
+  String get kanbanDefaultTodo => 'Por hacer';
+
+  @override
+  String get kanbanDefaultInProgress => 'En curso';
+
+  @override
+  String get kanbanDefaultDone => 'Hecho';
+
+  @override
+  String get kanbanSearchTooltip => 'Buscar en Kanban';
+
+  @override
+  String get kanbanSearchHint => 'Buscar tareas o proyectos';
+
+  @override
+  String get kanbanHideDone => 'Ocultar Hecho';
+
+  @override
+  String get kanbanShowDone => 'Mostrar Hecho';
+
+  @override
+  String get kanbanProjectsTitle => 'Proyectos de este tablero';
+
+  @override
+  String kanbanAddToStatus(String status) {
+    return 'Añadir a $status';
+  }
+
+  @override
+  String get kanbanTaskField => 'Tarea';
+
+  @override
+  String get kanbanProjectField => 'Proyecto';
+
+  @override
+  String get kanbanChooseProject => 'Elige un proyecto.';
+
+  @override
+  String get kanbanTaskActions => 'Acciones de tarea';
+
+  @override
+  String get kanbanDragTask => 'Arrastrar tarea';
+
+  @override
+  String kanbanMoveTo(String status) {
+    return 'Mover a $status';
+  }
+
+  @override
+  String get kanbanRestoreBeforeFocus =>
+      'Restaura la tarea antes de iniciar el enfoque.';
+
+  @override
+  String kanbanCouldNotStartFocus(Object error) {
+    return 'No se pudo iniciar el enfoque: $error';
+  }
+
+  @override
+  String kanbanCouldNotLoad(Object error) {
+    return 'No se pudo cargar Kanban: $error';
+  }
+
+  @override
+  String get commonRetry => 'Reintentar';
+
+  @override
+  String get commonContinueWaiting => 'Seguir esperando';
+
+  @override
+  String kanbanTasksCount(int count) {
+    return '$count tareas';
+  }
+
+  @override
+  String kanbanSubtasksProgress(int completed, int total) {
+    return '$completed de $total subtareas';
+  }
+
+  @override
+  String kanbanFocusIntervalsProgress(int completed, int total) {
+    return '$completed de $total intervalos de enfoque';
+  }
+
+  @override
+  String get kanbanActive => 'Activo';
+
+  @override
+  String kanbanPriority(int priority) {
+    return 'Prioridad $priority';
+  }
+
+  @override
+  String kanbanMoveAnnouncement(String status) {
+    return 'Movida a $status';
+  }
+
+  @override
+  String kanbanFocusStartedAnnouncement(String task) {
+    return 'Enfoque iniciado para $task';
+  }
+
+  @override
+  String get kanbanNoTasks => 'Aún no hay tareas';
+
+  @override
+  String get navToday => 'Hoy';
+
+  @override
+  String get navUpcoming => 'Próximas';
+
+  @override
+  String get navBrowse => 'Explorar';
+
+  @override
+  String get navIntegrations => 'Integraciones';
+
+  @override
+  String get navReports => 'Informes';
+
+  @override
+  String get navFocus => 'Enfoque';
+
+  @override
+  String get navProjects => 'Proyectos';
+
+  @override
+  String get navSettings => 'Ajustes';
+
+  @override
+  String get settingsTitle => 'Ajustes';
+
+  @override
+  String get settingsAboutTitle => 'Acerca de';
+
+  @override
+  String get settingsFocusCompletionCelebrationTitle =>
+      'Celebración al completar el enfoque';
+
+  @override
+  String get settingsFocusCompletionCelebrationSubtitle =>
+      'Mostrar una celebración a pantalla completa después del último descanso.';
+
+  @override
+  String get settingsVersionLabel => 'Versión';
+
+  @override
+  String get settingsPlanLabel => 'Plan';
+
+  @override
+  String get settingsPlanFree => 'Gratis';
+
+  @override
+  String get settingsPlanPro => 'Ada Pro';
+
+  @override
+  String get settingsShortcutsTitle => 'Atajos de teclado';
+
+  @override
+  String get settingsShortcutsSubtitle =>
+      'Personaliza los comandos disponibles con un teclado físico.';
+
+  @override
+  String get settingsShortcutsToggleSidebar =>
+      'Mostrar u ocultar la barra lateral';
+
+  @override
+  String get settingsShortcutsToggleTaskDetails =>
+      'Mostrar u ocultar detalles de la tarea';
+
+  @override
+  String get settingsShortcutsToggleTaskDetailsAlternate =>
+      'Detalles de la tarea (segundo atajo)';
+
+  @override
+  String get settingsShortcutsFocusAlternate => 'Concentración (segundo atajo)';
+
+  @override
+  String get settingsShortcutsGlobalQuickAdd =>
+      'Añadir rápidamente de forma global';
+
+  @override
+  String get settingsShortcutsGlobalQuickAddSubtitle =>
+      'Funciona incluso cuando Ada no está activo.';
+
+  @override
+  String get settingsShortcutsRecordTitle => 'Pulsa un atajo';
+
+  @override
+  String get settingsShortcutsRecordPrompt =>
+      'Usa una tecla con Command, Control o Alt. Pulsa Esc para cancelar.';
+
+  @override
+  String get settingsShortcutsInvalid => 'Incluye Command, Control o Alt.';
+
+  @override
+  String get settingsShortcutsConflict => 'Este atajo ya está en uso.';
+
+  @override
+  String get settingsShortcutsGlobalError =>
+      'Ese atajo global no está disponible. El atajo anterior sigue activo.';
+
+  @override
+  String get settingsShortcutsResetAll => 'Restablecer todo';
+
+  @override
+  String get settingsShortcutsResetDone => 'Atajos de teclado restablecidos.';
+
+  @override
+  String get csvExportTitle => 'Exportar todas las tareas a CSV';
+
+  @override
+  String get csvExportSubtitle =>
+      'Tareas personales y compartidas disponibles localmente, incluidas las completadas. Este formato es para consulta, no para volver a importar.';
+
+  @override
+  String get csvExportButton => 'Exportar CSV';
+
+  @override
+  String get csvExportSuccess => 'El archivo CSV está listo.';
+
+  @override
+  String get csvExportError =>
+      'No se pudo exportar el CSV. Inténtalo de nuevo.';
+
+  @override
+  String get csvImportTitle => 'Importar tareas desde CSV';
+
+  @override
+  String get csvImportSubtitle =>
+      'Revisa un archivo CSV antes de crear tareas, proyectos, etiquetas y estados.';
+
+  @override
+  String get csvImportSelectFile => 'Elegir archivo CSV';
+
+  @override
+  String get csvImportHumanGuideButton => 'Guía para personas';
+
+  @override
+  String get csvImportAgentGuideButton => 'Guía para agentes';
+
+  @override
+  String get csvImportHumanGuideTitle => 'Cómo preparar un archivo CSV';
+
+  @override
+  String get csvImportAgentGuideTitle => 'Contrato CSV para un agente';
+
+  @override
+  String get csvImportCopy => 'Copiar';
+
+  @override
+  String get csvImportCopied => 'Copiado al portapapeles.';
+
+  @override
+  String get csvImportPreviewTitle => 'Revisar importación';
+
+  @override
+  String get csvImportPreviewTasks => 'Tareas';
+
+  @override
+  String get csvImportPreviewSubtasks => 'Subtareas';
+
+  @override
+  String get csvImportPreviewNewProjects => 'Proyectos nuevos';
+
+  @override
+  String get csvImportPreviewNewLabels => 'Etiquetas nuevas';
+
+  @override
+  String get csvImportPreviewNewStatuses => 'Estados nuevos';
+
+  @override
+  String get csvImportNone => 'Ninguno';
+
+  @override
+  String get csvImportDuplicateWarning =>
+      'Volver a importar el mismo archivo creará tareas duplicadas.';
+
+  @override
+  String get csvImportConfirm => 'Importar';
+
+  @override
+  String get csvImportSuccess => 'Tareas importadas';
+
+  @override
+  String get csvImportErrorTitle => 'Error al importar el CSV';
+
+  @override
+  String get csvImportUnexpectedError => 'No se pudo importar el archivo.';
+
+  @override
+  String get csvImportHumanGuide =>
+      '1. Guarda el archivo como CSV UTF-8. Usa una coma (recomendado) o un punto y coma como separador.\n\n2. La columna content es obligatoria. También puedes usar: key, description, project, labels, priority, due_date, start_at, end_at, time_zone, recurrence, recurrence_interval, deadline, estimate, kanban_status, parent_key.\n\n3. Cada fila crea una tarea abierta. Separa las etiquetas con |. La prioridad va de 1 a 4; vacío significa 4. Un proyecto vacío significa Inbox y un estado vacío, Backlog. Los proyectos, etiquetas y estados abiertos que falten se crean automáticamente.\n\n4. Para una tarea de todo el día, usa due_date con formato YYYY-MM-DD. Para una tarea con hora, completa start_at y end_at como valores RFC3339 con desplazamiento UTC e indica una time_zone IANA, por ejemplo Europe/Madrid.\n\n5. Para crear subtareas, asigna un key único a la fila principal y escribe ese valor en parent_key de la hija. La fila principal puede aparecer después. Ambas deben usar el mismo proyecto.\n\n6. Ada valida todo el archivo y muestra una vista previa. Si alguna fila no es válida, no se guarda nada. Volver a importar crea duplicados.';
+
+  @override
+  String get settingsConnectedAgentsTitle => 'Agentes conectados';
+
+  @override
+  String get settingsConnectedAgentsLoading => 'Cargando agentes conectados…';
+
+  @override
+  String get settingsConnectedAgentsEmpty => 'No hay agentes conectados.';
+
+  @override
+  String get settingsConnectedAgentsLoadError =>
+      'No se pudieron cargar los agentes conectados.';
+
+  @override
+  String get settingsConnectedAgentsUnknownClient => 'Agente';
+
+  @override
+  String settingsConnectedAgentsConnectedOn(String date) {
+    return 'Conectado el $date';
+  }
+
+  @override
+  String get settingsConnectedAgentsRevoke => 'Revocar acceso';
+
+  @override
+  String get settingsConnectedAgentsRevokeConfirmTitle =>
+      '¿Revocar el acceso del agente?';
+
+  @override
+  String settingsConnectedAgentsRevokeConfirmMessage(String clientName) {
+    return '¿Revocar el acceso de $clientName a Ada?';
+  }
+
+  @override
+  String get settingsConnectedAgentsRevokeError =>
+      'No se pudo revocar el acceso. Inténtalo de nuevo.';
+
+  @override
+  String get settingsLanguageTitle => 'Idioma';
+
+  @override
+  String get settingsLanguageSubtitle => 'Elige el idioma de la app.';
+
+  @override
+  String get settingsLanguageSystem => 'Predeterminado del sistema';
+
+  @override
+  String get settingsVoiceTranscriptionTitle => 'Transcripción de voz';
+
+  @override
+  String get settingsVoiceTranscriptionSubtitle =>
+      'Elige cómo convertir las grabaciones en texto en este dispositivo.';
+
+  @override
+  String get settingsVoiceTranscriptionSystem => 'Sistema (Apple)';
+
+  @override
+  String get settingsVoiceTranscriptionCloud => 'Nube';
+
+  @override
+  String get settingsVoiceTranscriptionCloudDescription =>
+      'La transcripción en la nube envía el audio a Ada y requiere conexión a internet.';
+
+  @override
+  String get settingsVoiceTranscriptionCloudRequiresSignIn =>
+      'Inicia sesión para usar la transcripción en la nube. Hasta entonces se usará la transcripción del sistema.';
+
+  @override
+  String get settingsThemeTitle => 'Tema';
+
+  @override
+  String get settingsThemeSubtitle => 'Elige la apariencia de la app.';
+
+  @override
+  String get settingsThemeSystem => 'Sistema';
+
+  @override
+  String get settingsThemeLight => 'Claro';
+
+  @override
+  String get settingsThemeDark => 'Oscuro';
+
+  @override
+  String get settingsTimerVisualTitle => 'Temporizador Pomodoro';
+
+  @override
+  String get settingsTimerVisualSubtitle =>
+      'Elige cómo se muestra el progreso en la pantalla de enfoque.';
+
+  @override
+  String get settingsTimerVisualBar => 'Barra';
+
+  @override
+  String get settingsTimerVisualCircle => 'Círculo';
+
+  @override
+  String get settingsReturnRemindersTitle => 'Recordatorios de regreso';
+
+  @override
+  String get settingsReturnRemindersSubtitle =>
+      'Un recordatorio a las 20:30 si hoy no has completado ninguna tarea.';
+
+  @override
+  String get settingsDefaultTimedBlockTitle =>
+      'Duración predeterminada del bloque de calendario';
+
+  @override
+  String get settingsDefaultTimedBlockSubtitle =>
+      'Cuando solo se escribe una hora, las tareas nuevas usan esta duración en el calendario.';
+
+  @override
+  String get settingsDefaultTimedBlockCustomLabel => 'Duración personalizada';
+
+  @override
+  String get settingsDefaultTimedBlockError =>
+      'Introduce entre 1 y 480 minutos.';
+
+  @override
+  String get settingsTaskTimeDisplayTitle => 'Visualización de hora de tarea';
+
+  @override
+  String get settingsTaskTimeDisplaySubtitle =>
+      'Elige cómo se muestran las tareas con horario.';
+
+  @override
+  String get settingsTaskTimeDisplaySmart => 'Inteligente';
+
+  @override
+  String get settingsTaskTimeDisplayRange => 'Hora de inicio y fin';
+
+  @override
+  String get settingsTaskTimeDisplayStartOnly => 'Solo hora de inicio';
+
+  @override
+  String get taskTimeStatusFuture => 'Próxima';
+
+  @override
+  String get taskTimeStatusFocused => 'En enfoque';
+
+  @override
+  String get taskTimeStatusCurrent => 'En curso';
+
+  @override
+  String get taskTimeStatusOverdue => 'Vencida';
+
+  @override
+  String get taskTimeStatusCompleted => 'Completada';
+
+  @override
+  String get menuTooltip => 'Menú';
+
+  @override
+  String get localUser => 'Usuario local';
+
+  @override
+  String get addTask => 'Añadir tarea';
+
+  @override
+  String get quickAddHint =>
+      'Nombre de la tarea mañana p2 #Proyecto @etiqueta 2p';
+
+  @override
+  String couldNotAddTask(Object error) {
+    return 'No se pudo añadir la tarea: $error';
+  }
+
+  @override
+  String get taskCreateFailed =>
+      'No se pudo crear la tarea. Inténtalo de nuevo.';
+
+  @override
+  String couldNotAddProject(Object error) {
+    return 'No se pudo añadir el proyecto: $error';
+  }
+
+  @override
+  String tasksCreated(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tareas añadidas',
+      one: '1 tarea añadida',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get voiceQuickAdd => 'Añadir por voz';
+
+  @override
+  String get voiceTitle => 'Añadir por voz';
+
+  @override
+  String get voiceRecord => 'Grabar';
+
+  @override
+  String get voiceAgain => 'Otra vez';
+
+  @override
+  String get voiceStop => 'Detener';
+
+  @override
+  String voiceAddCount(int count) {
+    return 'Añadir $count';
+  }
+
+  @override
+  String voiceTaskLabel(int index) {
+    return 'Tarea $index';
+  }
+
+  @override
+  String get voiceRemoveTask => 'Eliminar';
+
+  @override
+  String get voiceInstruction => 'Toca grabar y dicta tareas.';
+
+  @override
+  String get voiceStatusIdle => 'Solo entrada con micrófono integrado';
+
+  @override
+  String get voiceStatusRequestingPermission => 'Solicitando acceso';
+
+  @override
+  String get voiceStatusRecording => 'Escuchando el micrófono integrado';
+
+  @override
+  String get voiceStatusTranscribing => 'Transcribiendo grabación';
+
+  @override
+  String get voiceStatusCanceled => 'Grabación cancelada';
+
+  @override
+  String get voiceStatusUnsupported => 'Plataforma no compatible';
+
+  @override
+  String get voiceStatusError => 'No se pudo reconocer la voz';
+
+  @override
+  String get voiceStatusAnalyzing => 'Dividiendo en tareas';
+
+  @override
+  String get voiceStatusReview => 'Revisa las tareas antes de añadirlas';
+
+  @override
+  String get voiceStepRecord => 'Grabar';
+
+  @override
+  String get voiceStepText => 'Texto';
+
+  @override
+  String get voiceStepAnalyze => 'Análisis';
+
+  @override
+  String get voiceStepReview => 'Revisión';
+
+  @override
+  String get voiceAnalyzing => 'Ada divide la voz en tareas';
+
+  @override
+  String get voiceFallbackError =>
+      'Ada no pudo procesar la voz; se dejó un borrador para editarlo.';
+
+  @override
+  String get voiceMicrophoneUnavailable =>
+      'El micrófono no está disponible. Finaliza la llamada o el chat de voz activo e inténtalo de nuevo.';
+
+  @override
+  String get voiceSmartMode => 'Modo inteligente';
+
+  @override
+  String get voiceRetryTranscription => 'Reintentar transcripción';
+
+  @override
+  String get voiceRecordingSaved =>
+      'La grabación está guardada en este dispositivo. Puedes reintentarlo sin volver a grabar.';
+
+  @override
+  String get voiceAllowAccess => 'Permitir acceso';
+
+  @override
+  String get voiceOpenMicrophoneSettings => 'Abrir ajustes del micrófono';
+
+  @override
+  String get voiceOpenSpeechSettings =>
+      'Abrir ajustes de reconocimiento de voz';
+
+  @override
+  String get voiceEnableDictation => 'Activar Dictado';
+
+  @override
+  String get voiceUseCloudTranscription => 'Usar transcripción en la nube';
+
+  @override
+  String get voiceMicrophoneDenied =>
+      'Permite el acceso al micrófono en los ajustes del sistema.';
+
+  @override
+  String get voiceSpeechDenied =>
+      'Permite el reconocimiento de voz en los ajustes del sistema.';
+
+  @override
+  String get voiceAccessRestricted =>
+      'El administrador o Tiempo de uso restringen el acceso.';
+
+  @override
+  String get voiceDictationDisabled =>
+      'Activa Dictado en Ajustes del Sistema → Teclado → Dictado y selecciona tu idioma. Después, reinténtalo.';
+
+  @override
+  String get voiceServiceUnavailable =>
+      'El reconocimiento de voz no está disponible. Comprueba la conexión. En Mac, revisa también Ajustes del Sistema → Teclado → Dictado y el idioma.';
+
+  @override
+  String get voiceCloudServiceUnavailable =>
+      'La transcripción en la nube ha fallado. Comprueba tu conexión a Internet y vuelve a transcribir la grabación guardada.';
+
+  @override
+  String get voiceLocaleUnsupported =>
+      'El reconocimiento de voz del sistema no admite el idioma seleccionado en este dispositivo.';
+
+  @override
+  String get voiceNetworkUnavailable =>
+      'El reconocimiento de este idioma necesita conexión a internet. Conéctate y reinténtalo.';
+
+  @override
+  String get voiceSettingsFailed =>
+      'No se pudieron abrir los ajustes. Revisa manualmente el acceso al micrófono y al reconocimiento de voz en los ajustes del sistema. En Mac, revisa también Teclado → Dictado.';
+
+  @override
+  String get voiceRetryAnalysis => 'Reintentar análisis';
+
+  @override
+  String get screenInboxSubtitle => 'Captura tareas antes de organizarlas.';
+
+  @override
+  String get priorityMatrixSubtitle =>
+      'Arrastra tareas entre prioridades. Las fechas solo ordenan tareas dentro de una prioridad.';
+
+  @override
+  String get priorityMatrixP1Title => 'Hacer ahora';
+
+  @override
+  String get priorityMatrixP2Title => 'Programar';
+
+  @override
+  String get priorityMatrixP3Title => 'Delegar';
+
+  @override
+  String get priorityMatrixP4Title => 'Quitar';
+
+  @override
+  String get priorityMatrixAxisUrgent => 'Urgente';
+
+  @override
+  String get priorityMatrixAxisNotUrgent => 'No urgente';
+
+  @override
+  String get priorityMatrixAxisImportant => 'Importante';
+
+  @override
+  String get priorityMatrixAxisNotImportant => 'No importante';
+
+  @override
+  String get timelineSubtitle =>
+      'Planifica un día en una cuadrícula de tiempo.';
+
+  @override
+  String get timelineAllDay => 'Todo el día';
+
+  @override
+  String get timelineBeforeHours => 'Antes de las horas visibles';
+
+  @override
+  String get timelineAfterHours => 'Después de las horas visibles';
+
+  @override
+  String get timelineVisibleHours => 'Horas visibles';
+
+  @override
+  String get timelineStartHour => 'Inicio';
+
+  @override
+  String get timelineEndHour => 'Fin';
+
+  @override
+  String get timelineZoomOut => 'Alejar';
+
+  @override
+  String get timelineZoomIn => 'Acercar';
+
+  @override
+  String timelineAddTimedHint(String time) {
+    return 'Tarea a las $time';
+  }
+
+  @override
+  String get timelineAddAllDayHint => 'Tarea de todo el día';
+
+  @override
+  String get timelineNoAllDayTasks => 'No hay tareas de todo el día';
+
+  @override
+  String get timelineNoTimedTasks => 'No hay tareas con hora';
+
+  @override
+  String get timelinePreviousDay => 'Día anterior';
+
+  @override
+  String get timelineNextDay => 'Día siguiente';
+
+  @override
+  String get timelinePickDate => 'Elegir fecha';
+
+  @override
+  String get upcomingPreviousPeriod => 'Periodo anterior';
+
+  @override
+  String get upcomingNextPeriod => 'Periodo siguiente';
+
+  @override
+  String get upcomingOpenDatePicker => 'Abrir selector de fecha';
+
+  @override
+  String upcomingTaskCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tareas',
+      one: '1 tarea',
+      zero: 'No hay tareas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String screenTodayFocusSummary(int planned, int completed, String focus) {
+    return 'Carga de enfoque: $planned intervalos - Hecho: $completed - Enfoque: $focus';
+  }
+
+  @override
+  String get screenUpcomingSubtitle => 'Tareas planificadas después de hoy.';
+
+  @override
+  String screenUpcomingSelectedSubtitle(String date) {
+    return 'Tareas programadas para $date.';
+  }
+
+  @override
+  String get noTasksHere => 'No hay tareas aquí';
+
+  @override
+  String get noUpcomingTasks => 'No hay tareas con fecha';
+
+  @override
+  String get noTasksForDay => 'No hay tareas para este día';
+
+  @override
+  String failedToLoadTasks(Object error) {
+    return 'No se pudieron cargar las tareas: $error';
+  }
+
+  @override
+  String get searchTasks => 'Buscar tareas';
+
+  @override
+  String get searchStartTyping => 'Empieza a escribir para buscar tareas';
+
+  @override
+  String get searchNoMatches => 'No hay tareas coincidentes';
+
+  @override
+  String failedToSearchTasks(Object error) {
+    return 'No se pudieron buscar tareas: $error';
+  }
+
+  @override
+  String get previousMonth => 'Mes anterior';
+
+  @override
+  String get nextMonth => 'Mes siguiente';
+
+  @override
+  String get clearDateFilter => 'Limpiar filtro de fecha';
+
+  @override
+  String get weekMon => 'Lun';
+
+  @override
+  String get weekTue => 'Mar';
+
+  @override
+  String get weekWed => 'Mié';
+
+  @override
+  String get weekThu => 'Jue';
+
+  @override
+  String get weekFri => 'Vie';
+
+  @override
+  String get weekSat => 'Sáb';
+
+  @override
+  String get weekSun => 'Dom';
+
+  @override
+  String get browseTitle => 'Explorar';
+
+  @override
+  String get unifiedAccount => 'Cuenta unificada';
+
+  @override
+  String accountUnavailable(Object error) {
+    return 'Cuenta no disponible: $error';
+  }
+
+  @override
+  String get signOut => 'Cerrar sesión';
+
+  @override
+  String get deleteAccount => 'Eliminar cuenta';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Esto eliminará permanentemente tu cuenta, los datos en la nube y las tareas, proyectos e historial de concentración locales. Esta acción no se puede deshacer. Las suscripciones de la tienda no se cancelan automáticamente. Si usaste Iniciar sesión con Apple, revoca por separado el acceso de Ada en la configuración de tu cuenta de Apple.';
+
+  @override
+  String get manageSignInWithApple => 'Gestionar Iniciar sesión con Apple';
+
+  @override
+  String get deleteAccountFinalConfirmation =>
+      '¿Estás completamente seguro? Esta es la confirmación final.';
+
+  @override
+  String deleteAccountError(Object error) {
+    return 'No se pudo eliminar la cuenta: $error';
+  }
+
+  @override
+  String get accountDeleted => 'Cuenta eliminada.';
+
+  @override
+  String get accountDeletedLocalCleanupError =>
+      'Tu cuenta se eliminó, pero no se pudieron borrar los datos locales. Borra los datos de la aplicación antes de volver a usar este dispositivo.';
+
+  @override
+  String get browseSevenDays => '7 días';
+
+  @override
+  String get browseOpenNow => 'Abiertas ahora';
+
+  @override
+  String get browseQueueLoading => 'Cargando cambios pendientes…';
+
+  @override
+  String get browseQueueUnavailable =>
+      'No se pudieron cargar los cambios pendientes.';
+
+  @override
+  String get browseQueueExplanation =>
+      'Aquí se muestran los cambios locales pendientes de envío. Una cola vacía no confirma que todos los dispositivos estén actualizados.';
+
+  @override
+  String get productivityTitle => 'Productividad';
+
+  @override
+  String get achievementsTitle => 'Logros';
+
+  @override
+  String get allTimeLabel => 'Todo el tiempo';
+
+  @override
+  String get lastSevenDaysLabel => 'Últimos 7 días';
+
+  @override
+  String get noWeeklyStatsLabel => 'Aún no hay datos de enfoque o tareas';
+
+  @override
+  String get completedFocuses => 'Enfoques completados';
+
+  @override
+  String get completedTasks => 'Tareas completadas';
+
+  @override
+  String get unlocked => 'Desbloqueado';
+
+  @override
+  String get locked => 'Bloqueado';
+
+  @override
+  String get progressLabel => 'Progreso';
+
+  @override
+  String get focusAchievements => 'Logros de enfoque';
+
+  @override
+  String get taskAchievements => 'Logros de tareas';
+
+  @override
+  String get comboAchievements => 'Logros combo';
+
+  @override
+  String get focusIntervals => 'Intervalos de enfoque';
+
+  @override
+  String get focusTime => 'Tiempo de enfoque';
+
+  @override
+  String get openTasks => 'Tareas abiertas';
+
+  @override
+  String get plannedIntervals => 'Intervalos planificados';
+
+  @override
+  String get labelsTitle => 'Etiquetas';
+
+  @override
+  String get newProject => 'Nuevo proyecto';
+
+  @override
+  String get newLabel => 'Nueva etiqueta';
+
+  @override
+  String get syncReadyQueue => 'Cola lista para sincronizar';
+
+  @override
+  String pendingLocalCommands(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comandos locales pendientes',
+      one: '1 comando local pendiente',
+      zero: 'No hay comandos locales pendientes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String failedToLoadProjects(Object error) {
+    return 'No se pudieron cargar los proyectos: $error';
+  }
+
+  @override
+  String failedToLoadLabels(Object error) {
+    return 'No se pudieron cargar las etiquetas: $error';
+  }
+
+  @override
+  String get addProject => 'Añadir proyecto';
+
+  @override
+  String get projectName => 'Nombre del proyecto';
+
+  @override
+  String get addLabel => 'Añadir etiqueta';
+
+  @override
+  String get labelName => 'Nombre de la etiqueta';
+
+  @override
+  String couldNotAddLabel(Object error) {
+    return 'No se pudo añadir la etiqueta: $error';
+  }
+
+  @override
+  String projectsUnavailable(Object error) {
+    return 'Proyectos no disponibles: $error';
+  }
+
+  @override
+  String get projectsUnavailableShort => 'Proyectos no disponibles';
+
+  @override
+  String get noProjects => 'No hay proyectos';
+
+  @override
+  String get searchProjects => 'Buscar proyectos';
+
+  @override
+  String get searchLabels => 'Buscar etiquetas';
+
+  @override
+  String get archivedProjectsOnly => 'Solo proyectos archivados';
+
+  @override
+  String projectsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count proyectos',
+      one: '1 proyecto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noLabels => 'No hay etiquetas';
+
+  @override
+  String labelsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count etiquetas',
+      one: '1 etiqueta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get renameProject => 'Renombrar proyecto';
+
+  @override
+  String get archiveProject => 'Archivar proyecto';
+
+  @override
+  String get restoreProject => 'Restaurar del archivo';
+
+  @override
+  String get deleteProject => 'Eliminar proyecto';
+
+  @override
+  String get deleteLabel => 'Eliminar etiqueta';
+
+  @override
+  String deleteProjectConfirmation(String name) {
+    return '¿Eliminar \"$name\"? Las tareas de este proyecto se moverán a Inbox.';
+  }
+
+  @override
+  String deleteLabelConfirmation(String name) {
+    return '¿Eliminar \"$name\"?';
+  }
+
+  @override
+  String couldNotDeleteProject(Object error) {
+    return 'No se pudo eliminar el proyecto: $error';
+  }
+
+  @override
+  String couldNotDeleteLabel(Object error) {
+    return 'No se pudo eliminar la etiqueta: $error';
+  }
+
+  @override
+  String projectsCountCompact(int count) {
+    return 'Proyectos: $count';
+  }
+
+  @override
+  String get collapseProjects => 'Contraer proyectos';
+
+  @override
+  String get expandProjects => 'Expandir proyectos';
+
+  @override
+  String get projectFallbackTitle => 'Proyecto';
+
+  @override
+  String get projectSubtitle =>
+      'Vista de lista - tablero y calendario están en la hoja de ruta.';
+
+  @override
+  String get reportsTitle => 'Informes';
+
+  @override
+  String get reportsFocusedDay => 'Un día concentrado hasta ahora';
+
+  @override
+  String get reportsThisWeek => 'Tu semana de concentración';
+
+  @override
+  String get reportsNextAchievement => 'Próximo logro';
+
+  @override
+  String get viewAllAchievements => 'Ver todos los logros';
+
+  @override
+  String viewAllAchievementsCount(int count) {
+    return 'Ver los $count';
+  }
+
+  @override
+  String get allAchievementsUnlocked => 'Todos los logros desbloqueados';
+
+  @override
+  String get noAchievementsYet => 'Aún no hay logros';
+
+  @override
+  String failedToLoadAchievements(Object error) {
+    return 'No se pudieron cargar los logros: $error';
+  }
+
+  @override
+  String get backToReports => 'Volver a informes';
+
+  @override
+  String reportsIntervalProgressSemantics(int completed, int target) {
+    return '$completed de $target intervalos de concentración completados';
+  }
+
+  @override
+  String reportsIntervalCountSemantics(int completed) {
+    return '$completed intervalos de concentración completados; sin estimaciones de tareas';
+  }
+
+  @override
+  String reportsWeeklyChartSemantics(String summary) {
+    return 'Tiempo de concentración de los últimos 7 días: $summary';
+  }
+
+  @override
+  String failedToLoadReports(Object error) {
+    return 'No se pudieron cargar los informes: $error';
+  }
+
+  @override
+  String get taskNotFound => 'Tarea no encontrada';
+
+  @override
+  String get taskTitleHint => 'Título de la tarea';
+
+  @override
+  String get taskComment => 'Comentario';
+
+  @override
+  String get taskCommentHint => 'Añadir comentario';
+
+  @override
+  String get subtasks => 'Subtareas';
+
+  @override
+  String get addSubtask => 'Añadir subtarea';
+
+  @override
+  String get addSubtaskHint => 'Añadir subtarea';
+
+  @override
+  String get noSubtasks => 'Aún no hay subtareas.';
+
+  @override
+  String get makeParentTask => 'Convertir en tarea principal';
+
+  @override
+  String couldNotMoveTask(Object error) {
+    return 'No se pudo mover la tarea: $error';
+  }
+
+  @override
+  String get scheduleTitle => 'Programación';
+
+  @override
+  String get allDay => 'Todo el día';
+
+  @override
+  String get timedBlock => 'Bloque con hora';
+
+  @override
+  String get recurrenceTitle => 'Repeat';
+
+  @override
+  String get recurrenceNeedsSchedule => 'Add a date or time before repeating.';
+
+  @override
+  String get recurrenceIntervalLabel => 'Interval';
+
+  @override
+  String get recurrenceUnitDay => 'Days';
+
+  @override
+  String get recurrenceUnitWeek => 'Weeks';
+
+  @override
+  String get recurrenceUnitMonth => 'Months';
+
+  @override
+  String get recurrenceInvalidInterval => 'Enter 1 to 999.';
+
+  @override
+  String recurrenceEveryDays(int interval) {
+    String _temp0 = intl.Intl.pluralLogic(
+      interval,
+      locale: localeName,
+      other: 'every $interval days',
+      one: 'every day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recurrenceEveryWeeks(int interval) {
+    String _temp0 = intl.Intl.pluralLogic(
+      interval,
+      locale: localeName,
+      other: 'every $interval weeks',
+      one: 'every week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recurrenceEveryMonths(int interval) {
+    String _temp0 = intl.Intl.pluralLogic(
+      interval,
+      locale: localeName,
+      other: 'every $interval months',
+      one: 'every month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noDate => 'Sin fecha';
+
+  @override
+  String get calendarNotLinked => 'Calendario no vinculado';
+
+  @override
+  String get calendarLinked => 'Calendar vinculado';
+
+  @override
+  String focusProgress(int completed, int total) {
+    return '$completed/$total enfoque';
+  }
+
+  @override
+  String get startFocus => 'Iniciar enfoque';
+
+  @override
+  String get focusStarted => 'Enfoque iniciado';
+
+  @override
+  String get taskReopened => 'Tarea reabierta';
+
+  @override
+  String get taskCompleted => 'Tarea completada';
+
+  @override
+  String get taskDeleted => 'Tarea eliminada';
+
+  @override
+  String get recurringDeleteTitle => 'Delete recurring task?';
+
+  @override
+  String get recurringDeleteMessage =>
+      'This task belongs to a recurring series.';
+
+  @override
+  String get recurringDeleteThis => 'Delete this task';
+
+  @override
+  String get recurringDeleteThisAndFollowing => 'Delete this and following';
+
+  @override
+  String get markOpen => 'Marcar abierta';
+
+  @override
+  String get markComplete => 'Marcar completada';
+
+  @override
+  String get focusHistory => 'Historial de enfoque';
+
+  @override
+  String failedToLoadTask(Object error) {
+    return 'No se pudo cargar la tarea: $error';
+  }
+
+  @override
+  String get noFocusIntervals => 'Aún no hay intervalos de enfoque.';
+
+  @override
+  String get today => 'Hoy';
+
+  @override
+  String get tomorrow => 'Mañana';
+
+  @override
+  String get yesterday => 'Ayer';
+
+  @override
+  String get clearDate => 'Limpiar fecha';
+
+  @override
+  String priority(int priority) {
+    return 'Prioridad $priority';
+  }
+
+  @override
+  String get focusTitle => 'Enfoque';
+
+  @override
+  String focusLoadError(Object error) {
+    return 'No se pudo cargar el enfoque: $error';
+  }
+
+  @override
+  String get focusViewFull => 'Completo';
+
+  @override
+  String get focusViewMinimal => 'Mínimo';
+
+  @override
+  String get focusSwitchToFullView => 'Cambiar a Completo';
+
+  @override
+  String get focusSwitchToMinimalView => 'Cambiar a Mínimo';
+
+  @override
+  String get focusActionFailed =>
+      'No se pudo actualizar Focus. Inténtalo de nuevo.';
+
+  @override
+  String get noActiveSession => 'No hay sesión activa';
+
+  @override
+  String get focusIdleSubtitle =>
+      'Inicia un intervalo de enfoque independiente o desde una tarea.';
+
+  @override
+  String get noPreset => 'Sin preset';
+
+  @override
+  String get preparingFocus => 'Preparando enfoque';
+
+  @override
+  String get moreFocusOptions => 'Más opciones de enfoque';
+
+  @override
+  String get moreFocusActions => 'Más acciones de enfoque';
+
+  @override
+  String get preset => 'Preset';
+
+  @override
+  String get newPreset => 'Nuevo preset';
+
+  @override
+  String get customize => 'Personalizar';
+
+  @override
+  String get customizePreset => 'Personalizar preset';
+
+  @override
+  String get startInterval => 'Iniciar intervalo';
+
+  @override
+  String get intervalStarted => 'Intervalo iniciado';
+
+  @override
+  String get intervalCompleted => 'Intervalo completado';
+
+  @override
+  String get focusStopped => 'Enfoque detenido';
+
+  @override
+  String get focusCompletionTitle => '¡Excelente trabajo!';
+
+  @override
+  String get focusCompletionLinkedSubtitle =>
+      'Todos los intervalos de enfoque previstos para esta tarea están completos.';
+
+  @override
+  String get focusCompletionStandaloneSubtitle =>
+      'Tu ciclo de enfoque está completo.';
+
+  @override
+  String get focusCompletionQuestion => '¿Quieres completar esta tarea?';
+
+  @override
+  String get focusCompletionCompleteTask => 'Completar tarea';
+
+  @override
+  String get focusCompletionKeepOpen => 'Mantener tarea abierta';
+
+  @override
+  String get focusCompletionDone => 'Listo';
+
+  @override
+  String get focusCompletionNextTask => 'Próxima tarea programada';
+
+  @override
+  String focusCompletionTaskError(Object error) {
+    return 'No se pudo completar la tarea: $error';
+  }
+
+  @override
+  String get completeInterval => 'Completar intervalo';
+
+  @override
+  String get logDistraction => 'Registrar distracción';
+
+  @override
+  String get workInterval => 'Intervalo de trabajo';
+
+  @override
+  String get work => 'Trabajo';
+
+  @override
+  String get shortBreak => 'Descanso corto';
+
+  @override
+  String get breakLabel => 'Descanso';
+
+  @override
+  String get longBreak => 'Descanso largo';
+
+  @override
+  String readyLabel(String label) {
+    return 'Listo: $label';
+  }
+
+  @override
+  String get readyShort => 'Listo';
+
+  @override
+  String focusTimerTotal(String duration) {
+    return 'de $duration';
+  }
+
+  @override
+  String focusSessionProgress(int current, int total) {
+    return 'Sesión $current de $total';
+  }
+
+  @override
+  String focusRhythmPreviewSummary(int count) {
+    return 'Vista previa del ritmo de enfoque, $count pasos';
+  }
+
+  @override
+  String focusRhythmSummary(
+    int current,
+    int total,
+    String phase,
+    String status,
+  ) {
+    return 'Ritmo de enfoque, paso $current de $total: $phase, $status';
+  }
+
+  @override
+  String focusTimerSummary(
+    String phase,
+    String status,
+    String remaining,
+    String total,
+  ) {
+    return '$phase, $status, quedan $remaining, $total en total';
+  }
+
+  @override
+  String get focusStatusRunning => 'En curso';
+
+  @override
+  String get focusStatusPaused => 'En pausa';
+
+  @override
+  String focusWorkProgress(int completed, int total) {
+    return '$completed/$total trabajo';
+  }
+
+  @override
+  String intervalNumber(int number) {
+    return 'Intervalo $number';
+  }
+
+  @override
+  String focusIntervalSummary(int completed, int total, int number) {
+    return '$completed/$total trabajo - Intervalo $number';
+  }
+
+  @override
+  String get pause => 'Pausar';
+
+  @override
+  String get resume => 'Reanudar';
+
+  @override
+  String get presetForNextIntervals => 'Preset para próximos intervalos';
+
+  @override
+  String usePreset(String name) {
+    return 'Usar $name';
+  }
+
+  @override
+  String minutesWork(int minutes) {
+    return '${minutes}m trabajo';
+  }
+
+  @override
+  String minutesShort(int minutes) {
+    return '${minutes}m corto';
+  }
+
+  @override
+  String minutesLong(int minutes) {
+    return '${minutes}m largo';
+  }
+
+  @override
+  String longEvery(int count) {
+    return 'Largo cada $count';
+  }
+
+  @override
+  String get autoBreaks => 'Descansos auto';
+
+  @override
+  String get autoWork => 'Trabajo auto';
+
+  @override
+  String get noPause => 'Sin pausa';
+
+  @override
+  String get focusPauseUnavailable =>
+      'La pausa no está disponible para este preset';
+
+  @override
+  String get strict => 'Estricto';
+
+  @override
+  String get flexible => 'Flexible';
+
+  @override
+  String get name => 'Nombre';
+
+  @override
+  String get workField => 'Trabajo';
+
+  @override
+  String get shortField => 'Corto';
+
+  @override
+  String get longField => 'Largo';
+
+  @override
+  String get every => 'Cada';
+
+  @override
+  String get minutesSuffix => 'min';
+
+  @override
+  String get makeDefault => 'Predeterminado';
+
+  @override
+  String get autoStartBreaks => 'Auto-iniciar descansos';
+
+  @override
+  String get autoStartWork => 'Auto-iniciar trabajo';
+
+  @override
+  String get allowPause => 'Permitir pausa';
+
+  @override
+  String get strictMode => 'Modo estricto';
+
+  @override
+  String get nameRequired => 'El nombre es obligatorio';
+
+  @override
+  String get nameMustBeUnique => 'El nombre debe ser único';
+
+  @override
+  String get googleCalendarTitle => 'Google Calendar';
+
+  @override
+  String get googleCalendarConnectedSubtitle =>
+      'La sincronización bidireccional está activa para el calendario Ada.';
+
+  @override
+  String get googleCalendarDisconnectedSubtitle =>
+      'Conecta una cuenta de Google para sincronizar tareas programadas.';
+
+  @override
+  String get googleCalendarConnectedOnAnotherDeviceSubtitle =>
+      'La sincronización de Google Calendar se ejecuta en otro dispositivo. Los datos de Ada se siguen sincronizando aquí.';
+
+  @override
+  String get syncNow => 'Sincronizar ahora';
+
+  @override
+  String get useThisDevice => 'Usar este dispositivo';
+
+  @override
+  String get connect => 'Conectar';
+
+  @override
+  String get disconnect => 'Desconectar';
+
+  @override
+  String failedToLoadIntegration(Object error) {
+    return 'No se pudo cargar la integración: $error';
+  }
+
+  @override
+  String googleCalendarFailed(String message) {
+    return 'Google Calendar falló: $message';
+  }
+
+  @override
+  String get googleAuthRequired =>
+      'Se requiere autorización de Google Calendar. Inicia sesión de nuevo y ejecuta Sincronizar ahora.';
+
+  @override
+  String get googleCalendarRateLimited =>
+      'Se ha alcanzado el límite de solicitudes de Google Calendar. Espera unos minutos antes de volver a sincronizar.';
+
+  @override
+  String get googleCalendarSyncFailed =>
+      'No se pudo sincronizar Google Calendar. Inténtalo más tarde.';
+
+  @override
+  String get googleSignInNotConfigured =>
+      'Google Sign-In no está configurado. Define GOOGLE_CLIENT_ID y GOOGLE_REVERSED_CLIENT_ID para este target iOS.';
+
+  @override
+  String get googleCallbackNotConfigured =>
+      'El callback de Google Sign-In no está configurado. Define GOOGLE_REVERSED_CLIENT_ID en ios/Flutter/GoogleOAuth.xcconfig.';
+
+  @override
+  String get googleWebButtonFirst =>
+      'En web, haz clic primero en el botón de inicio de sesión de Google y luego en Conectar.';
+
+  @override
+  String get googleAccessDenied =>
+      'El acceso de Google fue denegado. Añade esta cuenta como usuario de prueba OAuth o publica y verifica la app OAuth.';
+
+  @override
+  String get status => 'Estado';
+
+  @override
+  String get account => 'Cuenta';
+
+  @override
+  String get calendar => 'Calendario';
+
+  @override
+  String get calendarId => 'ID del calendario';
+
+  @override
+  String get lastSync => 'Última sincronización';
+
+  @override
+  String get notConnected => 'No conectado';
+
+  @override
+  String get notCreated => 'No creado';
+
+  @override
+  String get never => 'Nunca';
+
+  @override
+  String durationMinutes(int minutes) {
+    return '${minutes}m';
+  }
+
+  @override
+  String durationHoursMinutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String get projectIcon => 'Icono del proyecto';
+
+  @override
+  String projectIconOption(int number) {
+    return 'Icono $number';
+  }
+
+  @override
+  String get projectColor => 'Color del proyecto';
+
+  @override
+  String projectColorOption(int number) {
+    return 'Color $number';
+  }
+
+  @override
+  String get addProjectToFavorites => 'Añadir proyecto a favoritos';
+
+  @override
+  String get removeProjectFromFavorites => 'Quitar proyecto de favoritos';
+
+  @override
+  String get timelineProjectsMenu => 'Gestionar proyectos del Timeline';
+
+  @override
+  String get timelineShowProject => 'Mostrar proyecto en Timeline';
+
+  @override
+  String get timelineHideProject => 'Ocultar proyecto temporal';
+
+  @override
+  String get timelineCollapseProject => 'Contraer rama del proyecto';
+
+  @override
+  String get timelineExpandProject => 'Expandir rama del proyecto';
+
+  @override
+  String get timelineCurrentTime => 'Hora actual';
+
+  @override
+  String couldNotUpdateProject(Object error) {
+    return 'No se pudo actualizar el proyecto: $error';
+  }
+
+  @override
+  String get commonDone => 'Listo';
+
+  @override
+  String get taskSelect => 'Seleccionar';
+
+  @override
+  String taskSelectedCount(int count) {
+    return '$count seleccionadas';
+  }
+
+  @override
+  String get taskSelectAll => 'Seleccionar todo';
+
+  @override
+  String get taskDeselectAll => 'Deseleccionar todo';
+
+  @override
+  String get taskDue => 'Fecha';
+
+  @override
+  String get taskProject => 'Proyecto';
+
+  @override
+  String get taskLabels => 'Etiquetas';
+
+  @override
+  String get taskPriority => 'Prioridad';
+
+  @override
+  String get taskMore => 'Más';
+
+  @override
+  String get taskSchedule => 'Programar';
+
+  @override
+  String get taskMove => 'Mover';
+
+  @override
+  String get taskChangeProject => 'Cambiar proyecto';
+
+  @override
+  String get taskDuplicate => 'Duplicar';
+
+  @override
+  String get taskDuplicateTitle => 'Duplicar tareas';
+
+  @override
+  String get taskDuplicateSelectedOnly => 'Solo seleccionadas';
+
+  @override
+  String get taskDuplicateWithSubtasks => 'Con subtareas';
+
+  @override
+  String get taskWeekend => 'Este fin de semana';
+
+  @override
+  String get taskNextWeek => 'La próxima semana';
+
+  @override
+  String get taskEnterDue => 'Introduce fecha u hora';
+
+  @override
+  String get taskInvalidDue => 'Introduce una fecha u hora válida';
+
+  @override
+  String get taskClearDue => 'Quitar fecha';
+
+  @override
+  String get taskDeleteSelectedTitle => '¿Eliminar las tareas seleccionadas?';
+
+  @override
+  String get taskDeleteSelectedMessage =>
+      'Puedes deshacer esta acción durante 7 segundos.';
+
+  @override
+  String get taskCompleteSelected => 'Completar seleccionadas';
+
+  @override
+  String get taskReopenSelected => 'Reabrir seleccionadas';
+
+  @override
+  String taskActionFailedCount(int count) {
+    return 'No se pudieron actualizar $count tareas';
+  }
+
+  @override
+  String get voiceCollapse => 'Contraer panel de voz';
+
+  @override
+  String get voiceExpand => 'Expandir panel de voz';
+
+  @override
+  String get voiceMovePanel => 'Mover panel de voz';
+
+  @override
+  String get themeClassic => 'Clásico';
+
+  @override
+  String get themeOcean => 'Océano';
+
+  @override
+  String get themeForest => 'Bosque';
+
+  @override
+  String get themeCustomize => 'Personalizar';
+
+  @override
+  String get themeEditorTitle => 'Editar tema';
+
+  @override
+  String get themeLivePreview =>
+      'Los cambios aparecen en toda la aplicación. Cancelar restaura el tema anterior.';
+
+  @override
+  String get themeSaveError =>
+      'No se pudo guardar el tema. Tus cambios siguen aquí; inténtalo de nuevo.';
+
+  @override
+  String get themeLoadError => 'No se pudieron cargar tus temas.';
+
+  @override
+  String get themeColorsSurfaces => 'Fondo y superficies';
+
+  @override
+  String get themeColorsText => 'Texto';
+
+  @override
+  String get themeColorsAccent => 'Acento';
+
+  @override
+  String get themeColorsStatus => 'Colores de estado';
+
+  @override
+  String get themeInvalidHex =>
+      'Introduce un color HEX de seis dígitos, por ejemplo #2563EB.';
+
+  @override
+  String get themeLowContrast =>
+      'Contraste bajo: algunos textos pueden ser difíciles de leer.';
+
+  @override
+  String get themePreviewTask => 'Planifica tu día';
+
+  @override
+  String get themePreviewSecondary => 'Un poco de concentración cada día.';
+
+  @override
+  String get themeColorCanvas => 'Fondo';
+
+  @override
+  String get themeColorSurface => 'Superficie';
+
+  @override
+  String get themeColorSurfaceTint => 'Superficie secundaria';
+
+  @override
+  String get themeColorSurfaceHover => 'Superficie al pasar el cursor';
+
+  @override
+  String get themeColorPrimaryText => 'Texto principal';
+
+  @override
+  String get themeColorSecondaryText => 'Texto secundario';
+
+  @override
+  String get themeColorMutedText => 'Texto atenuado';
+
+  @override
+  String get themeColorBorder => 'Borde';
+
+  @override
+  String get themeColorAccent => 'Texto e iconos de acento';
+
+  @override
+  String get themeColorAccentFill => 'Relleno de acento';
+
+  @override
+  String get themeColorAccentTint => 'Relleno de acento suave';
+
+  @override
+  String get themeColorWarning => 'Advertencia';
+
+  @override
+  String get themeColorInfo => 'Información';
+
+  @override
+  String get themeColorSuccess => 'Éxito';
+
+  @override
+  String get themeColorError => 'Error';
+
+  @override
+  String get themeColorOverdue => 'Vencido';
+
+  @override
+  String get themeColorOnAccent => 'Texto sobre relleno de acento';
+
+  @override
+  String get themeColorOnError => 'Texto sobre relleno de error';
+
+  @override
+  String todayTaskSummary(int tasks, int planned, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tasks,
+      locale: localeName,
+      other: '$tasks tareas',
+      one: '1 tarea',
+    );
+    return '$_temp0 · Sesiones previstas: $planned · Concentración: $time';
+  }
+
+  @override
+  String get todayFocusingOn => 'Concentrándote en';
+
+  @override
+  String get openFocus => 'Abrir Focus';
+
+  @override
+  String todayCompletedTasks(int count) {
+    return 'Completadas hoy · $count';
+  }
+
+  @override
+  String get sidebarDaily => 'Día a día';
+
+  @override
+  String get sidebarViews => 'Vistas';
+
+  @override
+  String get quickAddResetDetails => 'Usar valor predeterminado';
+
+  @override
+  String get quickAddChangeTime => 'Cambiar hora';
+
+  @override
+  String get quickAddProjectNameUnsupported =>
+      'Este nombre de proyecto no se puede insertar sin modificarlo.';
+
+  @override
+  String get themeSepia => 'Sepia';
+
+  @override
+  String get themeGraphite => 'Grafito';
+
+  @override
+  String get themeCustom => 'Custom';
+
+  @override
+  String get themeResetToClassic => 'Restablecer a Clásico';
+
+  @override
+  String get themeBackgroundKindTitle => 'Fondo';
+
+  @override
+  String get themeBackgroundColor => 'Color';
+
+  @override
+  String get themeBackgroundPhoto => 'Foto';
+
+  @override
+  String get themeBackgroundGlass => 'Cristal de macOS';
+
+  @override
+  String get themeBackgroundGlassHint =>
+      'Se aplica a toda la aplicación y a Añadir rápidamente. macOS controla el desenfoque; el control deslizante ajusta el tinte de la paleta.';
+
+  @override
+  String get themeBackgroundGlassUnavailable =>
+      'Disponible en la aplicación para macOS. En esta plataforma se usa un fondo de color sólido.';
+
+  @override
+  String get themeBackgroundTitle => 'Imagen de fondo';
+
+  @override
+  String get themeBackgroundMainOnly => 'Solo el área principal';
+
+  @override
+  String get themeBackgroundWholeApp => 'Toda la aplicación';
+
+  @override
+  String get themeBackgroundSeparate => 'Fondos separados';
+
+  @override
+  String get themeBackgroundMain => 'Área principal';
+
+  @override
+  String get themeBackgroundSidebar => 'Barra lateral';
+
+  @override
+  String get themeBackgroundQuickAdd => 'Añadir rápidamente';
+
+  @override
+  String get themeBackgroundChoose => 'Elegir foto';
+
+  @override
+  String get themeBackgroundReplace => 'Reemplazar foto';
+
+  @override
+  String get themeBackgroundRemove => 'Eliminar foto';
+
+  @override
+  String get themeBackgroundDim => 'Atenuación';
+
+  @override
+  String get themeBackgroundBlur => 'Desenfoque';
+
+  @override
+  String get themeBackgroundEmpty => 'Sin foto';
+
+  @override
+  String get themeBackgroundImageError =>
+      'No se pudo abrir esta imagen. Elige otra foto.';
+
+  @override
+  String get themeBackgroundTooLarge =>
+      'Elige una imagen de 50 MB como máximo.';
+
+  @override
+  String get themeBackgroundLoading => 'Preparando imagen…';
+
+  @override
+  String get settingsTaskListStyle => 'Estilo de las filas de tareas';
+
+  @override
+  String get settingsTaskListStyleDescription =>
+      'Elige el nuevo diseño o las filas clásicas.';
+
+  @override
+  String get settingsTaskListModern => 'Moderno';
+
+  @override
+  String get settingsTaskListClassic => 'Clásico';
+
+  @override
+  String get settingsTaskRowSpacing => 'Espaciado entre tareas';
+
+  @override
+  String get settingsTaskRowSpacingCompact => 'Compacto';
+
+  @override
+  String get settingsTaskRowSpacingComfortable => 'Cómodo';
+
+  @override
+  String get settingsTaskRowSpacingSpacious => 'Amplio';
+
+  @override
+  String get settingsSaveError =>
+      'No se pudo guardar el ajuste. Inténtalo de nuevo.';
+
+  @override
+  String get focusCompletionCompleteAndNext =>
+      'Completar e iniciar la siguiente';
+
+  @override
+  String get focusCompletionStartNext => 'Iniciar la siguiente tarea';
+
+  @override
+  String get focusCompletionRetry => 'Reintentar';
+
+  @override
+  String get searchAllProjects => 'Todos los proyectos';
+
+  @override
+  String get searchStatusOpen => 'Abiertas';
+
+  @override
+  String get searchStatusCompleted => 'Completadas';
+
+  @override
+  String get searchStatusAll => 'Todos los estados';
+
+  @override
+  String get searchClearFilters => 'Quitar filtros';
+
+  @override
+  String get searchEmptyDescription =>
+      'Busca una tarea por título o descripción y filtra por proyecto o estado.';
+
+  @override
+  String get searchNoMatchesDescription =>
+      'Prueba otra frase o quita los filtros. También puedes crear una tarea con este texto.';
+
+  @override
+  String get searchCreateTask => 'Crear tarea con el texto';
+
+  @override
+  String get taskListLoadError =>
+      'No se pudieron cargar las tareas. Inténtalo de nuevo.';
+
+  @override
+  String get inboxEmptyTitle => 'Tu bandeja de entrada está vacía';
+
+  @override
+  String get inboxEmptyDescription =>
+      'Anota una idea aquí y decide después cuándo trabajar en ella.';
+
+  @override
+  String get todayEmptyTitle => 'No hay nada programado para hoy';
+
+  @override
+  String get todayEmptyDescription => 'Añade una tarea para empezar el día.';
+
+  @override
+  String get todayEmptyCompletedTitle => 'La lista de hoy está vacía';
+
+  @override
+  String get todayEmptyCompletedDescription =>
+      'Tus tareas completadas están abajo. Añade otra cuando quieras.';
+
+  @override
+  String get projectEmptyTitle => 'Este proyecto aún no tiene tareas';
+
+  @override
+  String get projectEmptyDescription =>
+      'Añade el primer paso hacia el objetivo del proyecto.';
+
+  @override
+  String get commandSearchPlaceholder => 'Buscar tareas, proyectos y acciones';
+
+  @override
+  String get commandSearchTasks => 'Tareas';
+
+  @override
+  String get commandSearchActions => 'Acciones';
+
+  @override
+  String get commandSearchDictateTask => 'Dictar tarea';
+
+  @override
+  String get commandSearchAllResults => 'Ver todos los resultados';
+
+  @override
+  String get commandSearchEnablePomo => 'Activar Ada';
+
+  @override
+  String get commandSearchDisablePomo => 'Desactivar Ada';
+
+  @override
+  String get commandSearchHint => '↑ ↓ Navegar · Enter Abrir · Esc Cerrar';
+
+  @override
+  String get commandSearchNoMatches =>
+      'No hay tareas ni proyectos coincidentes.';
+
+  @override
+  String get overdueTitle => 'Atrasadas';
+
+  @override
+  String overdueTaskCount(int count) {
+    return '$count tareas atrasadas';
+  }
+
+  @override
+  String get overdueReview => 'Revisar';
+
+  @override
+  String get overdueEmpty => 'No hay tareas atrasadas';
+
+  @override
+  String get taskFocusSwitchTitle => '¿Cambiar el enfoque?';
+
+  @override
+  String taskFocusSwitchMessage(String task) {
+    return 'La sesión actual se detendrá. ¿Iniciar el enfoque en «$task»?';
+  }
+
+  @override
+  String get taskFocusSwitchConfirm => 'Cambiar';
+
+  @override
+  String get labelIcon => 'Icono de etiqueta';
+
+  @override
+  String get labelUpdateFailed =>
+      'No se pudo actualizar la etiqueta. Inténtalo de nuevo.';
+
+  @override
+  String get labelNotFound => 'Etiqueta no encontrada';
+
+  @override
+  String get labelTasksSubtitle =>
+      'Tareas con esta etiqueta de todos los proyectos';
+
+  @override
+  String labelIconOption(String icon) {
+    String _temp0 = intl.Intl.selectLogic(icon, {
+      'tag': 'Etiqueta',
+      'bookmark': 'Marcador',
+      'flag': 'Bandera',
+      'bolt': 'Perno',
+      'lightbulb': 'Bombilla',
+      'clock': 'Reloj',
+      'bell': 'Campana',
+      'pin': 'Chincheta',
+      'phone': 'Teléfono',
+      'mail': 'Correo',
+      'link': 'Enlace',
+      'wrench': 'Llave inglesa',
+      'other': 'Etiqueta',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get addSubproject => 'Crear subproyecto';
+
+  @override
+  String get moveProject => 'Mover proyecto';
+
+  @override
+  String get projectTopLevel => 'Nivel superior';
+
+  @override
+  String get projectMoveUp => 'Subir';
+
+  @override
+  String get projectMoveDown => 'Bajar';
+
+  @override
+  String projectParentName(String name) {
+    return 'Proyecto principal: $name';
+  }
+
+  @override
+  String deleteProjectWithChildrenConfirmation(String name) {
+    return '¿Eliminar «$name»? Sus subproyectos subirán un nivel. Solo las tareas de este proyecto se moverán a Inbox.';
+  }
+
+  @override
+  String get accountNickname => 'Apodo';
+
+  @override
+  String get accountChangeNickname => 'Cambiar apodo';
+
+  @override
+  String get accountNicknameSaveError =>
+      'No se pudo guardar tu apodo. Inténtalo de nuevo.';
+
+  @override
+  String get notificationTaskStarting => 'La tarea comienza';
+
+  @override
+  String get notificationReturnTitle => 'Ada te echa de menos';
+
+  @override
+  String get notificationReturnBody =>
+      'Si tienes ganas, termina una tarea pequeña.';
+
+  @override
+  String get notificationReturnTitle2 => 'Ada está por aquí';
+
+  @override
+  String get notificationReturnBody2 =>
+      'Elige la tarea más sencilla de tu lista; con una basta.';
+
+  @override
+  String get notificationReturnTitle3 => 'Ada está contigo';
+
+  @override
+  String get notificationReturnBody3 =>
+      'Puedes empezar por una tarea que puedas terminar hoy.';
+
+  @override
+  String get notificationReturnTitle4 => 'Una noche con Ada';
+
+  @override
+  String get notificationReturnBody4 =>
+      'Terminar una tarea ya es un buen paso.';
+
+  @override
+  String get notificationReturnTitle5 => 'Un recordatorio de Ada';
+
+  @override
+  String get notificationReturnBody5 =>
+      'Mira tu lista y elige algo que puedas hacer esta noche.';
+
+  @override
+  String get notificationFocusChannel => 'Concentración';
+
+  @override
+  String get notificationFocusDescription =>
+      'Notificaciones al completar intervalos de concentración';
+
+  @override
+  String get notificationReturnChannel => 'Recordatorios para volver';
+
+  @override
+  String get notificationReturnDescription =>
+      'Recordatorios suaves para volver a Ada';
+
+  @override
+  String get notificationTaskChannel => 'Inicio de tarea';
+
+  @override
+  String get notificationTaskDescription =>
+      'Notificaciones de inicio de tareas';
+
+  @override
+  String get notificationOpenApp => 'Abrir Ada';
+
+  @override
+  String get notificationFocusCompleted =>
+      'Intervalo de concentración completado';
+
+  @override
+  String get notificationLongBreakCompleted => 'Descanso largo terminado';
+
+  @override
+  String get notificationBreakCompleted => 'Descanso terminado';
+
+  @override
+  String get updateTitle => 'Actualización de Ada';
+
+  @override
+  String get updateAction => 'Actualizar';
+
+  @override
+  String get updateCheck => 'Buscar actualizaciones';
+
+  @override
+  String get updateSettings => 'Actualizaciones';
+
+  @override
+  String get updateReceiveRc => 'Recibir versiones candidatas (RC)';
+
+  @override
+  String get updateStableChannel => 'Canal: versiones estables';
+
+  @override
+  String get updateRcChannel => 'Canal: versiones estables y RC';
+
+  @override
+  String get updateRcHelp =>
+      'Las versiones RC pueden contener errores. Se excluyen las versiones alfa y beta.';
+
+  @override
+  String get updateRestart =>
+      'La aplicación se reiniciará. Tus datos se conservarán.';
+
+  @override
+  String get updateNotes => 'Notas de la versión';
+
+  @override
+  String get updateOwnerManaged =>
+      'El propietario actualiza esta compilación para conservar la configuración del servidor. Pídele la última versión.';
+
+  @override
+  String get updateUnsupported =>
+      'Las actualizaciones automáticas están disponibles en la AppImage oficial de Linux. Usa el gestor de paquetes para otras compilaciones.';
+
+  @override
+  String updateVersion(String value) {
+    return 'Versión $value';
+  }
+
+  @override
+  String get updatePhaseIdle =>
+      'Puedes buscar actualizaciones en cualquier momento.';
+
+  @override
+  String get updatePhaseChecking => 'Buscando versiones…';
+
+  @override
+  String get updatePhaseAvailable => 'Hay una nueva versión disponible';
+
+  @override
+  String get updatePhaseDownloading => 'Descargando actualización…';
+
+  @override
+  String get updatePhaseVerifying => 'Verificando integridad…';
+
+  @override
+  String get updatePhaseInstalling => 'Preparando instalación y reinicio…';
+
+  @override
+  String get updatePhaseUpToDate => 'Tienes la última versión compatible.';
+
+  @override
+  String get updatePhaseFailed => 'No se pudo completar la actualización';
+
+  @override
+  String achievementFocusSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Completa $count sesiones de concentración',
+      one: 'Completa 1 sesión de concentración',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String achievementTaskSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Completa $count tareas',
+      one: 'Completa 1 tarea',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get achievementDayNotWastedSubtitle =>
+      'Completa una sesión de concentración y una tarea en un día';
+
+  @override
+  String get achievementFocusPlusCheckSubtitle =>
+      'Completa 3 sesiones de concentración y 3 tareas en un día';
+
+  @override
+  String get achievementNoFussSubtitle =>
+      'Completa 5 sesiones de concentración en un día sin detenerlas';
+
+  @override
+  String get achievementCleanEntrySubtitle =>
+      'Completa una tarea después de su sesión de concentración vinculada';
+
+  @override
+  String get achievementTomatoClosedSubtitle =>
+      'Completa una tarea el día de su sesión de concentración';
+
+  @override
+  String achievementTitle(String id) {
+    String _temp0 = intl.Intl.selectLogic(id, {
+      'focus_1': 'Primer tomate',
+      'focus_5': 'Calentamiento',
+      'focus_10': 'Concentración lograda',
+      'focus_25': 'Turno de tomates',
+      'focus_50': 'Modo activado',
+      'focus_100': 'Cinturón rojo',
+      'focus_250': 'Raíces profundas',
+      'focus_500': 'Autoridad del temporizador',
+      'focus_1000': 'Milésimo tomate',
+      'focus_5000': 'Cultivador de concentración',
+      'focus_10000': 'Plantación de atención',
+      'focus_50000': 'Imperio del tomate',
+      'focus_100000': 'Supermente roja',
+      'focus_1000000': 'Singularidad del tomate',
+      'task_1': 'Primera marca',
+      'task_5': 'La lista tembló',
+      'task_10': 'Casilla feliz',
+      'task_25': 'Despejando la pila',
+      'task_50': 'Maestro de las marcas',
+      'task_100': 'Cabos cerrados',
+      'task_250': 'Lista bajo control',
+      'task_500': 'Nocaut de oficina',
+      'task_1000': 'Mil marcas',
+      'task_5000': 'Archivista de victorias',
+      'task_10000': 'Máquina de marcar',
+      'task_50000': 'Oficina de asuntos resueltos',
+      'task_100000': 'Soberano de las listas',
+      'task_1000000': 'Última marca',
+      'combo_day_not_wasted': 'Día aprovechado',
+      'combo_focus_plus_check': 'Concentración + marca',
+      'combo_no_fuss': 'Sin prisas',
+      'combo_clean_entry': 'Entrada limpia',
+      'combo_tomato_closed_question': 'El tomate lo resolvió',
+      'other': 'Logro',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get focusPresetDeepWork => 'Trabajo profundo';
+
+  @override
+  String get focusPresetShortSprint => 'Sprint corto';
+
+  @override
+  String csvImportIssueRow(int row, String message) {
+    return 'Fila $row: $message';
+  }
+
+  @override
+  String csvImportIssueMessage(String code, String value) {
+    String _temp0 = intl.Intl.selectLogic(code, {
+      'fileTooLarge': 'El archivo CSV supera los 16 MiB.',
+      'invalidUtf8': 'El CSV debe usar UTF-8 válido.',
+      'missingHeader': 'Falta la cabecera CSV.',
+      'malformed': 'Formato CSV incorrecto.',
+      'unknownHeader': 'Cabecera desconocida «$value».',
+      'duplicateHeader': 'Cabecera duplicada «$value».',
+      'contentHeaderRequired': 'La cabecera content es obligatoria.',
+      'tooManyTasks': 'El CSV no puede contener más de 1000 tareas.',
+      'tooManyFields': 'La fila tiene más campos que la cabecera.',
+      'contentRequired': 'content es obligatorio.',
+      'invalidPriority': 'priority debe ser un entero de 1 a 4.',
+      'invalidDate': '$value debe usar YYYY-MM-DD.',
+      'mixedSchedule':
+          'No se puede combinar la fecha de vencimiento con un horario.',
+      'timedFieldsRequired':
+          'Un horario requiere start_at, end_at y time_zone.',
+      'invalidTimestamp':
+          '$value debe usar RFC3339 con un desplazamiento UTC explícito.',
+      'invalidTimeZone': 'time_zone debe ser un nombre IANA válido.',
+      'endBeforeStart': 'end_at debe ser posterior a start_at.',
+      'invalidRecurrence': 'recurrence debe ser day, week o month.',
+      'invalidInteger': '$value debe ser un entero de 1 a 999.',
+      'intervalWithoutRecurrence': 'recurrence_interval requiere recurrence.',
+      'recurrenceWithoutSchedule': 'recurrence requiere una fecha u horario.',
+      'doneTask': 'No se pueden importar tareas completadas.',
+      'invalidKey': '$value tiene un formato incorrecto.',
+      'empty': 'El CSV no contiene tareas.',
+      'duplicateKey': 'Clave duplicada «$value».',
+      'parentCycle': 'Las referencias parent_key forman un ciclo.',
+      'missingParent': 'parent_key «$value» no existe.',
+      'childProject':
+          'Una subtarea debe usar el mismo proyecto que su tarea principal.',
+      'other': 'No se pudo importar el archivo.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String billingOfferDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count días',
+      one: '1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String billingOfferMonths(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count meses',
+      one: '1 mes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String billingOfferYears(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count años',
+      one: '1 año',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String billingTrialFree(String duration) {
+    return 'Gratis durante $duration';
+  }
+
+  @override
+  String billingTrialRenewal(String price) {
+    return 'Después, $price. Se renueva automáticamente salvo cancelación.';
+  }
+
+  @override
+  String get billingReturnBadge => 'Volver a Pro';
+
+  @override
+  String billingReturnSubtitle(String duration, String price) {
+    return 'Durante $duration; después, $price. Se renueva automáticamente salvo cancelación.';
+  }
+
+  @override
+  String billingReturnPending(String date) {
+    return 'Tu descuento está reservado hasta $date. Si cancelaste la compra, podrás volver a intentarlo después.';
+  }
+
+  @override
+  String get billingReturnFailed =>
+      'No se pudo verificar tu oferta de regreso. Vuelve a intentarlo.';
+
+  @override
+  String get billingTryFree => 'Probar gratis';
+
+  @override
+  String get collaborationShareProject => 'Compartir proyecto';
+
+  @override
+  String get collaborationShareIntro =>
+      'Invita a otras personas a trabajar juntas en este proyecto. Los miembros pueden editar y los observadores solo ver.';
+
+  @override
+  String get collaborationShareStart => 'Compartir';
+
+  @override
+  String get collaborationShareInProgress =>
+      'Compartiendo… sincronizando los últimos cambios';
+
+  @override
+  String get collaborationMembers => 'Miembros';
+
+  @override
+  String get collaborationPendingInvitations => 'Invitaciones pendientes';
+
+  @override
+  String get collaborationRevoke => 'Revocar';
+
+  @override
+  String get collaborationPublicLink => 'Enlace público';
+
+  @override
+  String get collaborationPublicLinkHint =>
+      'Cualquiera con el enlace puede ver este proyecto';
+
+  @override
+  String get collaborationCopyLink => 'Copiar enlace';
+
+  @override
+  String get collaborationLeaveProject => 'Salir del proyecto';
+
+  @override
+  String get collaborationDeleteSharedProject => 'Eliminar para todos';
+
+  @override
+  String get collaborationMakePrivate => 'Hacer privado';
+
+  @override
+  String get collaborationOwner => 'Propietario';
+
+  @override
+  String get collaborationTransferOwnership => 'Transferir propiedad';
+
+  @override
+  String get collaborationRemoveMember => 'Eliminar miembro';
+
+  @override
+  String get collaborationEmail => 'Correo electrónico';
+
+  @override
+  String get collaborationInvite => 'Invitar';
+
+  @override
+  String get collaborationProjectShared => 'Proyecto compartido';
+
+  @override
+  String get collaborationInviteEmailFailed =>
+      'Invitación guardada, pero no se pudo enviar el correo';
+
+  @override
+  String collaborationInviteSent(String email) {
+    return 'Invitación enviada a $email';
+  }
+
+  @override
+  String get collaborationInvitationRevoked => 'Invitación revocada';
+
+  @override
+  String get collaborationRoleUpdated => 'Rol actualizado';
+
+  @override
+  String collaborationRemoveConfirm(String name) {
+    return '¿Eliminar a $name de este proyecto?';
+  }
+
+  @override
+  String get collaborationMemberRemoved => 'Miembro eliminado';
+
+  @override
+  String collaborationTransferConfirm(String name) {
+    return '¿Hacer que $name sea el propietario de este proyecto?';
+  }
+
+  @override
+  String get collaborationOwnershipTransferred => 'Propiedad transferida';
+
+  @override
+  String get collaborationLeaveConfirm => '¿Salir de este proyecto compartido?';
+
+  @override
+  String get collaborationLeftProject => 'Has salido del proyecto';
+
+  @override
+  String get collaborationDeleteSharedConfirm =>
+      '¿Eliminar este proyecto compartido para todos los miembros? No se puede deshacer.';
+
+  @override
+  String get collaborationSharedProjectDeleted =>
+      'Proyecto compartido eliminado';
+
+  @override
+  String get collaborationMakePrivateConfirm =>
+      '¿Dejar de compartir este proyecto?';
+
+  @override
+  String get collaborationMakePrivateDescription =>
+      'El proyecto y su contenido vuelven a tu cuenta personal. Los demás participantes pierden el acceso de inmediato.';
+
+  @override
+  String get collaborationProjectMadePrivate =>
+      'El proyecto vuelve a ser privado';
+
+  @override
+  String get collaborationLinkCopied => 'Enlace copiado';
+
+  @override
+  String get collaborationRoleAdministrator => 'Administrador';
+
+  @override
+  String get collaborationRoleMember => 'Miembro';
+
+  @override
+  String get collaborationRoleObserver => 'Observador';
+
+  @override
+  String get collaborationForbidden => 'No tienes permiso para hacer eso';
+
+  @override
+  String get collaborationSignedOut =>
+      'Inicia sesión para usar proyectos compartidos';
+
+  @override
+  String get collaborationUnavailable =>
+      'Los proyectos compartidos no están disponibles en este momento';
+
+  @override
+  String get collaborationError => 'Algo salió mal. Inténtalo de nuevo';
+
+  @override
+  String get collaborationSyncPending =>
+      'Termina de sincronizar este proyecto antes de compartirlo';
+
+  @override
+  String get collaborationMemberFallback => 'Miembro';
+
+  @override
+  String get collaborationInboxTitle => 'Proyectos compartidos e invitaciones';
+
+  @override
+  String get collaborationInboxSubtitle =>
+      'Acepta invitaciones y revisa la actividad de proyectos compartidos';
+
+  @override
+  String get collaborationInvitations => 'Invitaciones';
+
+  @override
+  String get collaborationNoInvitations => 'No hay invitaciones pendientes';
+
+  @override
+  String get collaborationAccept => 'Aceptar';
+
+  @override
+  String get collaborationNotifications => 'Notificaciones';
+
+  @override
+  String get collaborationMarkAllRead => 'Marcar todo como leído';
+
+  @override
+  String get collaborationNoNotifications => 'No hay notificaciones';
+
+  @override
+  String get collaborationNotificationInvitation =>
+      'Invitación a un proyecto compartido';
+
+  @override
+  String get collaborationNotificationDiscussion =>
+      'Nuevo comentario en un proyecto compartido';
+
+  @override
+  String get collaborationNotificationAssignment => 'Te asignaron una tarea';
+
+  @override
+  String get collaborationNotificationGeneric =>
+      'Actividad en proyectos compartidos';
+
+  @override
+  String get collaborationInvitationAccepted => 'Invitación aceptada';
+
+  @override
+  String get collaborationAssignees => 'Asignados';
+
+  @override
+  String get collaborationEditAssignees => 'Editar asignados';
+
+  @override
+  String get collaborationNoAssignees => 'Sin asignados';
+
+  @override
+  String get collaborationComments => 'Comentarios';
+
+  @override
+  String get collaborationCommentHint => 'Escribe un comentario';
+
+  @override
+  String get collaborationCommentSend => 'Enviar';
+
+  @override
+  String get collaborationCommentDelete => 'Eliminar comentario';
+
+  @override
+  String get collaborationSharedBadge => 'Proyecto compartido';
+
+  @override
+  String get collaborationJoinTitle => 'Invitación a un proyecto';
+
+  @override
+  String get collaborationJoinDescription =>
+      'Te han invitado a unirte a un proyecto compartido. Acepta la invitación para añadirlo a tus proyectos.';
+
+  @override
+  String get collaborationJoinRole => 'Tu rol';
+
+  @override
+  String get collaborationJoinAccept => 'Aceptar invitación';
+
+  @override
+  String get collaborationJoinOpenProject => 'Abrir proyecto';
+
+  @override
+  String get collaborationJoinInvalid =>
+      'Este enlace de invitación no es válido';
+
+  @override
+  String get collaborationJoinUnavailable =>
+      'Esta invitación ya no está disponible para tu cuenta';
+
+  @override
+  String get collaborationPublicNotice =>
+      'Vista de solo lectura compartida por un miembro de Ada';
+
+  @override
+  String get collaborationPublicUnavailable =>
+      'Este enlace compartido ya no está disponible';
+
+  @override
+  String get collaborationPublicEmpty => 'Todavía no se ha compartido nada';
+
+  @override
+  String get collaborationPublicOpen => 'Abrir Ada';
+
+  @override
+  String get collaborationPublicTasks => 'Tareas';
+
+  @override
+  String get projectInfoTitle => 'Acerca del proyecto';
+
+  @override
+  String get projectInfoPersonal => 'Proyecto personal';
+
+  @override
+  String get projectInfoYou => 'Tú';
+
+  @override
+  String get focusSessionDisplay => 'Vista de sesiones';
+
+  @override
+  String get focusSessionCompact => 'Compacta';
+
+  @override
+  String get focusSessionIcons => 'Iconos';
+
+  @override
+  String focusNextInterval(String phase, String duration) {
+    return 'Siguiente: $phase · $duration';
+  }
+
+  @override
+  String get bottomNavigationEditingTitle => 'Editar la barra inferior';
+
+  @override
+  String get bottomNavigationEditingHelp =>
+      'Arrastra los iconos de abajo o usa las flechas. Toca un icono para reemplazarlo.';
+
+  @override
+  String get bottomNavigationReplace => 'Reemplazar por';
+
+  @override
+  String get bottomNavigationEditHint =>
+      'Mantén pulsado para personalizar la barra inferior.';
+
+  @override
+  String get settingsBottomNavigation => 'Navegación inferior';
+
+  @override
+  String get settingsBottomNavigationDescription =>
+      'Elige hasta cinco secciones, su orden y el estilo de navegación. Se guarda en este dispositivo.';
+
+  @override
+  String get settingsBottomNavigationSoft => 'Acento suave';
+
+  @override
+  String get settingsBottomNavigationLabels => 'Con etiquetas';
+
+  @override
+  String get settingsBottomNavigationPreview => 'Vista previa';
+
+  @override
+  String get settingsBottomNavigationEmpty =>
+      'La barra inferior está oculta. Todas las secciones y estos ajustes siguen disponibles en el menú superior.';
+
+  @override
+  String settingsBottomNavigationCount(int count, int max) {
+    return '$count de $max secciones';
+  }
+
+  @override
+  String get settingsBottomNavigationEarlier => 'Mover antes';
+
+  @override
+  String get settingsBottomNavigationLater => 'Mover después';
+
+  @override
+  String get settingsBottomNavigationAdd => 'Añadir sección';
+
+  @override
+  String get settingsBottomNavigationClear => 'Quitar todas';
+
+  @override
+  String get settingsBottomNavigationDefaults => 'Valores predeterminados';
+
+  @override
+  String get settingsBottomNavigationLoadError =>
+      'No se pudieron cargar los ajustes de navegación. Inténtalo de nuevo.';
+
+  @override
+  String get settingsBottomNavigationEdit => 'Personalizar';
+
+  @override
+  String get settingsBottomNavigationRemove => 'Quitar';
+
+  @override
+  String get editLabel => 'Editar etiqueta';
+
+  @override
+  String get labelNameTaken => 'Ya existe una etiqueta con este nombre';
+
+  @override
+  String get labelBulkAdd => 'Añadir a las tareas';
+
+  @override
+  String get labelBulkRemove => 'Quitar de las tareas';
+
+  @override
+  String get labelColor => 'Color de la etiqueta';
+
+  @override
+  String get taskParentUnavailable =>
+      'Subtarea · tarea principal no disponible';
+
+  @override
+  String get taskExpandSubtasks => 'Expandir subtareas';
+
+  @override
+  String get taskCollapseSubtasks => 'Contraer subtareas';
+
+  @override
+  String taskAllSubtasksProgress(int completed, int total) {
+    return 'Todas las subtareas: $completed de $total completadas';
+  }
+
+  @override
+  String get taskOpenParent => 'Abrir tarea principal';
+
+  @override
+  String get taskOpenFullBranch => 'Abrir todas las subtareas';
+
+  @override
+  String taskParentPath(String path) {
+    return 'Parte de: $path';
+  }
+
+  @override
+  String get projectViewList => 'Lista';
+
+  @override
+  String get projectViewMap => 'Mapa';
+
+  @override
+  String get projectShowCompleted => 'Mostrar completadas';
+
+  @override
+  String get projectExpandBranch => 'Expandir rama';
+
+  @override
+  String get projectCollapseBranch => 'Contraer rama';
+
+  @override
+  String get projectPlaceInside => 'Mover dentro';
+
+  @override
+  String get projectPlaceBefore => 'Mover antes';
+
+  @override
+  String get projectPlaceAfter => 'Mover después';
+
+  @override
+  String get projectCatalogSearch => 'Buscar proyectos y tareas';
+
+  @override
+  String get settingsTaskBranchStyle => 'Aspecto de las subtareas';
+
+  @override
+  String get settingsTaskBranchConnected => 'Líneas de conexión';
+
+  @override
+  String get settingsTaskBranchGrouped => 'Bloque agrupado';
+
+  @override
+  String get onboardingTasksTitle => 'Tu lista. Tu ritmo.';
+
+  @override
+  String get onboardingTasksSubtitle =>
+      'Elige el estilo y el espaciado de tus tareas.';
+
+  @override
+  String get onboardingThemeTitle => '¿De qué color es tu día?';
+
+  @override
+  String get onboardingThemeSubtitle =>
+      'Elige una paleta con la que te guste trabajar.';
+
+  @override
+  String get onboardingModernDescription => 'Títulos destacados';
+
+  @override
+  String get onboardingClassicDescription => 'Lista discreta';
+
+  @override
+  String get onboardingAppearanceHint =>
+      'Puedes cambiarlo todo más tarde en Ajustes.';
+
+  @override
+  String get onboardingClassicThemeDescription => 'El conocido acento rojo';
+
+  @override
+  String get onboardingOceanDescription => 'Azul fresco';
+
+  @override
+  String get onboardingForestDescription => 'Verde tranquilo';
+
+  @override
+  String get onboardingSepiaDescription => 'Papel cálido';
+
+  @override
+  String get onboardingGraphiteDescription => 'Solo lo esencial';
+
+  @override
+  String get onboardingThemeHint =>
+      'Puedes crear tu propia paleta y fondo más tarde en Ajustes.';
+
+  @override
+  String get onboardingPreviewSubtask => 'Anotar las primeras ideas';
+
+  @override
+  String get learningTourInvitationTitle => '¿Quieres conocer Ada?';
+
+  @override
+  String get learningTourInvitationBody =>
+      'Descubre cómo añadir tareas, usar Enfoque y organizar proyectos. Tardarás un minuto.';
+
+  @override
+  String get learningTourStart => 'Empezar';
+
+  @override
+  String get learningTourLater => 'Más tarde';
+
+  @override
+  String get learningTourClose => 'Cerrar recorrido';
+
+  @override
+  String get learningTourSettings => 'Ver recorrido de la app';
+
+  @override
+  String get learningTourAddTask =>
+      'Toca Añadir tarea para ver dónde empiezan las tareas. No hace falta guardar una tarea de prueba.';
+
+  @override
+  String get learningTourFocusNavigation =>
+      'Abre Enfoque para ver dónde empieza una sesión de trabajo.';
+
+  @override
+  String get learningTourFocusReady =>
+      'Elige una tarea y trabaja por intervalos. No hace falta iniciar el temporizador ahora.';
+
+  @override
+  String get learningTourProjectsNavigation =>
+      'Abre Proyectos para ver dónde van las tareas relacionadas.';
+
+  @override
+  String get learningTourProjectsReady =>
+      'Los proyectos reúnen las tareas de un mismo objetivo.';
+
+  @override
+  String get learningTourSkipStep => 'Saltar paso';
+
+  @override
+  String get learningTourOpenAddTask => 'Abrir Añadir tarea';
+
+  @override
+  String get learningTourOpenFocus => 'Abrir Enfoque';
+
+  @override
+  String get learningTourOpenProjects => 'Abrir Proyectos';
+
+  @override
+  String get filesTitle => 'Archivos';
+
+  @override
+  String get filesAdd => 'Añadir archivo';
+
+  @override
+  String get filesEmpty => 'Aún no hay archivos';
+
+  @override
+  String get filesSearch => 'Buscar archivos';
+
+  @override
+  String get filesList => 'Lista';
+
+  @override
+  String get filesGallery => 'Galería';
+
+  @override
+  String get filesAllTogether => 'Todos juntos';
+
+  @override
+  String get filesByTask => 'Por tareas';
+
+  @override
+  String get filesProjectGroup => 'Archivos del proyecto';
+
+  @override
+  String get filesAllTypes => 'Todos los tipos';
+
+  @override
+  String get filesImages => 'Imágenes';
+
+  @override
+  String get filesDocuments => 'Documentos';
+
+  @override
+  String get filesOther => 'Otros archivos';
+
+  @override
+  String get filesDownload => 'Descargar';
+
+  @override
+  String get filesDelete => 'Eliminar archivo';
+
+  @override
+  String get filesDeleteConfirm => '¿Eliminar este archivo permanentemente?';
+
+  @override
+  String get filesUploadFailed =>
+      'Error al subir el archivo. Inténtalo de nuevo.';
+
+  @override
+  String get filesRetry => 'Reintentar';
+
+  @override
+  String get filesProRequired => 'Se requiere Pro para subir archivos.';
+
+  @override
+  String get filesReadOnly => 'Tienes acceso de solo lectura.';
+
+  @override
+  String get filesUnavailable =>
+      'El almacenamiento de archivos no está disponible. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get filesSignIn => 'Inicia sesión para acceder a los archivos.';
+
+  @override
+  String get filesTooLarge => 'Los archivos no deben superar los 20 MB.';
+
+  @override
+  String get filesQuotaExceeded =>
+      'Has alcanzado tu límite de subida de archivos.';
+
+  @override
+  String get filesDeleteProjectWarning =>
+      'Los archivos adjuntos directamente a este proyecto se eliminarán permanentemente.';
+
+  @override
+  String get filesUpload => 'Subiendo';
+
+  @override
+  String get filesFinish => 'Finalizando subida';
+
+  @override
+  String get filesLoadError => 'No se pudieron cargar los archivos.';
+
+  @override
+  String get filesPreview => 'Vista previa';
+
+  @override
+  String get settingsTaskCard => 'Tarjeta de tarea';
+
+  @override
+  String get settingsTaskCardTabs => 'Pestañas';
+
+  @override
+  String get settingsTaskCardDescriptionFirst => 'Descripción primero';
+
+  @override
+  String get taskDetailsTab => 'Detalles';
+
+  @override
+  String get taskDiscussionTab => 'Discusión';
+
+  @override
+  String get taskProperties => 'Propiedades';
+
+  @override
+  String get filesGrouping => 'Agrupación';
+
+  @override
+  String get taskDescriptionHint => 'Añadir una descripción';
+
+  @override
+  String get projectMapExpand => 'Expandir mapa a pantalla completa';
+
+  @override
+  String get projectMapCollapse => 'Salir del mapa a pantalla completa';
+
+  @override
+  String get navHabits => 'Hábitos';
+
+  @override
+  String get habitsSubtitle => 'Pequeños pasos, cada día';
+
+  @override
+  String get habitHistory => 'Últimos 5 días';
+
+  @override
+  String get habitNotScheduled => 'No programado';
+
+  @override
+  String get habitsCompletedLabel => 'Hábitos completados';
+
+  @override
+  String get habitNew => 'Nuevo hábito';
+
+  @override
+  String get habitEdit => 'Editar hábito';
+
+  @override
+  String get habitsActive => 'Activos';
+
+  @override
+  String get habitsFinished => 'Finalizados';
+
+  @override
+  String get habitsEmpty => 'Añade tu primer hábito.';
+
+  @override
+  String get habitsFinishedEmpty => 'Aún no hay hábitos finalizados.';
+
+  @override
+  String get habitsFuture => 'Los días futuros son de solo lectura.';
+
+  @override
+  String get habitName => 'Nombre del hábito';
+
+  @override
+  String get habitDaily => 'Cada día';
+
+  @override
+  String get habitWeekdays => 'Días de la semana elegidos';
+
+  @override
+  String get habitFrequency => 'Horario';
+
+  @override
+  String get habitTarget => 'Veces al día';
+
+  @override
+  String get habitStart => 'Fecha de inicio';
+
+  @override
+  String get habitEnd => 'Fecha de fin';
+
+  @override
+  String get habitForever => 'Sin fin';
+
+  @override
+  String get habitCustom => 'Elegir fecha';
+
+  @override
+  String get habitProject => 'Proyecto';
+
+  @override
+  String get habitNoProject => 'Sin proyecto';
+
+  @override
+  String get habitReminder => 'Recordatorio';
+
+  @override
+  String get habitReminderTime => 'Hora del recordatorio';
+
+  @override
+  String get habitReminderDenied =>
+      'Las notificaciones están desactivadas. Permítelas en los ajustes del sistema.';
+
+  @override
+  String get habitReminderUnavailable =>
+      'Los recordatorios en segundo plano no están disponibles en esta plataforma.';
+
+  @override
+  String get habitReminderFailed =>
+      'No se pudieron actualizar los recordatorios. Inténtalo de nuevo.';
+
+  @override
+  String get habitDeleteConfirm => '¿Eliminar este hábito y su historial?';
+
+  @override
+  String get habitLoadError => 'No se pudieron cargar los hábitos.';
+
+  @override
+  String get habitSaveError =>
+      'No se pudo guardar. Revisa los campos e inténtalo de nuevo.';
+
+  @override
+  String get habitAddCheckIn => 'Añadir una realización';
+
+  @override
+  String get habitUndoCheckIn => 'Deshacer la última realización';
+
+  @override
+  String get habitPreviousWeek => 'Semana anterior';
+
+  @override
+  String get habitNextWeek => 'Semana siguiente';
+
+  @override
+  String get notificationHabitChannel => 'Hábitos';
+
+  @override
+  String get notificationHabitDescription =>
+      'Recordatorios de hábitos pendientes';
+
+  @override
+  String get notificationHabitTitle => 'Es hora de tu hábito';
+
+  @override
+  String habitsSummary(int completed, int planned) {
+    return '$completed de $planned hábitos completados';
+  }
+
+  @override
+  String habitDurationDays(int days) {
+    return '$days días';
+  }
+
+  @override
+  String get settingsAppearancePreview => 'Vista previa';
+
+  @override
+  String get settingsPreviewProject => 'Personal';
+
+  @override
+  String get settingsPreviewLongTask =>
+      'Preparar materiales y planificar los próximos pasos';
+
+  @override
+  String get settingsPreviewCompletedTask => 'Revisar notas';
+
+  @override
+  String get habitsRemaining => 'Pendientes';
+
+  @override
+  String get habitsDone => 'Completadas';
+
+  @override
+  String get habitsPlanned => 'Planificadas';
+
+  @override
+  String get habitDayPeriod => 'Momento del día';
+
+  @override
+  String get habitPeriodAutomatic => 'Automático';
+
+  @override
+  String get habitPeriodAnytime => 'A lo largo del día';
+
+  @override
+  String get habitPeriodNight => 'Noche';
+
+  @override
+  String get habitPeriodMultipleReason =>
+      'El objetivo incluye varias repeticiones durante el día.';
+
+  @override
+  String get habitPeriodNoTimeReason => 'No hay una hora de recordatorio.';
+
+  @override
+  String get habitPeriodReminderReason => 'Según la hora del recordatorio.';
+
+  @override
+  String habitPeriodExplanation(String period, String reason) {
+    return '$period: $reason';
+  }
+
+  @override
+  String get habitPeriodCustom => 'Por momentos del día';
+
+  @override
+  String get habitPeriodTargetsHint =>
+      'Elige uno o más momentos del día y una meta para cada uno. Total diario: 1–99.';
+
+  @override
+  String get accountAvatar => 'Avatar';
+
+  @override
+  String get accountChangeAvatar => 'Cambiar avatar';
+
+  @override
+  String get accountAvatarInput => 'Introduce o pega un emoji';
+
+  @override
+  String get accountAvatarHint =>
+      'Elige un emoji abajo o pégalo desde el teclado.';
+
+  @override
+  String get accountAvatarInvalid => 'Introduce un solo emoji.';
+
+  @override
+  String get accountAvatarSaveError =>
+      'No se pudo guardar tu avatar. Inténtalo de nuevo.';
+
+  @override
+  String get accountAvatarReset => 'Restablecer avatar';
+
+  @override
+  String get accountAvatarSkinTone => 'Tono de piel';
+
+  @override
+  String get accountAvatarSmileys => 'Caras y personas';
+
+  @override
+  String get accountAvatarAnimals => 'Animales y naturaleza';
+
+  @override
+  String get accountAvatarFood => 'Comida y bebida';
+
+  @override
+  String get accountAvatarActivities => 'Actividades';
+
+  @override
+  String get accountAvatarTravel => 'Viajes y lugares';
+
+  @override
+  String get accountAvatarObjects => 'Objetos';
+
+  @override
+  String get accountAvatarSymbols => 'Símbolos';
+
+  @override
+  String get accountAvatarFlags => 'Banderas';
+
+  @override
+  String get reportsPlanEstimates =>
+      'Estimaciones de tareas abiertas para hoy o antes';
+
+  @override
+  String get reportsDayInProgress => 'El día aún está en curso';
+
+  @override
+  String get reportsTimeByProject => 'En qué empleaste tu tiempo';
+
+  @override
+  String get reportsNoProject => 'Sin proyecto';
+
+  @override
+  String get reportsNoTask => 'Sin tarea vinculada';
+
+  @override
+  String reportsUnavailableName(String name) {
+    return '$name (no disponible)';
+  }
+
+  @override
+  String get reportsUnknownProject => 'Proyecto no disponible';
+
+  @override
+  String get reportsUnknownTask => 'Tarea no disponible';
+
+  @override
+  String get reportsNoProjectFocus =>
+      'No hay sesiones de concentración completadas en este período';
+
+  @override
+  String reportsProjectShare(String percent) {
+    return '$percent% del tiempo de concentración';
+  }
+
+  @override
+  String get habitIcon => 'Icono del hábito';
+
+  @override
+  String get habitIconEmoji => 'Emojis';
+
+  @override
+  String get habitIconIcons => 'Iconos';
+
+  @override
+  String get habitIconReset => 'Restablecer icono';
+
+  @override
+  String habitIconOption(String icon) {
+    String _temp0 = intl.Intl.selectLogic(icon, {
+      'bookOpen': 'Lectura',
+      'dumbbell': 'Ejercicio',
+      'footprints': 'Caminar',
+      'glassWater': 'Agua',
+      'moon': 'Sueño',
+      'sun': 'Sol',
+      'heart': 'Salud',
+      'brain': 'Aprendizaje',
+      'apple': 'Nutrición',
+      'coffee': 'Café',
+      'music': 'Música',
+      'pencil': 'Escritura',
+      'code': 'Programación',
+      'leaf': 'Naturaleza',
+      'target': 'Objetivo',
+      'bike': 'Ciclismo',
+      'other': 'Icono del hábito',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsSynchronization => 'Sincronización';
+
+  @override
+  String get settingsRestartSync => 'Reiniciar sincronización';
+
+  @override
+  String get settingsSyncRunning => 'Comprobando y sincronizando tus datos…';
+
+  @override
+  String get settingsSyncComplete => 'Sincronización completada.';
+
+  @override
+  String get settingsSyncPending =>
+      'Algunos cambios están pendientes de envío o recuperación.';
+
+  @override
+  String get settingsSyncFailed =>
+      'Sincronización incompleta. Se reintentará automáticamente.';
+
+  @override
+  String syncUnresolvedChanges(int rejected, int repair) {
+    return 'Rechazados: $rejected. Pendientes de recuperación: $repair.';
+  }
+
+  @override
+  String get outlookCalendarTitle => 'Outlook Calendar';
+
+  @override
+  String get calendarDisconnectedSubtitle =>
+      'Conecta una cuenta de para sincronizar tareas programadas.';
+
+  @override
+  String calendarFailed(String message) {
+    return 'Calendar falló: $message';
+  }
+
+  @override
+  String get calendarAuthRequired =>
+      'Se requiere autorización de Calendar. Inicia sesión de nuevo y ejecuta Sincronizar ahora.';
+
+  @override
+  String get calendarRateLimited =>
+      'Se ha alcanzado el límite de solicitudes de Calendar. Espera unos minutos antes de volver a sincronizar.';
+
+  @override
+  String get calendarSyncFailed =>
+      'No se pudo sincronizar Calendar. Inténtalo más tarde.';
+
+  @override
+  String get calendarUnsupportedEvent =>
+      'Algunos eventos vinculados son recurrentes o se movieron. Corrígelos en el calendario para reanudar la sincronización.';
+
+  @override
+  String get settingsFocusSoundTitle => 'Sonidos de concentración';
+
+  @override
+  String get settingsFocusSoundSubtitle =>
+      'Elige los sonidos para iniciar, pausar, reanudar y completar un intervalo de concentración.';
+
+  @override
+  String get settingsFocusSoundPreview => 'Escuchar';
+
+  @override
+  String get settingsFocusSoundPreviewError =>
+      'No se pudo reproducir la muestra. Inténtalo de nuevo.';
+
+  @override
+  String get pomoTitle => 'Compañero Ada';
+
+  @override
+  String get pomoDescription => 'Un pequeño compañero para tu escritorio.';
+
+  @override
+  String get pomoFocusOnly => 'Solo durante Enfoque';
+
+  @override
+  String get pomoQuiet => 'Modo tranquilo';
+
+  @override
+  String get pomoQuietDescription =>
+      'Reacciones estáticas sin animación de fondo.';
+
+  @override
+  String get pomoReduceMotion => 'Reducir movimiento de Ada';
+
+  @override
+  String get pomoShow => 'Mostrar Ada';
+
+  @override
+  String get pomoOpenApp => 'Abrir aplicación';
+
+  @override
+  String get pomoHide => 'Ocultar Ada';
+
+  @override
+  String get pomoResetPosition => 'Restablecer posición';
+
+  @override
+  String get pomoInteract =>
+      'Ada: reaccionar y mostrar controles. Arrastra para mover.';
+
+  @override
+  String get pomoQuickAdd => 'Añadir tarea';
+
+  @override
+  String get pomoError =>
+      'Ada no pudo completar la acción. Vuelve a mostrarlo desde Ajustes.';
+
+  @override
+  String get pomoShowTimer => 'Mostrar temporizador';
+
+  @override
+  String get pomoSettings => 'Ajustes de Ada';
+
+  @override
+  String get pomoSize => 'Tamaño';
+
+  @override
+  String get pomoSizeDecrease => 'Reducir Ada';
+
+  @override
+  String get pomoSizeIncrease => 'Ampliar Ada';
+
+  @override
+  String get pomoSizeReset => 'Restablecer al 100%';
+
+  @override
+  String pomoSizeEffective(int percent) {
+    return 'Se muestra al $percent% para caber en esta pantalla';
+  }
+
+  @override
+  String get appIconTitle => 'Icono de la aplicación';
+
+  @override
+  String get appIconPomo => 'Ada';
+
+  @override
+  String get appIconClassic => 'Clásico';
+
+  @override
+  String get appIconError =>
+      'No se pudo aplicar o guardar el icono. Inténtalo de nuevo.';
+
+  @override
+  String get appIconMacosHint =>
+      'Cambia el icono del Dock mientras Ada está abierto. Finder usa Ada.';
+
+  @override
+  String get appIconDesktopHint =>
+      'Cambia el icono y los accesos directos de Ada. Las copias ancladas pueden actualizarse más tarde.';
+
+  @override
+  String get appIconWebHint =>
+      'Cambia el icono de la pestaña. El navegador gestiona los iconos de las aplicaciones web instaladas.';
+
+  @override
+  String get quickAddFocusEstimate => 'Estimación de pomodoros';
+
+  @override
+  String quickAddEstimatedPomodoros(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pomodoros',
+      one: '1 pomodoro',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get quickAddDecreaseEstimate => 'Reducir estimación';
+
+  @override
+  String get quickAddIncreaseEstimate => 'Aumentar estimación';
+
+  @override
+  String get quickAddEstimateRange =>
+      'Introduce un número entero del 1 al 999.';
+
+  @override
+  String quickAddEstimateFocusTime(
+    String count,
+    String workMinutes,
+    String totalMinutes,
+  ) {
+    return '$count × $workMinutes min = $totalMinutes min de concentración';
+  }
+
+  @override
+  String get quickAddEstimateAutomatic => 'Según la duración de la tarea';
+
+  @override
+  String get quickAddClearEstimate => 'Borrar estimación';
+
+  @override
+  String get pomoLinuxChecking => 'Comprobando tu entorno de escritorio…';
+
+  @override
+  String pomoLinuxUnavailable(String environment) {
+    return 'Ada aún no está disponible en tu entorno de escritorio: $environment. Escribe a support@Ada.com e indica tu entorno.';
+  }
+
+  @override
+  String get pomoLinuxWrite => 'Escribir';
+
+  @override
+  String get pomoLinuxCopyDetails => 'Copiar detalles del entorno';
+
+  @override
+  String get pomoLinuxCopied => 'Detalles del entorno copiados.';
+
+  @override
+  String get pomoLinuxMailError =>
+      'No se pudo abrir tu aplicación de correo. Copia los detalles del entorno y envíalos a support@Ada.com.';
+
+  @override
+  String get pomoLinuxDisplayMode => 'Pantalla de Ada';
+
+  @override
+  String get pomoLinuxFollowUser => 'Seguir mi pantalla';
+
+  @override
+  String get pomoLinuxPinned => 'Elegir un monitor';
+
+  @override
+  String get pomoLinuxMonitor => 'Monitor';
+
+  @override
+  String get pomoLinuxSelectMonitor => 'Selecciona un monitor';
+
+  @override
+  String pomoLinuxMonitorUnavailable(String monitor) {
+    return '$monitor (desconectado)';
+  }
+
+  @override
+  String get pomoLinuxCrossDisplayDrag => 'Permitir arrastrar entre monitores';
+
+  @override
+  String get pomoLinuxCrossDisplayDragDescription =>
+      'Arrastra Ada a otro monitor sin cambiar su modo de pantalla.';
+
+  @override
+  String get pomoLinuxCrossDisplayDragPinned =>
+      'Ada permanece en el monitor elegido. Tu preferencia de arrastre se conserva para el modo automático.';
+
+  @override
+  String get pomoLinuxWorkspaceFollow =>
+      'En Sway, Ada sigue el espacio de trabajo activo.';
+
+  @override
+  String get pomoLinuxFollowUnavailable =>
+      'El seguimiento automático no está disponible en este entorno. Elige un monitor para mantener Ada en una pantalla fija.';
+
+  @override
+  String get pomoLinuxUnknownEnvironment => 'Entorno de escritorio desconocido';
+
+  @override
+  String get pomoGnomeInstallDescription =>
+      'Ada necesita su extensión de GNOME Shell para aparecer en el escritorio. Instala la extensión incluida para tu cuenta de usuario.';
+
+  @override
+  String get pomoGnomeEnableDescription =>
+      'Activa la extensión de Ada en GNOME Shell. Si las extensiones de usuario están desactivadas globalmente, actívalas primero en la aplicación Extensiones.';
+
+  @override
+  String get pomoGnomeReloginDescription =>
+      'La extensión está instalada. Cierra la sesión y vuelve a iniciarla para que GNOME Shell cargue esta versión; después, comprueba de nuevo.';
+
+  @override
+  String get pomoGnomeUpdateDescription =>
+      'Actualiza la extensión de Ada para GNOME Shell para usar esta versión de Ada.';
+
+  @override
+  String get pomoGnomeIncompatibleDescription =>
+      'La extensión de Ada incluida no es compatible con esta versión de GNOME Shell.';
+
+  @override
+  String get pomoGnomeErrorDescription =>
+      'No se pudo iniciar la extensión de Ada para GNOME Shell. Comprueba su estado o copia los detalles del entorno para soporte.';
+
+  @override
+  String get pomoGnomePausedDescription =>
+      'Ada no está disponible temporalmente en GNOME Shell. Volverá cuando la conexión con el escritorio esté lista.';
+
+  @override
+  String get pomoGnomeInstall => 'Instalar extensión';
+
+  @override
+  String get pomoGnomeEnable => 'Activar extensión';
+
+  @override
+  String get pomoGnomeUpdate => 'Actualizar extensión';
+
+  @override
+  String get pomoGnomeCheckAgain => 'Comprobar de nuevo';
+
+  @override
+  String get pomoGnomeXWaylandDescription =>
+      'XWayland no está disponible en esta sesión de GNOME. Ada necesita XWayland y su extensión de Shell. Activa XWayland, reinicia Ada y comprueba de nuevo.';
+
+  @override
+  String get pomoGnomeUserExtensionsDisabledDescription =>
+      'Las extensiones de usuario de GNOME están desactivadas en esta sesión. Abre la aplicación Extensiones, activa las extensiones de usuario y comprueba de nuevo. Ada no modificará este ajuste del sistema.';
+
+  @override
+  String get settingsSyncRecoveryTitle => 'Recuperar datos locales';
+
+  @override
+  String settingsSyncRecoveryBody(int count, String account) {
+    return 'Se encontraron $count registros personales en un archivo local antiguo. Confirma que pertenecen a $account antes de combinarlos con esta cuenta. Se conservarán los cambios más recientes de la nube y las eliminaciones confirmadas. El archivo se mantendrá como copia de seguridad.';
+  }
+
+  @override
+  String get settingsSyncRecoveryConfirm => 'Recuperar mis datos';
+
+  @override
+  String get settingsSyncRecoveryFailed =>
+      'La recuperación de datos locales está incompleta. El archivo se ha conservado. Vuelve a reiniciar la sincronización.';
+
+  @override
+  String get aiQuotaTitle => 'AI usage';
+
+  @override
+  String get aiQuotaUnavailable => 'Could not load the AI limit.';
+
+  @override
+  String aiQuotaUsage(int used, int limit, int remaining) {
+    return '$used of $limit requests used · $remaining remaining';
+  }
+
+  @override
+  String aiQuotaReset(String date) {
+    return 'Resets $date';
+  }
+
+  @override
+  String get aiQuotaExplanation =>
+      'Task analysis and new automatic categories share this monthly limit. Cached categories and manual corrections are free.';
+
+  @override
+  String get distractionTitle => 'Distraction blocking';
+
+  @override
+  String get distractionDescription =>
+      'Choose what to block during Focus. Unknown resources stay allowed until you assign a category.';
+
+  @override
+  String get distractionProfile => 'Protection profile';
+
+  @override
+  String get distractionBeforeStart =>
+      'El perfil seleccionado se aplica al próximo Focus. Las categorías y excepciones se pueden modificar en cualquier momento.';
+
+  @override
+  String get distractionNone => 'No blocking profile';
+
+  @override
+  String get distractionAddProfile => 'Add profile';
+
+  @override
+  String get distractionEditProfile => 'Edit profile';
+
+  @override
+  String get distractionProfileName => 'Profile name';
+
+  @override
+  String get distractionStrictExit => 'Strict Focus exit';
+
+  @override
+  String get distractionStrictDescription =>
+      'Used when the selected Focus preset has strict mode enabled.';
+
+  @override
+  String get distractionWait60 => 'Wait 60 seconds';
+
+  @override
+  String get distractionConfirmImmediately => 'Confirm immediately';
+
+  @override
+  String get distractionDiscovery => 'Discover used apps';
+
+  @override
+  String get distractionDiscoveryPrivacy =>
+      'Only foreground app identities and product names are stored locally. No disk scan, document names or window titles.';
+
+  @override
+  String get distractionAttempts => 'Save distraction attempts';
+
+  @override
+  String get distractionAttemptsPrivacy =>
+      'Optional local events, with repeated attempts combined. Usage time and page content are not recorded.';
+
+  @override
+  String get distractionAutomatic => 'Categorías automáticas';
+
+  @override
+  String get distractionAutomaticDescription =>
+      'La búsqueda determina la categoría. La elección manual tiene prioridad.';
+
+  @override
+  String get distractionLocal => 'Local Focus · this computer';
+
+  @override
+  String get distractionShared => 'Shared Focus · connected';
+
+  @override
+  String get distractionOffline =>
+      'Offline · protection ends at the confirmed deadline';
+
+  @override
+  String get distractionNativeApplied => 'Application protection applied';
+
+  @override
+  String get distractionNativeReady => 'Application protection available';
+
+  @override
+  String get distractionNativeUnavailable =>
+      'Application protection unavailable';
+
+  @override
+  String get distractionChrome => 'Chrome extension';
+
+  @override
+  String get distractionPairDescription =>
+      'Enable protection in Chrome and pair this desktop using a one-time code. The code expires after two minutes.';
+
+  @override
+  String get distractionPair => 'Show pairing code';
+
+  @override
+  String distractionPairCode(String code, int port) {
+    return 'Code $code · port $port';
+  }
+
+  @override
+  String get distractionConflict =>
+      'A shared Focus is already running on another device. Choose which session to continue.';
+
+  @override
+  String get distractionJoinShared => 'Join shared Focus';
+
+  @override
+  String get distractionFinishLocal => 'Finish local Focus';
+
+  @override
+  String get distractionStopEverywhere => 'End Focus on all devices';
+
+  @override
+  String get distractionResources => 'Resources and exceptions';
+
+  @override
+  String get distractionAddSite => 'Add site';
+
+  @override
+  String get distractionNoResources =>
+      'Enable app discovery or add a site. Chrome discovers domains only after you grant permission.';
+
+  @override
+  String get distractionCategory => 'Category';
+
+  @override
+  String get distractionException => 'Profile exception';
+
+  @override
+  String get distractionUseCategory => 'Use category';
+
+  @override
+  String get distractionAllow => 'Always allow';
+
+  @override
+  String get distractionBlock => 'Always block';
+
+  @override
+  String get distractionClassify => 'Find category · Pro';
+
+  @override
+  String get distractionAutomaticSource =>
+      'Automatic category · manual corrections take priority';
+
+  @override
+  String get distractionDetached => 'Protection disabled here';
+
+  @override
+  String distractionLastSeen(String date) {
+    return 'Last confirmation: $date';
+  }
+
+  @override
+  String get distractionInvalidDomain =>
+      'Enter a public domain, such as youtube.com.';
+
+  @override
+  String get distractionOnPause => 'Block during pauses';
+
+  @override
+  String get distractionOnShortBreak => 'Block during short breaks';
+
+  @override
+  String get distractionOnLongBreak => 'Block during long breaks';
+
+  @override
+  String get distractionExitTitle => 'End strict Focus?';
+
+  @override
+  String distractionExitCountdown(int seconds) {
+    return 'Exit available in $seconds seconds. You can cancel and return to Focus.';
+  }
+
+  @override
+  String get distractionExitConfirm =>
+      'The interval will be interrupted without a completion reward.';
+
+  @override
+  String get distractionExitConfirmButton => 'Confirm exit';
+
+  @override
+  String get distractionExitCancel => 'Keep focusing';
+
+  @override
+  String get distractionSocial => 'Social media';
+
+  @override
+  String get distractionMessaging => 'Messaging';
+
+  @override
+  String get distractionVideo => 'Video';
+
+  @override
+  String get distractionMusic => 'Music';
+
+  @override
+  String get distractionGames => 'Games';
+
+  @override
+  String get distractionNews => 'News';
+
+  @override
+  String get distractionShopping => 'Shopping';
+
+  @override
+  String get distractionEducation => 'Education';
+
+  @override
+  String get distractionDevelopment => 'Development';
+
+  @override
+  String get distractionProductivity => 'Work tools';
+
+  @override
+  String get distractionOther => 'Other';
+
+  @override
+  String get distractionUnclassified => 'Unclassified';
+
+  @override
+  String get distractionConnected => 'Connected';
+
+  @override
+  String get distractionDisconnected => 'Disconnected';
+
+  @override
+  String get distractionProtected => 'Protected · rules confirmed';
+
+  @override
+  String get distractionNotConfirmed => 'Rules not confirmed';
+
+  @override
+  String distractionIncognito(String status) {
+    return 'Incognito access: $status';
+  }
+
+  @override
+  String get blockingTitle => 'Bloqueos';
+
+  @override
+  String get blockingDescription =>
+      'Tu ritmo de trabajo y sus límites, en un solo lugar.';
+
+  @override
+  String blockingRhythm(int work, int short, int long, int count) {
+    return '$work min de enfoque · $short min de descanso · $long min de descanso largo tras $count intervalos';
+  }
+
+  @override
+  String blockingSharedPresets(String presets) {
+    return 'Usado por: $presets. Los cambios del perfil se aplican a todos.';
+  }
+
+  @override
+  String get blockingProfileMissing =>
+      'El perfil asignado no está disponible. Recárgalo o elige otro.';
+
+  @override
+  String get blockingWhatToClose => 'Qué cerrar';
+
+  @override
+  String get blockingWhatToKeep => 'Qué dejar disponible';
+
+  @override
+  String get blockingBehavior => 'Comportamiento del perfil';
+
+  @override
+  String get blockingApps => 'Aplicaciones';
+
+  @override
+  String get blockingEnabled => 'Activada';
+
+  @override
+  String get blockingDisabled => 'Desactivada';
+
+  @override
+  String get blockingDevices => 'Este equipo y Chrome';
+
+  @override
+  String get blockingDeviceDetails => 'Dispositivos y privacidad';
+
+  @override
+  String get blockingSaving => 'Guardando…';
+
+  @override
+  String get blockingCurrentFocus => 'Ir al Focus actual';
+
+  @override
+  String get blockingReady => 'Listo para empezar';
+
+  @override
+  String get shortcutHintsTitle => 'Atajos de teclado';
+
+  @override
+  String get shortcutHintsNavigation => 'Navegación';
+
+  @override
+  String shortcutHintsHeld(String key) {
+    return '$key pulsada · Suelta para ocultar';
+  }
+
+  @override
+  String shortcutHintsRelease(String key) {
+    return 'Suelta $key antes de usar estas teclas';
+  }
+
+  @override
+  String get shortcutHintsSwitchFocusView => 'Cambiar vista de Enfoque';
+
+  @override
+  String get shortcutHintsNavigate => 'Navegar';
+
+  @override
+  String get shortcutHintsAcceptSuggestion => 'Aceptar sugerencia';
+
+  @override
+  String get blockingShowAllPresets => 'Mostrar todos';
+
+  @override
+  String get blockingCollapsePresets => 'Contraer';
+
+  @override
+  String get taskNew => 'Nueva tarea';
+
+  @override
+  String get taskCreateAction => 'Crear tarea';
+
+  @override
+  String get taskDescription => 'Descripción';
+
+  @override
+  String get taskExpandEditor => 'Ampliar editor';
+
+  @override
+  String get taskCollapseEditor => 'Reducir editor';
+
+  @override
+  String get taskVisibleToYou => 'Solo visible para ti';
+
+  @override
+  String get taskVisibleToTeam => 'Visible para el equipo';
+
+  @override
+  String get taskCreatedFilesPending =>
+      'Tarea creada. Vuelve a subir los archivos pendientes o elimínalos de la lista para terminar.';
+
+  @override
+  String get taskFormatBold => 'Negrita (Markdown)';
+
+  @override
+  String get taskFormatItalic => 'Cursiva (Markdown)';
+
+  @override
+  String get taskFormatList => 'Lista con viñetas';
+
+  @override
+  String get taskFormatLink => 'Enlace (Markdown)';
+
+  @override
+  String get settingsShortcutsTogglePomo => 'Activar / desactivar Ada';
+
+  @override
+  String get settingsMenuBarTimerTitle => 'Temporizador en la barra de menús';
+
+  @override
+  String get settingsMenuBarTimerClassic => 'Antiguo';
+
+  @override
+  String get settingsMenuBarTimerModern => 'Nuevo';
+
+  @override
+  String get settingsMenuBarTimerError =>
+      'No se pudo actualizar el temporizador de la barra de menús. Inténtalo de nuevo.';
+
+  @override
+  String get quickAddEnterEstimate => 'Introducir número';
+
+  @override
+  String quickAddEstimateTotalTime(String minutes) {
+    return '$minutes min de concentración';
+  }
+
+  @override
+  String quickAddEstimateInterval(String minutes) {
+    return '$minutes min cada uno';
+  }
+
+  @override
+  String get habitCheckIn => 'Registrar';
+
+  @override
+  String get habitWeekHistory => 'Esta semana';
+
+  @override
+  String habitProgressOn(String date) {
+    return 'Progreso del $date';
+  }
+
+  @override
+  String get habitsDayRhythm => 'Ritmo del día';
+
+  @override
+  String get habitsProgressCircle => 'Círculo de progreso';
+
+  @override
+  String get habitsPresentationError => 'No se pudo guardar esta vista.';
+
+  @override
+  String get habitsRemainingToday => 'Pendiente hoy';
+
+  @override
+  String get habitsCompletedToday => 'Completado hoy';
+
+  @override
+  String habitsRemainingOn(String date) {
+    return 'Pendiente el $date';
+  }
+
+  @override
+  String habitsCompletedOn(String date) {
+    return 'Completado el $date';
+  }
+
+  @override
+  String get habitsProgressCaption => 'hábitos completados';
+
+  @override
+  String get priorityUrgent => 'Urgente';
+
+  @override
+  String get priorityHigh => 'Alta';
+
+  @override
+  String get priorityNormal => 'Normal';
+
+  @override
+  String get priorityLow => 'Baja';
+
+  @override
+  String get pickerDateAndTime => 'Fecha y hora';
+
+  @override
+  String get pickerInOneWeek => 'Dentro de una semana';
+
+  @override
+  String get pickerEnterTime => 'Introducir hora';
+
+  @override
+  String get pickerTimeWheels => 'Ruedas de hora';
+
+  @override
+  String pickerMinuteOffset(String offset) {
+    return '$offset min';
+  }
+
+  @override
+  String get pickerIncrease => 'Aumentar';
+
+  @override
+  String get pickerDecrease => 'Disminuir';
+
+  @override
+  String get taskStatusBlocked => 'Bloqueada';
+
+  @override
+  String get taskStatusUrgent => 'Urgente';
+
+  @override
+  String get blockingControls => 'Dependencias y urgencia';
+
+  @override
+  String get blockingUrgent => 'Urgente para mí';
+
+  @override
+  String get blockingRepeat => 'Mantener urgentes las próximas repeticiones';
+
+  @override
+  String get blockingCascade => 'Orden de prioridad';
+
+  @override
+  String get blockingSearch => 'Buscar un requisito previo';
+
+  @override
+  String get blockingDependency => 'En espera de requisitos previos';
+
+  @override
+  String get blockingPriority => 'Primero las tareas de mayor prioridad';
+
+  @override
+  String get blockingUrgentReason => 'Una tarea urgente tiene prioridad';
+
+  @override
+  String get blockingUnavailable =>
+      'Esta acción no está disponible. Actualiza los datos e inténtalo de nuevo.';
+
+  @override
+  String get blockingDeleteWarning =>
+      'Al eliminar esta tarea, se desbloquean las tareas que dependen de ella.';
+
+  @override
+  String get blockingNoMatches => 'No hay requisitos previos disponibles';
+
+  @override
+  String get blockingSyncConflictDetails =>
+      'El servidor rechazó la finalización porque esta tarea estaba bloqueada. Se ha restaurado su estado y se ha conservado el tiempo de concentración acumulado.';
+
+  @override
+  String get blockingSyncConflict => 'Conflicto de sincronización';
+
+  @override
+  String get focusDuration => 'Duración';
+
+  @override
+  String focusPlannedDuration(String duration) {
+    return 'Plan · $duration';
+  }
+
+  @override
+  String get focusShortenDuration => '−5 min';
+
+  @override
+  String get focusExtendDuration => '+5 min';
+
+  @override
+  String get focusFinish => 'Finalizar';
+}

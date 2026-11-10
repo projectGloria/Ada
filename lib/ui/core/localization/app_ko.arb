@@ -1,0 +1,2278 @@
+{
+  "settingsDateFormatTitle": "날짜 형식",
+  "settingsDateFormatSubtitle": "자동 형식은 앱 언어를 따릅니다.",
+  "settingsDateFormatAutomatic": "자동",
+  "settingsDateFormatDayMonthYear": "일.월.년",
+  "settingsDateFormatMonthDayYear": "월/일/년",
+  "settingsDateFormatYearMonthDay": "년-월-일",
+  "settingsDateFormatLong": "월 이름 사용",
+  "@@locale": "ko",
+  "settingsSectionGeneral": "일반",
+  "settingsSectionAppearance": "모양",
+  "settingsSectionTasksFocus": "작업 및 집중",
+  "settingsSectionPomo": "Ada",
+  "settingsSectionIntegrations": "연동 및 데이터",
+  "settingsSectionAccount": "계정 및 Pro",
+  "settingsThemeColorsTab": "색상",
+  "settingsThemeBackgroundsTab": "배경",
+  "settingsRefreshAccount": "계정 새로고침",
+  "settingsSubscriptionActions": "구독 옵션",
+  "settingsSubscriptionError": "구독을 새로고침하지 못했습니다. 이전에 확인된 이용 권한은 유지됩니다.",
+  "settingsVersionError": "버전을 불러오지 못했습니다.",
+  "appTitle": "Ada",
+  "commonAdd": "추가",
+  "commonCancel": "취소",
+  "commonSave": "저장",
+  "commonDelete": "삭제",
+  "commonUndo": "실행 취소",
+  "commonOpen": "열기",
+  "commonBack": "뒤로",
+  "commonClose": "닫기",
+  "commonCreate": "만들기",
+  "commonClear": "지우기",
+  "commonStop": "중지",
+  "skip": "건너뛰기",
+  "onboardingLanguageTitle": "언어 선택",
+  "onboardingLanguageSubtitle": "Ada에서 사용할 언어를 선택하세요.",
+  "onboardingTimerTitle": "나만의 집중 설정",
+  "onboardingTimerSubtitle": "타이머 스타일과 세션 표시 방식을 선택하세요.",
+  "onboardingPaywallTitle": "Ada 잠금 해제",
+  "onboardingPaywallSubtitle": "평생 이용권 혜택은 매주 24시간 동안 제공됩니다.",
+  "onboardingAccountTitle": "계정 만들기",
+  "onboardingAccountSubtitle": "로그인하여 기기 간에 작업, 집중 기록, 설정을 동기화하세요.",
+  "startupPreparingTasks": "작업 준비 중",
+  "operationTakingLonger": "평소보다 오래 걸리고 있습니다. 작업은 계속 진행 중입니다.",
+  "onboardingContinue": "계속",
+  "onboardingMaybeLater": "나중에",
+  "onboardingFinish": "완료",
+  "billingTitle": "Ada Pro",
+  "billingSubtitle": "자연어로 말하면 Ada가 말을 작업으로 바꿔 줍니다. 작업 기록은 영구적으로 저장됩니다.",
+  "billingSubtitleHighlight": "자연어",
+  "billingCancelAnytime": "언제든 해지할 수 있습니다.",
+  "billingMonthlyTitle": "월간",
+  "billingAnnualTitle": "연간",
+  "billingPricePerMonth": "{price}/월",
+  "@billingPricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingPricePerYear": "{price}/년",
+  "@billingPricePerYear": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingMonthlyIntroSubtitle": "첫 3개월 이후 {price}.",
+  "@billingMonthlyIntroSubtitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingAnnualIntroSubtitle": "이후 {price}.",
+  "@billingAnnualIntroSubtitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "billingLifetimeTitle": "평생",
+  "billingLifetimeSubtitle": "한 번 결제로 평생 이용.",
+  "billingBestValue": "최고의 혜택",
+  "billingChoose": "선택",
+  "billingActive": "이 기기에서 Ada Pro가 활성화되어 있습니다.",
+  "billingActiveShort": "활성",
+  "billingRestore": "구입 복원",
+  "privacyPolicy": "개인정보 처리방침",
+  "termsOfUse": "이용약관",
+  "support": "지원",
+  "billingManageLink": "Link에서 관리",
+  "billingExternalBrowserTitle": "브라우저에서 결제가 열립니다",
+  "billingExternalBrowserMessage": "Ada가 Safari 또는 기본 브라우저에서 Stripe Checkout을 엽니다. 계속하려면 브라우저 창을 허용하세요.",
+  "billingAppleOnly": "iPhone, iPad, Mac에서 구입할 수 있습니다.",
+  "billingStoreUnavailable": "현재 App Store를 이용할 수 없습니다.",
+  "billingStoreConnectionFailed": "VPN을 끄고 다시 시도하세요.",
+  "billingPurchaseError": "구입 오류: {error}",
+  "@billingPurchaseError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "billingStripeAuthenticationRequired": "Ada에 로그인한 후 다시 시도하세요.",
+  "billingStripeDisabled": "아직 결제를 이용할 수 없습니다. 나중에 다시 시도하세요.",
+  "billingStripeAlreadyEntitled": "Ada Pro가 이미 활성화되어 있습니다. 계정 상태를 새로고침하세요.",
+  "billingStripeOfferExpired": "이 혜택은 만료되었습니다. 다른 이용 가능한 요금제를 선택하세요.",
+  "billingStripeManagedPaymentsUnavailable": "Stripe 결제를 일시적으로 이용할 수 없습니다. 나중에 다시 시도하거나 지원팀에 문의하세요.",
+  "billingStripeCheckoutFailed": "결제를 시작하지 못했습니다. 다시 시도하세요.",
+  "billingStripeCheckoutPending": "결제를 준비하거나 확인하고 있습니다. 잠시 후 다시 시도하세요.",
+  "purchaseSuccessTitle": "Pro 활성화 완료",
+  "purchaseSuccessMessage": "Ada를 지원해 주셔서 감사합니다. 모든 Pro 기능을 사용할 수 있습니다.",
+  "purchaseSuccessContinue": "계속",
+  "purchaseProcessingTitle": "결제 처리 중",
+  "purchaseProcessingMessage": "결제를 확인하고 있습니다. 잠시 후에도 Pro가 표시되지 않으면 나중에 다시 새로고침하세요.",
+  "purchaseOpenApp": "Ada 열기",
+  "launchOfferEndsIn": "평생 이용권 혜택 종료까지 {time}",
+  "@launchOfferEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "accountApple": "Apple",
+  "accountGoogle": "Google",
+  "accountEmail": "이메일",
+  "loginTitle": "Ada에 로그인",
+  "accountChecking": "계정 확인 중",
+  "oauthConsentTitle": "에이전트 연결",
+  "oauthConsentLoading": "연결 요청 확인 중",
+  "oauthConsentInvalidAuthorization": "연결 요청이 없거나 유효하지 않습니다.",
+  "oauthConsentLoadError": "연결 요청을 불러오지 못했습니다.",
+  "oauthConsentActionError": "요청을 완료하지 못했습니다. 다시 시도하세요.",
+  "oauthConsentRedirectError": "Ada가 받은 반환 주소가 없거나 안전하지 않습니다. 접근 권한을 전달하지 않았습니다.",
+  "oauthConsentClientFallback": "에이전트",
+  "oauthConsentClientRequest": "{clientName}에서 Ada에 접근하려고 합니다",
+  "@oauthConsentClientRequest": {
+    "placeholders": {
+      "clientName": {
+        "type": "String"
+      }
+    }
+  },
+  "oauthConsentRedirectOrigin": "반환 주소",
+  "oauthConsentCapabilitiesTitle": "이 에이전트가 할 수 있는 일",
+  "oauthConsentManagePlanning": "작업, 습관, 프로젝트, 사용자 라벨, 칸반을 읽고 관리합니다. 선택한 온라인 기기의 단축키와 외관을 읽고 변경합니다.",
+  "oauthConsentReadInsights": "완료된 집중 기록, 생산성 보고서, 업적을 읽습니다.",
+  "oauthConsentUnavailableTitle": "이 에이전트가 할 수 없는 일",
+  "oauthConsentUnavailable": "계정이나 결제, Google Calendar, 실행 중인 집중 타이머에 접근합니다.",
+  "oauthConsentUnsupportedScopes": "이 요청은 지원하지 않는 계정 접근 권한을 요구하므로 승인할 수 없습니다.",
+  "oauthConsentApprove": "허용",
+  "oauthConsentDeny": "거부",
+  "oauthConsentApproving": "접근 허용 중…",
+  "oauthConsentDenying": "접근 거부 중…",
+  "oauthConsentRedirecting": "에이전트로 돌아가는 중…",
+  "loginCreateAccountPrompt": "아직 계정이 없으신가요?",
+  "loginCreateAccountAction": "계정 만들기",
+  "registerTitle": "계정 만들기",
+  "registerSubtitle": "기기 간에 작업, 집중 기록, 설정을 동기화하세요.",
+  "registerPassword": "비밀번호",
+  "registerSubmit": "계정 만들기",
+  "registerSignInPrompt": "이미 계정이 있으신가요?",
+  "registerSignInAction": "로그인",
+  "registerCheckEmailTitle": "이메일 확인",
+  "registerCheckEmailMessage": "이 주소에 확인이 필요한 경우 링크가 포함된 이메일이 전송됩니다. 이미 계정이 있다면 로그인하거나 비밀번호를 재설정하세요.",
+  "registerError": "계정을 만들지 못했습니다: {error}",
+  "@registerError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "authEmailSignInTitle": "이메일로 로그인",
+  "authWelcomeTitle": "Ada에 로그인",
+  "authWelcomeDescription": "모든 기기에서 작업과 집중을 이어 가세요.",
+  "authSignInWithLink": "링크로 로그인",
+  "authForgotPassword": "비밀번호를 잊으셨나요?",
+  "authBackToSignIn": "로그인으로 돌아가기",
+  "authNoAccount": "아직 계정이 없으신가요?",
+  "authHaveAccount": "이미 계정이 있으신가요?",
+  "authShowPassword": "비밀번호 표시",
+  "authHidePassword": "비밀번호 숨기기",
+  "authResetTitle": "비밀번호 재설정",
+  "authResetDescription": "계정 이메일을 입력하세요. 비밀번호를 변경할 수 있는 링크를 보내 드립니다.",
+  "authResetEmailSentTitle": "이메일 확인",
+  "authResetEmailSent": "이 이메일로 등록된 계정이 있으면 비밀번호 재설정 링크가 전송됩니다.",
+  "authResetSendAgain": "다시 보내기",
+  "authResetEditEmail": "이메일 변경",
+  "authNewPasswordTitle": "새 비밀번호 선택",
+  "authNewPasswordDescription": "다른 계정에서 사용하지 않는 비밀번호를 사용하세요.",
+  "authNewPassword": "새 비밀번호",
+  "authConfirmPassword": "비밀번호 재입력",
+  "authSavePassword": "비밀번호 저장",
+  "authPasswordMismatch": "비밀번호가 일치하지 않습니다.",
+  "authPasswordUnchanged": "현재 비밀번호와 다른 비밀번호를 선택하세요.",
+  "authPasswordUpdatedTitle": "비밀번호 업데이트 완료",
+  "authPasswordUpdatedMessage": "새 비밀번호가 저장되었습니다. Ada를 계속 사용할 수 있습니다.",
+  "authResetLinkExpired": "비밀번호 재설정 링크가 유효하지 않거나 만료되었습니다. 새 링크를 요청하세요.",
+  "authUnexpectedReset": "비밀번호 재설정 이메일을 보내지 못했습니다. 다시 시도하세요.",
+  "authUnexpectedPasswordUpdate": "새 비밀번호를 저장하지 못했습니다. 다시 시도하세요.",
+  "authCheckingResetLink": "비밀번호 재설정 링크 확인 중…",
+  "authSignInAction": "로그인",
+  "authSendLink": "링크 보내기",
+  "authMagicLinkSent": "이 주소로 등록된 계정이 있으면 로그인 링크가 전송됩니다. 받은 편지함과 스팸 폴더를 확인하세요.",
+  "authAccountCreated": "계정이 생성되었습니다.",
+  "authSignedIn": "로그인했습니다.",
+  "authEmailRequired": "이메일을 입력하세요.",
+  "authEmailInvalid": "이메일 주소를 확인하세요. 예: name@example.com.",
+  "authPasswordRequired": "비밀번호를 입력하세요.",
+  "authInvalidCredentials": "이메일 또는 비밀번호가 올바르지 않습니다. 주소를 확인하거나 비밀번호를 재설정하거나 계정을 만드세요.",
+  "authEmailUnconfirmed": "전송된 링크로 이메일을 확인한 후 다시 로그인하세요.",
+  "authWeakPassword": "이 비밀번호는 추측하기 쉽습니다. 더 길고 예측하기 어려운 비밀번호를 사용하세요.",
+  "authAccountMayExist": "이 이메일을 사용하는 계정이 이미 있을 수 있습니다. 로그인하거나 비밀번호를 재설정하세요.",
+  "authRateLimited": "시도 횟수가 너무 많습니다. 몇 분 후 다시 시도하세요.",
+  "authEmailRateLimited": "이메일을 너무 많이 요청했습니다. 몇 분 후 다시 요청하세요.",
+  "authOffline": "계정 서비스에 연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도하세요.",
+  "authTimeout": "계정 서비스의 응답이 지연되고 있습니다. 다시 시도하세요.",
+  "authServiceUnavailable": "계정 서비스를 일시적으로 이용할 수 없습니다. 나중에 다시 시도하세요.",
+  "authCaptchaRequired": "계속하려면 보안 확인을 완료하세요.",
+  "authCaptchaExpired": "보안 확인이 만료되었습니다. 다시 완료하세요.",
+  "authCaptchaFailed": "보안 확인에 실패했습니다. 다시 시도하세요.",
+  "authCaptchaCancelled": "보안 확인이 취소되었습니다. 계속하려면 다시 시작하세요.",
+  "authCaptchaUnavailable": "현재 보안 확인을 이용할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+  "authCaptchaOpenFailed": "Ada가 브라우저에서 보안 확인을 열지 못했습니다. 기본 브라우저를 확인하고 다시 시도하세요.",
+  "authProviderFallback": "이 제공업체",
+  "authProviderUnavailable": "현재 {provider} 로그인을 이용할 수 없습니다. 다시 시도하거나 다른 방법을 사용하세요.",
+  "authProviderUnavailableHere": "이 환경에서는 {provider} 로그인을 이용할 수 없습니다. 다른 로그인 방법을 사용하세요.",
+  "@authProviderUnavailable": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "authSignUpDisabled": "이메일 계정 생성을 일시적으로 이용할 수 없습니다. 다른 로그인 방법을 시도하세요.",
+  "authAccountRestricted": "현재 이 계정으로 로그인할 수 없습니다. 오류라고 생각되면 지원팀에 문의하세요.",
+  "authLinkExpired": "로그인 링크가 유효하지 않거나 만료되었습니다. 새 링크를 요청하세요.",
+  "authUnexpectedSignIn": "로그인하지 못했습니다. 다시 시도하세요.",
+  "authUnexpectedSignUp": "계정을 만들지 못했습니다. 다시 시도하세요.",
+  "authUnexpectedMagicLink": "로그인 링크를 보내지 못했습니다. 다시 시도하세요.",
+  "authResendConfirmation": "확인 이메일 다시 보내기",
+  "authConfirmationSendFailed": "확인 이메일을 보내지 못했습니다. 나중에 다시 시도하세요.",
+  "authRetryVerification": "확인 다시 시도",
+  "captchaSecurityLabel": "보안 확인",
+  "captchaChallengeTitle": "Ada 보안 확인",
+  "captchaChallengePrompt": "Ada에서 계속하려면 사람임을 확인하세요.",
+  "captchaChallengeInvalid": "보안 확인 링크가 유효하지 않습니다. Ada로 돌아가 다시 시도하세요.",
+  "captchaChallengeHandoffHelp": "Ada가 열리지 않았다면 아래 버튼을 사용하세요. 앱이 설치되어 있지 않으면 이 페이지를 닫고 시작한 기기로 돌아가세요.",
+  "captchaReturnToApp": "Ada로 돌아가기",
+  "navSearch": "검색",
+  "navInbox": "받은 편지함",
+  "navPriorityMatrix": "우선순위 매트릭스",
+  "navCalendar": "캘린더",
+  "calendarSubtitle": "하루를 계획하고 삶을 위한 여유를 남겨 두세요.",
+  "calendarDay": "일",
+  "calendarWeek": "주",
+  "calendarMonth": "월",
+  "calendarRoutine": "일과",
+  "calendarRhythm": "리듬",
+  "calendarCollapseMonth": "월 접기",
+  "calendarExpandMonth": "월 표시",
+  "calendarOverview": "하루 개요",
+  "calendarOpenMonth": "월 보기 열기",
+  "calendarUnscheduled": "일정 없음",
+  "calendarAllProjects": "모든 프로젝트",
+  "calendarRoutineDefault": "평소의 하루",
+  "calendarRoutineDescription": "작업은 시작 시간별로 그룹화됩니다. 하루에 맞게 시간대를 조정하세요.",
+  "calendarEditRoutine": "시간대 설정",
+  "calendarRoutineTitle": "일과 설정",
+  "calendarRoutineName": "일과 이름",
+  "calendarPeriodName": "시간대 이름",
+  "calendarAddPeriod": "시간대 추가",
+  "calendarRemovePeriod": "시간대 삭제",
+  "calendarPeriodStart": "시작",
+  "calendarPeriodEnd": "종료",
+  "calendarRoutineInvalid": "일과와 시간대에 이름을 지정하세요. 종료 시간은 시작 시간보다 늦어야 하며 시간대가 겹치면 안 됩니다.",
+  "calendarOutsideRoutine": "일과 시간대 외",
+  "calendarFreeTime": "자유 시간",
+  "calendarMorning": "아침",
+  "calendarAfternoon": "오후",
+  "calendarEvening": "저녁",
+  "calendarNewPeriod": "새 시간대",
+  "calendarResize": "작업 시간 변경",
+  "calendarPreviousPeriod": "이전 시간대",
+  "calendarNextPeriod": "다음 시간대",
+  "calendarSaveFailed": "캘린더 설정을 저장하지 못했습니다",
+  "calendarNoActiveFocus": "진행 중인 집중 세션 없음",
+  "calendarCurrentTask": "현재 작업",
+  "navTimeline": "타임라인",
+  "navKanban": "칸반",
+  "kanbanTitle": "칸반",
+  "kanbanSubtitle": "작업 흐름을 시각화하고 지금 중요한 일에 집중하세요.",
+  "kanbanDefaultBacklog": "백로그",
+  "kanbanDefaultTodo": "할 일",
+  "kanbanDefaultInProgress": "진행 중",
+  "kanbanDefaultDone": "완료",
+  "kanbanSearchTooltip": "칸반 검색",
+  "kanbanSearchHint": "작업 또는 프로젝트 검색",
+  "kanbanHideDone": "완료 숨기기",
+  "kanbanShowDone": "완료 표시",
+  "kanbanProjectsTitle": "이 보드의 프로젝트",
+  "kanbanAddToStatus": "{status}에 추가",
+  "@kanbanAddToStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanTaskField": "작업",
+  "kanbanProjectField": "프로젝트",
+  "kanbanChooseProject": "프로젝트를 선택하세요.",
+  "kanbanTaskActions": "작업 동작",
+  "kanbanDragTask": "작업 드래그",
+  "kanbanMoveTo": "{status}(으)로 이동",
+  "@kanbanMoveTo": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanRestoreBeforeFocus": "집중을 시작하기 전에 작업을 복원하세요.",
+  "kanbanCouldNotStartFocus": "집중을 시작하지 못했습니다: {error}",
+  "@kanbanCouldNotStartFocus": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "kanbanCouldNotLoad": "칸반을 불러오지 못했습니다: {error}",
+  "@kanbanCouldNotLoad": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "commonRetry": "다시 시도",
+  "commonContinueWaiting": "계속 기다리기",
+  "kanbanTasksCount": "작업 {count}개",
+  "@kanbanTasksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanSubtasksProgress": "하위 작업 {completed}/{total}개",
+  "@kanbanSubtasksProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanFocusIntervalsProgress": "집중 구간 {completed}/{total}회",
+  "@kanbanFocusIntervalsProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanActive": "활성",
+  "kanbanPriority": "우선순위 {priority}",
+  "@kanbanPriority": {
+    "placeholders": {
+      "priority": {
+        "type": "int"
+      }
+    }
+  },
+  "kanbanMoveAnnouncement": "{status}(으)로 이동했습니다",
+  "@kanbanMoveAnnouncement": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanFocusStartedAnnouncement": "{task} 집중을 시작했습니다",
+  "@kanbanFocusStartedAnnouncement": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "kanbanNoTasks": "아직 작업이 없습니다",
+  "navToday": "오늘",
+  "navUpcoming": "예정",
+  "navBrowse": "둘러보기",
+  "navIntegrations": "연동",
+  "navReports": "보고서",
+  "navFocus": "집중",
+  "navProjects": "프로젝트",
+  "navSettings": "설정",
+  "settingsTitle": "설정",
+  "settingsAboutTitle": "정보",
+  "settingsFocusCompletionCelebrationTitle": "집중 완료 축하",
+  "settingsFocusCompletionCelebrationSubtitle": "마지막 휴식 후 전체 화면으로 축하를 표시합니다.",
+  "settingsVersionLabel": "버전",
+  "settingsPlanLabel": "요금제",
+  "settingsPlanFree": "무료",
+  "settingsPlanPro": "Ada Pro",
+  "settingsShortcutsTitle": "키보드 단축키",
+  "settingsShortcutsSubtitle": "하드웨어 키보드에서 사용할 명령을 사용자화하세요.",
+  "settingsShortcutsToggleSidebar": "사이드바 전환",
+  "settingsShortcutsToggleTaskDetails": "작업 세부 정보 표시 또는 숨기기",
+  "settingsShortcutsToggleTaskDetailsAlternate": "작업 세부 정보 (두 번째 단축키)",
+  "settingsShortcutsFocusAlternate": "집중 (두 번째 단축키)",
+  "settingsShortcutsGlobalQuickAdd": "전역 빠른 추가",
+  "settingsShortcutsGlobalQuickAddSubtitle": "Ada가 활성 상태가 아니어도 작동합니다.",
+  "settingsShortcutsRecordTitle": "단축키를 누르세요",
+  "settingsShortcutsRecordPrompt": "Command, Control 또는 Alt와 함께 키를 누르세요. 취소하려면 Esc를 누르세요.",
+  "settingsShortcutsInvalid": "Command, Control 또는 Alt를 포함하세요.",
+  "settingsShortcutsConflict": "이미 사용 중인 단축키입니다.",
+  "settingsShortcutsGlobalError": "이 전역 단축키를 사용할 수 없습니다. 이전 단축키는 계속 활성화됩니다.",
+  "settingsShortcutsResetAll": "모두 재설정",
+  "settingsShortcutsResetDone": "키보드 단축키를 재설정했습니다.",
+  "csvExportTitle": "모든 작업을 CSV로 내보내기",
+  "csvExportSubtitle": "완료된 작업을 포함하여 로컬에 저장된 개인 및 공유 작업을 내보냅니다. 이 형식은 조회용이며 다시 가져올 수 없습니다.",
+  "csvExportButton": "CSV 내보내기",
+  "csvExportSuccess": "CSV 파일이 준비되었습니다.",
+  "csvExportError": "CSV를 내보내지 못했습니다. 다시 시도해 주세요.",
+  "csvImportTitle": "CSV에서 작업 가져오기",
+  "csvImportSubtitle": "작업, 프로젝트, 라벨, 작업 흐름 상태를 만들기 전에 CSV 파일을 검토하세요.",
+  "csvImportSelectFile": "CSV 파일 선택",
+  "csvImportHumanGuideButton": "사용자용 가이드",
+  "csvImportAgentGuideButton": "에이전트용 가이드",
+  "csvImportHumanGuideTitle": "CSV 파일 준비 방법",
+  "csvImportAgentGuideTitle": "에이전트용 CSV 규격",
+  "csvImportCopy": "복사",
+  "csvImportCopied": "클립보드에 복사했습니다.",
+  "csvImportPreviewTitle": "가져오기 검토",
+  "csvImportPreviewTasks": "작업",
+  "csvImportPreviewSubtasks": "하위 작업",
+  "csvImportPreviewNewProjects": "새 프로젝트",
+  "csvImportPreviewNewLabels": "새 라벨",
+  "csvImportPreviewNewStatuses": "새 작업 흐름 상태",
+  "csvImportNone": "없음",
+  "csvImportDuplicateWarning": "같은 파일을 다시 가져오면 작업이 중복 생성됩니다.",
+  "csvImportConfirm": "가져오기",
+  "csvImportSuccess": "작업을 가져왔습니다",
+  "csvImportErrorTitle": "CSV 가져오기 실패",
+  "csvImportUnexpectedError": "파일을 가져오지 못했습니다.",
+  "csvImportHumanGuide": "1. 파일을 UTF-8 CSV로 저장하세요. 구분자로 쉼표(권장) 또는 세미콜론을 사용하세요.\n\n2. content 열은 필수입니다. 다음 열도 사용할 수 있습니다: key, description, project, labels, priority, due_date, start_at, end_at, time_zone, recurrence, recurrence_interval, deadline, estimate, kanban_status, parent_key.\n\n3. 각 행에 미완료 작업 하나를 넣으세요. 라벨은 |로 구분합니다. 우선순위는 1~4이며 빈 값은 4입니다. 프로젝트가 비어 있으면 받은 편지함, 작업 흐름 상태가 비어 있으면 백로그로 처리됩니다. 없는 프로젝트, 라벨, 미완료 상태는 자동 생성됩니다.\n\n4. 종일 작업은 due_date에 YYYY-MM-DD 형식을 사용하세요. 시간이 지정된 작업은 start_at과 end_at을 UTC 오프셋이 포함된 RFC3339 값으로 입력하고 Europe/Moscow와 같은 IANA time_zone을 지정하세요.\n\n5. 하위 작업을 만들려면 상위 행에 고유한 key를 지정하고 하위 행의 parent_key에 그 값을 넣으세요. 상위 행은 파일 뒤쪽에 있어도 됩니다. 하위 작업은 상위 작업과 같은 프로젝트를 사용해야 합니다.\n\n6. Ada는 전체 파일을 검증하고 가져오기 전에 미리보기를 표시합니다. 유효하지 않은 행이 하나라도 있으면 아무것도 저장하지 않습니다. 다시 가져오면 작업이 중복 생성됩니다.",
+  "settingsConnectedAgentsTitle": "연결된 에이전트",
+  "settingsConnectedAgentsLoading": "연결된 에이전트 불러오는 중…",
+  "settingsConnectedAgentsEmpty": "연결된 에이전트가 없습니다.",
+  "settingsConnectedAgentsLoadError": "연결된 에이전트를 불러오지 못했습니다.",
+  "settingsConnectedAgentsUnknownClient": "에이전트",
+  "settingsConnectedAgentsConnectedOn": "{date}에 연결됨",
+  "@settingsConnectedAgentsConnectedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConnectedAgentsRevoke": "접근 권한 취소",
+  "settingsConnectedAgentsRevokeConfirmTitle": "에이전트 접근 권한을 취소할까요?",
+  "settingsConnectedAgentsRevokeConfirmMessage": "{clientName}의 Ada 접근 권한을 취소할까요?",
+  "@settingsConnectedAgentsRevokeConfirmMessage": {
+    "placeholders": {
+      "clientName": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConnectedAgentsRevokeError": "접근 권한을 취소하지 못했습니다. 다시 시도하세요.",
+  "settingsLanguageTitle": "언어",
+  "settingsLanguageSubtitle": "앱 언어를 선택하세요.",
+  "settingsLanguageSystem": "시스템 기본값",
+  "settingsVoiceTranscriptionTitle": "음성 받아쓰기",
+  "settingsVoiceTranscriptionSubtitle": "이 기기에서 녹음을 텍스트로 변환하는 방식을 선택하세요.",
+  "settingsVoiceTranscriptionSystem": "시스템(Apple)",
+  "settingsVoiceTranscriptionCloud": "클라우드",
+  "settingsVoiceTranscriptionCloudDescription": "클라우드 받아쓰기는 오디오를 Ada로 전송하며 인터넷 연결이 필요합니다.",
+  "settingsVoiceTranscriptionCloudRequiresSignIn": "클라우드 받아쓰기를 사용하려면 로그인하세요. 그전까지 시스템 받아쓰기가 활성화됩니다.",
+  "settingsThemeTitle": "테마",
+  "settingsThemeSubtitle": "앱의 모양을 선택하세요.",
+  "settingsThemeSystem": "시스템",
+  "settingsThemeLight": "라이트",
+  "settingsThemeDark": "다크",
+  "settingsTimerVisualTitle": "포모도로 타이머",
+  "settingsTimerVisualSubtitle": "집중 화면에서 진행 상황을 표시할 방식을 선택하세요.",
+  "settingsTimerVisualBar": "막대",
+  "settingsTimerVisualCircle": "원",
+  "settingsReturnRemindersTitle": "복귀 알림",
+  "settingsReturnRemindersSubtitle": "오늘 완료한 작업이 없으면 20:30에 알려 드립니다.",
+  "settingsDefaultTimedBlockTitle": "기본 캘린더 블록 길이",
+  "settingsDefaultTimedBlockSubtitle": "시간만 입력하면 새 작업은 캘린더에서 이 길이를 사용합니다.",
+  "settingsDefaultTimedBlockCustomLabel": "사용자 지정 길이",
+  "settingsDefaultTimedBlockError": "1~480분을 입력하세요.",
+  "settingsTaskTimeDisplayTitle": "작업 시간 표시",
+  "settingsTaskTimeDisplaySubtitle": "시간이 지정된 작업 일정을 표시할 방식을 선택하세요.",
+  "settingsTaskTimeDisplaySmart": "스마트",
+  "settingsTaskTimeDisplayRange": "시작 및 종료 시간",
+  "settingsTaskTimeDisplayStartOnly": "시작 시간만",
+  "taskTimeStatusFuture": "예정",
+  "taskTimeStatusFocused": "집중 중",
+  "taskTimeStatusCurrent": "진행 중",
+  "taskTimeStatusOverdue": "기한 지남",
+  "taskTimeStatusCompleted": "완료",
+  "menuTooltip": "메뉴",
+  "localUser": "로컬 사용자",
+  "addTask": "작업 추가",
+  "quickAddHint": "작업 이름 내일 우2 #프로젝트 @라벨 2뽀",
+  "couldNotAddTask": "작업을 추가하지 못했습니다: {error}",
+  "@couldNotAddTask": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "taskCreateFailed": "작업을 만들지 못했습니다. 다시 시도하세요.",
+  "couldNotAddProject": "프로젝트를 추가하지 못했습니다: {error}",
+  "@couldNotAddProject": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "tasksCreated": "{count, plural, =1{작업 1개 추가됨} other{작업 {count}개 추가됨}}",
+  "@tasksCreated": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceQuickAdd": "음성 빠른 추가",
+  "voiceTitle": "음성 추가",
+  "voiceRecord": "녹음",
+  "voiceAgain": "다시",
+  "voiceStop": "중지",
+  "voiceAddCount": "{count}개 추가",
+  "@voiceAddCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceTaskLabel": "작업 {index}",
+  "@voiceTaskLabel": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceRemoveTask": "제거",
+  "voiceInstruction": "녹음을 누르고 작업을 말하세요.",
+  "voiceStatusIdle": "내장 마이크 입력만 사용",
+  "voiceStatusRequestingPermission": "접근 요청 중",
+  "voiceStatusRecording": "내장 마이크로 듣는 중",
+  "voiceStatusTranscribing": "녹음 받아쓰는 중",
+  "voiceStatusCanceled": "녹음 취소됨",
+  "voiceStatusUnsupported": "지원하지 않는 플랫폼입니다",
+  "voiceStatusError": "음성을 인식하지 못했습니다",
+  "voiceStatusAnalyzing": "작업으로 나누는 중",
+  "voiceStatusReview": "추가하기 전에 작업 검토",
+  "voiceStepRecord": "녹음",
+  "voiceStepText": "텍스트",
+  "voiceStepAnalyze": "분석",
+  "voiceStepReview": "검토",
+  "voiceAnalyzing": "Ada가 음성을 작업으로 나누고 있습니다",
+  "voiceFallbackError": "Ada가 음성을 처리하지 못했습니다. 직접 수정할 수 있도록 초안을 보관했습니다.",
+  "voiceMicrophoneUnavailable": "현재 마이크를 사용할 수 없습니다. 통화나 음성 채팅을 종료한 후 다시 시도하세요.",
+  "voiceSmartMode": "스마트 모드",
+  "voiceRetryTranscription": "받아쓰기 다시 시도",
+  "voiceRecordingSaved": "이 기기에 녹음을 저장했습니다. 다시 녹음하지 않고 재시도할 수 있습니다.",
+  "voiceAllowAccess": "접근 허용",
+  "voiceOpenMicrophoneSettings": "마이크 설정 열기",
+  "voiceOpenSpeechSettings": "음성 인식 설정 열기",
+  "voiceEnableDictation": "받아쓰기 활성화",
+  "voiceUseCloudTranscription": "클라우드 받아쓰기 사용",
+  "voiceMicrophoneDenied": "시스템 설정에서 마이크 접근을 허용하세요.",
+  "voiceSpeechDenied": "시스템 설정에서 음성 인식을 허용하세요.",
+  "voiceAccessRestricted": "관리자 또는 스크린 타임 설정으로 접근이 제한됩니다.",
+  "voiceDictationDisabled": "시스템 설정 → 키보드 → 받아쓰기에서 받아쓰기를 활성화하고 언어를 선택한 후 다시 시도하세요.",
+  "voiceServiceUnavailable": "음성 인식을 이용할 수 없습니다. 연결을 확인하세요. Mac에서는 시스템 설정 → 키보드 → 받아쓰기 및 언어도 확인하세요.",
+  "voiceCloudServiceUnavailable": "클라우드 받아쓰기에 실패했습니다. 인터넷 연결을 확인하고 저장된 녹음으로 다시 시도하세요.",
+  "voiceLocaleUnsupported": "이 기기의 시스템 음성 인식은 선택한 언어를 지원하지 않습니다.",
+  "voiceNetworkUnavailable": "이 언어의 음성 인식에는 인터넷 연결이 필요합니다. 다시 연결한 후 시도하세요.",
+  "voiceSettingsFailed": "설정을 열지 못했습니다. 시스템 설정을 직접 열어 마이크 및 음성 인식 접근 권한을 확인하세요. Mac에서는 키보드 → 받아쓰기도 확인하세요.",
+  "voiceRetryAnalysis": "분석 다시 시도",
+  "screenInboxSubtitle": "정리하기 전에 작업을 기록하세요.",
+  "priorityMatrixSubtitle": "우선순위 간에 작업을 드래그하세요. 날짜는 같은 우선순위 안에서 작업 순서만 정합니다.",
+  "priorityMatrixP1Title": "지금 하기",
+  "priorityMatrixP2Title": "일정 잡기",
+  "priorityMatrixP3Title": "위임하기",
+  "priorityMatrixP4Title": "제외하기",
+  "priorityMatrixAxisUrgent": "긴급",
+  "priorityMatrixAxisNotUrgent": "긴급하지 않음",
+  "priorityMatrixAxisImportant": "중요",
+  "priorityMatrixAxisNotImportant": "중요하지 않음",
+  "timelineSubtitle": "시간 격자에서 하루를 계획하세요.",
+  "timelineAllDay": "종일",
+  "timelineBeforeHours": "표시 시간 이전",
+  "timelineAfterHours": "표시 시간 이후",
+  "timelineVisibleHours": "표시 시간",
+  "timelineStartHour": "시작",
+  "timelineEndHour": "종료",
+  "timelineZoomOut": "축소",
+  "timelineZoomIn": "확대",
+  "timelineAddTimedHint": "{time} 작업",
+  "@timelineAddTimedHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineAddAllDayHint": "종일 작업",
+  "timelineNoAllDayTasks": "종일 작업이 없습니다",
+  "timelineNoTimedTasks": "시간이 지정된 작업이 없습니다",
+  "timelinePreviousDay": "이전 날",
+  "timelineNextDay": "다음 날",
+  "timelinePickDate": "날짜 선택",
+  "upcomingPreviousPeriod": "이전 기간",
+  "upcomingNextPeriod": "다음 기간",
+  "upcomingOpenDatePicker": "날짜 선택기 열기",
+  "upcomingTaskCount": "{count, plural, =0{작업 없음} =1{작업 1개} other{작업 {count}개}}",
+  "@upcomingTaskCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "screenTodayFocusSummary": "집중 계획: {planned}회 - 완료: {completed}회 - 집중: {focus}",
+  "@screenTodayFocusSummary": {
+    "placeholders": {
+      "planned": {
+        "type": "int"
+      },
+      "completed": {
+        "type": "int"
+      },
+      "focus": {
+        "type": "String"
+      }
+    }
+  },
+  "screenUpcomingSubtitle": "오늘 이후에 계획된 작업입니다.",
+  "screenUpcomingSelectedSubtitle": "{date}에 예정된 작업입니다.",
+  "@screenUpcomingSelectedSubtitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noTasksHere": "여기에 작업이 없습니다",
+  "noUpcomingTasks": "날짜가 지정된 작업이 없습니다",
+  "noTasksForDay": "이 날에 예정된 작업이 없습니다",
+  "failedToLoadTasks": "작업을 불러오지 못했습니다: {error}",
+  "@failedToLoadTasks": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "searchTasks": "작업 검색",
+  "searchStartTyping": "입력하여 작업 검색",
+  "searchNoMatches": "일치하는 작업이 없습니다",
+  "failedToSearchTasks": "작업을 검색하지 못했습니다: {error}",
+  "@failedToSearchTasks": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "previousMonth": "이전 달",
+  "nextMonth": "다음 달",
+  "clearDateFilter": "날짜 필터 지우기",
+  "weekMon": "월",
+  "weekTue": "화",
+  "weekWed": "수",
+  "weekThu": "목",
+  "weekFri": "금",
+  "weekSat": "토",
+  "weekSun": "일",
+  "browseTitle": "둘러보기",
+  "unifiedAccount": "통합 계정",
+  "accountUnavailable": "계정을 사용할 수 없습니다: {error}",
+  "@accountUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "signOut": "로그아웃",
+  "deleteAccount": "계정 삭제",
+  "deleteAccountConfirmation": "계정, 클라우드 데이터, 로컬 작업, 프로젝트, 집중 기록이 영구적으로 삭제됩니다. 되돌릴 수 없습니다. 스토어 구독은 자동으로 해지되지 않습니다. Apple로 로그인을 사용했다면 Apple 계정 설정에서 Ada 접근 권한을 별도로 취소하세요.",
+  "manageSignInWithApple": "Apple로 로그인 관리",
+  "deleteAccountFinalConfirmation": "정말 확실한가요? 마지막 확인입니다.",
+  "deleteAccountError": "계정을 삭제하지 못했습니다: {error}",
+  "@deleteAccountError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "accountDeleted": "계정이 삭제되었습니다.",
+  "accountDeletedLocalCleanupError": "계정은 삭제되었지만 로컬 데이터를 지우지 못했습니다. 이 기기를 다시 사용하기 전에 앱 데이터를 지우세요.",
+  "browseSevenDays": "7일",
+  "browseOpenNow": "현재 미완료",
+  "browseQueueLoading": "대기 중인 변경 사항 불러오는 중…",
+  "browseQueueUnavailable": "대기 중인 변경 사항을 불러오지 못했습니다.",
+  "browseQueueExplanation": "전송을 기다리는 로컬 변경 사항을 표시합니다. 대기열이 비어 있어도 모든 기기가 최신 상태임을 의미하지는 않습니다.",
+  "productivityTitle": "생산성",
+  "achievementsTitle": "업적",
+  "allTimeLabel": "전체 기간",
+  "lastSevenDaysLabel": "최근 7일",
+  "noWeeklyStatsLabel": "아직 집중 또는 작업 데이터가 없습니다",
+  "completedFocuses": "완료한 집중",
+  "completedTasks": "완료한 작업",
+  "unlocked": "달성",
+  "locked": "미달성",
+  "progressLabel": "진행 상황",
+  "focusAchievements": "집중 업적",
+  "taskAchievements": "작업 업적",
+  "comboAchievements": "콤보 업적",
+  "focusIntervals": "집중 구간",
+  "focusTime": "집중 시간",
+  "openTasks": "미완료 작업",
+  "plannedIntervals": "계획된 구간",
+  "labelsTitle": "라벨",
+  "newProject": "새 프로젝트",
+  "newLabel": "새 라벨",
+  "syncReadyQueue": "동기화 대기열",
+  "pendingLocalCommands": "{count, plural, =0{대기 중인 로컬 명령 없음} =1{대기 중인 로컬 명령 1개} other{대기 중인 로컬 명령 {count}개}}",
+  "@pendingLocalCommands": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToLoadProjects": "프로젝트를 불러오지 못했습니다: {error}",
+  "@failedToLoadProjects": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "failedToLoadLabels": "라벨을 불러오지 못했습니다: {error}",
+  "@failedToLoadLabels": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "addProject": "프로젝트 추가",
+  "projectName": "프로젝트 이름",
+  "addLabel": "라벨 추가",
+  "labelName": "라벨 이름",
+  "couldNotAddLabel": "라벨을 추가하지 못했습니다: {error}",
+  "@couldNotAddLabel": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "projectsUnavailable": "프로젝트를 사용할 수 없습니다: {error}",
+  "@projectsUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "projectsUnavailableShort": "프로젝트를 사용할 수 없습니다",
+  "noProjects": "프로젝트 없음",
+  "searchProjects": "프로젝트 검색",
+  "searchLabels": "라벨 검색",
+  "archivedProjectsOnly": "보관된 프로젝트만",
+  "projectsCount": "{count, plural, =1{프로젝트 1개} other{프로젝트 {count}개}}",
+  "@projectsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noLabels": "라벨 없음",
+  "labelsCount": "{count, plural, =1{라벨 1개} other{라벨 {count}개}}",
+  "@labelsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "renameProject": "프로젝트 이름 변경",
+  "archiveProject": "프로젝트 보관",
+  "restoreProject": "보관함에서 복원",
+  "deleteProject": "프로젝트 삭제",
+  "deleteLabel": "라벨 삭제",
+  "deleteProjectConfirmation": "\"{name}\"을(를) 삭제할까요? 이 프로젝트의 작업은 받은 편지함으로 이동합니다.",
+  "@deleteProjectConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteLabelConfirmation": "\"{name}\"을(를) 삭제할까요?",
+  "@deleteLabelConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotDeleteProject": "프로젝트를 삭제하지 못했습니다: {error}",
+  "@couldNotDeleteProject": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "couldNotDeleteLabel": "라벨을 삭제하지 못했습니다: {error}",
+  "@couldNotDeleteLabel": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "projectsCountCompact": "프로젝트: {count}",
+  "@projectsCountCompact": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "collapseProjects": "프로젝트 접기",
+  "expandProjects": "프로젝트 펼치기",
+  "projectFallbackTitle": "프로젝트",
+  "projectSubtitle": "목록 보기입니다. 보드와 캘린더는 향후 제공 예정입니다.",
+  "reportsTitle": "보고서",
+  "reportsFocusedDay": "오늘도 집중하고 있어요",
+  "reportsThisWeek": "이번 주 집중",
+  "reportsNextAchievement": "다음 업적",
+  "viewAllAchievements": "모든 업적 보기",
+  "viewAllAchievementsCount": "{count}개 모두 보기",
+  "@viewAllAchievementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allAchievementsUnlocked": "모든 업적 달성",
+  "noAchievementsYet": "아직 업적이 없습니다",
+  "failedToLoadAchievements": "업적을 불러오지 못했습니다: {error}",
+  "@failedToLoadAchievements": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "backToReports": "보고서로 돌아가기",
+  "reportsIntervalProgressSemantics": "집중 구간 {completed}/{target}회 완료",
+  "@reportsIntervalProgressSemantics": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsIntervalCountSemantics": "집중 구간 {completed}회 완료, 작업 예상 횟수 미설정",
+  "@reportsIntervalCountSemantics": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsWeeklyChartSemantics": "최근 7일 집중 시간: {summary}",
+  "@reportsWeeklyChartSemantics": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToLoadReports": "보고서를 불러오지 못했습니다: {error}",
+  "@failedToLoadReports": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "taskNotFound": "작업을 찾을 수 없습니다",
+  "taskTitleHint": "작업 제목",
+  "taskComment": "댓글",
+  "taskCommentHint": "댓글 추가",
+  "subtasks": "하위 작업",
+  "addSubtask": "하위 작업 추가",
+  "addSubtaskHint": "하위 작업 추가",
+  "noSubtasks": "아직 하위 작업이 없습니다.",
+  "makeParentTask": "상위 작업으로 만들기",
+  "couldNotMoveTask": "작업을 이동하지 못했습니다: {error}",
+  "@couldNotMoveTask": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "scheduleTitle": "일정",
+  "allDay": "종일",
+  "timedBlock": "시간 블록",
+  "recurrenceTitle": "반복",
+  "recurrenceNeedsSchedule": "반복하기 전에 날짜 또는 시간을 추가하세요.",
+  "recurrenceIntervalLabel": "간격",
+  "recurrenceUnitDay": "일",
+  "recurrenceUnitWeek": "주",
+  "recurrenceUnitMonth": "개월",
+  "recurrenceInvalidInterval": "1~999를 입력하세요.",
+  "recurrenceEveryDays": "{interval, plural, =1{매일} other{{interval}일마다}}",
+  "@recurrenceEveryDays": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "recurrenceEveryWeeks": "{interval, plural, =1{매주} other{{interval}주마다}}",
+  "@recurrenceEveryWeeks": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "recurrenceEveryMonths": "{interval, plural, =1{매월} other{{interval}개월마다}}",
+  "@recurrenceEveryMonths": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "noDate": "날짜 없음",
+  "calendarNotLinked": "캘린더 연결 안 됨",
+  "calendarLinked": "Calendar 연결됨",
+  "focusProgress": "집중 {completed}/{total}",
+  "@focusProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "startFocus": "집중 시작",
+  "focusStarted": "집중 시작됨",
+  "taskReopened": "작업 다시 열림",
+  "taskCompleted": "작업 완료됨",
+  "taskDeleted": "작업 삭제됨",
+  "recurringDeleteTitle": "반복 작업을 삭제할까요?",
+  "recurringDeleteMessage": "이 작업은 반복 시리즈에 속합니다.",
+  "recurringDeleteThis": "이 작업 삭제",
+  "recurringDeleteThisAndFollowing": "이 작업 및 이후 작업 삭제",
+  "markOpen": "미완료로 표시",
+  "markComplete": "완료로 표시",
+  "focusHistory": "집중 기록",
+  "failedToLoadTask": "작업을 불러오지 못했습니다: {error}",
+  "@failedToLoadTask": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "noFocusIntervals": "아직 집중 구간이 없습니다.",
+  "today": "오늘",
+  "tomorrow": "내일",
+  "yesterday": "어제",
+  "clearDate": "날짜 지우기",
+  "priority": "우선순위 {priority}",
+  "@priority": {
+    "placeholders": {
+      "priority": {
+        "type": "int"
+      }
+    }
+  },
+  "focusTitle": "집중",
+  "focusLoadError": "집중을 불러오지 못했습니다: {error}",
+  "@focusLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "focusViewFull": "전체",
+  "focusViewMinimal": "최소",
+  "focusSwitchToFullView": "전체 보기로 전환",
+  "focusSwitchToMinimalView": "최소 보기로 전환",
+  "focusActionFailed": "집중을 업데이트하지 못했습니다. 다시 시도하세요.",
+  "noActiveSession": "활성 세션 없음",
+  "focusIdleSubtitle": "독립 집중 구간을 시작하거나 작업에서 집중을 시작하세요.",
+  "noPreset": "프리셋 없음",
+  "preparingFocus": "집중 준비 중",
+  "moreFocusOptions": "집중 옵션 더 보기",
+  "moreFocusActions": "집중 동작 더 보기",
+  "preset": "프리셋",
+  "newPreset": "새 프리셋",
+  "customize": "사용자화",
+  "customizePreset": "프리셋 사용자화",
+  "startInterval": "구간 시작",
+  "intervalStarted": "구간 시작됨",
+  "intervalCompleted": "구간 완료됨",
+  "focusStopped": "집중 중지됨",
+  "focusCompletionTitle": "정말 잘했어요!",
+  "focusCompletionLinkedSubtitle": "이 작업에 계획된 모든 집중 구간을 완료했습니다.",
+  "focusCompletionStandaloneSubtitle": "집중 주기를 완료했습니다.",
+  "focusCompletionQuestion": "이 작업을 완료할 준비가 되었나요?",
+  "focusCompletionCompleteTask": "작업 완료",
+  "focusCompletionKeepOpen": "작업 미완료로 유지",
+  "focusCompletionDone": "완료",
+  "focusCompletionNextTask": "다음 예정 작업",
+  "focusCompletionTaskError": "작업을 완료하지 못했습니다: {error}",
+  "@focusCompletionTaskError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "completeInterval": "구간 완료",
+  "logDistraction": "방해 요소 기록",
+  "workInterval": "작업 구간",
+  "work": "작업",
+  "shortBreak": "짧은 휴식",
+  "breakLabel": "휴식",
+  "longBreak": "긴 휴식",
+  "readyLabel": "준비됨: {label}",
+  "@readyLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "readyShort": "준비됨",
+  "focusTimerTotal": "전체 {duration}",
+  "@focusTimerTotal": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "focusSessionProgress": "세션 {current}/{total}",
+  "@focusSessionProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "focusRhythmPreviewSummary": "집중 리듬 미리보기, {count}단계",
+  "@focusRhythmPreviewSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusRhythmSummary": "집중 리듬, {current}/{total}단계: {phase}, {status}",
+  "@focusRhythmSummary": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "phase": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "focusTimerSummary": "{phase}, {status}, 남은 시간 {remaining}, 전체 {total}",
+  "@focusTimerSummary": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "focusStatusRunning": "실행 중",
+  "focusStatusPaused": "일시 정지됨",
+  "focusWorkProgress": "작업 {completed}/{total}",
+  "@focusWorkProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "intervalNumber": "구간 {number}",
+  "@intervalNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "focusIntervalSummary": "작업 {completed}/{total} - 구간 {number}",
+  "@focusIntervalSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "pause": "일시 정지",
+  "resume": "재개",
+  "presetForNextIntervals": "다음 구간용 프리셋",
+  "usePreset": "{name} 사용",
+  "@usePreset": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesWork": "작업 {minutes}분",
+  "@minutesWork": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesShort": "짧은 휴식 {minutes}분",
+  "@minutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesLong": "긴 휴식 {minutes}분",
+  "@minutesLong": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "longEvery": "{count}회마다 긴 휴식",
+  "@longEvery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "autoBreaks": "자동 휴식",
+  "autoWork": "자동 작업",
+  "noPause": "일시 정지 없음",
+  "focusPauseUnavailable": "이 프리셋에서는 일시 정지할 수 없습니다",
+  "strict": "엄격",
+  "flexible": "유연",
+  "name": "이름",
+  "workField": "작업",
+  "shortField": "짧은 휴식",
+  "longField": "긴 휴식",
+  "every": "주기",
+  "minutesSuffix": "분",
+  "makeDefault": "기본값으로 설정",
+  "autoStartBreaks": "휴식 자동 시작",
+  "autoStartWork": "작업 자동 시작",
+  "allowPause": "일시 정지 허용",
+  "strictMode": "엄격 모드",
+  "nameRequired": "이름이 필요합니다",
+  "nameMustBeUnique": "이름은 고유해야 합니다",
+  "googleCalendarTitle": "Google Calendar",
+  "googleCalendarConnectedSubtitle": "Ada 캘린더의 양방향 동기화가 활성화되어 있습니다.",
+  "googleCalendarDisconnectedSubtitle": "Google 계정을 연결하여 예정된 작업을 동기화하세요.",
+  "googleCalendarConnectedOnAnotherDeviceSubtitle": "다른 기기에서 Google Calendar 동기화가 실행 중입니다. Ada 데이터는 여기서도 동기화됩니다.",
+  "syncNow": "지금 동기화",
+  "useThisDevice": "이 기기 사용",
+  "connect": "연결",
+  "disconnect": "연결 해제",
+  "failedToLoadIntegration": "연동을 불러오지 못했습니다: {error}",
+  "@failedToLoadIntegration": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "googleCalendarFailed": "Google Calendar 오류: {message}",
+  "@googleCalendarFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "googleAuthRequired": "Google Calendar 승인이 필요합니다. 다시 로그인하고 지금 동기화를 실행하세요.",
+  "googleCalendarRateLimited": "Google Calendar 요청 한도에 도달했습니다. 몇 분 후에 다시 동기화하세요.",
+  "googleCalendarSyncFailed": "Google Calendar 동기화에 실패했습니다. 나중에 다시 시도하세요.",
+  "googleSignInNotConfigured": "Google 로그인이 구성되지 않았습니다. 이 iOS 대상에 GOOGLE_CLIENT_ID와 GOOGLE_REVERSED_CLIENT_ID를 설정하세요.",
+  "googleCallbackNotConfigured": "Google 로그인 콜백이 구성되지 않았습니다. ios/Flutter/GoogleOAuth.xcconfig에 GOOGLE_REVERSED_CLIENT_ID를 설정하세요.",
+  "googleWebButtonFirst": "웹에서는 먼저 Google 로그인 버튼을 누른 후 연결을 누르세요.",
+  "googleAccessDenied": "Google 접근이 거부되었습니다. 이 Google 계정을 OAuth 테스트 사용자로 추가하거나 OAuth 앱을 게시하고 검증하세요.",
+  "status": "상태",
+  "account": "계정",
+  "calendar": "캘린더",
+  "calendarId": "캘린더 ID",
+  "lastSync": "마지막 동기화",
+  "notConnected": "연결 안 됨",
+  "notCreated": "생성 안 됨",
+  "never": "없음",
+  "durationMinutes": "{minutes}분",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours}시간 {minutes}분",
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "projectIcon": "프로젝트 아이콘",
+  "projectIconOption": "아이콘 {number}",
+  "@projectIconOption": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "projectColor": "프로젝트 색상",
+  "projectColorOption": "색상 {number}",
+  "@projectColorOption": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "addProjectToFavorites": "즐겨찾기에 프로젝트 추가",
+  "removeProjectFromFavorites": "즐겨찾기에서 프로젝트 제거",
+  "timelineProjectsMenu": "타임라인 프로젝트 관리",
+  "timelineShowProject": "타임라인에 프로젝트 표시",
+  "timelineHideProject": "임시 프로젝트 숨기기",
+  "timelineCollapseProject": "프로젝트 분기 접기",
+  "timelineExpandProject": "프로젝트 분기 펼치기",
+  "timelineCurrentTime": "현재 시간",
+  "couldNotUpdateProject": "프로젝트를 업데이트하지 못했습니다: {error}",
+  "@couldNotUpdateProject": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "commonDone": "완료",
+  "taskSelect": "선택",
+  "taskSelectedCount": "{count, plural, =0{0개 선택됨} =1{1개 선택됨} other{{count}개 선택됨}}",
+  "@taskSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskSelectAll": "모두 선택",
+  "taskDeselectAll": "모두 선택 해제",
+  "taskDue": "기한",
+  "taskProject": "프로젝트",
+  "taskLabels": "라벨",
+  "taskPriority": "우선순위",
+  "taskMore": "더 보기",
+  "taskSchedule": "일정",
+  "taskMove": "이동",
+  "taskChangeProject": "프로젝트 변경",
+  "taskDuplicate": "복제",
+  "taskDuplicateTitle": "작업 복제",
+  "taskDuplicateSelectedOnly": "선택 항목만",
+  "taskDuplicateWithSubtasks": "하위 작업 포함",
+  "taskWeekend": "이번 주말",
+  "taskNextWeek": "다음 주",
+  "taskEnterDue": "기한 날짜 또는 시간 입력",
+  "taskInvalidDue": "유효한 날짜 또는 시간을 입력하세요",
+  "taskClearDue": "기한 지우기",
+  "taskDeleteSelectedTitle": "선택한 작업을 삭제할까요?",
+  "taskDeleteSelectedMessage": "7초 동안 이 작업을 실행 취소할 수 있습니다.",
+  "taskCompleteSelected": "선택 항목 완료",
+  "taskReopenSelected": "선택 항목 다시 열기",
+  "taskActionFailedCount": "{count, plural, =1{작업 1개를 업데이트하지 못했습니다} other{작업 {count}개를 업데이트하지 못했습니다}}",
+  "@taskActionFailedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceCollapse": "음성 패널 접기",
+  "voiceExpand": "음성 패널 펼치기",
+  "voiceMovePanel": "음성 패널 이동",
+  "themeClassic": "클래식",
+  "themeOcean": "오션",
+  "themeForest": "포레스트",
+  "themeCustomize": "사용자화",
+  "themeEditorTitle": "테마 편집",
+  "themeLivePreview": "변경 사항은 앱 전체에 표시됩니다. 취소하면 이전 테마로 복원됩니다.",
+  "themeSaveError": "테마를 저장하지 못했습니다. 변경 사항은 유지됩니다. 다시 시도하세요.",
+  "themeLoadError": "테마를 불러오지 못했습니다.",
+  "themeColorsSurfaces": "배경 및 표면",
+  "themeColorsText": "텍스트",
+  "themeColorsAccent": "강조",
+  "themeColorsStatus": "상태 색상",
+  "themeInvalidHex": "6자리 HEX 색상을 입력하세요. 예: #2563EB.",
+  "themeLowContrast": "대비가 낮아 일부 텍스트를 읽기 어려울 수 있습니다.",
+  "themePreviewTask": "하루 계획하기",
+  "themePreviewSecondary": "매일 조금씩 집중하세요.",
+  "themeColorCanvas": "배경",
+  "themeColorSurface": "표면",
+  "themeColorSurfaceTint": "보조 표면",
+  "themeColorSurfaceHover": "마우스를 올린 표면",
+  "themeColorPrimaryText": "기본 텍스트",
+  "themeColorSecondaryText": "보조 텍스트",
+  "themeColorMutedText": "흐린 텍스트",
+  "themeColorBorder": "테두리",
+  "themeColorAccent": "강조 텍스트 및 아이콘",
+  "themeColorAccentFill": "강조 채우기",
+  "themeColorAccentTint": "옅은 강조 채우기",
+  "themeColorWarning": "경고",
+  "themeColorInfo": "정보",
+  "themeColorSuccess": "성공",
+  "themeColorError": "오류",
+  "themeColorOverdue": "기한 지남",
+  "themeColorOnAccent": "강조 배경 위 텍스트",
+  "themeColorOnError": "오류 배경 위 텍스트",
+  "todayTaskSummary": "{tasks, plural, one{작업 1개} other{작업 {tasks}개}} · {planned, plural, one{계획된 세션 1회} other{계획된 세션 {planned}회}} · 집중 {time}",
+  "@todayTaskSummary": {
+    "placeholders": {
+      "tasks": {
+        "type": "int"
+      },
+      "planned": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "todayFocusingOn": "집중 중인 작업",
+  "openFocus": "집중 열기",
+  "todayCompletedTasks": "오늘 완료 · {count}",
+  "@todayCompletedTasks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sidebarDaily": "일일",
+  "sidebarViews": "보기",
+  "quickAddResetDetails": "기본값 사용",
+  "quickAddChangeTime": "시간 변경",
+  "quickAddProjectNameUnsupported": "이 프로젝트 이름은 변경하지 않고 삽입할 수 없습니다.",
+  "themeSepia": "세피아",
+  "themeGraphite": "그래파이트",
+  "themeCustom": "사용자 지정",
+  "themeResetToClassic": "클래식으로 재설정",
+  "themeBackgroundKindTitle": "배경",
+  "themeBackgroundColor": "색상",
+  "themeBackgroundPhoto": "사진",
+  "themeBackgroundGlass": "macOS 유리",
+  "themeBackgroundGlassHint": "앱 전체와 빠른 추가에 적용됩니다. 흐림은 macOS가 제어하며 슬라이더는 팔레트 색조를 조절합니다.",
+  "themeBackgroundGlassUnavailable": "macOS 앱에서 사용할 수 있습니다. 이 플랫폼에서는 단색 배경을 사용합니다.",
+  "themeBackgroundTitle": "배경 이미지",
+  "themeBackgroundMainOnly": "기본 영역만",
+  "themeBackgroundWholeApp": "앱 전체",
+  "themeBackgroundSeparate": "개별 배경",
+  "themeBackgroundMain": "기본 영역",
+  "themeBackgroundSidebar": "사이드바",
+  "themeBackgroundQuickAdd": "빠른 추가",
+  "themeBackgroundChoose": "사진 선택",
+  "themeBackgroundReplace": "사진 바꾸기",
+  "themeBackgroundRemove": "사진 제거",
+  "themeBackgroundDim": "어둡게",
+  "themeBackgroundBlur": "흐림",
+  "themeBackgroundEmpty": "사진 없음",
+  "themeBackgroundImageError": "이미지를 열지 못했습니다. 다른 사진을 선택하세요.",
+  "themeBackgroundTooLarge": "50MB 이하의 이미지를 선택하세요.",
+  "themeBackgroundLoading": "이미지 준비 중…",
+  "settingsTaskListStyle": "작업 행 스타일",
+  "settingsTaskListStyleDescription": "새 레이아웃을 선택하거나 익숙한 클래식 행을 유지하세요.",
+  "settingsTaskListModern": "모던",
+  "settingsTaskListClassic": "클래식",
+  "settingsTaskRowSpacing": "작업 간격",
+  "settingsTaskRowSpacingCompact": "좁게",
+  "settingsTaskRowSpacingComfortable": "보통",
+  "settingsTaskRowSpacingSpacious": "넓게",
+  "settingsSaveError": "설정을 저장하지 못했습니다. 다시 시도하세요.",
+  "focusCompletionCompleteAndNext": "완료하고 다음 시작",
+  "focusCompletionStartNext": "다음 작업 시작",
+  "focusCompletionRetry": "다시 시도",
+  "searchAllProjects": "모든 프로젝트",
+  "searchStatusOpen": "미완료",
+  "searchStatusCompleted": "완료",
+  "searchStatusAll": "모든 상태",
+  "searchClearFilters": "필터 지우기",
+  "searchEmptyDescription": "제목이나 설명으로 작업을 찾은 후 프로젝트나 상태로 좁혀 보세요.",
+  "searchNoMatchesDescription": "다른 문구를 입력하거나 필터를 지워 보세요. 이 텍스트를 새 작업으로 만들 수도 있습니다.",
+  "searchCreateTask": "텍스트로 작업 만들기",
+  "taskListLoadError": "작업을 불러오지 못했습니다. 다시 시도하세요.",
+  "inboxEmptyTitle": "받은 편지함이 비어 있습니다",
+  "inboxEmptyDescription": "여기에 아이디어를 기록하고 언제 할지는 나중에 정하세요.",
+  "todayEmptyTitle": "오늘 예정된 작업이 없습니다",
+  "todayEmptyDescription": "작업을 추가하여 하루를 시작하세요.",
+  "todayEmptyCompletedTitle": "오늘 목록을 모두 완료했습니다",
+  "todayEmptyCompletedDescription": "완료한 작업은 아래에 저장되어 있습니다. 준비되면 다른 작업을 추가하세요.",
+  "projectEmptyTitle": "이 프로젝트에는 아직 작업이 없습니다",
+  "projectEmptyDescription": "프로젝트 목표를 향한 첫 단계를 추가하세요.",
+  "commandSearchPlaceholder": "작업, 프로젝트, 동작 검색",
+  "commandSearchTasks": "작업",
+  "commandSearchActions": "동작",
+  "commandSearchDictateTask": "작업 말하기",
+  "commandSearchAllResults": "모든 결과 보기",
+  "commandSearchEnablePomo": "Ada 켜기",
+  "commandSearchDisablePomo": "Ada 끄기",
+  "commandSearchHint": "↑ ↓ 이동 · Enter 열기 · Esc 닫기",
+  "commandSearchNoMatches": "일치하는 작업이나 프로젝트가 없습니다.",
+  "overdueTitle": "기한 지남",
+  "overdueTaskCount": "{count, plural, one{기한이 지난 작업 {count}개} other{기한이 지난 작업 {count}개}}",
+  "@overdueTaskCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "overdueReview": "검토",
+  "overdueEmpty": "기한이 지난 작업이 없습니다",
+  "taskFocusSwitchTitle": "집중을 전환할까요?",
+  "taskFocusSwitchMessage": "현재 세션이 중지됩니다. “{task}”에 집중을 시작할까요?",
+  "@taskFocusSwitchMessage": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "taskFocusSwitchConfirm": "전환",
+  "labelIcon": "라벨 아이콘",
+  "labelUpdateFailed": "라벨을 업데이트하지 못했습니다. 다시 시도하세요.",
+  "labelNotFound": "라벨을 찾을 수 없습니다",
+  "labelTasksSubtitle": "모든 프로젝트에서 이 라벨이 있는 작업",
+  "labelIconOption": "{icon, select, tag{태그} bookmark{북마크} flag{깃발} bolt{번개} lightbulb{전구} clock{시계} bell{벨} pin{핀} phone{전화} mail{메일} link{링크} wrench{렌치} other{태그}}",
+  "@labelIconOption": {
+    "placeholders": {
+      "icon": {
+        "type": "String"
+      }
+    }
+  },
+  "addSubproject": "하위 프로젝트 만들기",
+  "moveProject": "프로젝트 이동",
+  "projectTopLevel": "최상위",
+  "projectMoveUp": "위로 이동",
+  "projectMoveDown": "아래로 이동",
+  "projectParentName": "상위 프로젝트: {name}",
+  "@projectParentName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteProjectWithChildrenConfirmation": "\"{name}\"을(를) 삭제할까요? 하위 프로젝트는 한 단계 위로 이동합니다. 이 프로젝트의 작업만 받은 편지함으로 이동합니다.",
+  "@deleteProjectWithChildrenConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountNickname": "닉네임",
+  "accountChangeNickname": "닉네임 변경",
+  "accountNicknameSaveError": "닉네임을 저장하지 못했습니다. 다시 시도하세요.",
+  "notificationTaskStarting": "작업 시작",
+  "notificationReturnTitle": "Pomo가 기다려요",
+  "notificationReturnBody": "여유가 있다면 작은 작업 하나를 마무리해 보세요.",
+  "notificationReturnTitle2": "Pomo가 안부를 전해요",
+  "notificationReturnBody2": "목록에서 가장 쉬운 일을 골라 보세요. 하나면 충분해요.",
+  "notificationReturnTitle3": "Pomo가 함께해요",
+  "notificationReturnBody3": "오늘 끝낼 수 있는 작업부터 시작해도 좋아요.",
+  "notificationReturnTitle4": "Pomo와 함께하는 저녁",
+  "notificationReturnBody4": "작업 하나를 마치는 것도 좋은 한 걸음이에요.",
+  "notificationReturnTitle5": "Pomo의 알림",
+  "notificationReturnBody5": "목록을 보고 오늘 저녁에 할 수 있는 일을 하나 골라 보세요.",
+  "notificationFocusChannel": "집중",
+  "notificationFocusDescription": "집중 구간 완료 알림",
+  "notificationReturnChannel": "복귀 알림",
+  "notificationReturnDescription": "Ada로 돌아오도록 가볍게 알려 드립니다",
+  "notificationTaskChannel": "작업 시작",
+  "notificationTaskDescription": "작업 시작 알림",
+  "notificationOpenApp": "Ada 열기",
+  "notificationFocusCompleted": "집중 구간 완료",
+  "notificationLongBreakCompleted": "긴 휴식 완료",
+  "notificationBreakCompleted": "휴식 완료",
+  "updateTitle": "Ada 업데이트",
+  "updateAction": "업데이트",
+  "updateCheck": "업데이트 확인",
+  "updateSettings": "업데이트",
+  "updateReceiveRc": "출시 후보(RC) 받기",
+  "updateStableChannel": "채널: 안정 버전",
+  "updateRcChannel": "채널: 안정 버전 및 RC",
+  "updateRcHelp": "RC 버전에는 버그가 있을 수 있습니다. 알파 및 베타 버전은 제외됩니다.",
+  "updateRestart": "앱이 다시 시작됩니다. 데이터는 유지됩니다.",
+  "updateNotes": "릴리스 노트",
+  "updateOwnerManaged": "이 빌드는 서버 구성을 유지하기 위해 소유자가 업데이트합니다. 소유자에게 최신 버전을 요청하세요.",
+  "updateUnsupported": "공식 Linux AppImage에서 자동 업데이트를 사용할 수 있습니다. 다른 빌드는 패키지 관리자를 사용하세요.",
+  "updateVersion": "버전 {value}",
+  "@updateVersion": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "updatePhaseIdle": "언제든 확인할 수 있습니다.",
+  "updatePhaseChecking": "버전 확인 중…",
+  "updatePhaseAvailable": "새 버전을 사용할 수 있습니다",
+  "updatePhaseDownloading": "업데이트 다운로드 중…",
+  "updatePhaseVerifying": "무결성 확인 중…",
+  "updatePhaseInstalling": "설치 및 재시작 준비 중…",
+  "updatePhaseUpToDate": "최신 호환 버전을 사용하고 있습니다.",
+  "updatePhaseFailed": "업데이트를 완료하지 못했습니다",
+  "achievementFocusSubtitle": "{count, plural, =1{작업 집중 1회 완료} other{작업 집중 {count}회 완료}}",
+  "@achievementFocusSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementTaskSubtitle": "{count, plural, =1{작업 1개 완료} other{작업 {count}개 완료}}",
+  "@achievementTaskSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementDayNotWastedSubtitle": "하루에 집중 한 번과 작업 하나 완료",
+  "achievementFocusPlusCheckSubtitle": "하루에 집중 3회와 작업 3개 완료",
+  "achievementNoFussSubtitle": "하루에 중단 없이 집중 5회 완료",
+  "achievementCleanEntrySubtitle": "연결된 집중 후 작업 완료",
+  "achievementTomatoClosedSubtitle": "작업 집중을 한 날에 해당 작업 완료",
+  "achievementTitle": "{id, select, focus_1{첫 토마토} focus_5{준비 운동} focus_10{집중 포착} focus_25{토마토 근무} focus_50{모드 가동} focus_100{빨간 띠} focus_250{깊은 뿌리} focus_500{타이머의 권위자} focus_1000{천 번째 토마토} focus_5000{집중 농부} focus_10000{주의력 농장} focus_50000{토마토 제국} focus_100000{붉은 초지능} focus_1000000{토마토 특이점} task_1{첫 체크} task_5{목록이 흔들렸다} task_10{행복한 체크박스} task_25{쌓인 일 정리} task_50{체크의 달인} task_100{마무리 해결사} task_250{목록 장악} task_500{사무실 완승} task_1000{천 개의 체크} task_5000{승리의 기록관} task_10000{체크 머신} task_50000{문제 해결국} task_100000{목록의 지배자} task_1000000{마지막 체크} combo_day_not_wasted{알찬 하루} combo_focus_plus_check{집중 + 체크} combo_no_fuss{차분하게} combo_clean_entry{깔끔한 시작} combo_tomato_closed_question{토마토가 해결했다} other{업적}}",
+  "@achievementTitle": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "focusPresetDeepWork": "깊은 작업",
+  "focusPresetShortSprint": "짧은 스프린트",
+  "csvImportIssueRow": "{row}행: {message}",
+  "@csvImportIssueRow": {
+    "placeholders": {
+      "row": {
+        "type": "int"
+      },
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "csvImportIssueMessage": "{code, select, fileTooLarge{CSV 파일이 16MiB를 초과합니다.} invalidUtf8{CSV는 유효한 UTF-8이어야 합니다.} missingHeader{CSV 헤더가 없습니다.} malformed{CSV 형식이 잘못되었습니다.} unknownHeader{알 수 없는 헤더 \"{value}\"입니다.} duplicateHeader{헤더 \"{value}\"가 중복됩니다.} contentHeaderRequired{content 헤더가 필요합니다.} tooManyTasks{CSV에는 작업을 1000개까지만 포함할 수 있습니다.} tooManyFields{행의 필드 수가 헤더보다 많습니다.} contentRequired{content가 필요합니다.} invalidPriority{priority는 1~4의 정수여야 합니다.} invalidDate{{value}는 YYYY-MM-DD 형식이어야 합니다.} mixedSchedule{기한 날짜와 시간 지정 일정을 함께 사용할 수 없습니다.} timedFieldsRequired{시간 지정 일정에는 start_at, end_at, time_zone이 필요합니다.} invalidTimestamp{{value}는 명시적인 UTC 오프셋이 있는 RFC3339 형식이어야 합니다.} invalidTimeZone{time_zone은 유효한 IANA 이름이어야 합니다.} endBeforeStart{end_at은 start_at 이후여야 합니다.} invalidRecurrence{recurrence는 day, week 또는 month여야 합니다.} invalidInteger{{value}는 1~999의 정수여야 합니다.} intervalWithoutRecurrence{recurrence_interval에는 recurrence가 필요합니다.} recurrenceWithoutSchedule{recurrence에는 일정이 필요합니다.} doneTask{완료된 작업은 가져올 수 없습니다.} invalidKey{{value} 형식이 잘못되었습니다.} empty{CSV에 작업이 없습니다.} duplicateKey{키 \"{value}\"가 중복됩니다.} parentCycle{parent_key 참조가 순환합니다.} missingParent{parent_key \"{value}\"가 없습니다.} childProject{하위 작업은 상위 작업과 같은 프로젝트를 사용해야 합니다.} other{파일을 가져오지 못했습니다.}}",
+  "@csvImportIssueMessage": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "billingOfferDays": "{count}일",
+  "billingOfferMonths": "{count}개월",
+  "billingOfferYears": "{count}년",
+  "billingTrialFree": "{duration} 무료",
+  "billingTrialRenewal": "이후 {price}. 취소하지 않으면 자동 갱신됩니다.",
+  "billingReturnBadge": "Pro로 돌아가기",
+  "billingReturnSubtitle": "{duration} 동안 할인 후 {price}. 취소하지 않으면 자동 갱신됩니다.",
+  "billingReturnPending": "할인이 {date}까지 예약되어 있습니다. 구매를 취소했다면 이 시간 이후에 다시 시도할 수 있습니다.",
+  "billingReturnFailed": "재가입 혜택을 확인하지 못했습니다. 다시 시도해 주세요.",
+  "billingTryFree": "무료 체험",
+  "collaborationShareProject": "프로젝트 공유",
+  "collaborationShareIntro": "이 프로젝트를 함께 작업할 사람을 초대하세요. 멤버는 편집할 수 있고, 관찰자는 볼 수만 있습니다.",
+  "collaborationShareStart": "공유",
+  "collaborationShareInProgress": "공유 중… 최근 변경 사항을 동기화하는 중",
+  "collaborationMembers": "멤버",
+  "collaborationPendingInvitations": "대기 중인 초대",
+  "collaborationRevoke": "취소",
+  "collaborationPublicLink": "공개 링크",
+  "collaborationPublicLinkHint": "링크가 있는 누구나 이 프로젝트를 볼 수 있습니다",
+  "collaborationCopyLink": "링크 복사",
+  "collaborationLeaveProject": "프로젝트 나가기",
+  "collaborationDeleteSharedProject": "모두에게서 삭제",
+  "collaborationMakePrivate": "비공개로 전환",
+  "collaborationOwner": "소유자",
+  "collaborationTransferOwnership": "소유권 이전",
+  "collaborationRemoveMember": "멤버 제거",
+  "collaborationEmail": "이메일",
+  "collaborationInvite": "초대",
+  "collaborationProjectShared": "프로젝트를 공유했습니다",
+  "collaborationInviteEmailFailed": "초대는 저장되었지만 이메일을 보내지 못했습니다",
+  "collaborationInviteSent": "{email} 님에게 초대를 보냈습니다",
+  "collaborationInvitationRevoked": "초대를 취소했습니다",
+  "collaborationRoleUpdated": "역할을 업데이트했습니다",
+  "collaborationRemoveConfirm": "{name} 님을 이 프로젝트에서 제거할까요?",
+  "collaborationMemberRemoved": "멤버를 제거했습니다",
+  "collaborationTransferConfirm": "{name} 님을 이 프로젝트의 소유자로 지정할까요?",
+  "collaborationOwnershipTransferred": "소유권을 이전했습니다",
+  "collaborationLeaveConfirm": "이 공유 프로젝트에서 나갈까요?",
+  "collaborationLeftProject": "프로젝트에서 나갔습니다",
+  "collaborationDeleteSharedConfirm": "이 공유 프로젝트를 모든 멤버에게서 삭제할까요? 되돌릴 수 없습니다.",
+  "collaborationSharedProjectDeleted": "공유 프로젝트를 삭제했습니다",
+  "collaborationMakePrivateConfirm": "이 프로젝트 공유를 중지할까요?",
+  "collaborationMakePrivateDescription": "프로젝트와 콘텐츠가 개인 계정으로 돌아갑니다. 다른 참여자는 즉시 접근할 수 없게 됩니다.",
+  "collaborationProjectMadePrivate": "프로젝트가 다시 비공개가 되었습니다",
+  "collaborationLinkCopied": "링크를 복사했습니다",
+  "collaborationRoleAdministrator": "관리자",
+  "collaborationRoleMember": "멤버",
+  "collaborationRoleObserver": "관찰자",
+  "collaborationForbidden": "권한이 없습니다",
+  "collaborationSignedOut": "공유 프로젝트를 사용하려면 로그인하세요",
+  "collaborationUnavailable": "공유 프로젝트를 지금은 사용할 수 없습니다",
+  "collaborationError": "문제가 발생했습니다. 다시 시도하세요",
+  "collaborationSyncPending": "공유하기 전에 이 프로젝트의 동기화를 완료하세요",
+  "collaborationMemberFallback": "멤버",
+  "collaborationInboxTitle": "공유 프로젝트 및 초대",
+  "collaborationInboxSubtitle": "초대를 수락하고 공유 프로젝트 활동을 확인하세요",
+  "collaborationInvitations": "초대",
+  "collaborationNoInvitations": "대기 중인 초대가 없습니다",
+  "collaborationAccept": "수락",
+  "collaborationNotifications": "알림",
+  "collaborationMarkAllRead": "모두 읽음으로 표시",
+  "collaborationNoNotifications": "알림이 없습니다",
+  "collaborationNotificationInvitation": "공유 프로젝트 초대",
+  "collaborationNotificationDiscussion": "공유 프로젝트의 새 댓글",
+  "collaborationNotificationAssignment": "작업이 할당되었습니다",
+  "collaborationNotificationGeneric": "공유 프로젝트 활동",
+  "collaborationInvitationAccepted": "초대를 수락했습니다",
+  "collaborationAssignees": "담당자",
+  "collaborationEditAssignees": "담당자 편집",
+  "collaborationNoAssignees": "담당자 없음",
+  "collaborationComments": "댓글",
+  "collaborationCommentHint": "댓글 작성",
+  "collaborationCommentSend": "보내기",
+  "collaborationCommentDelete": "댓글 삭제",
+  "collaborationSharedBadge": "공유 프로젝트",
+  "collaborationJoinTitle": "프로젝트 초대",
+  "collaborationJoinDescription": "공유 프로젝트에 초대되었습니다. 초대를 수락하면 프로젝트 목록에 추가됩니다.",
+  "collaborationJoinRole": "내 역할",
+  "collaborationJoinAccept": "초대 수락",
+  "collaborationJoinOpenProject": "프로젝트 열기",
+  "collaborationJoinInvalid": "이 초대 링크는 유효하지 않습니다",
+  "collaborationJoinUnavailable": "이 초대는 더 이상 계정에서 사용할 수 없습니다",
+  "collaborationPublicNotice": "Ada 멤버가 공유한 읽기 전용 보기",
+  "collaborationPublicUnavailable": "이 공유 링크는 더 이상 사용할 수 없습니다",
+  "collaborationPublicEmpty": "아직 공유된 내용이 없습니다",
+  "collaborationPublicOpen": "Ada 열기",
+  "collaborationPublicTasks": "작업",
+  "projectInfoTitle": "프로젝트 정보",
+  "projectInfoPersonal": "개인 프로젝트",
+  "projectInfoYou": "나",
+  "focusSessionDisplay": "세션 표시",
+  "focusSessionCompact": "간결하게",
+  "focusSessionIcons": "아이콘",
+  "focusNextInterval": "다음: {phase} · {duration}",
+  "bottomNavigationEditingTitle": "하단 패널 편집",
+  "bottomNavigationEditingHelp": "아래 아이콘을 드래그하거나 화살표로 순서를 바꾸세요. 아이콘을 탭하면 다른 항목으로 교체할 수 있습니다.",
+  "bottomNavigationReplace": "교체할 항목",
+  "bottomNavigationEditHint": "길게 눌러 하단 패널을 설정하세요.",
+  "settingsBottomNavigation": "하단 탐색",
+  "settingsBottomNavigationDescription": "최대 5개의 섹션과 순서, 탐색 스타일을 선택하세요. 이 기기에 저장됩니다.",
+  "settingsBottomNavigationSoft": "부드러운 강조",
+  "settingsBottomNavigationLabels": "이름 표시",
+  "settingsBottomNavigationPreview": "미리보기",
+  "settingsBottomNavigationEmpty": "하단 바가 숨겨져 있습니다. 상단 메뉴에서 모든 섹션과 이 설정에 접근할 수 있습니다.",
+  "settingsBottomNavigationCount": "섹션 {count}/{max}개",
+  "settingsBottomNavigationEarlier": "앞으로 이동",
+  "settingsBottomNavigationLater": "뒤로 이동",
+  "settingsBottomNavigationAdd": "섹션 추가",
+  "settingsBottomNavigationClear": "모두 제거",
+  "settingsBottomNavigationDefaults": "기본값으로",
+  "settingsBottomNavigationLoadError": "탐색 설정을 불러오지 못했습니다. 다시 시도하세요.",
+  "settingsBottomNavigationEdit": "맞춤 설정",
+  "settingsBottomNavigationRemove": "제거",
+  "editLabel": "라벨 편집",
+  "labelNameTaken": "같은 이름의 라벨이 이미 있습니다",
+  "labelBulkAdd": "작업에 추가",
+  "labelBulkRemove": "작업에서 제거",
+  "labelColor": "라벨 색상",
+  "taskParentUnavailable": "하위 작업 · 상위 작업을 사용할 수 없음",
+  "taskExpandSubtasks": "하위 작업 펼치기",
+  "taskCollapseSubtasks": "하위 작업 접기",
+  "taskAllSubtasksProgress": "모든 하위 작업: {total}개 중 {completed}개 완료",
+  "taskOpenParent": "상위 작업 열기",
+  "taskOpenFullBranch": "모든 하위 작업 열기",
+  "taskParentPath": "상위 작업: {path}",
+  "projectViewList": "목록",
+  "projectViewMap": "지도",
+  "projectShowCompleted": "완료된 작업 표시",
+  "projectExpandBranch": "가지 펼치기",
+  "projectCollapseBranch": "가지 접기",
+  "projectPlaceInside": "안으로 이동",
+  "projectPlaceBefore": "앞으로 이동",
+  "projectPlaceAfter": "뒤로 이동",
+  "projectCatalogSearch": "프로젝트 및 작업 검색",
+  "settingsTaskBranchStyle": "하위 작업 표시",
+  "settingsTaskBranchConnected": "연결선",
+  "settingsTaskBranchGrouped": "그룹 블록",
+  "onboardingTasksTitle": "나의 목록, 나의 리듬.",
+  "onboardingTasksSubtitle": "할 일의 스타일과 간격을 선택하세요.",
+  "onboardingThemeTitle": "오늘은 어떤 색인가요?",
+  "onboardingThemeSubtitle": "편안하게 작업할 색상을 선택하세요.",
+  "onboardingModernDescription": "강조된 제목",
+  "onboardingClassicDescription": "차분한 목록",
+  "onboardingAppearanceHint": "나중에 설정에서 모두 변경할 수 있어요.",
+  "onboardingClassicThemeDescription": "익숙한 빨간색 강조",
+  "onboardingOceanDescription": "시원한 파랑",
+  "onboardingForestDescription": "차분한 초록",
+  "onboardingSepiaDescription": "따뜻한 종이",
+  "onboardingGraphiteDescription": "꼭 필요한 것만",
+  "onboardingThemeHint": "나만의 색상과 배경은 나중에 설정에서 만들 수 있어요.",
+  "onboardingPreviewSubtask": "첫 아이디어 적기",
+  "learningTourInvitationTitle": "Ada를 잠깐 둘러볼까요?",
+  "learningTourInvitationBody": "약 1분 동안 작업 추가, 집중, 프로젝트 정리를 살펴보세요.",
+  "learningTourStart": "시작",
+  "learningTourLater": "나중에",
+  "learningTourClose": "둘러보기 닫기",
+  "learningTourSettings": "앱 둘러보기",
+  "learningTourAddTask": "작업 추가를 눌러 새 작업을 만드는 곳을 확인하세요. 연습용 작업을 저장할 필요는 없습니다.",
+  "learningTourFocusNavigation": "집중 화면을 열어 작업 세션을 시작하는 곳을 확인하세요.",
+  "learningTourFocusReady": "작업을 선택하고 일정한 간격으로 집중할 수 있습니다. 지금 타이머를 시작할 필요는 없습니다.",
+  "learningTourProjectsNavigation": "프로젝트를 열어 관련 작업을 모으는 곳을 확인하세요.",
+  "learningTourProjectsReady": "프로젝트는 같은 목표의 작업을 모아 줍니다.",
+  "learningTourSkipStep": "단계 건너뛰기",
+  "learningTourOpenAddTask": "작업 추가 열기",
+  "learningTourOpenFocus": "집중 열기",
+  "learningTourOpenProjects": "프로젝트 열기",
+  "filesTitle": "파일",
+  "filesAdd": "파일 추가",
+  "filesEmpty": "아직 파일이 없습니다",
+  "filesSearch": "파일 검색",
+  "filesList": "목록",
+  "filesGallery": "갤러리",
+  "filesAllTogether": "모두 함께",
+  "filesByTask": "작업별",
+  "filesProjectGroup": "프로젝트 파일",
+  "filesAllTypes": "모든 유형",
+  "filesImages": "이미지",
+  "filesDocuments": "문서",
+  "filesOther": "기타 파일",
+  "filesDownload": "다운로드",
+  "filesDelete": "파일 삭제",
+  "filesDeleteConfirm": "이 파일을 영구적으로 삭제하시겠습니까?",
+  "filesUploadFailed": "업로드에 실패했습니다. 다시 시도하세요.",
+  "filesRetry": "다시 시도",
+  "filesProRequired": "파일을 업로드하려면 Pro가 필요합니다.",
+  "filesReadOnly": "읽기 전용 권한이 있습니다.",
+  "filesUnavailable": "파일 저장소를 사용할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+  "filesSignIn": "파일에 접근하려면 로그인하세요.",
+  "filesTooLarge": "파일 크기는 20 MB 이하여야 합니다.",
+  "filesQuotaExceeded": "파일 업로드 한도에 도달했습니다.",
+  "filesDeleteProjectWarning": "이 프로젝트에 직접 첨부된 파일은 영구적으로 삭제됩니다.",
+  "filesUpload": "업로드 중",
+  "filesFinish": "업로드 마무리 중",
+  "filesLoadError": "파일을 불러오지 못했습니다.",
+  "filesPreview": "미리보기",
+  "settingsTaskCard": "작업 카드",
+  "settingsTaskCardTabs": "탭",
+  "settingsTaskCardDescriptionFirst": "설명 먼저",
+  "taskDetailsTab": "세부 정보",
+  "taskDiscussionTab": "토론",
+  "taskProperties": "속성",
+  "filesGrouping": "그룹화",
+  "taskDescriptionHint": "설명 추가",
+  "projectMapExpand": "지도를 전체 화면으로 펼치기",
+  "projectMapCollapse": "지도 전체 화면 종료",
+  "navHabits": "습관",
+  "habitsSubtitle": "매일 작은 한 걸음",
+  "habitHistory": "최근 5일",
+  "habitNotScheduled": "예정 없음",
+  "habitsCompletedLabel": "완료한 습관",
+  "habitNew": "새 습관",
+  "habitEdit": "습관 편집",
+  "habitsActive": "진행 중",
+  "habitsFinished": "종료됨",
+  "habitsEmpty": "첫 습관을 추가하세요.",
+  "habitsFinishedEmpty": "아직 종료된 습관이 없습니다.",
+  "habitsFuture": "미래 날짜는 보기만 가능합니다.",
+  "habitName": "습관 이름",
+  "habitDaily": "매일",
+  "habitWeekdays": "요일 선택",
+  "habitFrequency": "일정",
+  "habitTarget": "하루 횟수",
+  "habitStart": "시작일",
+  "habitEnd": "종료일",
+  "habitForever": "무기한",
+  "habitCustom": "날짜 선택",
+  "habitProject": "프로젝트",
+  "habitNoProject": "프로젝트 없음",
+  "habitReminder": "알림",
+  "habitReminderTime": "알림 시간",
+  "habitReminderDenied": "알림이 꺼져 있습니다. 시스템 설정에서 허용하세요.",
+  "habitReminderUnavailable": "이 플랫폼에서는 백그라운드 알림을 사용할 수 없습니다.",
+  "habitReminderFailed": "알림을 업데이트하지 못했습니다. 다시 시도하세요.",
+  "habitDeleteConfirm": "이 습관과 기록을 삭제할까요?",
+  "habitLoadError": "습관을 불러오지 못했습니다.",
+  "habitSaveError": "저장하지 못했습니다. 입력 내용을 확인하고 다시 시도하세요.",
+  "habitAddCheckIn": "완료 한 번 추가",
+  "habitUndoCheckIn": "마지막 완료 취소",
+  "habitPreviousWeek": "이전 주",
+  "habitNextWeek": "다음 주",
+  "notificationHabitChannel": "습관",
+  "notificationHabitDescription": "미완료 습관 알림",
+  "notificationHabitTitle": "습관을 실천할 시간입니다",
+  "habitsSummary": "습관 {planned}개 중 {completed}개 완료",
+  "habitDurationDays": "{days}일",
+  "@habitsSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "planned": {
+        "type": "int"
+      }
+    }
+  },
+  "@habitDurationDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsAppearancePreview": "미리보기",
+  "settingsPreviewProject": "개인",
+  "settingsPreviewLongTask": "자료를 준비하고 다음 단계를 계획하기",
+  "settingsPreviewCompletedTask": "메모 검토하기",
+  "habitsRemaining": "남은 습관",
+  "habitsDone": "완료",
+  "habitsPlanned": "예정",
+  "habitDayPeriod": "시간대",
+  "habitPeriodAutomatic": "자동",
+  "habitPeriodAnytime": "하루 전체",
+  "habitPeriodNight": "밤",
+  "habitPeriodMultipleReason": "목표에 하루 동안의 여러 반복이 포함됩니다.",
+  "habitPeriodNoTimeReason": "알림 시간이 설정되지 않았습니다.",
+  "habitPeriodReminderReason": "알림 시간을 기준으로 합니다.",
+  "habitPeriodExplanation": "{period}: {reason}",
+  "@habitPeriodExplanation": {
+    "description": "Resolved automatic habit group and the reason for choosing it.",
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "habitPeriodCustom": "시간대별",
+  "habitPeriodTargetsHint": "시간대를 하나 이상 선택하고 각각의 목표를 설정하세요. 하루 총합: 1–99.",
+  "accountAvatar": "아바타",
+  "accountChangeAvatar": "아바타 변경",
+  "accountAvatarInput": "이모지 입력 또는 붙여넣기",
+  "accountAvatarHint": "아래에서 이모지를 선택하거나 키보드에서 붙여넣으세요.",
+  "accountAvatarInvalid": "이모지 하나를 입력하세요.",
+  "accountAvatarSaveError": "아바타를 저장하지 못했습니다. 다시 시도하세요.",
+  "accountAvatarReset": "아바타 초기화",
+  "accountAvatarSkinTone": "피부색",
+  "accountAvatarSmileys": "표정과 사람",
+  "accountAvatarAnimals": "동물과 자연",
+  "accountAvatarFood": "음식과 음료",
+  "accountAvatarActivities": "활동",
+  "accountAvatarTravel": "여행과 장소",
+  "accountAvatarObjects": "사물",
+  "accountAvatarSymbols": "기호",
+  "accountAvatarFlags": "깃발",
+  "reportsPlanEstimates": "오늘 또는 이전에 마감인 미완료 작업의 예상 횟수",
+  "reportsDayInProgress": "오늘은 아직 진행 중입니다",
+  "reportsTimeByProject": "시간을 어디에 썼나요",
+  "reportsNoProject": "프로젝트 없음",
+  "reportsNoTask": "연결된 작업 없음",
+  "reportsUnavailableName": "{name} (사용 불가)",
+  "reportsUnknownProject": "사용할 수 없는 프로젝트",
+  "reportsUnknownTask": "사용할 수 없는 작업",
+  "reportsNoProjectFocus": "이 기간에 완료된 집중 세션이 없습니다",
+  "reportsProjectShare": "집중 시간의 {percent}%",
+  "habitIcon": "습관 아이콘",
+  "habitIconEmoji": "이모지",
+  "habitIconIcons": "아이콘",
+  "habitIconReset": "아이콘 초기화",
+  "habitIconOption": "{icon, select, bookOpen{독서} dumbbell{운동} footprints{걷기} glassWater{물} moon{수면} sun{태양} heart{건강} brain{학습} apple{영양} coffee{커피} music{음악} pencil{글쓰기} code{코딩} leaf{자연} target{목표} bike{자전거} other{습관 아이콘}}",
+  "settingsSynchronization": "동기화",
+  "settingsRestartSync": "동기화 다시 시작",
+  "settingsSyncRunning": "데이터를 확인하고 동기화하는 중…",
+  "settingsSyncComplete": "동기화가 완료되었습니다.",
+  "settingsSyncPending": "전송 또는 복구를 기다리는 변경 사항이 있습니다.",
+  "settingsSyncFailed": "동기화가 완료되지 않았습니다. 자동으로 다시 시도합니다.",
+  "syncUnresolvedChanges": "거부됨: {rejected}. 복구 대기 중: {repair}.",
+  "outlookCalendarTitle": "Outlook Calendar",
+  "calendarDisconnectedSubtitle": "계정을 연결하여 예정된 작업을 동기화하세요.",
+  "calendarFailed": "Calendar 오류: {message}",
+  "@calendarFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarAuthRequired": "Calendar 승인이 필요합니다. 다시 로그인하고 지금 동기화를 실행하세요.",
+  "calendarRateLimited": "Calendar 요청 한도에 도달했습니다. 몇 분 후에 다시 동기화하세요.",
+  "calendarSyncFailed": "Calendar 동기화에 실패했습니다. 나중에 다시 시도하세요.",
+  "calendarUnsupportedEvent": "연결된 일부 일정이 반복 일정이거나 이동되었습니다. 캘린더에서 수정하면 동기화가 재개됩니다.",
+  "settingsFocusSoundTitle": "집중 사운드",
+  "settingsFocusSoundSubtitle": "집중 시간의 시작, 일시 정지, 재개 및 완료 사운드를 선택하세요.",
+  "settingsFocusSoundPreview": "미리 듣기",
+  "settingsFocusSoundPreviewError": "샘플을 재생할 수 없습니다. 다시 시도하세요.",
+  "pomoTitle": "Ada 친구",
+  "pomoDescription": "데스크톱의 작은 친구.",
+  "pomoFocusOnly": "집중 중에만 표시",
+  "pomoQuiet": "조용한 모드",
+  "pomoQuietDescription": "배경 애니메이션 없이 정적인 반응을 표시합니다.",
+  "pomoReduceMotion": "Ada 동작 줄이기",
+  "pomoShow": "Ada 표시",
+  "pomoOpenApp": "앱 열기",
+  "pomoHide": "Ada 숨기기",
+  "pomoResetPosition": "위치 초기화",
+  "pomoInteract": "Ada: 반응 및 컨트롤 전환. 드래그하여 이동하세요.",
+  "pomoQuickAdd": "작업 추가",
+  "pomoError": "Pomo가 작업을 완료하지 못했습니다. 설정에서 다시 표시해 보세요.",
+  "pomoShowTimer": "타이머 표시",
+  "pomoSettings": "Ada 설정",
+  "pomoSize": "크기",
+  "pomoSizeDecrease": "Ada 축소",
+  "pomoSizeIncrease": "Ada 확대",
+  "pomoSizeReset": "100%로 초기화",
+  "pomoSizeEffective": "화면에 맞게 {percent}%로 표시 중",
+  "appIconTitle": "앱 아이콘",
+  "appIconPomo": "Ada",
+  "appIconClassic": "클래식",
+  "appIconError": "아이콘을 적용하거나 저장하지 못했습니다. 다시 시도하세요.",
+  "appIconMacosHint": "Ada 실행 중 Dock 아이콘을 변경합니다. Finder에서는 Pomo를 사용합니다.",
+  "appIconDesktopHint": "앱 아이콘과 Ada 바로가기를 변경합니다. 고정된 복사본은 나중에 업데이트될 수 있습니다.",
+  "appIconWebHint": "탭 아이콘을 변경합니다. 설치된 웹 앱 아이콘은 브라우저에서 관리합니다.",
+  "quickAddFocusEstimate": "뽀모도로 예상 횟수",
+  "quickAddEstimatedPomodoros": "{count, plural, other{뽀모도로 {count}회}}",
+  "quickAddDecreaseEstimate": "예상 횟수 줄이기",
+  "quickAddIncreaseEstimate": "예상 횟수 늘리기",
+  "quickAddEstimateRange": "1~999 사이의 정수를 입력하세요.",
+  "quickAddEstimateFocusTime": "{count} × {workMinutes}분 = 집중 시간 {totalMinutes}분",
+  "quickAddEstimateAutomatic": "작업 시간 기준",
+  "quickAddClearEstimate": "예상 횟수 지우기",
+  "pomoLinuxChecking": "데스크톱 환경 확인 중…",
+  "pomoLinuxUnavailable": "현재 데스크톱 환경에서는 아직 Pomo를 사용할 수 없습니다: {environment}. 환경 정보를 포함하여 support@Ada.com으로 이메일을 보내 주세요.",
+  "pomoLinuxWrite": "메일 쓰기",
+  "pomoLinuxCopyDetails": "환경 정보 복사",
+  "pomoLinuxCopied": "환경 정보를 복사했습니다.",
+  "pomoLinuxMailError": "이메일 앱을 열 수 없습니다. 환경 정보를 복사하여 support@Ada.com으로 보내 주세요.",
+  "pomoLinuxDisplayMode": "Ada 화면",
+  "pomoLinuxFollowUser": "사용 중인 화면 따라가기",
+  "pomoLinuxPinned": "모니터 선택",
+  "pomoLinuxMonitor": "모니터",
+  "pomoLinuxSelectMonitor": "모니터를 선택하세요",
+  "pomoLinuxMonitorUnavailable": "{monitor} (연결 끊김)",
+  "pomoLinuxCrossDisplayDrag": "모니터 간 드래그 허용",
+  "pomoLinuxCrossDisplayDragDescription": "표시 모드를 바꾸지 않고 Pomo를 다른 모니터로 드래그합니다.",
+  "pomoLinuxCrossDisplayDragPinned": "Pomo는 선택한 모니터에 유지됩니다. 드래그 설정은 자동 모드용으로 저장됩니다.",
+  "pomoLinuxWorkspaceFollow": "Sway에서 Pomo는 활성 작업 공간을 따라갑니다.",
+  "pomoLinuxFollowUnavailable": "이 환경에서는 자동 따라가기를 사용할 수 없습니다. 모니터를 선택하여 Pomo를 한 화면에 고정하세요.",
+  "pomoLinuxUnknownEnvironment": "알 수 없는 데스크톱 환경",
+  "pomoGnomeInstallDescription": "Pomo를 바탕 화면에 표시하려면 GNOME Shell 확장이 필요합니다. 포함된 확장을 사용자 계정에 설치하세요.",
+  "pomoGnomeEnableDescription": "GNOME Shell에서 Ada 확장을 활성화하세요. 사용자 확장이 전체적으로 비활성화되어 있다면 먼저 확장 앱에서 활성화하세요.",
+  "pomoGnomeReloginDescription": "확장이 설치되었습니다. GNOME Shell이 이 버전을 불러오도록 로그아웃한 뒤 다시 로그인하고 재확인하세요.",
+  "pomoGnomeUpdateDescription": "이 버전의 Pomo를 사용하려면 GNOME Shell용 Ada 확장을 업데이트하세요.",
+  "pomoGnomeIncompatibleDescription": "포함된 Ada 확장은 이 GNOME Shell 버전을 지원하지 않습니다.",
+  "pomoGnomeErrorDescription": "GNOME Shell용 Ada 확장을 시작할 수 없습니다. 상태를 확인하거나 지원팀에 보낼 환경 정보를 복사하세요.",
+  "pomoGnomePausedDescription": "GNOME Shell에서 Pomo를 일시적으로 사용할 수 없습니다. 바탕 화면 연결이 준비되면 다시 표시됩니다.",
+  "pomoGnomeInstall": "확장 설치",
+  "pomoGnomeEnable": "확장 활성화",
+  "pomoGnomeUpdate": "확장 업데이트",
+  "pomoGnomeCheckAgain": "다시 확인",
+  "pomoGnomeXWaylandDescription": "이 GNOME 세션에서 XWayland를 사용할 수 없습니다. Pomo에는 XWayland와 Shell 확장이 필요합니다. XWayland를 활성화하고 Ada를 다시 시작한 뒤 재확인하세요.",
+  "pomoGnomeUserExtensionsDisabledDescription": "이 세션에서 GNOME 사용자 확장이 꺼져 있습니다. 확장 앱을 열어 사용자 확장을 켠 뒤 재확인하세요. Ada는 이 시스템 설정을 변경하지 않습니다.",
+  "settingsSyncRecoveryTitle": "로컬 데이터 복구",
+  "settingsSyncRecoveryBody": "이전 로컬 보관 파일에서 개인 기록 {count}개를 찾았습니다. 이 계정과 병합하기 전에 데이터가 {account}의 것인지 확인하세요. 클라우드의 최신 변경 사항과 확인된 삭제는 유지됩니다. 보관 파일은 백업으로 남습니다.",
+  "settingsSyncRecoveryConfirm": "내 데이터 복구",
+  "settingsSyncRecoveryFailed": "로컬 데이터 복구가 완료되지 않았습니다. 보관 파일은 유지됩니다. 동기화를 다시 시작해 보세요.",
+  "aiQuotaTitle": "AI usage",
+  "aiQuotaUnavailable": "Could not load the AI limit.",
+  "aiQuotaUsage": "{used} of {limit} requests used · {remaining} remaining",
+  "aiQuotaReset": "Resets {date}",
+  "aiQuotaExplanation": "Task analysis and new automatic categories share this monthly limit. Cached categories and manual corrections are free.",
+  "distractionTitle": "Distraction blocking",
+  "distractionDescription": "Choose what to block during Focus. Unknown resources stay allowed until you assign a category.",
+  "distractionProfile": "Protection profile",
+  "distractionBeforeStart": "선택한 프로필은 다음 Focus에 적용됩니다. 카테고리와 예외는 언제든지 수정할 수 있습니다.",
+  "distractionNone": "No blocking profile",
+  "distractionAddProfile": "Add profile",
+  "distractionEditProfile": "Edit profile",
+  "distractionProfileName": "Profile name",
+  "distractionStrictExit": "Strict Focus exit",
+  "distractionStrictDescription": "Used when the selected Focus preset has strict mode enabled.",
+  "distractionWait60": "Wait 60 seconds",
+  "distractionConfirmImmediately": "Confirm immediately",
+  "distractionDiscovery": "Discover used apps",
+  "distractionDiscoveryPrivacy": "Only foreground app identities and product names are stored locally. No disk scan, document names or window titles.",
+  "distractionAttempts": "Save distraction attempts",
+  "distractionAttemptsPrivacy": "Optional local events, with repeated attempts combined. Usage time and page content are not recorded.",
+  "distractionAutomatic": "자동 카테고리",
+  "distractionAutomaticDescription": "검색으로 카테고리를 정합니다. 수동 선택이 우선합니다.",
+  "distractionLocal": "Local Focus · this computer",
+  "distractionShared": "Shared Focus · connected",
+  "distractionOffline": "Offline · protection ends at the confirmed deadline",
+  "distractionNativeApplied": "Application protection applied",
+  "distractionNativeReady": "Application protection available",
+  "distractionNativeUnavailable": "Application protection unavailable",
+  "distractionChrome": "Chrome extension",
+  "distractionPairDescription": "Enable protection in Chrome and pair this desktop using a one-time code. The code expires after two minutes.",
+  "distractionPair": "Show pairing code",
+  "distractionPairCode": "Code {code} · port {port}",
+  "distractionConflict": "A shared Focus is already running on another device. Choose which session to continue.",
+  "distractionJoinShared": "Join shared Focus",
+  "distractionFinishLocal": "Finish local Focus",
+  "distractionStopEverywhere": "End Focus on all devices",
+  "distractionResources": "Resources and exceptions",
+  "distractionAddSite": "Add site",
+  "distractionNoResources": "Enable app discovery or add a site. Chrome discovers domains only after you grant permission.",
+  "distractionCategory": "Category",
+  "distractionException": "Profile exception",
+  "distractionUseCategory": "Use category",
+  "distractionAllow": "Always allow",
+  "distractionBlock": "Always block",
+  "distractionClassify": "Find category · Pro",
+  "distractionAutomaticSource": "Automatic category · manual corrections take priority",
+  "distractionDetached": "Protection disabled here",
+  "distractionLastSeen": "Last confirmation: {date}",
+  "distractionInvalidDomain": "Enter a public domain, such as youtube.com.",
+  "distractionOnPause": "Block during pauses",
+  "distractionOnShortBreak": "Block during short breaks",
+  "distractionOnLongBreak": "Block during long breaks",
+  "distractionExitTitle": "End strict Focus?",
+  "distractionExitCountdown": "Exit available in {seconds} seconds. You can cancel and return to Focus.",
+  "distractionExitConfirm": "The interval will be interrupted without a completion reward.",
+  "distractionExitConfirmButton": "Confirm exit",
+  "distractionExitCancel": "Keep focusing",
+  "distractionSocial": "Social media",
+  "distractionMessaging": "Messaging",
+  "distractionVideo": "Video",
+  "distractionMusic": "Music",
+  "distractionGames": "Games",
+  "distractionNews": "News",
+  "distractionShopping": "Shopping",
+  "distractionEducation": "Education",
+  "distractionDevelopment": "Development",
+  "distractionProductivity": "Work tools",
+  "distractionOther": "Other",
+  "distractionUnclassified": "Unclassified",
+  "distractionConnected": "Connected",
+  "distractionDisconnected": "Disconnected",
+  "distractionProtected": "Protected · rules confirmed",
+  "distractionNotConfirmed": "Rules not confirmed",
+  "distractionIncognito": "Incognito access: {status}",
+  "@distractionIncognito": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "blockingTitle": "차단",
+  "blockingDescription": "작업 리듬과 제한을 한곳에서 관리하세요.",
+  "blockingRhythm": "집중 {work}분 · 휴식 {short}분 · {count}회마다 긴 휴식 {long}분",
+  "blockingSharedPresets": "사용 중인 프리셋: {presets}. 프로필 변경은 모두에 적용됩니다.",
+  "blockingProfileMissing": "지정한 프로필을 사용할 수 없습니다. 다시 불러오거나 다른 프로필을 선택하세요.",
+  "blockingWhatToClose": "닫을 항목",
+  "blockingWhatToKeep": "계속 사용할 항목",
+  "blockingBehavior": "프로필 동작",
+  "blockingApps": "앱",
+  "blockingEnabled": "사용",
+  "blockingDisabled": "사용 안 함",
+  "blockingDevices": "이 컴퓨터와 Chrome",
+  "blockingDeviceDetails": "기기 및 개인정보",
+  "blockingSaving": "저장 중…",
+  "blockingCurrentFocus": "진행 중인 Focus로",
+  "blockingReady": "시작 준비 완료",
+  "@blockingRhythm": {
+    "placeholders": {
+      "work": {
+        "type": "int"
+      },
+      "short": {
+        "type": "int"
+      },
+      "long": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@blockingSharedPresets": {
+    "placeholders": {
+      "presets": {
+        "type": "String"
+      }
+    }
+  },
+  "shortcutHintsTitle": "키보드 힌트",
+  "shortcutHintsNavigation": "이동",
+  "shortcutHintsHeld": "{key} 누르는 중 · 놓으면 숨김",
+  "shortcutHintsRelease": "이 키를 사용하려면 먼저 {key} 키를 놓으세요",
+  "shortcutHintsSwitchFocusView": "집중 보기 전환",
+  "shortcutHintsNavigate": "이동",
+  "shortcutHintsAcceptSuggestion": "제안 적용",
+  "blockingShowAllPresets": "모두 보기",
+  "blockingCollapsePresets": "접기",
+  "taskNew": "새 작업",
+  "taskCreateAction": "작업 만들기",
+  "taskDescription": "설명",
+  "taskExpandEditor": "편집기 확장",
+  "taskCollapseEditor": "편집기 축소",
+  "taskVisibleToYou": "나에게만 표시",
+  "taskVisibleToTeam": "팀원에게 표시",
+  "taskCreatedFilesPending": "작업이 생성되었습니다. 남은 파일을 다시 업로드하거나 목록에서 제거하여 완료하세요.",
+  "taskFormatBold": "굵게 (Markdown)",
+  "taskFormatItalic": "기울임꼴 (Markdown)",
+  "taskFormatList": "글머리 기호 목록",
+  "taskFormatLink": "링크 (Markdown)",
+  "settingsShortcutsTogglePomo": "Ada 켜기 / 끄기",
+  "settingsMenuBarTimerTitle": "메뉴 막대 타이머",
+  "settingsMenuBarTimerClassic": "이전",
+  "settingsMenuBarTimerModern": "새로운",
+  "settingsMenuBarTimerError": "메뉴 막대 타이머를 업데이트하지 못했습니다. 다시 시도해 주세요.",
+  "quickAddEnterEstimate": "숫자 입력",
+  "quickAddEstimateTotalTime": "집중 시간 {minutes}분",
+  "quickAddEstimateInterval": "회당 {minutes}분",
+  "habitCheckIn": "기록하기",
+  "habitWeekHistory": "이번 주",
+  "habitProgressOn": "{date} 진행 상황",
+  "habitsDayRhythm": "하루 리듬",
+  "habitsProgressCircle": "진행 원형",
+  "habitsPresentationError": "이 보기를 저장하지 못했습니다.",
+  "habitsRemainingToday": "오늘 남은 습관",
+  "habitsCompletedToday": "오늘 완료한 습관",
+  "habitsRemainingOn": "{date} 남은 습관",
+  "habitsCompletedOn": "{date} 완료한 습관",
+  "habitsProgressCaption": "습관 완료",
+  "priorityUrgent": "긴급",
+  "priorityHigh": "높음",
+  "priorityNormal": "보통",
+  "priorityLow": "낮음",
+  "pickerDateAndTime": "날짜 및 시간",
+  "pickerInOneWeek": "일주일 후",
+  "pickerEnterTime": "시간 입력",
+  "pickerTimeWheels": "시간 휠",
+  "pickerMinuteOffset": "{offset}분",
+  "pickerIncrease": "늘리기",
+  "pickerDecrease": "줄이기",
+  "focusDuration": "시간",
+  "focusPlannedDuration": "계획 · {duration}",
+  "focusShortenDuration": "−5분",
+  "focusExtendDuration": "+5분",
+  "focusFinish": "완료",
+  "taskStatusBlocked": "차단됨",
+  "taskStatusUrgent": "긴급",
+  "blockingControls": "의존 관계 및 긴급도",
+  "blockingUrgent": "나에게 긴급한 작업",
+  "blockingRepeat": "다음 반복 작업도 긴급으로 유지",
+  "blockingCascade": "우선순위 순서",
+  "blockingSearch": "선행 작업 찾기",
+  "blockingDependency": "선행 작업 완료 대기 중",
+  "blockingPriority": "우선순위가 높은 작업부터",
+  "blockingUrgentReason": "긴급한 작업 우선",
+  "blockingUnavailable": "이 작업을 수행할 수 없습니다. 데이터를 새로고침한 후 다시 시도하세요.",
+  "blockingDeleteWarning": "이 작업을 삭제하면 의존하는 작업의 차단이 해제됩니다.",
+  "blockingNoMatches": "사용 가능한 선행 작업이 없습니다",
+  "blockingSyncConflictDetails": "이 작업이 차단되어 서버에서 완료 처리를 거부했습니다. 작업 상태가 복원되었으며 누적 집중 시간은 유지됩니다.",
+  "blockingSyncConflict": "동기화 충돌"
+}

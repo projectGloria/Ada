@@ -1,0 +1,9 @@
+{
+  "uuid": "pomo@ada.com",
+  "name": "Ada Pomo",
+  "description": "GNOME bridge for Ada companion placement and optional foreground distraction protection.",
+  "shell-version": ["46", "50", "51"],
+  "session-modes": ["user", "unlock-dialog"],
+  "version": 2,
+  "url": "https://github.com/Kabanya/Ada"
+}

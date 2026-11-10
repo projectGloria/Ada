@@ -1,0 +1,199 @@
+# Project-level configuration.
+cmake_minimum_required(VERSION 3.19)
+# Sentry's vendored libunwind needs ASM enabled by the top-level project.
+project(runner LANGUAGES C CXX ASM)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+#
+# Keep this as a single literal `set(BINARY_NAME "...")` line: the Flutter tool
+# reads the executable name back with a regular expression to find the built
+# bundle, so a conditional assignment here would break `flutter run`.
+set(BINARY_NAME "ada")
+
+# Explicitly opt in to modern CMake behaviors to avoid warnings with recent
+# versions of CMake.
+cmake_policy(SET CMP0063 NEW)
+
+# Load bundled libraries from the lib/ directory relative to the binary.
+set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
+
+# Root filesystem for cross-building.
+if(FLUTTER_TARGET_PLATFORM_SYSROOT)
+  set(CMAKE_SYSROOT ${FLUTTER_TARGET_PLATFORM_SYSROOT})
+  set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
+  set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+  set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+endif()
+
+# Define build configuration options.
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE
+    STRING "Flutter build mode" FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Profile" "Release")
+endif()
+
+# Compilation settings that should be applied to most targets.
+#
+# Be cautious about adding new options here, as plugins use this function by
+# default. In most cases, you should add new options to specific targets instead
+# of modifying this function.
+function(APPLY_STANDARD_SETTINGS TARGET)
+  target_compile_features(${TARGET} PUBLIC cxx_std_14)
+  target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+  target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
+  target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
+endfunction()
+
+# Flutter library and tool build rules.
+set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
+add_subdirectory(${FLUTTER_MANAGED_DIR})
+
+# Application identity. `flutter build linux --flavor <name>` makes Flutter write
+# FLUTTER_APP_FLAVOR into flutter/ephemeral/generated_config.cmake, and the
+# add_subdirectory above hands it back through PARENT_SCOPE. The three values
+# mirror lib/domain/models/app_flavor.dart.
+#
+# The GTK application identifier is what keeps the flavors apart at runtime: it
+# is the D-Bus name GApplication registers, so launching the development build
+# activates the development window and never a running production one. See:
+# https://wiki.gnome.org/HowDoI/ChooseApplicationID
+set(APPLICATION_ID "com.finchforge.ada")
+set(APP_DISPLAY_NAME "Ada")
+if(FLUTTER_APP_FLAVOR STREQUAL "development")
+  set(APPLICATION_ID "com.finchforge.ada.dev")
+  set(APP_DISPLAY_NAME "Ada-Dev")
+elseif(FLUTTER_APP_FLAVOR STREQUAL "staging")
+  set(APPLICATION_ID "com.finchforge.ada.stg")
+  set(APP_DISPLAY_NAME "Ada-Stg")
+elseif(FLUTTER_APP_FLAVOR STREQUAL "production")
+  # Named explicitly rather than left to the defaults, because the repository
+  # tooling passes --flavor production on the release build and a bare flavor
+  # would otherwise have to fall through to the guard below.
+elseif(NOT FLUTTER_APP_FLAVOR STREQUAL "")
+  # An unrecognized flavor would silently build a production-identified app, so
+  # refuse instead of falling back.
+  message(FATAL_ERROR
+    "Unknown FLUTTER_APP_FLAVOR '${FLUTTER_APP_FLAVOR}'. "
+    "Expected development, staging or production.")
+endif()
+
+# System-level dependencies.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+pkg_check_modules(X11 REQUIRED IMPORTED_TARGET x11)
+
+# Application build; see runner/CMakeLists.txt.
+add_subdirectory("runner")
+
+# Run the Flutter tool portions of the build. This must not be removed.
+add_dependencies(${BINARY_NAME} flutter_assemble)
+
+# Only the install-generated bundle's copy of the executable will launch
+# correctly, since the resources must in the right relative locations. To avoid
+# people trying to run the unbundled copy, put it in a subdirectory instead of
+# the default top-level location.
+set_target_properties(${BINARY_NAME}
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/intermediates_do_not_run"
+)
+
+
+# Generated plugin build rules, which manage building the plugins and adding
+# them to the application.
+include(flutter/generated_plugins.cmake)
+
+# shortcut: Thermion 0.5.0 assumes build/ is inside the app; remove after upstream fixes path discovery.
+if(TARGET thermion_flutter_plugin)
+  file(READ "${CMAKE_CURRENT_SOURCE_DIR}/../.dart_tool/package_config.json" packages)
+  string(JSON package_count LENGTH "${packages}" packages)
+  math(EXPR package_last "${package_count} - 1")
+  foreach(index RANGE ${package_last})
+    string(JSON package_name GET "${packages}" packages ${index} name)
+    if(package_name STREQUAL "thermion_dart")
+      string(JSON package_root GET "${packages}" packages ${index} rootUri)
+      string(REGEX REPLACE "^file://" "" package_root "${package_root}")
+      get_filename_component(package_root "${package_root}" ABSOLUTE
+        BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../.dart_tool")
+      set(thermion_include "${package_root}/native/include")
+      target_include_directories(thermion_flutter_plugin PRIVATE
+        "${thermion_include}" "${thermion_include}/filament"
+        "${thermion_include}/filament/$<IF:$<CONFIG:Debug>,debug,release>"
+        "${thermion_include}/vulkan/linux" "${thermion_include}/opengl/linux")
+      break()
+    endif()
+  endforeach()
+  target_link_directories(thermion_flutter_plugin BEFORE PRIVATE
+    "${PROJECT_BUILD_DIR}native_assets/linux")
+endif()
+
+# multiview_desktop uses structured bindings but does not request C++17 itself.
+target_compile_features(multiview_desktop_plugin PRIVATE cxx_std_17)
+
+if(TARGET thermion_flutter_plugin)
+  include("${CMAKE_CURRENT_SOURCE_DIR}/thermion_runtime.cmake")
+endif()
+
+
+# === Installation ===
+# By default, "installing" just makes a relocatable bundle in the build
+# directory.
+set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
+endif()
+
+# Start with a clean build bundle directory every time.
+install(CODE "
+  file(REMOVE_RECURSE \"${BUILD_BUNDLE_DIR}/\")
+  " COMPONENT Runtime)
+
+set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
+set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+
+install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+
+foreach(bundled_library ${PLUGIN_BUNDLED_LIBRARIES})
+  install(FILES "${bundled_library}"
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endforeach(bundled_library)
+
+# Copy the native assets provided by the build.dart from all packages.
+set(NATIVE_ASSETS_DIR "${PROJECT_BUILD_DIR}native_assets/linux/")
+install(DIRECTORY "${NATIVE_ASSETS_DIR}"
+   DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+   COMPONENT Runtime)
+
+# Fully re-copy the assets directory on each build to avoid having stale files
+# from a previous install.
+set(FLUTTER_ASSET_DIR_NAME "flutter_assets")
+install(CODE "
+  file(REMOVE_RECURSE \"${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}\")
+  " COMPONENT Runtime)
+install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
+  DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
+
+# Install the AOT library on non-Debug builds only.
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endif()
+
+# The source and ZIP travel together for offline per-user installation.
+include("${CMAKE_CURRENT_SOURCE_DIR}/gnome_extension.cmake")
+
+# Preserve upstream notices for the vendored Wayland protocol implementations.
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/multiview_desktop/linux/protocols/LICENSE"
+  DESTINATION "${INSTALL_BUNDLE_DATA_DIR}/licenses/wayland-protocols"
+  COMPONENT Runtime)

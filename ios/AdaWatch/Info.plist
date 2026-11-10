@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array><string>$(ADA_URL_SCHEME)</string></array>
+		</dict>
+	</array>
+	<key>AdaAppGroup</key>
+	<string>$(ADA_APP_GROUP)</string>
+	<key>AdaURLScheme</key>
+	<string>$(ADA_URL_SCHEME)</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(ADA_DISPLAY_NAME)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>AdaEnvironment</key>
+	<string>$(ADA_ENVIRONMENT)</string>
+	<key>AdaRelease</key>
+	<string>$(ADA_RELEASE)</string>
+	<key>AdaSentryDSN</key>
+	<string>$(SENTRY_DSN)</string>
+	<key>AdaSupabaseAnonKey</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+	<key>AdaSupabaseURL</key>
+	<string>$(SUPABASE_URL)</string>
+	<key>AdaTurnstileSiteKey</key>
+	<string>$(TURNSTILE_SITE_KEY)</string>
+	<key>AdaWebAppURL</key>
+	<string>$(WEB_APP_URL)</string>
+	<key>WKApplication</key>
+	<true/>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>$(ADA_COMPANION_BUNDLE_ID)</string>
+</dict>
+</plist>

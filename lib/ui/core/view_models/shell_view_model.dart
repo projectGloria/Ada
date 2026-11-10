@@ -1,0 +1,141 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ada/config/account_providers.dart';
+import 'package:ada/config/keyboard_shortcuts.dart';
+import 'package:ada/config/providers.dart';
+import 'package:ada/ui/core/platform/macos_app_menu.dart';
+import 'package:ada/data/services/local/local_profile_service.dart';
+import 'package:ada/domain/models/tasks/task_models.dart';
+import 'package:ada/domain/use_cases/tasks/project_list_data.dart';
+
+final class ShellKeyboardState {
+  const ShellKeyboardState({required this.platform, required this.shortcuts});
+
+  final TargetPlatform platform;
+  final Map<AppShortcutCommand, AppShortcutBinding> shortcuts;
+
+  bool matchesZoom(KeyEvent event, HardwareKeyboard keyboard) =>
+      appZoomBindings(
+        platform,
+      ).keys.any((binding) => binding.matches(event, keyboard));
+
+  bool matchesZoomRaw(RawKeyEvent event) => appZoomBindings(
+    platform,
+  ).keys.any((binding) => binding.matchesRawEvent(event));
+}
+
+final shellKeyboardViewModelProvider = Provider<ShellKeyboardState>((ref) {
+  ref.watch(keyboardShortcutsLoadedProvider);
+  return ShellKeyboardState(
+    platform: ref.watch(shortcutTargetPlatformProvider),
+    shortcuts: ref.watch(keyboardShortcutsProvider),
+  );
+});
+
+final shellTaskForDetailsProvider = FutureProvider.autoDispose
+    .family<TaskItem?, String>(
+      (ref, id) => ref.read(taskRepositoryProvider).watchTask(id).first,
+    );
+
+final class ShellSidebarState {
+  const ShellSidebarState({
+    required this.displayName,
+    this.avatarEmoji,
+    required this.inboxCount,
+    required this.todayCount,
+    required this.upcomingCount,
+    required this.projects,
+    required this.projectTaskCounts,
+  });
+
+  final String? displayName;
+  final String? avatarEmoji;
+  final int inboxCount;
+  final int todayCount;
+  final int upcomingCount;
+  final AsyncValue<List<ProjectItem>> projects;
+  final Map<String, int> projectTaskCounts;
+}
+
+final shellSidebarViewModelProvider = Provider<ShellSidebarState>((ref) {
+  final now = ref.watch(clockProvider).now().toLocal();
+  final today = DateTime(now.year, now.month, now.day);
+  final profile = ref.watch(accountProfileProvider);
+  final localProfile = ref.watch(localProfileProvider);
+  final inbox = ref.watch(tasksByQueryProvider(const TaskQuery.inbox()));
+  final todayTasks = ref.watch(
+    tasksByQueryProvider(TaskQuery(kind: TaskQueryKind.today, now: today)),
+  );
+  final upcoming = ref.watch(
+    tasksByQueryProvider(TaskQuery(kind: TaskQueryKind.upcoming, now: today)),
+  );
+  final all = ref.watch(tasksByQueryProvider(const TaskQuery.all()));
+  return ShellSidebarState(
+    displayName: localProfile.name ?? profile?.displayName ?? profile?.email,
+    avatarEmoji: localProfile.emoji ?? profile?.avatarEmoji,
+    inboxCount: _openTaskCount(inbox),
+    todayCount: _openTaskCount(todayTasks),
+    upcomingCount: _openTaskCount(upcoming),
+    projects: ref.watch(projectsProvider),
+    projectTaskCounts: countOpenTasksByProject(all.value ?? const []),
+  );
+});
+
+int _openTaskCount(AsyncValue<List<TaskItem>> value) =>
+    value.value?.where((task) => !task.isCompleted && !task.isDeleted).length ??
+    0;
+
+abstract interface class ShellAppMenu {
+  Future<void> sync({
+    required String locale,
+    required Map<AppShortcutCommand, String> labels,
+    required ShellKeyboardState keyboard,
+  });
+  void dispose();
+}
+
+ShellAppMenu? createShellAppMenu({
+  required ShellKeyboardState keyboard,
+  required ValueChanged<String> onSelected,
+}) => keyboard.platform == TargetPlatform.macOS
+    ? _ShellAppMenu(
+        MacOSAppMenuController(
+          platform: keyboard.platform,
+          onSelected: onSelected,
+          allowedCommandIds: {
+            for (final command in AppShortcutCommand.values) command.name,
+          },
+        ),
+      )
+    : null;
+
+final class _ShellAppMenu implements ShellAppMenu {
+  const _ShellAppMenu(this._controller);
+  final MacOSAppMenuController _controller;
+
+  @override
+  Future<void> sync({
+    required String locale,
+    required Map<AppShortcutCommand, String> labels,
+    required ShellKeyboardState keyboard,
+  }) => _controller.sync(
+    locale: locale,
+    commands: [
+      for (final command in AppShortcutCommand.values)
+        MacOSMenuCommand(
+          id: command.name,
+          label: labels[command]!,
+          keyLabel: keyboard.shortcuts[command]!.keyLabel,
+          meta: keyboard.shortcuts[command]!.meta,
+          control: keyboard.shortcuts[command]!.control,
+          alt: keyboard.shortcuts[command]!.alt,
+          shift: keyboard.shortcuts[command]!.shift,
+        ),
+    ],
+  );
+
+  @override
+  void dispose() => _controller.dispose();
+}

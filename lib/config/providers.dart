@@ -1,0 +1,555 @@
+import 'package:ada/config/local_completion_dependencies.dart';
+import 'package:ada/utils/startup_diagnostics.dart';
+import 'package:ada/config/task_preferences_dependencies.dart';
+import 'package:ada/domain/models/calendar/calendar_models.dart';
+import 'package:ada/data/repositories/calendar/drift_calendar_integration_repository.dart';
+import 'package:ada/data/repositories/kanban/kanban_repository.dart';
+import 'package:ada/data/repositories/labels/label_repository.dart';
+import 'package:ada/data/repositories/projects/project_repository.dart';
+import 'package:ada/data/repositories/tasks/task_repository.dart';
+import 'package:ada/data/repositories/focus/focus_repository.dart';
+import 'package:ada/data/repositories/achievements/achievement_repository.dart';
+import 'package:ada/data/repositories/productivity/productivity_repository.dart';
+import 'package:ada/data/repositories/projects/project_repository_impl.dart';
+import 'package:ada/data/repositories/labels/label_repository_impl.dart';
+import 'dart:async';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:ada/config/app_language.dart';
+import 'package:ada/config/project_collaboration.dart';
+import 'package:ada/ui/core/localization/app_locale.dart';
+import 'package:ada/ui/core/localization/app_date_formatter.dart';
+import 'package:ada/ui/core/view_models/app_date_format_view_model.dart';
+import 'package:ada/domain/models/tasks/task_time.dart';
+import 'package:ada/ui/core/localization/app_localizations.dart';
+import 'package:ada/ui/core/localization/notification_copy.dart';
+import 'package:ada/data/services/audio/focus_sound_player.dart';
+import 'package:ada/data/services/local/database/app_database.dart';
+import 'package:ada/data/repositories/notifications/local_notification_repository.dart';
+import 'package:ada/data/repositories/notifications/notification_repository.dart';
+import 'package:ada/data/services/notifications/notification_scheduler.dart';
+import 'package:ada/data/services/local/outbox_service.dart';
+import 'package:ada/data/services/local/sync_owner_store.dart';
+import 'package:ada/config/clock_provider.dart';
+export 'package:ada/config/clock_provider.dart' show clockProvider;
+import 'package:ada/utils/timer_engine.dart';
+import 'package:ada/data/repositories/focus/focus_repository_impl.dart';
+import 'package:ada/domain/models/focus/focus_models.dart';
+import 'package:ada/config/focus_dependencies.dart';
+import 'package:ada/data/repositories/calendar/google_calendar_repository.dart';
+import 'package:ada/data/repositories/local/local_transaction.dart';
+import 'package:ada/domain/use_cases/quick_add/quick_add_use_case.dart';
+import 'package:ada/domain/use_cases/tasks/edit_task_title_use_case.dart';
+import 'package:ada/domain/use_cases/focus/complete_expired_focus_interval_use_case.dart';
+import 'package:ada/domain/use_cases/focus/refresh_focus_notification_language_use_case.dart';
+import 'package:ada/domain/models/planning/quick_add_parser.dart';
+import 'package:ada/data/repositories/achievements/achievement_repository_impl.dart';
+import 'package:ada/data/repositories/productivity/productivity_repository_impl.dart';
+import 'package:ada/domain/models/productivity/achievement_models.dart';
+import 'package:ada/domain/models/productivity/productivity_models.dart';
+import 'package:ada/data/repositories/tasks/task_repository_impl.dart';
+import 'package:ada/data/repositories/kanban/kanban_repository_impl.dart';
+import 'package:ada/data/repositories/local/kanban_transition_coordinator.dart';
+import 'package:ada/domain/use_cases/tasks/csv_task_import_use_case.dart';
+import 'package:ada/domain/models/tasks/task_models.dart';
+import 'package:uuid/uuid.dart';
+
+final appDatabaseProvider = Provider<AppDatabase>((ref) {
+  final db = AppDatabase();
+  ref.onDispose(() => unawaited(db.close()));
+  return db;
+});
+
+final appStartupProvider = FutureProvider<void>((ref) async {
+  ref.watch(focusAutoCompletionCoordinatorProvider);
+  final db = ref.watch(appDatabaseProvider);
+  await db.ensureSeedData();
+  traceStartupStage('database-ready');
+  unawaited(
+    _initializeNotificationsBestEffort(
+      ref.watch(notificationRepositoryProvider),
+    ),
+  );
+});
+
+Future<void> _initializeNotificationsBestEffort(
+  NotificationRepository notifications,
+) async {
+  try {
+    await notifications.initialize();
+  } catch (_) {}
+}
+
+final Provider<NotificationScheduler> notificationSchedulerProvider =
+    Provider<NotificationScheduler>((ref) {
+      return NotificationScheduler(
+        localizations: () => lookupAppLocalizations(
+          resolveAppLocale(ref.read(appLanguageProvider)),
+        ).notificationCopy,
+      );
+    });
+
+final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
+  final notifications = LocalNotificationRepository(
+    ref.watch(notificationSchedulerProvider),
+    () => lookupAppLocalizations(
+      resolveAppLocale(ref.read(appLanguageProvider)),
+    ).notificationCopy,
+    clock: ref.watch(clockProvider),
+  );
+  ref.listen(appLanguageProvider, (_, _) {
+    unawaited(
+      RefreshFocusNotificationLanguageUseCase(
+        focus: ref.read(focusRepositoryProvider),
+        notifications: notifications,
+        now: ref.read(clockProvider).now,
+      ).call().catchError((Object _) {}),
+    );
+  });
+  return notifications;
+});
+
+final focusSoundPlayerProvider = Provider<FocusSoundPlayer>((ref) {
+  final preferences = ref.watch(focusPreferencesRepositoryProvider);
+  final player = AssetFocusSoundPlayer(
+    readSoundSet: () async {
+      // Audio remains advisory if preference hydration fails.
+      await preferences.ready;
+      return preferences.state.soundSet;
+    },
+  );
+  ref.onDispose(() => unawaited(player.dispose()));
+  return player;
+});
+
+final quickAddParserProvider = Provider<QuickAddParser>(
+  (ref) => QuickAddParser(
+    dateOrder: AppDateFormatter.inputOrderFor(
+      ref.watch(appDateFormatProvider),
+      resolveAppLocale(ref.watch(appLanguageProvider)).toString(),
+    ),
+    defaultTimedBlockDuration: Duration(
+      minutes: ref.watch(quickAddDefaultTimedBlockMinutesProvider),
+    ),
+  ),
+);
+
+final quickAddHintTextProvider = Provider<String>((ref) {
+  return lookupAppLocalizations(
+    resolveAppLocale(ref.watch(appLanguageProvider)),
+  ).quickAddHint;
+});
+
+final localSyncOwnerProvider = StreamProvider<String?>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return (db.select(db.syncState)
+        ..where((r) => r.id.equals('ada-account-owner-v1')))
+      .watchSingleOrNull()
+      .map((r) => r?.cursor);
+});
+
+final syncQueueRepositoryProvider = Provider<OutboxService>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  final owner = ref.watch(localSyncOwnerProvider);
+  return DriftOutboxService(
+    db,
+    // Capture the persisted owner before starting a mutation, even while the
+    // stream is loading. Waiting for that stream inside a transaction can stall.
+    expectedOwner: owner.hasValue
+        ? Future.value(owner.requireValue)
+        : SyncOwnerStore(db, const Uuid()).owner().then((row) => row?.cursor),
+  );
+});
+
+/// Carries the collaboration API so that deleting a shared root can go through
+/// the server scope operation instead of a content command the server rejects.
+///
+/// The account-backed value is injected through `projectCollaborationProvider`;
+/// keeping the account layer out of this file is what stops it from importing
+/// `account_providers.dart` back.
+final projectRepositoryProvider = Provider<ProjectRepository>((ref) {
+  final collaboration = ref.watch(projectCollaborationProvider);
+  return DriftProjectRepository(
+    ref.watch(appDatabaseProvider),
+    ref.watch(syncQueueRepositoryProvider),
+    collaboration: collaboration.api,
+    synchronize: collaboration.synchronize,
+  );
+});
+
+final csvTaskImporterProvider = Provider<CsvTaskImportUseCase>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return CsvTaskImportUseCase(
+    projects: ref.watch(projectRepositoryProvider),
+    labels: ref.watch(labelRepositoryProvider),
+    kanban: ref.watch(kanbanRepositoryProvider),
+    tasks: ref.watch(taskRepositoryProvider),
+    runAtomically: <T>(Future<T> Function() action) => ownerBoundTransaction<T>(
+      db,
+      ref.read(syncQueueRepositoryProvider),
+      action,
+    ),
+    ensureSeedData: db.ensureSeedData,
+    newId: const Uuid().v4,
+  );
+});
+
+final kanbanTransitionCoordinatorProvider =
+    Provider<KanbanTransitionCoordinator>((ref) {
+      return KanbanTransitionCoordinator(
+        ref.watch(appDatabaseProvider),
+        ref.watch(syncQueueRepositoryProvider),
+        onCompleted: ref.watch(localCompletionEventsProvider).publish,
+      );
+    });
+
+final driftTaskRepositoryProvider = Provider<DriftTaskRepository>((ref) {
+  final repository = DriftTaskRepository(
+    ref.watch(appDatabaseProvider),
+    ref.watch(syncQueueRepositoryProvider),
+    kanbanTransitions: ref.watch(kanbanTransitionCoordinatorProvider),
+  );
+  return repository;
+});
+
+final taskRepositoryProvider = Provider<TaskRepository>((ref) {
+  return ref.watch(driftTaskRepositoryProvider);
+});
+
+final kanbanRepositoryProvider = Provider<KanbanRepository>((ref) {
+  return DriftKanbanRepository(
+    ref.watch(appDatabaseProvider),
+    syncQueue: ref.watch(syncQueueRepositoryProvider),
+    kanbanTransitions: ref.watch(kanbanTransitionCoordinatorProvider),
+  );
+});
+
+final kanbanBoardProvider = StreamProvider<KanbanBoardSnapshot>((ref) {
+  return ref.watch(kanbanRepositoryProvider).watchBoard();
+});
+
+final labelRepositoryProvider = Provider<LabelRepository>((ref) {
+  return DriftLabelRepository(
+    ref.watch(appDatabaseProvider),
+    ref.watch(syncQueueRepositoryProvider),
+  );
+});
+
+final focusRepositoryProvider = Provider<FocusRepository>(
+  (ref) => ref.watch(localFocusRepositoryProvider),
+);
+
+final serverOwnedFocusRunIdsProvider = Provider<Set<String>>((ref) => {});
+
+final localFocusRepositoryProvider = Provider<FocusRepository>((ref) {
+  ref.read(focusCompletionCelebrationEnabledProvider);
+  return DriftFocusRepository(
+    ref.watch(appDatabaseProvider),
+    ref.watch(syncQueueRepositoryProvider),
+    ref.watch(notificationSchedulerProvider),
+    serverOwnedRunIds: ref.watch(serverOwnedFocusRunIdsProvider),
+    soundPlayer: ref.watch(focusSoundPlayerProvider),
+    kanbanTransitions: ref.watch(kanbanTransitionCoordinatorProvider),
+    onIntervalCompleted: ref.watch(localCompletionEventsProvider).publish,
+    onRunCompleted: (event) {
+      if (ref.read(focusCompletionCelebrationEnabledProvider)) {
+        ref.read(focusCompletionRepositoryProvider).present(event);
+      }
+    },
+  );
+});
+
+final focusPresetsProvider = StreamProvider<List<FocusPresetItem>>((ref) {
+  return ref.watch(focusRepositoryProvider).watchPresets();
+});
+
+final productivityRepositoryProvider = Provider<ProductivityRepository>((ref) {
+  return DriftProductivityRepository(
+    ref.watch(appDatabaseProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+final achievementRepositoryProvider = Provider<AchievementRepository>((ref) {
+  return DriftAchievementRepository(
+    ref.watch(appDatabaseProvider),
+    ref.watch(preferencesServiceProvider),
+  );
+});
+
+final achievementsProvider = StreamProvider<List<AchievementItem>>((ref) {
+  return ref.watch(achievementRepositoryProvider).watchAchievements();
+});
+
+final quickAddUseCaseProvider = Provider<QuickAddUseCase>((ref) {
+  return QuickAddUseCase(
+    now: ref.watch(clockProvider).now,
+    parser: ref.watch(quickAddParserProvider),
+    taskRepository: ref.watch(taskRepositoryProvider),
+    projectRepository: ref.watch(projectRepositoryProvider),
+    focusRepository: ref.watch(focusRepositoryProvider),
+    selectedFocusPresetId: () => ref.read(lastFocusPresetIdProvider),
+  );
+});
+
+final editTaskTitleUseCaseProvider = Provider<EditTaskTitleUseCase>((ref) {
+  return EditTaskTitleUseCase(
+    parser: ref.watch(quickAddParserProvider),
+    taskRepository: ref.watch(taskRepositoryProvider),
+    projectRepository: ref.watch(projectRepositoryProvider),
+  );
+});
+
+final localTransactionProvider = Provider<RunLocalTransaction>((ref) {
+  return ref.watch(appDatabaseProvider).transaction;
+});
+
+final tasksByQueryProvider = StreamProvider.family<List<TaskItem>, TaskQuery>((
+  ref,
+  query,
+) {
+  return ref.watch(taskRepositoryProvider).watchTasks(query).map((tasks) {
+    traceStartupStage('tasks-emitted');
+    return tasks;
+  });
+});
+
+final taskProvider = StreamProvider.family<TaskItem?, String>((ref, id) {
+  return ref.watch(taskRepositoryProvider).watchTask(id);
+});
+
+final recurringTaskMaterializationProvider = Provider<void>((ref) {
+  Future<void> run() async {
+    try {
+      await ref
+          .read(taskRepositoryProvider)
+          .materializeDueRecurringTasks()
+          .then((result) => result.getOrThrow());
+    } catch (_) {}
+  }
+
+  unawaited(run());
+  final timer = Timer.periodic(
+    const Duration(minutes: 1),
+    (_) => unawaited(run()),
+  );
+  ref.onDispose(timer.cancel);
+});
+
+final taskStartNotificationCoordinatorProvider = Provider<void>((ref) {
+  final tasks = ref.watch(tasksByQueryProvider(const TaskQuery.all())).value;
+  if (tasks == null) {
+    return;
+  }
+  // Rebuild on language change so rescheduled notifications use new copy.
+  ref.watch(appLanguageProvider);
+  unawaited(
+    _syncTaskStartNotificationsBestEffort(
+      tasks: tasks,
+      now: ref.watch(clockProvider).now(),
+      notifications: ref.watch(notificationRepositoryProvider),
+    ),
+  );
+});
+
+Future<void> _syncTaskStartNotificationsBestEffort({
+  required List<TaskItem> tasks,
+  required DateTime now,
+  required NotificationRepository notifications,
+}) async {
+  try {
+    await notifications.syncTaskStartNotifications(tasks: tasks, now: now);
+  } catch (_) {}
+}
+
+final projectsProvider = StreamProvider<List<ProjectItem>>((ref) {
+  return ref.watch(projectRepositoryProvider).watchProjects();
+});
+
+final labelsProvider = StreamProvider<List<LabelItem>>((ref) {
+  return ref.watch(labelRepositoryProvider).watchLabels();
+});
+
+final labelTaskCountsProvider = StreamProvider<Map<String, int>>((ref) {
+  return ref.watch(labelRepositoryProvider).watchOpenTaskCounts();
+});
+
+final activeFocusRunProvider = StreamProvider<FocusRunItem?>((ref) {
+  return ref.watch(focusRepositoryProvider).watchActiveRun();
+});
+
+final activeFocusIntervalProvider = StreamProvider<FocusIntervalItem?>((ref) {
+  return ref.watch(focusRepositoryProvider).watchActiveInterval();
+});
+
+final focusIntervalsForRunProvider =
+    StreamProvider.family<List<FocusIntervalItem>, String>((ref, runId) {
+      return ref.watch(focusRepositoryProvider).watchIntervalsForRun(runId);
+    });
+
+final focusTickerProvider = StreamProvider<DateTime>((ref) {
+  final clock = ref.watch(clockProvider);
+  late final StreamController<DateTime> controller;
+  Timer? timer;
+  controller = StreamController<DateTime>(
+    onListen: () {
+      controller.add(clock.now());
+      timer = Timer.periodic(
+        const Duration(seconds: 1),
+        (_) => controller.add(clock.now()),
+      );
+    },
+    onCancel: () => timer?.cancel(),
+  );
+  ref.onDispose(() {
+    timer?.cancel();
+    unawaited(controller.close());
+  });
+  return controller.stream;
+});
+
+final taskTimeTickerProvider = focusTickerProvider;
+
+final completeExpiredFocusIntervalUseCaseProvider =
+    Provider<CompleteExpiredFocusIntervalUseCase>(
+      (ref) => CompleteExpiredFocusIntervalUseCase(
+        ref.watch(focusRepositoryProvider),
+      ),
+    );
+
+final focusAutoCompletionCoordinatorProvider = Provider<void>((ref) {
+  ref.listen(focusTickerProvider, (_, tick) {
+    final now = tick.value;
+    if (now == null) return;
+    unawaited(
+      ref
+          .read(completeExpiredFocusIntervalUseCaseProvider)
+          .call(ref.read(activeFocusIntervalProvider).value, now)
+          .catchError((Object _) {}),
+    );
+  }, fireImmediately: true);
+});
+
+final overdueTasksProvider = Provider.autoDispose<AsyncValue<List<TaskItem>>>((
+  ref,
+) {
+  final tasks = ref.watch(tasksByQueryProvider(const TaskQuery.all()));
+  final now =
+      ref.watch(taskTimeTickerProvider).value ?? ref.read(clockProvider).now();
+  return tasks.whenData(
+    (items) => items.where((task) => isTaskOverdue(task, now)).toList(),
+  );
+});
+
+final taskTimeStateProvider = Provider.autoDispose
+    .family<TaskTimeState?, TaskItem>((ref, task) {
+      final schedule = task.schedule;
+      if (schedule == null || task.isCompleted) {
+        return task.isCompleted && schedule?.isTimed == true
+            ? TaskTimeState.completed
+            : null;
+      }
+
+      final clock = ref.read(clockProvider);
+      if (schedule.isAllDay) {
+        final localNow = clock.now().toLocal();
+        final today = DateTime(localNow.year, localNow.month, localNow.day);
+        return schedule.date!.isBefore(today) ? TaskTimeState.overdue : null;
+      }
+
+      final activeFocusTaskId = ref.watch(
+        activeFocusRunProvider.select((run) => run.value?.taskId),
+      );
+      return ref.watch(
+        taskTimeTickerProvider.select(
+          (ticker) => taskTimeStateForTask(
+            task: task,
+            now: ticker.value ?? clock.now(),
+            activeFocusTaskId: activeFocusTaskId,
+          ),
+        ),
+      );
+    });
+
+final activeFocusRemainingProvider = Provider<Duration?>((ref) {
+  final interval = ref.watch(activeFocusIntervalProvider).value;
+  if (interval == null) {
+    return null;
+  }
+  if (interval.status == 'ready') {
+    return Duration(seconds: interval.plannedSeconds);
+  }
+  final now = ref.watch(focusTickerProvider).value;
+  if (now == null) {
+    return null;
+  }
+  final remaining = calculateRemaining(
+    now: now,
+    startedAt: interval.startedAt,
+    plannedSeconds: interval.plannedSeconds,
+    pausedTotalSeconds: interval.pausedTotalSeconds,
+    pausedAt: interval.pausedAt,
+  );
+  return remaining;
+});
+
+final productivitySummaryProvider = StreamProvider<ProductivitySummary>((ref) {
+  final clock = ref.watch(clockProvider);
+  // Refresh the daily stream at midnight even when no database row changes.
+  ref.watch(
+    focusTickerProvider.select((tick) {
+      final now = (tick.value ?? clock.now()).toLocal();
+      return DateTime(now.year, now.month, now.day);
+    }),
+  );
+  return ref.watch(productivityRepositoryProvider).watchTodaySummary();
+});
+
+final reengagementNotificationCoordinatorProvider = Provider<void>((ref) {
+  final enabled = ref.watch(reengagementNotificationsEnabledProvider);
+  final summary = ref.watch(productivitySummaryProvider).value;
+  if (summary == null) {
+    return;
+  }
+  // Rebuild on language change so the reminder is rescheduled with new copy.
+  ref.watch(appLanguageProvider);
+
+  final notifications = ref.watch(notificationRepositoryProvider);
+  final clock = ref.watch(clockProvider);
+  unawaited(
+    notifications.syncReengagementReminder(
+      enabled: enabled,
+      now: clock.now(),
+      hasProgressToday: summary.completedTasks > 0,
+    ),
+  );
+});
+
+final pendingSyncCommandCountProvider = StreamProvider<int>((ref) {
+  return ref
+      .watch(syncQueueRepositoryProvider)
+      .watchPending()
+      .map((commands) => commands.length);
+});
+
+final syncQueueStatusProvider = StreamProvider(
+  (ref) => watchSyncQueueStatus(ref.watch(appDatabaseProvider)),
+);
+
+final calendarIntegrationRepositoryProvider =
+    Provider<CalendarIntegrationRepository>((ref) {
+      return DriftCalendarIntegrationRepository(ref.watch(appDatabaseProvider));
+    });
+
+final googleCalendarConnectionProvider =
+    StreamProvider<GoogleCalendarConnection?>((ref) {
+      return ref.watch(calendarIntegrationRepositoryProvider).watchConnection();
+    });
+
+final googleCalendarLinkProvider =
+    StreamProvider.family<GoogleCalendarEventLink?, String>((ref, taskId) {
+      return ref
+          .watch(calendarIntegrationRepositoryProvider)
+          .watchLinkForTask(taskId);
+    });

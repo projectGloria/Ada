@@ -1,0 +1,69 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
+import 'package:ada/domain/models/focus/focus_sound_set.dart';
+import 'package:ada/domain/services/focus_sound_preview_player.dart';
+
+export 'package:ada/domain/services/focus_sound_preview_player.dart';
+
+/// A Settings-owned player; auditioning never triggers timer events or haptics.
+class AssetFocusSoundPreviewPlayer implements FocusSoundPreviewPlayer {
+  AssetFocusSoundPreviewPlayer({AudioPlayer? player})
+    : _player = player ?? AudioPlayer();
+
+  final AudioPlayer _player;
+  Future<void> _pending = Future.value();
+  bool _disposed = false;
+  int _generation = 0;
+
+  Future<void> _enqueue(Future<void> Function() action) {
+    final operation = _pending.then((_) => action());
+    _pending = operation.catchError((Object _) {});
+    return operation;
+  }
+
+  @override
+  Future<void> preview(FocusSoundSet soundSet) {
+    final generation = ++_generation;
+    return _enqueue(() async {
+      if (_disposed || generation != _generation) return;
+      var stage = 'stop';
+      try {
+        await _player.stop();
+        if (_disposed || generation != _generation) return;
+        stage = 'play';
+        await _player.play(
+          AssetSource('sounds/${soundSet.storageValue}/focus_complete.wav'),
+          mode: PlayerMode.lowLatency,
+          volume: 0.55,
+        );
+        if (_disposed || generation != _generation) {
+          stage = 'cancel';
+          await _player.stop();
+        }
+      } catch (error, stackTrace) {
+        // Settings presents a generic message; retain the native cause in logs.
+        debugPrint(
+          'Focus sound preview failed '
+          '(${soundSet.storageValue}, $stage): $error\n$stackTrace',
+        );
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Future<void> stop() {
+    ++_generation;
+    return _enqueue(() async {
+      if (!_disposed) await _player.stop();
+    });
+  }
+
+  @override
+  Future<void> dispose() {
+    if (_disposed) return _pending;
+    _disposed = true;
+    ++_generation;
+    return _enqueue(_player.dispose);
+  }
+}
