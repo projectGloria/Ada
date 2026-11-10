@@ -37,7 +37,8 @@ class ObsidianSyncCard extends ConsumerWidget {
         if (state.vaultPath != null) ...[
           SettingsRow(
             title: 'Generate Daily Notes',
-            subtitle: 'Creates / updates notes in vault/Daily Notes/YYYY-MM-DD.md',
+            subtitle:
+                'Creates / updates notes in vault/Daily Notes/YYYY-MM-DD.md',
             control: ShadSwitch(
               value: state.syncDailyNotes,
               onChanged: controller.setSyncDailyNotes,
@@ -45,7 +46,8 @@ class ObsidianSyncCard extends ConsumerWidget {
           ),
           SettingsRow(
             title: 'Sync to Vault',
-            subtitle: state.syncMessage ??
+            subtitle:
+                state.syncMessage ??
                 (state.lastSyncTime != null
                     ? 'Last synced: ${state.lastSyncTime!.hour}:${state.lastSyncTime!.minute.toString().padLeft(2, '0')}'
                     : 'Writes Ada Tasks.md to your vault'),
@@ -65,9 +67,9 @@ class ObsidianSyncCard extends ConsumerWidget {
                   Success() => 'Obsidian vault updated successfully!',
                   Failure(error: final err) => 'Sync error: $err',
                 };
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(text)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(text)));
               },
               child: const Text('Sync Now'),
             ),
@@ -105,7 +107,9 @@ class ObsidianSyncCard extends ConsumerWidget {
                   if (res is Success<int>) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Imported ${res.value} tasks from markdown!'),
+                        content: Text(
+                          'Imported ${res.value} tasks from markdown!',
+                        ),
                       ),
                     );
                   }

@@ -21,8 +21,7 @@ final class SdkAccountSessionRepository implements AccountSessionRepository {
   final Future<AdaAccountOverview?> Function() _overviewLoader;
 
   final _sessionController = StreamController<AccountSession>.broadcast();
-  final _profileController =
-      StreamController<AdaAccountProfile?>.broadcast();
+  final _profileController = StreamController<AdaAccountProfile?>.broadcast();
   StreamSubscription<AccountAuthState>? _subscription;
   AccountSession _session = (userId: null, generation: 0);
   AdaAccountProfile? _profile;

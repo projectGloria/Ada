@@ -9,10 +9,7 @@ class CollaborationApi {
   ) async {
     late AccountFunctionResponse response;
     try {
-      response = await account.invokeFunction(
-        'ada-collaboration',
-        body: body,
-      );
+      response = await account.invokeFunction('ada-collaboration', body: body);
     } on FunctionException catch (error) {
       final data = error.details;
       throw CollaborationException(

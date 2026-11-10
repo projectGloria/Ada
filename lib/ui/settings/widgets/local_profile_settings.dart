@@ -19,13 +19,13 @@ class _LocalProfileSettingsCardState
   late final TextEditingController _nameController;
   final List<String> _quickEmojis = const [
     '\u{1F345}', // tomato
-    '\u{2615}',  // coffee
-    '\u{26A1}',  // zap
+    '\u{2615}', // coffee
+    '\u{26A1}', // zap
     '\u{1F680}', // rocket
     '\u{1F331}', // seedling
     '\u{1F4BB}', // laptop
     '\u{1F3A7}', // headphones
-    '\u{2B50}',  // star
+    '\u{2B50}', // star
     '\u{1F98A}', // fox
     '\u{1F408}', // cat
   ];
@@ -61,7 +61,9 @@ class _LocalProfileSettingsCardState
                   controller: _nameController,
                   placeholder: const Text('Local User'),
                   onSubmitted: (val) {
-                    controller.setName(val.trim().isEmpty ? 'Local User' : val.trim());
+                    controller.setName(
+                      val.trim().isEmpty ? 'Local User' : val.trim(),
+                    );
                   },
                 ),
               ),
@@ -71,9 +73,9 @@ class _LocalProfileSettingsCardState
                 onPressed: () {
                   final text = _nameController.text.trim();
                   controller.setName(text.isEmpty ? 'Local User' : text);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Name saved!')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('Name saved!')));
                 },
                 child: const Text('Save'),
               ),

@@ -319,9 +319,8 @@ class BillingPaywall extends ConsumerWidget {
               key: const Key('billing-privacy-policy'),
               height: 0,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              onPressed: () => unawaited(
-                launchAdaExternalUrl(adaPrivacyPolicyUrl),
-              ),
+              onPressed: () =>
+                  unawaited(launchAdaExternalUrl(adaPrivacyPolicyUrl)),
               child: Flexible(child: Text(l10n.privacyPolicy)),
             ),
             ShadButton.ghost(

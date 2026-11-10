@@ -16,10 +16,7 @@ final class AccountVoiceBackend {
         'Sign in to use voice transcription.',
       );
     }
-    return (await account.invokeFunction(
-      'ada-transcribe',
-      body: body,
-    )).data;
+    return (await account.invokeFunction('ada-transcribe', body: body)).data;
   }
 
   void dispose() => _disposed = true;

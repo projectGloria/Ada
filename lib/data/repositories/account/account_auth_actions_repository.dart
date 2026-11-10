@@ -36,10 +36,7 @@ class DefaultAccountAuthActionsRepository
     required AccountAuthOperation operation,
   })
   classifier;
-  final Future<bool> Function(
-    AdaSocialProvider provider,
-    String redirectTo,
-  )
+  final Future<bool> Function(AdaSocialProvider provider, String redirectTo)
   socialSignIn;
   final Future<String?> Function(String locale) nativeCaptcha;
   final Future<EmailAuthResult?> Function({

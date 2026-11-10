@@ -338,8 +338,7 @@ class _OnboardingOverlayState extends ConsumerState<_OnboardingOverlay> {
                                     onBack: controller.back,
                                     onSelect: controller.selectStep,
                                     onNext: () {
-                                      if (state.step ==
-                                          OnboardingStep.theme) {
+                                      if (state.step == OnboardingStep.theme) {
                                         unawaited(_save(controller.complete));
                                       } else {
                                         controller.next();

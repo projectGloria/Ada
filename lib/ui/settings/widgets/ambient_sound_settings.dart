@@ -21,7 +21,8 @@ class AmbientSoundSettingsCard extends ConsumerWidget {
       children: [
         SettingsRow(
           title: 'Ambient Focus Sounds',
-          subtitle: 'Choose a background ambiance to play automatically during focus',
+          subtitle:
+              'Choose a background ambiance to play automatically during focus',
           control: ShadSelect<AmbientSoundTrack>(
             key: ValueKey(state.track),
             initialValue: state.track,

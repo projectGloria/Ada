@@ -351,8 +351,7 @@ String _preferredLoopbackLocale(String? acceptLanguage) {
       direction: 'ltr',
     ),
     'ru' => (
-      success:
-          'Проверка завершена. Закройте эту вкладку и вернитесь в Ada.',
+      success: 'Проверка завершена. Закройте эту вкладку и вернитесь в Ada.',
       invalid: 'Ссылка проверки недействительна.',
       direction: 'ltr',
     ),

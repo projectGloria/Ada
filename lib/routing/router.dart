@@ -44,7 +44,6 @@ import 'package:ada/routing/route_date.dart';
 import 'package:ada/ui/core/widgets/adaptive_shell.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-
   final nativeLinkCoordinator = ref.read(nativeLinkCoordinatorProvider);
   final router = GoRouter(
     initialLocation: initialAppLocationFor(isWeb: kIsWeb, baseUri: Uri.base),

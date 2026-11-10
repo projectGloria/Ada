@@ -43,10 +43,7 @@ final calendarSyncRepositoryProvider =
               code: 'auth_required',
             );
           }
-          return account!.invokeFunction(
-            'ada-outlook-calendar',
-            body: body,
-          );
+          return account!.invokeFunction('ada-outlook-calendar', body: body);
         },
       );
       return GoogleCalendarServerSyncRepository(controller);

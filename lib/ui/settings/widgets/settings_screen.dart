@@ -285,81 +285,83 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
             const SizedBox(height: 24),
             SettingsGroup(
               children: [
-            SettingsRow(
-              title: l10n.settingsLanguageTitle,
-              subtitle: l10n.settingsLanguageSubtitle,
-              control: ShadSelect<AppLanguage>(
-                key: ValueKey(language),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 14,
-                ),
-                initialValue: language,
-                options: [
-                  for (final item in AppLanguage.values)
-                    ShadOption(
-                      value: item,
-                      child: Text(
-                        item == AppLanguage.system
-                            ? l10n.settingsLanguageSystem
-                            : item.nativeName,
-                      ),
+                SettingsRow(
+                  title: l10n.settingsLanguageTitle,
+                  subtitle: l10n.settingsLanguageSubtitle,
+                  control: ShadSelect<AppLanguage>(
+                    key: ValueKey(language),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 14,
                     ),
-                ],
-                selectedOptionBuilder: (context, item) => Text(
-                  item == AppLanguage.system
-                      ? l10n.settingsLanguageSystem
-                      : item.nativeName,
+                    initialValue: language,
+                    options: [
+                      for (final item in AppLanguage.values)
+                        ShadOption(
+                          value: item,
+                          child: Text(
+                            item == AppLanguage.system
+                                ? l10n.settingsLanguageSystem
+                                : item.nativeName,
+                          ),
+                        ),
+                    ],
+                    selectedOptionBuilder: (context, item) => Text(
+                      item == AppLanguage.system
+                          ? l10n.settingsLanguageSystem
+                          : item.nativeName,
+                    ),
+                    onChanged: (value) {
+                      if (value != null) {
+                        saveSetting(context, viewModel.setLanguage(value));
+                      }
+                    },
+                  ),
                 ),
-                onChanged: (value) {
-                  if (value != null) {
-                    saveSetting(context, viewModel.setLanguage(value));
-                  }
-                },
-              ),
-            ),
-            const DateFormatSettings(),
-            if (settings.voiceModeSupported)
-              const VoiceTranscriptionSettingsCard(),
-            SettingsRow(
-              title: l10n.settingsReturnRemindersTitle,
-              subtitle: l10n.settingsReturnRemindersSubtitle,
-              onTap: () => saveSetting(
-                context,
-                viewModel.setReengagement(!settings.reengagementEnabled),
-              ),
-              controlWidth: 48,
-              control: ShadSwitch(
-                key: const Key('settings-reengagement-notifications-switch'),
-                value: settings.reengagementEnabled,
-                onChanged: (value) =>
-                    saveSetting(context, viewModel.setReengagement(value)),
-              ),
-            ),
-            ListTile(
-              key: const Key('settings-shortcuts-button'),
-              contentPadding: const EdgeInsets.symmetric(vertical: 12),
-              leading: const Icon(LucideIcons.keyboard, size: 20),
-              title: Text(l10n.settingsShortcutsTitle),
-              subtitle: Text(l10n.settingsShortcutsSubtitle),
-              trailing: const Icon(LucideIcons.chevronRight, size: 18),
-              onTap: () => context.push('/settings/shortcuts'),
-            ),
-            ListTile(
-              key: const Key('settings-learning-tour-button'),
-              contentPadding: const EdgeInsets.symmetric(vertical: 12),
-              leading: const Icon(LucideIcons.compass, size: 20),
-              title: Text(l10n.learningTourSettings),
-              trailing: const Icon(LucideIcons.chevronRight, size: 18),
-              onTap: () {
-                ref.read(learningTourProvider.notifier).replay();
-                context.go('/today');
-              },
+                const DateFormatSettings(),
+                if (settings.voiceModeSupported)
+                  const VoiceTranscriptionSettingsCard(),
+                SettingsRow(
+                  title: l10n.settingsReturnRemindersTitle,
+                  subtitle: l10n.settingsReturnRemindersSubtitle,
+                  onTap: () => saveSetting(
+                    context,
+                    viewModel.setReengagement(!settings.reengagementEnabled),
+                  ),
+                  controlWidth: 48,
+                  control: ShadSwitch(
+                    key: const Key(
+                      'settings-reengagement-notifications-switch',
+                    ),
+                    value: settings.reengagementEnabled,
+                    onChanged: (value) =>
+                        saveSetting(context, viewModel.setReengagement(value)),
+                  ),
+                ),
+                ListTile(
+                  key: const Key('settings-shortcuts-button'),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                  leading: const Icon(LucideIcons.keyboard, size: 20),
+                  title: Text(l10n.settingsShortcutsTitle),
+                  subtitle: Text(l10n.settingsShortcutsSubtitle),
+                  trailing: const Icon(LucideIcons.chevronRight, size: 18),
+                  onTap: () => context.push('/settings/shortcuts'),
+                ),
+                ListTile(
+                  key: const Key('settings-learning-tour-button'),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                  leading: const Icon(LucideIcons.compass, size: 20),
+                  title: Text(l10n.learningTourSettings),
+                  trailing: const Icon(LucideIcons.chevronRight, size: 18),
+                  onTap: () {
+                    ref.read(learningTourProvider.notifier).replay();
+                    context.go('/today');
+                  },
+                ),
+              ],
             ),
           ],
-        ),
-      ],
-    );
+        );
       case SettingsSection.appearance:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -470,7 +472,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         return const SettingsAppInfoCard(key: Key('settings-app-info-section'));
     }
   }
-
 }
 
 class _PomoIcon extends StatelessWidget {

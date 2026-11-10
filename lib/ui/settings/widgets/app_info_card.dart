@@ -67,9 +67,7 @@ class SettingsAppInfoCard extends ConsumerWidget {
               leading: const Icon(LucideIcons.shield),
               title: Text(l10n.privacyPolicy),
               trailing: const Icon(LucideIcons.externalLink),
-              onTap: () => unawaited(
-                launchAdaExternalUrl(adaPrivacyPolicyUrl),
-              ),
+              onTap: () => unawaited(launchAdaExternalUrl(adaPrivacyPolicyUrl)),
             ),
             ListTile(
               key: const Key('settings-terms-of-use-link'),
@@ -78,8 +76,7 @@ class SettingsAppInfoCard extends ConsumerWidget {
               leading: const Icon(LucideIcons.fileText),
               title: Text(l10n.termsOfUse),
               trailing: const Icon(LucideIcons.externalLink),
-              onTap: () =>
-                  unawaited(launchAdaExternalUrl(adaTermsOfUseUrl)),
+              onTap: () => unawaited(launchAdaExternalUrl(adaTermsOfUseUrl)),
             ),
             ListTile(
               key: const Key('settings-support-link'),
@@ -88,8 +85,7 @@ class SettingsAppInfoCard extends ConsumerWidget {
               leading: const Icon(LucideIcons.headset),
               title: Text(l10n.support),
               trailing: const Icon(LucideIcons.externalLink),
-              onTap: () =>
-                  unawaited(launchAdaExternalUrl(adaSupportUrl)),
+              onTap: () => unawaited(launchAdaExternalUrl(adaSupportUrl)),
             ),
           ],
         ),

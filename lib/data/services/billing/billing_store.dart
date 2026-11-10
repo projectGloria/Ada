@@ -238,8 +238,7 @@ class BillingStore {
                       SK2Product(
                         id: plan.productId,
                         displayName: plan.productId,
-                        displayPrice:
-                            plan.productId == adaMonthlyProductId
+                        displayPrice: plan.productId == adaMonthlyProductId
                             ? r'$4.99'
                             : r'$29.99',
                         description: plan.productId,

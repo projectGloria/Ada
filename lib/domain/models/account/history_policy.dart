@@ -1,4 +1,1 @@
-typedef AdaHistoryPolicy = ({
-  bool historyUnlimited,
-  DateTime? graceEndsAt,
-});
+typedef AdaHistoryPolicy = ({bool historyUnlimited, DateTime? graceEndsAt});

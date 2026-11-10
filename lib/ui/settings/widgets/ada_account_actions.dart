@@ -290,8 +290,7 @@ class AdaSocialSignInButton extends ConsumerStatefulWidget {
       _AdaSocialSignInButtonState();
 }
 
-class _AdaSocialSignInButtonState
-    extends ConsumerState<AdaSocialSignInButton> {
+class _AdaSocialSignInButtonState extends ConsumerState<AdaSocialSignInButton> {
   bool _submitting = false;
 
   AccountAuthOperation get _operation => switch (widget.provider) {
@@ -393,8 +392,7 @@ class _AdaEmailAuthDialog extends ConsumerStatefulWidget {
       _AdaEmailAuthDialogState();
 }
 
-class _AdaEmailAuthDialogState
-    extends ConsumerState<_AdaEmailAuthDialog> {
+class _AdaEmailAuthDialogState extends ConsumerState<_AdaEmailAuthDialog> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _emailFocus = FocusNode();

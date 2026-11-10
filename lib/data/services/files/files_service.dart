@@ -12,10 +12,7 @@ class FilesService {
   factory FilesService.account(AccountClient account) => FilesService(
     invoke: (body) async {
       try {
-        final response = await account.invokeFunction(
-          'ada-files',
-          body: body,
-        );
+        final response = await account.invokeFunction('ada-files', body: body);
         if (response.data is! Map) {
           throw const FileFailure('storage_unavailable');
         }

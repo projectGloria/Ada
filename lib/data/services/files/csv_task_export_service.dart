@@ -22,10 +22,9 @@ final class CsvTaskExportService {
   writeFile;
 
   Future<CsvExportOwner> owner() async {
-    final row =
-        await (_db.select(_db.syncState)
-              ..where((r) => r.id.equals('ada-account-owner-v1')))
-            .getSingleOrNull();
+    final row = await (_db.select(
+      _db.syncState,
+    )..where((r) => r.id.equals('ada-account-owner-v1'))).getSingleOrNull();
     return (userId: row?.cursor, generation: row?.deviceId);
   }
 

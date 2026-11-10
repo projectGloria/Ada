@@ -1450,8 +1450,7 @@ class _TodoistSidebarState extends ConsumerState<_TodoistSidebar> {
                 _SidebarProfileHeader(
                   displayName: displayName,
                   avatarEmoji: sidebar.avatarEmoji,
-                  onProfileTap: () =>
-                      widget.onDestinationSelected('/settings'),
+                  onProfileTap: () => widget.onDestinationSelected('/settings'),
                 ),
                 const SizedBox(height: 16),
                 destinationTile('/search'),

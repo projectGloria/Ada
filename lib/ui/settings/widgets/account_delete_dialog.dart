@@ -111,8 +111,7 @@ class _AccountDeleteDialogState extends ConsumerState<AccountDeleteDialog> {
               enabled: !_state.isLoading,
               onPressed: _state.isLoading
                   ? null
-                  : () =>
-                        unawaited(launchAdaExternalUrl(appleAccountUrl)),
+                  : () => unawaited(launchAdaExternalUrl(appleAccountUrl)),
               leading: const Icon(LucideIcons.externalLink),
               child: Flexible(child: Text(l10n.manageSignInWithApple)),
             ),

@@ -169,9 +169,7 @@ class NotificationScheduler {
         android: const AndroidInitializationSettings('ic_notification'),
         iOS: const DarwinInitializationSettings(),
         macOS: const DarwinInitializationSettings(),
-        linux: const LinuxInitializationSettings(
-          defaultActionName: 'Open Ada',
-        ),
+        linux: const LinuxInitializationSettings(defaultActionName: 'Open Ada'),
         windows: WindowsInitializationSettings(
           appName: appFlavor.displayName,
           appUserModelId: appFlavor.applicationId,

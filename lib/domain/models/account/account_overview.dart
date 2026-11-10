@@ -62,12 +62,11 @@ final class AdaAccountOverview {
     required this.generatedAt,
   }) : apps = List.unmodifiable(apps);
 
-  factory AdaAccountOverview.empty(String userId) =>
-      AdaAccountOverview(
-        profile: AdaAccountProfile(id: userId),
-        apps: const [],
-        generatedAt: DateTime.now().toUtc(),
-      );
+  factory AdaAccountOverview.empty(String userId) => AdaAccountOverview(
+    profile: AdaAccountProfile(id: userId),
+    apps: const [],
+    generatedAt: DateTime.now().toUtc(),
+  );
 
   final AdaAccountProfile profile;
   final List<AdaAccountAppSummary> apps;

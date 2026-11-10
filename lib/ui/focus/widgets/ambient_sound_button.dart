@@ -67,13 +67,19 @@ class _AmbientSoundDialog extends ConsumerWidget {
                 leading: Icon(
                   track.icon,
                   size: 18,
-                  color: state.track == track ? colors.accent : colors.secondaryText,
+                  color: state.track == track
+                      ? colors.accent
+                      : colors.secondaryText,
                 ),
                 title: Text(
                   track.displayName,
                   style: TextStyle(
-                    fontWeight: state.track == track ? FontWeight.w600 : FontWeight.normal,
-                    color: state.track == track ? colors.accent : colors.primaryText,
+                    fontWeight: state.track == track
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                    color: state.track == track
+                        ? colors.accent
+                        : colors.primaryText,
                   ),
                 ),
                 trailing: state.track == track && state.isPlaying
@@ -104,8 +110,10 @@ class _AmbientSoundDialog extends ConsumerWidget {
                       onChanged: controller.setVolume,
                     ),
                   ),
-                  Text('${(state.volume * 100).round()}%',
-                      style: const TextStyle(fontSize: 12)),
+                  Text(
+                    '${(state.volume * 100).round()}%',
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ],
               ),
             ],

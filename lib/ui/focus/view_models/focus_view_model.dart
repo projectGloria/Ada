@@ -100,8 +100,8 @@ class FocusViewModel extends Notifier<FocusState> {
           interval.status == 'running' &&
           interval.plannedSeconds > 0 &&
           remaining != null) {
-        final progress =
-            (1.0 - (remaining.inSeconds / interval.plannedSeconds)).clamp(0.0, 1.0);
+        final progress = (1.0 - (remaining.inSeconds / interval.plannedSeconds))
+            .clamp(0.0, 1.0);
         unawaited(MultiViewDesktop.setProgressBar(progress));
       } else {
         unawaited(MultiViewDesktop.setProgressBar(-1.0));

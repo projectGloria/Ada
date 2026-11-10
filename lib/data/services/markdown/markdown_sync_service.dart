@@ -98,8 +98,10 @@ class ObsidianSyncController extends Notifier<ObsidianSyncState> {
           .read(taskRepositoryProvider)
           .watchTasks(const TaskQuery.all())
           .first;
-      final projects =
-          await ref.read(projectRepositoryProvider).watchProjects().first;
+      final projects = await ref
+          .read(projectRepositoryProvider)
+          .watchProjects()
+          .first;
       final markdown = generateObsidianMarkdown(
         tasks: tasks,
         projects: projects,
@@ -147,8 +149,10 @@ class ObsidianSyncController extends Notifier<ObsidianSyncState> {
           .read(taskRepositoryProvider)
           .watchTasks(const TaskQuery.all())
           .first;
-      final projects =
-          await ref.read(projectRepositoryProvider).watchProjects().first;
+      final projects = await ref
+          .read(projectRepositoryProvider)
+          .watchProjects()
+          .first;
       final markdown = generateObsidianMarkdown(
         tasks: tasks,
         projects: projects,
@@ -214,10 +218,7 @@ class ObsidianSyncController extends Notifier<ObsidianSyncState> {
     return Result.capture(() async {
       final file = await openFile(
         acceptedTypeGroups: const [
-          XTypeGroup(
-            label: 'Markdown',
-            extensions: ['md', 'markdown', 'txt'],
-          ),
+          XTypeGroup(label: 'Markdown', extensions: ['md', 'markdown', 'txt']),
         ],
       );
       if (file == null) return 0;
@@ -243,8 +244,12 @@ String generateObsidianMarkdown({
   final dateStr = DateFormat('yyyy-MM-dd').format(now);
   final projectNames = {for (final p in projects) p.id: p.name};
 
-  final activeTasks = tasks.where((t) => !t.isDeleted && !t.isCompleted).toList();
-  final completedTasks = tasks.where((t) => !t.isDeleted && t.isCompleted).toList();
+  final activeTasks = tasks
+      .where((t) => !t.isDeleted && !t.isCompleted)
+      .toList();
+  final completedTasks = tasks
+      .where((t) => !t.isDeleted && t.isCompleted)
+      .toList();
 
   final todayTasks = activeTasks.where((t) {
     if (t.dueJson == null) return false;
@@ -252,7 +257,9 @@ String generateObsidianMarkdown({
   }).toList();
 
   final todayIds = todayTasks.map((t) => t.id).toSet();
-  final otherActive = activeTasks.where((t) => !todayIds.contains(t.id)).toList();
+  final otherActive = activeTasks
+      .where((t) => !todayIds.contains(t.id))
+      .toList();
 
   final buffer = StringBuffer()
     ..writeln('# \u{1F3AF} Ada Tasks')

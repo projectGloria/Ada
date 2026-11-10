@@ -82,8 +82,7 @@ Future<void> _startAda(
     updateWebBootstrapStage('session');
     final nativeAccountStartup = await prepareNativeAccountStartup(
       links: nativeLinkCoordinator,
-      initializeAccount: () =>
-          initializeAdaAccountIfConfigured(runtimeConfig),
+      initializeAccount: () => initializeAdaAccountIfConfigured(runtimeConfig),
     );
     updateWebBootstrapStage('app');
     await _runAda(

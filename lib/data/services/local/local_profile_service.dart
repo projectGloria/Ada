@@ -9,10 +9,8 @@ class LocalProfile {
   final String? name;
   final String? emoji;
 
-  LocalProfile copyWith({String? name, String? emoji}) => LocalProfile(
-    name: name ?? this.name,
-    emoji: emoji ?? this.emoji,
-  );
+  LocalProfile copyWith({String? name, String? emoji}) =>
+      LocalProfile(name: name ?? this.name, emoji: emoji ?? this.emoji);
 }
 
 final localProfileProvider =

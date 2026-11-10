@@ -62,7 +62,10 @@ final class ResourceAssignment {
 ResourceAssignment mergeAssignment(
   ResourceAssignment? previous,
   ResourceAssignment next,
-) => previous?.source == 'manual' && previous?.category != 'unclassified' && next.source == 'automatic'
+) =>
+    previous?.source == 'manual' &&
+        previous?.category != 'unclassified' &&
+        next.source == 'automatic'
     ? previous!
     : next;
 
@@ -100,7 +103,8 @@ final class DistractionProfile {
   bool blocks(String kind, String id, String category) {
     Map<String, dynamic>? winner;
     for (final rule in overrides) {
-      if (rule['kind'] != kind || !['allow', 'block'].contains(rule['action'])) {
+      if (rule['kind'] != kind ||
+          !['allow', 'block'].contains(rule['action'])) {
         continue;
       }
       final target = rule['id'] as String;

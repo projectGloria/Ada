@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'package:ada/data/services/local/database/app_database.dart';
-import 'package:ada/domain/models/focus/focus_models.dart'
-    show defaultPresetId;
+import 'package:ada/domain/models/focus/focus_models.dart' show defaultPresetId;
 
 class FocusLocalService {
   FocusLocalService(this._db, {Set<String>? serverOwnedRunIds})

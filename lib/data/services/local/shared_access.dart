@@ -7,10 +7,9 @@ class SharedAccess {
   final AppDatabase db;
 
   Future<String> actorId() async {
-    final row =
-        await (db.select(db.syncState)
-              ..where((row) => row.id.equals('ada-account-owner-v1')))
-            .getSingleOrNull();
+    final row = await (db.select(
+      db.syncState,
+    )..where((row) => row.id.equals('ada-account-owner-v1'))).getSingleOrNull();
     return row?.cursor == null || row!.cursor == 'guest'
         ? localUserId
         : row.cursor!;

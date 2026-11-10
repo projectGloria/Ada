@@ -241,10 +241,7 @@ final class CaptchaChallengeRequest {
     final relative = !uri.hasScheme && uri.host.isEmpty;
     final approvedAbsolute =
         uri.scheme == 'https' &&
-        const {
-          'app-test.ada.com',
-          'app.ada.com',
-        }.contains(uri.host);
+        const {'app-test.ada.com', 'app.ada.com'}.contains(uri.host);
     if ((!relative && !approvedAbsolute) ||
         uri.path != '/auth/challenge' ||
         uri.userInfo.isNotEmpty ||
@@ -328,9 +325,7 @@ final class NativeCaptchaBuildConfig {
         'ADA_ENVIRONMENT',
         defaultValue: 'local',
       ),
-      registrationUrl: const String.fromEnvironment(
-        'ADA_REGISTRATION_URL',
-      ),
+      registrationUrl: const String.fromEnvironment('ADA_REGISTRATION_URL'),
       webAppUrl: const String.fromEnvironment('WEB_APP_URL'),
     );
   }

@@ -9,12 +9,9 @@ const adaAnnualProductId = 'ada.pro.annual';
 const adaLifetimeProductId = 'ada.pro.lifetime';
 const adaLifetimeLaunchProductId = 'ada.pro.lifetime.launch';
 const adaDevUnlock = true;
-const _adaLocalStoreKitValue = String.fromEnvironment(
-  'ADA_LOCAL_STOREKIT',
-);
+const _adaLocalStoreKitValue = String.fromEnvironment('ADA_LOCAL_STOREKIT');
 const adaLocalStoreKit =
-    bool.fromEnvironment('ADA_LOCAL_STOREKIT') ||
-    _adaLocalStoreKitValue == '1';
+    bool.fromEnvironment('ADA_LOCAL_STOREKIT') || _adaLocalStoreKitValue == '1';
 
 /// Whether this build must use the bundled local StoreKit configuration
 /// instead of talking to the App Store.
@@ -671,8 +668,7 @@ const _releaseMode = bool.fromEnvironment('dart.vm.product');
 
 /// Terms are accepted only from the versioned, server-validated USD test catalog.
 BillingOffer? stripeSubscriptionOffer(String? kind, String productId) {
-  if (productId != adaMonthlyProductId &&
-      productId != adaAnnualProductId) {
+  if (productId != adaMonthlyProductId && productId != adaAnnualProductId) {
     return null;
   }
   if (kind == 'trial') {
