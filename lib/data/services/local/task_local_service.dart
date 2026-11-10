@@ -44,6 +44,25 @@ class TaskLocalService {
         );
       statement.where((task) => task.id.isInQuery(links));
     }
+    if (query.kind == TaskQueryKind.search) {
+      final term = (query.search ?? '').trim();
+      // SQLite LIKE folds case for ASCII only, so a non-ASCII term would drop
+      // matches such as "Привет" for "привет". Those terms rely on the
+      // Unicode-aware filter in the repository instead.
+      if (term.isNotEmpty && term.codeUnits.every((unit) => unit < 0x80)) {
+        final escaped = term
+            .replaceAll(r'\', r'\\')
+            .replaceAll('%', r'\%')
+            .replaceAll('_', r'\_');
+        final pattern = '%$escaped%';
+        statement.where(
+          (task) =>
+              task.content.like(pattern, escapeChar: r'\') |
+              (task.description.isNotNull() &
+                  task.description.like(pattern, escapeChar: r'\')),
+        );
+      }
+    }
     return statement
         .join([
           leftOuterJoin(

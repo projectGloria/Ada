@@ -13,6 +13,7 @@ import 'package:ada/data/repositories/productivity/productivity_repository.dart'
 import 'package:ada/data/repositories/projects/project_repository_impl.dart';
 import 'package:ada/data/repositories/labels/label_repository_impl.dart';
 import 'dart:async';
+import 'package:ada/utils/background_failure.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -78,7 +79,9 @@ Future<void> _initializeNotificationsBestEffort(
 ) async {
   try {
     await notifications.initialize();
-  } catch (_) {}
+  } catch (error, stack) {
+    reportBackgroundFailure(error, stack, 'initializing notifications');
+  }
 }
 
 final Provider<NotificationScheduler> notificationSchedulerProvider =
@@ -326,7 +329,9 @@ final recurringTaskMaterializationProvider = Provider<void>((ref) {
           .read(taskRepositoryProvider)
           .materializeDueRecurringTasks()
           .then((result) => result.getOrThrow());
-    } catch (_) {}
+    } catch (error, stack) {
+      reportBackgroundFailure(error, stack, 'materializing recurring tasks');
+    }
   }
 
   unawaited(run());
@@ -344,6 +349,10 @@ final taskStartNotificationCoordinatorProvider = Provider<void>((ref) {
   }
   // Rebuild on language change so rescheduled notifications use new copy.
   ref.watch(appLanguageProvider);
+  // Only the soonest task starts are scheduled (platform limits), so refresh
+  // periodically to schedule later ones as earlier ones fire.
+  final refresh = Timer(const Duration(minutes: 15), ref.invalidateSelf);
+  ref.onDispose(refresh.cancel);
   unawaited(
     _syncTaskStartNotificationsBestEffort(
       tasks: tasks,
@@ -360,7 +369,13 @@ Future<void> _syncTaskStartNotificationsBestEffort({
 }) async {
   try {
     await notifications.syncTaskStartNotifications(tasks: tasks, now: now);
-  } catch (_) {}
+  } catch (error, stack) {
+    reportBackgroundFailure(
+      error,
+      stack,
+      'scheduling task-start notifications',
+    );
+  }
 }
 
 final projectsProvider = StreamProvider<List<ProjectItem>>((ref) {

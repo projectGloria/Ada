@@ -38,6 +38,11 @@ Stream<SyncQueueStatus> watchSyncQueueStatus(AppDatabase db) => db
       ),
     );
 
+/// Insertion order of `sync_commands`. Timestamps are stored with second
+/// precision, so commands written in the same second are ordered by rowid,
+/// which SQLite assigns in increasing order relative to every remaining row.
+const syncCommandSequence = CustomExpression<int>('rowid');
+
 class SyncQueueCommand {
   const SyncQueueCommand({
     required this.type,
@@ -79,10 +84,9 @@ class DriftOutboxService implements OutboxService {
   Future<void> checkOwner() async {
     if (expectedOwner == null) return;
     final owner = await expectedOwner;
-    final current =
-        await (_db.select(_db.syncState)
-              ..where((r) => r.id.equals('ada-account-owner-v1')))
-            .getSingleOrNull();
+    final current = await (_db.select(
+      _db.syncState,
+    )..where((r) => r.id.equals('ada-account-owner-v1'))).getSingleOrNull();
     if (current?.cursor != owner) {
       throw StateError('Account changed during local mutation.');
     }
@@ -239,11 +243,17 @@ class DriftOutboxService implements OutboxService {
         ..addAll(expanded);
       final latest =
           await (_db.select(_db.syncCommands)
-                ..orderBy([(row) => OrderingTerm.desc(row.createdAt)])
+                ..orderBy([
+                  (row) => OrderingTerm.desc(row.createdAt),
+                  (_) => OrderingTerm.desc(syncCommandSequence),
+                ])
                 ..limit(1))
               .getSingleOrNull();
-      final start = latest != null && !latest.createdAt.isBefore(requestedStart)
-          ? latest.createdAt.add(const Duration(seconds: 1))
+      // Never move createdAt backwards (the clock may have been changed), but
+      // do not invent future timestamps either: order within one second comes
+      // from the rowid.
+      final start = latest != null && latest.createdAt.isAfter(requestedStart)
+          ? latest.createdAt
           : requestedStart;
       final scopeByCommand = <SyncQueueCommand, String?>{};
       final revisionByCommand = <SyncQueueCommand, int>{};
@@ -290,7 +300,7 @@ class DriftOutboxService implements OutboxService {
               ),
               clientId: Value(retainedCommands[index].clientId),
               payloadJson: jsonEncode(retainedCommands[index].payload),
-              createdAt: start.add(Duration(seconds: index)),
+              createdAt: start,
               updatedAt: mutationTime,
               availableAt: Value(retainedCommands[index].availableAt?.toUtc()),
             ),
@@ -303,7 +313,10 @@ class DriftOutboxService implements OutboxService {
   Stream<List<SyncCommandRow>> watchPending() {
     final query = _db.select(_db.syncCommands)
       ..where((command) => command.status.equals('pending'))
-      ..orderBy([(command) => OrderingTerm.asc(command.createdAt)]);
+      ..orderBy([
+        (command) => OrderingTerm.asc(command.createdAt),
+        (_) => OrderingTerm.asc(syncCommandSequence),
+      ]);
     return query.watch();
   }
 }

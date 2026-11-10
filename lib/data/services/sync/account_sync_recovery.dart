@@ -111,7 +111,7 @@ extension AccountSyncRecovery on AccountSyncEngine {
         ..where((r) => r.scopeId.isNull() & r.status.equals('pending'))
         ..orderBy([
           (r) => OrderingTerm.asc(r.createdAt),
-          (r) => OrderingTerm.asc(r.id),
+          (_) => OrderingTerm.asc(syncCommandSequence),
         ]);
       final now = DateTime.now().toUtc();
       await _compactPendingTaskCommands(

@@ -1,15 +1,14 @@
 import 'package:ada/domain/models/focus/focus_models.dart';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
 import 'package:ada/data/services/local/database/database_directory.dart';
 import 'package:ada/domain/models/app_flavor.dart';
-import 'package:ada/domain/models/tasks/task_models.dart'
-    show inboxProjectId;
-export 'package:ada/domain/models/tasks/task_models.dart'
-    show inboxProjectId;
+import 'package:ada/domain/models/tasks/task_models.dart' show inboxProjectId;
+export 'package:ada/domain/models/tasks/task_models.dart' show inboxProjectId;
 
 part 'app_database.g.dart';
 
@@ -426,8 +425,7 @@ class GoogleCalendarConnections extends Table {
   TextColumn get accountEmail => text().nullable()();
   TextColumn get calendarId => text().nullable()();
   TextColumn get ownerDeviceId => text().nullable()();
-  TextColumn get calendarName =>
-      text().withDefault(const Constant('Ada'))();
+  TextColumn get calendarName => text().withDefault(const Constant('Ada'))();
   TextColumn get syncToken => text().nullable()();
   TextColumn get status => text().withDefault(const Constant('disconnected'))();
   TextColumn get lastError => text().nullable()();
@@ -581,97 +579,116 @@ class AppDatabase extends _$AppDatabase {
                 databaseDirectory: adaDatabaseDirectory,
               ),
               web: DriftWebOptions(
-                sqlite3Wasm: Uri.parse('/assets/web/sqlite3.wasm'),
-                driftWorker: Uri.parse('/assets/web/drift_worker.js'),
+                sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+                driftWorker: Uri.parse('drift_worker.js'),
               ),
             ),
       );
 
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 17;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    onCreate: (m) => m.createAll(),
+    onCreate: (m) async {
+      await m.createAll();
+      await _createProductionIndexes();
+    },
     onUpgrade: (m, from, to) async {
-      if (from < 16) {
+      if (from < 2) {
         await _runResumableMigrationStep(
-          () => m.addColumn(tasks, tasks.prerequisiteIdsJson),
-          alreadyAppliedMessage: 'duplicate column name: prerequisite_ids_json',
+          () => m.createTable(googleCalendarConnections),
+          alreadyAppliedMessage:
+              'table ${googleCalendarConnections.actualTableName} already exists',
         );
         await _runResumableMigrationStep(
-          () => m.createTable(taskBlockingRecords),
-          alreadyAppliedMessage: 'already exists',
+          () => m.createTable(googleCalendarEventLinks),
+          alreadyAppliedMessage:
+              'table ${googleCalendarEventLinks.actualTableName} already exists',
         );
       }
-      if (from < 15) {
+      if (from < 3) {
         await _runResumableMigrationStep(
           () => m.addColumn(
-            focusPresets,
-            focusPresets.distractionProfileConfigured,
+            googleCalendarConnections,
+            googleCalendarConnections.ownerDeviceId,
           ),
+          alreadyAppliedMessage: 'duplicate column name: owner_device_id',
+        );
+      }
+      if (from < 4) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(labels, labels.kind),
+          alreadyAppliedMessage: 'duplicate column name: kind',
+        );
+        await _runResumableMigrationStep(
+          () => m.addColumn(labels, labels.systemKey),
+          alreadyAppliedMessage: 'duplicate column name: system_key',
+        );
+        await _runResumableMigrationStep(
+          () => m.addColumn(taskLabels, taskLabels.kind),
+          alreadyAppliedMessage: 'duplicate column name: kind',
+        );
+        await _runResumableMigrationStep(
+          () => m.createTable(kanbanSettings),
           alreadyAppliedMessage:
-              'duplicate column name: distraction_profile_configured',
+              'table ${kanbanSettings.actualTableName} already exists',
         );
-        await _runResumableMigrationStep(
-          () => m.addColumn(focusPresets, focusPresets.distractionProfileId),
-          alreadyAppliedMessage:
-              'duplicate column name: distraction_profile_id',
+        await customStatement(
+          "CREATE UNIQUE INDEX IF NOT EXISTS "
+          "task_labels_one_kanban_status_per_task "
+          "ON task_labels (task_id) WHERE kind = 'kanbanStatus'",
         );
-      }
-      if (from < 14) {
-        await _runResumableMigrationStep(
-          () => m.addColumn(tasks, tasks.isFocusEstimateManual),
-          alreadyAppliedMessage:
-              'duplicate column name: is_focus_estimate_manual',
+        await customStatement(
+          'CREATE UNIQUE INDEX IF NOT EXISTS labels_unique_kanban_system_key '
+          "ON labels (COALESCE(scope_id, ''), system_key) "
+          "WHERE kind = 'kanbanStatus' AND system_key IS NOT NULL",
         );
-      }
-      if (from < 13) {
-        await _runResumableMigrationStep(
-          () => m.createTable(calendarProjections),
-          alreadyAppliedMessage: 'already exists',
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS tasks_kanban_open_roots_by_project '
+          'ON tasks (project_id, order_key, id) '
+          "WHERE parent_id IS NULL AND is_deleted = 0 AND status = 'open'",
         );
-      }
-      if (from < 12) {
-        await _runResumableMigrationStep(
-          () => m.createTable(accountRecoverySnapshots),
-          alreadyAppliedMessage: 'already exists',
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS tasks_kanban_done_roots_by_project '
+          'ON tasks '
+          '(project_id, COALESCE(completed_at, updated_at) DESC, id DESC) '
+          "WHERE parent_id IS NULL AND is_deleted = 0 AND status = 'completed'",
         );
-      }
-      if (from < 9) {
-        await _runResumableMigrationStep(
-          () => m.createTable(habits),
-          alreadyAppliedMessage: 'already exists',
-        );
-        await _runResumableMigrationStep(
-          () => m.createTable(habitCheckIns),
-          alreadyAppliedMessage: 'already exists',
-        );
-        await _runResumableMigrationStep(
-          () => m.createIndex(habitCheckInsByDay),
-          alreadyAppliedMessage: 'already exists',
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS tasks_active_children_by_parent '
+          'ON tasks (parent_id, status, id) '
+          'WHERE parent_id IS NOT NULL AND is_deleted = 0',
         );
       }
-      if (from < 11) {
+      if (from < 5) {
         await _runResumableMigrationStep(
-          () => m.addColumn(habits, habits.icon),
+          () => m.addColumn(syncCommands, syncCommands.availableAt),
+          alreadyAppliedMessage: 'duplicate column name: available_at',
+        );
+      }
+      if (from < 6) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(projects, projects.icon),
           alreadyAppliedMessage: 'duplicate column name: icon',
         );
       }
-      if (from < 10) {
+      if (from < 7) {
         await _runResumableMigrationStep(
-          () => m.addColumn(habitCheckIns, habitCheckIns.dayPeriod),
-          alreadyAppliedMessage: 'duplicate column name: day_period',
+          () => m.addColumn(labels, labels.icon),
+          alreadyAppliedMessage: 'duplicate column name: icon',
         );
       }
       if (from < 8) {
         await _runResumableMigrationStep(
           () => m.createTable(sharedScopes),
-          alreadyAppliedMessage: 'already exists',
+          alreadyAppliedMessage:
+              'table ${sharedScopes.actualTableName} already exists',
         );
         await _runResumableMigrationStep(
           () => m.createTable(sharedEntities),
-          alreadyAppliedMessage: 'already exists',
+          alreadyAppliedMessage:
+              'table ${sharedEntities.actualTableName} already exists',
         );
         await _runResumableMigrationStep(
           () => m.addColumn(projects, projects.scopeId),
@@ -705,94 +722,157 @@ class AppDatabase extends _$AppDatabase {
           () => m.addColumn(syncCommands, syncCommands.baseRevision),
           alreadyAppliedMessage: 'duplicate column name: base_revision',
         );
-      }
-      if (from < 2) {
-        await m.createTable(googleCalendarConnections);
-        await m.createTable(googleCalendarEventLinks);
-      }
-      if (from < 3) {
-        await m.addColumn(
-          googleCalendarConnections,
-          googleCalendarConnections.ownerDeviceId,
-        );
-      }
-      if (from < 4) {
-        await _runResumableMigrationStep(
-          () => m.addColumn(labels, labels.kind),
-          alreadyAppliedMessage: 'duplicate column name: kind',
-        );
-        await _runResumableMigrationStep(
-          () => m.addColumn(labels, labels.systemKey),
-          alreadyAppliedMessage: 'duplicate column name: system_key',
-        );
-        await _runResumableMigrationStep(
-          () => m.addColumn(taskLabels, taskLabels.kind),
-          alreadyAppliedMessage: 'duplicate column name: kind',
-        );
-        await _runResumableMigrationStep(
-          () => m.createTable(kanbanSettings),
-          alreadyAppliedMessage: 'already exists',
-        );
-        await customStatement(
-          "CREATE UNIQUE INDEX IF NOT EXISTS "
-          "task_labels_one_kanban_status_per_task "
-          "ON task_labels (task_id) WHERE kind = 'kanbanStatus'",
-        );
-        await customStatement(
-          'CREATE UNIQUE INDEX IF NOT EXISTS labels_unique_kanban_system_key '
-          "ON labels (COALESCE(scope_id, ''), system_key) "
-          "WHERE kind = 'kanbanStatus' AND system_key IS NOT NULL",
-        );
-        await customStatement(
-          'CREATE INDEX IF NOT EXISTS tasks_kanban_open_roots_by_project '
-          'ON tasks (project_id, order_key, id) '
-          "WHERE parent_id IS NULL AND is_deleted = 0 AND status = 'open'",
-        );
-        await customStatement(
-          'CREATE INDEX IF NOT EXISTS tasks_kanban_done_roots_by_project '
-          'ON tasks '
-          '(project_id, COALESCE(completed_at, updated_at) DESC, id DESC) '
-          "WHERE parent_id IS NULL AND is_deleted = 0 AND status = 'completed'",
-        );
-        await customStatement(
-          'CREATE INDEX IF NOT EXISTS tasks_active_children_by_parent '
-          'ON tasks (parent_id, status, id) '
-          'WHERE parent_id IS NOT NULL AND is_deleted = 0',
-        );
-      }
-      if (from < 8) {
         await customStatement(
           'DROP INDEX IF EXISTS labels_unique_kanban_system_key',
         );
         await customStatement(
-          "CREATE UNIQUE INDEX labels_unique_kanban_system_key "
+          "CREATE UNIQUE INDEX IF NOT EXISTS labels_unique_kanban_system_key "
           "ON labels (COALESCE(scope_id, ''), system_key) "
           "WHERE kind = 'kanbanStatus' AND system_key IS NOT NULL",
         );
       }
-      if (from < 7) {
+      if (from < 9) {
         await _runResumableMigrationStep(
-          () => m.addColumn(labels, labels.icon),
+          () => m.createTable(habits),
+          alreadyAppliedMessage:
+              'table ${habits.actualTableName} already exists',
+        );
+        await _runResumableMigrationStep(
+          () => m.createTable(habitCheckIns),
+          alreadyAppliedMessage:
+              'table ${habitCheckIns.actualTableName} already exists',
+        );
+        await _runResumableMigrationStep(
+          () => m.createIndex(habitCheckInsByDay),
+          alreadyAppliedMessage:
+              'index ${habitCheckInsByDay.entityName} already exists',
+        );
+      }
+      if (from < 10) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(habitCheckIns, habitCheckIns.dayPeriod),
+          alreadyAppliedMessage: 'duplicate column name: day_period',
+        );
+      }
+      if (from < 11) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(habits, habits.icon),
           alreadyAppliedMessage: 'duplicate column name: icon',
         );
       }
-      if (from < 6) {
+      if (from < 12) {
         await _runResumableMigrationStep(
-          () => m.addColumn(projects, projects.icon),
-          alreadyAppliedMessage: 'duplicate column name: icon',
+          () => m.createTable(accountRecoverySnapshots),
+          alreadyAppliedMessage:
+              'table ${accountRecoverySnapshots.actualTableName} already exists',
         );
       }
-      if (from < 5) {
+      if (from < 13) {
         await _runResumableMigrationStep(
-          () => m.addColumn(syncCommands, syncCommands.availableAt),
-          alreadyAppliedMessage: 'duplicate column name: available_at',
+          () => m.createTable(calendarProjections),
+          alreadyAppliedMessage:
+              'table ${calendarProjections.actualTableName} already exists',
         );
+      }
+      if (from < 14) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(tasks, tasks.isFocusEstimateManual),
+          alreadyAppliedMessage:
+              'duplicate column name: is_focus_estimate_manual',
+        );
+      }
+      if (from < 15) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(
+            focusPresets,
+            focusPresets.distractionProfileConfigured,
+          ),
+          alreadyAppliedMessage:
+              'duplicate column name: distraction_profile_configured',
+        );
+        await _runResumableMigrationStep(
+          () => m.addColumn(focusPresets, focusPresets.distractionProfileId),
+          alreadyAppliedMessage:
+              'duplicate column name: distraction_profile_id',
+        );
+      }
+      if (from < 16) {
+        await _runResumableMigrationStep(
+          () => m.addColumn(tasks, tasks.prerequisiteIdsJson),
+          alreadyAppliedMessage: 'duplicate column name: prerequisite_ids_json',
+        );
+        await _runResumableMigrationStep(
+          () => m.createTable(taskBlockingRecords),
+          alreadyAppliedMessage:
+              'table ${taskBlockingRecords.actualTableName} already exists',
+        );
+      }
+      if (from < 17) {
+        await _createProductionIndexes();
       }
     },
     beforeOpen: (details) async {
-      await customStatement('PRAGMA foreign_keys = ON');
+      await customStatement('PRAGMA foreign_keys = ON;');
+      if (!kIsWeb) {
+        await customStatement('PRAGMA journal_mode = WAL;');
+        await customStatement('PRAGMA synchronous = NORMAL;');
+        await customStatement('PRAGMA busy_timeout = 5000;');
+        await customStatement('PRAGMA temp_store = MEMORY;');
+        await customStatement('PRAGMA cache_size = -64000;');
+      }
     },
   );
+
+  Future<void> _createProductionIndexes() async {
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS tasks_project_status_deleted '
+      'ON tasks (project_id, status, is_deleted)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS tasks_parent_id '
+      'ON tasks (parent_id) WHERE parent_id IS NOT NULL',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS tasks_updated_at '
+      'ON tasks (updated_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS projects_order_active '
+      'ON projects (order_key, id) WHERE is_deleted = 0',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS projects_parent_id '
+      'ON projects (parent_id) WHERE parent_id IS NOT NULL',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS sections_project_order '
+      'ON sections (project_id, order_key) WHERE is_deleted = 0',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS sync_commands_pending_created '
+      'ON sync_commands (status, created_at ASC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS sync_commands_created_desc '
+      'ON sync_commands (created_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS focus_intervals_run_sequence '
+      'ON focus_intervals (run_id, sequence_number)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS focus_intervals_task_status '
+      'ON focus_intervals (task_id, status) WHERE task_id IS NOT NULL',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS task_completions_task_completed '
+      'ON task_completions (task_id, completed_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS task_labels_label_kind '
+      'ON task_labels (label_id, kind)',
+    );
+  }
 
   Future<void> _runResumableMigrationStep(
     Future<void> Function() action, {
@@ -864,13 +944,19 @@ class AppDatabase extends _$AppDatabase {
                   ..where((row) => row.id.equals('ada-account-owner-v1')))
                 .getSingleOrNull())
             ?.cursor;
-    final creator = owner == null || owner == 'guest' ? localUserId : owner;
-    await (update(tasks)..where(
-          (row) =>
-              row.scopeId.isNull() &
-              (row.createdBy.isNull() | row.createdBy.equals(localUserId)),
-        ))
-        .write(TasksCompanion(createdBy: Value(creator)));
+    final isLocal = owner == null || owner == 'guest' || owner == localUserId;
+    if (isLocal) {
+      await (update(tasks)
+            ..where((row) => row.scopeId.isNull() & row.createdBy.isNull()))
+          .write(const TasksCompanion(createdBy: Value(localUserId)));
+    } else {
+      await (update(tasks)..where(
+            (row) =>
+                row.scopeId.isNull() &
+                (row.createdBy.isNull() | row.createdBy.equals(localUserId)),
+          ))
+          .write(TasksCompanion(createdBy: Value(owner)));
+    }
   }
 
   Future<void> resetAccountData() async {

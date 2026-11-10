@@ -161,6 +161,8 @@ class LocalNotificationRepository implements NotificationRepository {
     return update;
   }
 
+  static const _maxScheduledTaskStarts = 40;
+
   Future<void> _syncTaskStarts(List<TaskItem> tasks, DateTime now) async {
     try {
       final desired = <String, TaskItem>{};
@@ -174,6 +176,18 @@ class LocalNotificationRepository implements NotificationRepository {
           continue;
         }
         desired[task.id] = task;
+      }
+      // iOS keeps only 64 pending notifications per app (shared with focus and
+      // habit reminders) and Android caps alarms too, so only the soonest task
+      // starts are scheduled; later ones are picked up as earlier ones fire.
+      if (desired.length > _maxScheduledTaskStarts) {
+        final soonest = desired.values.toList()
+          ..sort((a, b) => a.schedule!.start!.compareTo(b.schedule!.start!));
+        desired
+          ..clear()
+          ..addEntries(
+            soonest.take(_maxScheduledTaskStarts).map((t) => MapEntry(t.id, t)),
+          );
       }
 
       final pending = await _scheduler.pendingTaskStartTaskIds();

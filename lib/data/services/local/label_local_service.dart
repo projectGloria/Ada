@@ -86,4 +86,19 @@ class LabelLocalService {
       ),
     );
   }
+
+  /// Removes the user links to [labelId] and returns the affected task ids,
+  /// so the caller can enqueue one `task.label.delete` per link.
+  Future<List<String>> deleteTaskLabelsForLabel(String labelId) async {
+    final query = _db.select(_db.taskLabels)
+      ..where(
+        (row) => row.labelId.equals(labelId) & row.kind.equals(labelKindUser),
+      );
+    final taskIds = [for (final row in await query.get()) row.taskId];
+    await (_db.delete(_db.taskLabels)..where(
+          (row) => row.labelId.equals(labelId) & row.kind.equals(labelKindUser),
+        ))
+        .go();
+    return taskIds;
+  }
 }

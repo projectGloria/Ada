@@ -363,7 +363,8 @@ class DriftFocusRepository implements FocusRepository {
       return;
     }
     final now = DateTime.now().toUtc();
-    await ownerBoundTransaction(_db, _syncQueue, () async {
+    final started = await ownerBoundTransaction(_db, _syncQueue, () async {
+      if (!await _isStillActive(interval, 'ready')) return false;
       if (interval.type == 'work') {
         (await TaskBlockingStore(
           _db,
@@ -374,7 +375,9 @@ class DriftFocusRepository implements FocusRepository {
       await _insertEvent(interval.runId, interval.id, 'intervalStarted', now, {
         'type': interval.type,
       });
+      return true;
     });
+    if (!started) return;
     await _scheduleIntervalNotification(
       type: interval.type,
       startedAt: now,
@@ -396,7 +399,8 @@ class DriftFocusRepository implements FocusRepository {
           return;
         }
         final timestamp = (now ?? DateTime.now()).toUtc();
-        await ownerBoundTransaction(_db, _syncQueue, () async {
+        final paused = await ownerBoundTransaction(_db, _syncQueue, () async {
+          if (!await _isStillActive(interval, 'running')) return false;
           await _focus.pauseInterval(interval.id, interval.runId, timestamp);
           await _insertEvent(
             interval.runId,
@@ -405,83 +409,107 @@ class DriftFocusRepository implements FocusRepository {
             timestamp,
             null,
           );
+          return true;
         });
+        if (!paused) return;
         await _cancelFocusNotificationBestEffort();
         _playSound(FocusSoundCue.pause);
       });
 
   @override
-  Future<Result<void>> resumeActiveInterval({DateTime? now}) =>
-      Result.capture<void>(() async {
-        final interval = await _activeIntervalRow();
-        if (interval == null ||
-            interval.status != 'paused' ||
-            interval.pausedAt == null) {
-          return;
+  Future<Result<void>> resumeActiveInterval({
+    DateTime? now,
+  }) => Result.capture<void>(() async {
+    final interval = await _activeIntervalRow();
+    if (interval == null ||
+        interval.status != 'paused' ||
+        interval.pausedAt == null) {
+      return;
+    }
+    final timestamp = (now ?? DateTime.now()).toUtc();
+    final pausedTotal = await ownerBoundTransaction<int?>(
+      _db,
+      _syncQueue,
+      () async {
+        // Re-read inside the transaction: a second tap or a notification
+        // action may already have resumed this interval.
+        final current = await _activeIntervalRow();
+        if (current == null ||
+            current.id != interval.id ||
+            current.status != 'paused' ||
+            current.pausedAt == null) {
+          return null;
         }
-        final timestamp = (now ?? DateTime.now()).toUtc();
-        final pausedDelta = timestamp.difference(interval.pausedAt!).inSeconds;
+        final pausedDelta = timestamp.difference(current.pausedAt!).inSeconds;
         final pausedTotal =
-            interval.pausedTotalSeconds + (pausedDelta < 0 ? 0 : pausedDelta);
-        await ownerBoundTransaction(_db, _syncQueue, () async {
-          if (interval.type == 'work') {
-            (await TaskBlockingStore(_db, _syncQueue).policy(
-              now: timestamp,
-            )).availability(interval.taskId).requireFocus();
-          }
-          await _focus.resumeInterval(
-            interval.id,
-            interval.runId,
-            pausedTotal,
-            timestamp,
-          );
-          await _insertEvent(
-            interval.runId,
-            interval.id,
-            'intervalResumed',
-            timestamp,
-            null,
-          );
-        });
-        await _scheduleIntervalNotification(
-          type: interval.type,
-          startedAt: interval.startedAt,
-          plannedSeconds: interval.plannedSeconds,
-          pausedTotalSeconds: pausedTotal,
+            current.pausedTotalSeconds + (pausedDelta < 0 ? 0 : pausedDelta);
+        if (interval.type == 'work') {
+          (await TaskBlockingStore(_db, _syncQueue).policy(
+            now: timestamp,
+          )).availability(interval.taskId).requireFocus();
+        }
+        await _focus.resumeInterval(
+          interval.id,
+          interval.runId,
+          pausedTotal,
+          timestamp,
         );
-        _playSound(FocusSoundCue.resume);
-      });
+        await _insertEvent(
+          interval.runId,
+          interval.id,
+          'intervalResumed',
+          timestamp,
+          null,
+        );
+        return pausedTotal;
+      },
+    );
+    if (pausedTotal == null) return;
+    await _scheduleIntervalNotification(
+      type: interval.type,
+      startedAt: interval.startedAt,
+      plannedSeconds: interval.plannedSeconds,
+      pausedTotalSeconds: pausedTotal,
+    );
+    _playSound(FocusSoundCue.resume);
+  });
 
   @override
-  Future<Result<void>> restartActiveInterval({DateTime? now}) =>
-      Result.capture<void>(() async {
-        final interval = await _activeIntervalRow();
-        if (interval == null) {
-          return;
-        }
-        final timestamp = (now ?? DateTime.now()).toUtc();
-        await ownerBoundTransaction(_db, _syncQueue, () async {
-          if (interval.type == 'work') {
-            (await TaskBlockingStore(_db, _syncQueue).policy(
-              now: timestamp,
-            )).availability(interval.taskId).requireFocus();
-          }
-          await _focus.restartInterval(interval.id, interval.runId, timestamp);
-          await _insertEvent(
-            interval.runId,
-            interval.id,
-            'intervalRestarted',
-            timestamp,
-            {'type': interval.type},
-          );
-        });
-        await _scheduleIntervalNotification(
-          type: interval.type,
-          startedAt: timestamp,
-          plannedSeconds: interval.plannedSeconds,
-          pausedTotalSeconds: 0,
-        );
-      });
+  Future<Result<void>> restartActiveInterval({
+    DateTime? now,
+  }) => Result.capture<void>(() async {
+    final interval = await _activeIntervalRow();
+    if (interval == null) {
+      return;
+    }
+    final timestamp = (now ?? DateTime.now()).toUtc();
+    final restarted = await ownerBoundTransaction(_db, _syncQueue, () async {
+      if (!await _isStillActive(interval, null)) return false;
+      if (interval.type == 'work') {
+        (await TaskBlockingStore(
+          _db,
+          _syncQueue,
+        ).policy(now: timestamp)).availability(interval.taskId).requireFocus();
+      }
+      await _focus.restartInterval(interval.id, interval.runId, timestamp);
+      await _insertEvent(
+        interval.runId,
+        interval.id,
+        'intervalRestarted',
+        timestamp,
+        {'type': interval.type},
+      );
+      return true;
+    });
+    if (!restarted) return;
+    await _scheduleIntervalNotification(
+      type: interval.type,
+      startedAt: timestamp,
+      plannedSeconds: interval.plannedSeconds,
+      pausedTotalSeconds: 0,
+    );
+    _playSound(FocusSoundCue.start);
+  });
 
   @override
   Future<Result<void>> adjustActiveIntervalDuration(
@@ -848,6 +876,16 @@ class DriftFocusRepository implements FocusRepository {
         'stoppedAt': timestamp.toIso8601String(),
       },
     );
+  }
+
+  /// Whether [interval] is still the active interval (optionally with
+  /// [status]) inside the current transaction. Guards against acting on a row
+  /// that a concurrent tap or notification action has already changed.
+  Future<bool> _isStillActive(FocusIntervalRow interval, String? status) async {
+    final current = await _activeIntervalRow();
+    return current != null &&
+        current.id == interval.id &&
+        (status == null || current.status == status);
   }
 
   Future<FocusRunRow?> _activeRunRow() {

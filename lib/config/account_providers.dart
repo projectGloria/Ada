@@ -47,8 +47,7 @@ import 'package:ada/ui/core/localization/app_locale.dart';
 ///
 /// Derived from the flavor so a link minted by one build can never be handled
 /// by another installed side by side with it.
-String get _adaNativeLoginRedirect =>
-    '${appFlavor.urlScheme}://login-callback';
+String get _adaNativeLoginRedirect => '${appFlavor.urlScheme}://login-callback';
 
 String get adaLoginRedirect =>
     adaLoginRedirectFor(isWeb: kIsWeb, baseUri: Uri.base);
@@ -262,10 +261,11 @@ final accountSessionProvider = StreamProvider<AccountSession>((ref) {
   return ref.watch(accountSessionRepositoryProvider).watchSession();
 });
 
-final _accountProfileSnapshotProvider =
-    StreamProvider<AdaAccountProfile?>((ref) {
-      return ref.watch(accountSessionRepositoryProvider).watchProfile();
-    });
+final _accountProfileSnapshotProvider = StreamProvider<AdaAccountProfile?>((
+  ref,
+) {
+  return ref.watch(accountSessionRepositoryProvider).watchProfile();
+});
 final accountProfileProvider = Provider<AdaAccountProfile?>((ref) {
   ref.watch(accountSessionProvider);
   final profile = ref.watch(_accountProfileSnapshotProvider).value;
@@ -450,6 +450,7 @@ final accountSyncLifecycleProvider = Provider<AccountSyncLifecycle?>((ref) {
       await engine.requestRecoveryScan();
     },
     syncNow: () async => (await useCase.call()).getOrThrow(),
+    hasMoreWork: () => engine.hasMorePendingWork,
     deviceId: engine.deviceId,
     syncHints: () => account.syncHints(appId: AccountAppId.pomodoist),
     syncQueueRepository: ref.watch(syncQueueRepositoryProvider),

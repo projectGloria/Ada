@@ -10,6 +10,10 @@ import 'account_sync_failure.dart';
 
 class AccountSyncLifecycle with WidgetsBindingObserver {
   static const defaultPollInterval = Duration(minutes: 1);
+
+  /// Upper bound for one whole cycle, so a request that never settles cannot
+  /// leave the scheduler marked as syncing forever.
+  static const defaultCycleTimeout = Duration(minutes: 5);
   static const defaultRetryDelays = <Duration>[
     Duration(seconds: 30),
     Duration(minutes: 1),
@@ -30,6 +34,8 @@ class AccountSyncLifecycle with WidgetsBindingObserver {
     required OutboxService syncQueueRepository,
     Future<void> Function(Set<String>)? onSynced,
     Future<void> Function()? onRestart,
+    bool Function()? hasMoreWork,
+    Duration? cycleTimeout,
     Duration? pollInterval,
     Duration? queueDebounce,
     Duration? hintResubscribeDelay,
@@ -40,6 +46,8 @@ class AccountSyncLifecycle with WidgetsBindingObserver {
        _syncQueueRepository = syncQueueRepository,
        _onSynced = onSynced,
        _onRestart = onRestart,
+       _hasMoreWork = hasMoreWork,
+       _cycleTimeout = cycleTimeout ?? defaultCycleTimeout,
        _pollInterval = pollInterval ?? defaultPollInterval,
        _queueDebounce = queueDebounce ?? const Duration(milliseconds: 800),
        _hintResubscribeDelay =
@@ -52,6 +60,8 @@ class AccountSyncLifecycle with WidgetsBindingObserver {
   final OutboxService _syncQueueRepository;
   final Future<void> Function(Set<String>)? _onSynced;
   final Future<void> Function()? _onRestart;
+  final bool Function()? _hasMoreWork;
+  final Duration _cycleTimeout;
   final Duration _pollInterval;
   final Duration _queueDebounce;
   final Duration _hintResubscribeDelay;
@@ -215,10 +225,11 @@ class AccountSyncLifecycle with WidgetsBindingObserver {
     Set<String>? entityTypes;
     Object? failure;
     try {
-      entityTypes = await _syncNowCallback();
+      entityTypes = await _syncNowCallback().timeout(_cycleTimeout);
       _retryAttempt = 0;
       _retryTimer?.cancel();
       _retryTimer = null;
+      if (_hasMoreWork?.call() == true) _syncAgain = true;
     } catch (error) {
       failure = error;
       if (error is AccountSyncPartialFailure) entityTypes = error.entityTypes;

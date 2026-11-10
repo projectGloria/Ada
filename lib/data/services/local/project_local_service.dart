@@ -95,6 +95,33 @@ class ProjectLocalService {
     );
   }
 
+  /// Soft-deletes the project's live sections and returns their ids, so the
+  /// caller can enqueue matching `section.delete` sync commands. Sections that
+  /// were already deleted keep their original `updatedAt`.
+  Future<List<String>> setSectionsDeletedForProject(
+    String projectId,
+    DateTime updatedAt,
+  ) async {
+    final live =
+        await (_db.select(_db.sections)..where(
+              (section) =>
+                  section.projectId.equals(projectId) &
+                  section.isDeleted.equals(false),
+            ))
+            .get();
+    if (live.isEmpty) return const [];
+    final ids = [for (final row in live) row.id];
+    await (_db.update(
+      _db.sections,
+    )..where((section) => section.id.isIn(ids))).write(
+      SectionsCompanion(
+        isDeleted: const Value(true),
+        updatedAt: Value(updatedAt),
+      ),
+    );
+    return ids;
+  }
+
   Future<KanbanSettingsRow> loadKanbanSettings() {
     return (_db.select(
       _db.kanbanSettings,

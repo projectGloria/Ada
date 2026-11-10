@@ -30,16 +30,20 @@ extension AccountSyncPush on AccountSyncEngine {
                     row.status.equals('pending') &
                     (row.availableAt.isNull() |
                         row.availableAt.isSmallerOrEqualValue(readyAt)) &
+                    // `NULL NOT IN (...)` is NULL in SQL, so commands without
+                    // a client id must be kept explicitly.
                     (deferredTaskIds.isEmpty
                         ? const Constant(true)
-                        : row.clientId.isNotIn(deferredTaskIds)),
+                        : row.clientId.isNull() |
+                              row.clientId.isNotIn(deferredTaskIds)),
               )
               ..orderBy([
                 (row) => OrderingTerm.asc(row.createdAt),
-                (row) => OrderingTerm.asc(row.id),
+                (_) => OrderingTerm.asc(syncCommandSequence),
               ]))
             .get();
     _pushRequestsLeft = 64;
+    _pushBudgetExhausted = false;
     final blocked =
         (await (_db.select(_db.syncCommands)..where(
                   (r) =>
@@ -54,52 +58,73 @@ extension AccountSyncPush on AccountSyncEngine {
             .toSet();
     final types = <String>{};
     final group = <SyncCommandRow>[];
+    final operationsById = <String, List<AccountSyncOperation>>{};
     var size = 0;
     // ponytail: linear queue scan; use persisted keyset pages if local queues
     // grow beyond memory. Network work is limited to 64 requests per cycle.
-    for (final command in pending) {
-      final operations = await _operationsFromCommand(
-        command,
-        taskHistoryCutoff,
-      );
-      final references = <String>{
-        if (command.clientId != null) command.clientId!,
-        for (final op in operations) ...[
-          op.entityId,
-          for (final key in [
-            'projectId',
-            'taskId',
-            'parentId',
-            'sectionId',
-            'habitId',
-            'runId',
-          ])
-            if (op.payload[key] is String) op.payload[key] as String,
-        ],
-      };
-      if (references.any(blocked.contains)) {
-        if (command.clientId != null) blocked.add(command.clientId!);
-        continue;
-      }
-      if (command.type == 'task.completeBranch') {
-        if (group.isNotEmpty) {
-          types.addAll(await _pushCommandGroup(deviceId, group, blocked));
+    try {
+      for (final command in pending) {
+        final operations = await _operationsFromCommand(
+          command,
+          taskHistoryCutoff,
+        );
+        operationsById[command.id] = operations;
+        final references = <String>{
+          if (command.clientId != null) command.clientId!,
+          for (final op in operations) ...[
+            op.entityId,
+            for (final key in [
+              'projectId',
+              'taskId',
+              'parentId',
+              'sectionId',
+              'habitId',
+              'runId',
+            ])
+              if (op.payload[key] is String) op.payload[key] as String,
+          ],
+        };
+        if (references.any(blocked.contains)) {
+          if (command.clientId != null) blocked.add(command.clientId!);
+          continue;
+        }
+        if (command.type == 'task.completeBranch') {
+          if (group.isNotEmpty) {
+            types.addAll(
+              await _pushCommandGroup(deviceId, group, blocked, operationsById),
+            );
+            group.clear();
+            size = 0;
+          }
+          types.addAll(
+            await _pushCommandGroup(
+              deviceId,
+              [command],
+              blocked,
+              operationsById,
+            ),
+          );
+          continue;
+        }
+        if (group.isNotEmpty && size + operations.length > 100) {
+          types.addAll(
+            await _pushCommandGroup(deviceId, group, blocked, operationsById),
+          );
           group.clear();
           size = 0;
         }
-        types.addAll(await _pushCommandGroup(deviceId, [command], blocked));
-        continue;
+        group.add(command);
+        size += operations.length;
       }
-      if (group.isNotEmpty && size + operations.length > 100) {
-        types.addAll(await _pushCommandGroup(deviceId, group, blocked));
-        group.clear();
-        size = 0;
+      if (group.isNotEmpty) {
+        types.addAll(
+          await _pushCommandGroup(deviceId, group, blocked, operationsById),
+        );
       }
-      group.add(command);
-      size += operations.length;
-    }
-    if (group.isNotEmpty) {
-      types.addAll(await _pushCommandGroup(deviceId, group, blocked));
+    } on _PushBudgetReached {
+      // The per-cycle request budget is a pacing limit, not a failure: the
+      // lifecycle starts another cycle right away for the remaining commands.
+      _pushBudgetExhausted = true;
     }
     await _deleteFinishedCommands();
     if (types.isNotEmpty) await _broadcastSyncHint();
@@ -109,12 +134,15 @@ extension AccountSyncPush on AccountSyncEngine {
   Future<Set<String>> _pushCommandGroup(
     String deviceId,
     List<SyncCommandRow> commands,
-    Set<String> blocked,
-  ) async {
+    Set<String> blocked, [
+    Map<String, List<AccountSyncOperation>> cachedOperations = const {},
+  ]) async {
     final retained = <SyncCommandRow>[];
     final operations = <AccountSyncOperation>[];
     for (final command in commands) {
-      final ops = await _operationsFromCommand(command, _retentionCutoff);
+      final ops =
+          cachedOperations[command.id] ??
+          await _operationsFromCommand(command, _retentionCutoff);
       if (ops.any(
             (op) =>
                 blocked.contains(op.entityId) ||
@@ -165,8 +193,14 @@ extension AccountSyncPush on AccountSyncEngine {
             deviceId,
             retained.sublist(0, mid),
             blocked,
+            cachedOperations,
           ),
-          ...await _pushCommandGroup(deviceId, retained.sublist(mid), blocked),
+          ...await _pushCommandGroup(
+            deviceId,
+            retained.sublist(mid),
+            blocked,
+            cachedOperations,
+          ),
         };
       }
       _checkSession();
@@ -445,7 +479,7 @@ extension AccountSyncPush on AccountSyncEngine {
     try {
       _checkSession();
       if (_pushRequestsLeft-- <= 0) {
-        throw StateError('Sync request budget reached');
+        throw const _PushBudgetReached();
       }
       await _account
           .pushChanges(
@@ -466,4 +500,8 @@ extension AccountSyncPush on AccountSyncEngine {
       await _pushBatch(deviceId, operations.sublist(middle));
     }
   }
+}
+
+class _PushBudgetReached implements Exception {
+  const _PushBudgetReached();
 }

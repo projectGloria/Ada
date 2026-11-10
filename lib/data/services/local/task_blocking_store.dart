@@ -34,6 +34,8 @@ class TaskBlockingStore {
         row.id: sharedScopeFromRow(row),
     };
     return TaskBlockingPolicy(
+      // Deleted tasks must stay in the policy: an absent prerequisite counts
+      // as unmet (blocking its dependents forever), a deleted one as resolved.
       tasks: (await db.select(db.tasks).get()).map(
         (r) => taskItemFromRow(r, scope: scopes[r.scopeId]),
       ),
@@ -57,17 +59,31 @@ class TaskBlockingStore {
     late StreamController<TaskBlockingPolicy> controller;
     StreamSubscription<Object?>? subscription;
     Timer? timer;
-    Future<void> pending = Future.value();
-    void refresh() {
-      pending = pending.then((_) async {
-        if (controller.isClosed) return;
-        try {
-          final next = await policy();
-          if (!controller.isClosed) controller.add(next);
-        } catch (error, stack) {
-          if (!controller.isClosed) controller.addError(error, stack);
-        }
-      });
+    // Building a policy reads every task, so bursts of table changes (a bulk
+    // edit, a sync page) are coalesced: at most one build runs and at most one
+    // more is queued behind it, however many changes arrive meanwhile.
+    var running = false;
+    var dirty = false;
+    Future<void> refresh() async {
+      if (running) {
+        dirty = true;
+        return;
+      }
+      running = true;
+      try {
+        do {
+          dirty = false;
+          if (controller.isClosed) return;
+          try {
+            final next = await policy();
+            if (!controller.isClosed) controller.add(next);
+          } catch (error, stack) {
+            if (!controller.isClosed) controller.addError(error, stack);
+          }
+        } while (dirty);
+      } finally {
+        running = false;
+      }
     }
 
     controller = StreamController<TaskBlockingPolicy>(
@@ -83,8 +99,11 @@ class TaskBlockingStore {
               },
             )
             .watch()
-            .listen((_) => refresh(), onError: controller.addError);
-        timer = Timer.periodic(const Duration(seconds: 30), (_) => refresh());
+            .listen((_) => unawaited(refresh()), onError: controller.addError);
+        timer = Timer.periodic(
+          const Duration(seconds: 30),
+          (_) => unawaited(refresh()),
+        );
       },
       onCancel: () async {
         timer?.cancel();

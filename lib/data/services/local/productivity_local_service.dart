@@ -6,13 +6,17 @@ class ProductivityLocalService {
   final AppDatabase _db;
 
   Stream<List<TaskRow>> watchTasks() {
+    // Deleted tasks and projects stay in the stream on purpose: reports still
+    // name the focus time and completions recorded against them.
     return _db.select(_db.tasks).watch();
   }
 
   Stream<List<ProjectRow>> watchProjects() => _db.select(_db.projects).watch();
 
   Stream<List<FocusIntervalRow>> watchFocusIntervals() {
-    return _db.select(_db.focusIntervals).watch();
+    return (_db.select(
+      _db.focusIntervals,
+    )..where((interval) => interval.isDeleted.equals(false))).watch();
   }
 
   Stream<List<TaskCompletionRow>> watchTaskCompletions() {

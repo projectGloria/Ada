@@ -44,3 +44,10 @@ ios/Pods/
 macos/Pods/
 *.ipa
 *.app
+
+# Build outputs and machine-specific generated Flutter files
+/installer_output/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+macos/Flutter/ephemeral/

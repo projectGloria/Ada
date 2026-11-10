@@ -29,7 +29,18 @@ class TimelineViewModel extends Notifier<TimelineState> {
     _tasks = ref.watch(taskRepositoryProvider);
     return (
       now:
-          (ref.watch(taskTimeTickerProvider).value ??
+          // Minute precision is enough for the now-line; rebuilding the whole
+          // timeline state every second is not.
+          (ref.watch(
+                    taskTimeTickerProvider.select((tick) {
+                      final value = tick.value;
+                      if (value == null) return null;
+                      return DateTime.fromMillisecondsSinceEpoch(
+                        value.millisecondsSinceEpoch ~/ 60000 * 60000,
+                        isUtc: value.isUtc,
+                      );
+                    }),
+                  ) ??
                   ref.read(clockProvider).now())
               .toLocal(),
       tasks: ref.watch(tasksByQueryProvider(const TaskQuery.all())),

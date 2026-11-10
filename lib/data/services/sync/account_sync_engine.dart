@@ -5,6 +5,7 @@ import 'package:ada/domain/models/account/legacy_recovery_request.dart';
 import 'account_sync_failure.dart';
 export 'account_sync_failure.dart';
 
+import 'package:collection/collection.dart';
 import 'package:app_account/app_account.dart';
 import 'package:drift/drift.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
@@ -68,6 +69,11 @@ class AccountSyncEngine {
   bool Function()? _isSessionCurrent;
   String? _syncUserId;
   int _pushRequestsLeft = 64;
+  bool _pushBudgetExhausted = false;
+
+  /// Whether the last cycle stopped pushing because it reached its request
+  /// budget, so ready commands are still waiting.
+  bool get hasMorePendingWork => _pushBudgetExhausted;
   final _committedTypes = <String>{};
   void _checkSession() {
     if (_isSessionCurrent?.call() == false ||

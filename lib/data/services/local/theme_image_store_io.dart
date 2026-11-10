@@ -42,7 +42,11 @@ class FileThemeImageStore extends ThemeImageStore {
     try {
       final file = File(p.join(temporary.path, '$id.png'));
       await file.writeAsBytes(bytes, flush: true);
-      await file.rename(p.join(directory.path, '$id.png'));
+      final destination = File(p.join(directory.path, '$id.png'));
+      if (Platform.isWindows && await destination.exists()) {
+        await destination.delete();
+      }
+      await file.rename(destination.path);
     } finally {
       await temporary.delete(recursive: true);
     }

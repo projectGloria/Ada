@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:drift/drift.dart';
 import 'package:ada/data/services/local/database/app_database.dart';
 import 'package:ada/domain/models/calendar/provider_calendar_models.dart';
 
@@ -21,8 +22,13 @@ class ProviderCalendarRepository {
           );
 
   Stream<List<CalendarEventLink>> watchLinksForTask(String taskId) =>
-      (_db.select(_db.calendarProjections)
-            ..where((row) => row.entityType.equals('calendar_event_link')))
+      (_db.select(_db.calendarProjections)..where(
+            (row) =>
+                row.entityType.equals('calendar_event_link') &
+                const CustomExpression<String>(
+                  r"json_extract(data_json, '$.taskId')",
+                ).equals(taskId),
+          ))
           .watch()
           .map(
             (rows) => rows

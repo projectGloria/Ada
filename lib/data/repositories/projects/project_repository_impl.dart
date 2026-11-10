@@ -463,11 +463,22 @@ class DriftProjectRepository implements ProjectRepository {
 
       final settingsBefore = await _projects.loadKanbanSettings();
       await _projects.setProjectDeleted(id, now);
+      final deletedSectionIds = await _projects.setSectionsDeletedForProject(
+        id,
+        now,
+      );
       if (scopeId == null) {
         await _projects.repairKanbanSettings(now: now);
       }
       final settingsAfter = await _projects.loadKanbanSettings();
       await _syncQueue.enqueueBatch([
+        if (scopeId == null)
+          for (final sectionId in deletedSectionIds)
+            SyncQueueCommand(
+              type: 'section.delete',
+              clientId: sectionId,
+              payload: {'id': sectionId, 'projectId': id},
+            ),
         if (scopeId == null)
           SyncQueueCommand(
             type: 'project.delete',

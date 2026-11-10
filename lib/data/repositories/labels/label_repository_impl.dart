@@ -167,11 +167,20 @@ class DriftLabelRepository implements LabelRepository {
         return;
       }
       await _labels.markDeleted(id, now);
-      await _syncQueue.enqueue(
-        type: 'label.delete',
-        clientId: id,
-        payload: {'id': id},
-      );
+      final taskIds = await _labels.deleteTaskLabelsForLabel(id);
+      await _syncQueue.enqueueBatch([
+        for (final taskId in taskIds)
+          SyncQueueCommand(
+            type: 'task.label.delete',
+            clientId: taskId,
+            payload: {'taskId': taskId, 'labelId': id},
+          ),
+        SyncQueueCommand(
+          type: 'label.delete',
+          clientId: id,
+          payload: {'id': id},
+        ),
+      ], occurredAt: now);
     });
   });
 

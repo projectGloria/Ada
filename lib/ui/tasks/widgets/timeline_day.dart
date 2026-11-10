@@ -222,7 +222,7 @@ class _AllDaySectionState extends ConsumerState<_AllDaySection> {
                               this.context,
                             )?.created({taskId});
                             await playHaptic(AppHapticCue.light);
-                            setState(() => _adding = false);
+                            if (mounted) setState(() => _adding = false);
                           }
                         },
                       ),
