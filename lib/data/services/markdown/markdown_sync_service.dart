@@ -168,9 +168,13 @@ class ObsidianSyncController extends Notifier<ObsidianSyncState> {
         final dateKey = DateFormat('yyyy-MM-dd').format(now);
         final dailyTasks = tasks.where((t) {
           if (t.isDeleted) return false;
-          if (t.dueJson != null && t.dueJson!.contains(dateKey)) return true;
+          if (t.dueDate != null) {
+            final dueStr = DateFormat('yyyy-MM-dd').format(t.dueDate!);
+            if (dueStr == dateKey) return true;
+          }
           if (t.completedAt != null) {
-            final compStr = DateFormat('yyyy-MM-dd').format(t.completedAt!);
+            final compStr =
+                DateFormat('yyyy-MM-dd').format(t.completedAt!.toLocal());
             return compStr == dateKey;
           }
           return false;
@@ -338,7 +342,10 @@ String _formatTaskLine(TaskItem task, {String? projectName}) {
   return line;
 }
 
-List<CreateTaskInput> parseMarkdownChecklists(String content) {
+List<CreateTaskInput> parseMarkdownChecklists(
+  String content, {
+  bool includeCompleted = false,
+}) {
   final lines = content.split('\n');
   final result = <CreateTaskInput>[];
   final taskRegex = RegExp(r'^\s*-\s*\[([ xX])\]\s*(.+)$');
@@ -346,6 +353,10 @@ List<CreateTaskInput> parseMarkdownChecklists(String content) {
   for (final line in lines) {
     final match = taskRegex.firstMatch(line);
     if (match != null) {
+      final isCompleted = match.group(1)?.toLowerCase() == 'x';
+      if (isCompleted && !includeCompleted) {
+        continue;
+      }
       final text = match.group(2)!.trim();
       if (text.isNotEmpty) {
         result.add(CreateTaskInput(content: text));

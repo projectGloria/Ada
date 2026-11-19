@@ -94,10 +94,20 @@ class NotificationScheduler {
     };
   }
 
+  static void _setSafeLocalLocation(String identifier) {
+    try {
+      tz.setLocalLocation(tz.getLocation(identifier));
+    } catch (_) {
+      try {
+        tz.setLocalLocation(tz.getLocation('UTC'));
+      } catch (_) {}
+    }
+  }
+
   Future<int> habitNotificationBudget() async {
     await initialize();
     final zone = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(zone.identifier));
+    _setSafeLocalLocation(zone.identifier);
     if (defaultTargetPlatform != TargetPlatform.iOS) return 30;
     final pending = await _plugin.pendingNotificationRequests();
     return habitNotificationCapacity(pending);
@@ -258,7 +268,7 @@ class NotificationScheduler {
 
     tz_data.initializeTimeZones();
     final localTimeZone = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(localTimeZone.identifier));
+    _setSafeLocalLocation(localTimeZone.identifier);
     await _plugin.initialize(
       settings: InitializationSettings(
         android: initializationSettings.android,

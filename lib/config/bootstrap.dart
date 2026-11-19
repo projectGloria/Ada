@@ -34,14 +34,53 @@ import 'package:ada/domain/models/billing/billing_models.dart';
 
 Future<void> bootstrapAda(AppEnvironment appEnvironment) async {
   traceStartupStage('begin');
-  await runAdaStartup(
-    loadMonitoringPolicy: loadSentryRuntimePolicy,
-    loadRuntimeConfig: loadRuntimePublicConfig,
-    monitor: const SentryStartupMonitor(),
-    onStartupFailure: showWebBootstrapFailure,
-    startApplication: (runtimeConfig) =>
-        _startAda(appEnvironment, runtimeConfig),
-  );
+  try {
+    await runAdaStartup(
+      loadMonitoringPolicy: loadSentryRuntimePolicy,
+      loadRuntimeConfig: loadRuntimePublicConfig,
+      monitor: const SentryStartupMonitor(),
+      onStartupFailure: showWebBootstrapFailure,
+      startApplication: (runtimeConfig) =>
+          _startAda(appEnvironment, runtimeConfig),
+    );
+  } catch (error, stackTrace) {
+    // The web loader renders its own failure page. Elsewhere nothing would be
+    // drawn and the window would stay blank, so show the error instead.
+    if (kIsWeb) rethrow;
+    debugPrint('Ada failed to start: $error\n$stackTrace');
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(StartupFailureApp(error: error, stackTrace: stackTrace));
+  }
+}
+
+/// Shown when startup throws before the real app could be drawn.
+class StartupFailureApp extends StatelessWidget {
+  const StartupFailureApp({
+    super.key,
+    required this.error,
+    required this.stackTrace,
+  });
+
+  final Object error;
+  final StackTrace stackTrace;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: SelectableText(
+              'Ada could not start.\n\n$error\n\n$stackTrace',
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// Publishes the flavor this process runs as.

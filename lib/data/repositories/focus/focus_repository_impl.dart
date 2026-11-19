@@ -576,7 +576,16 @@ class DriftFocusRepository implements FocusRepository {
     if (run == null) {
       return;
     }
-    final timestamp = (now ?? DateTime.now()).toUtc();
+    final expectedEnd = calculateExpectedEndAt(
+      startedAt: interval.startedAt,
+      plannedSeconds: interval.plannedSeconds,
+      pausedTotalSeconds: interval.pausedTotalSeconds,
+    );
+    final effectiveNow = (now ?? DateTime.now()).toUtc();
+    final timestamp = expiredIntervalId != null &&
+            effectiveNow.isAfter(expectedEnd.toUtc())
+        ? expectedEnd.toUtc()
+        : effectiveNow;
     final preset = await _presetForRun(run);
     if (preset.strictMode &&
         !isIntervalExpired(

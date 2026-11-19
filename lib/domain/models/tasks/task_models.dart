@@ -151,19 +151,27 @@ class TaskSchedule {
     if (repeat == null) {
       return this;
     }
+    final effectiveRepeat = repeat.anchorDay != null || repeat.unit != TaskRecurrenceUnit.month
+        ? repeat
+        : TaskRecurrence(
+            interval: repeat.interval,
+            unit: repeat.unit,
+            seriesId: repeat.seriesId,
+            anchorDay: (kind == TaskScheduleKind.allDay ? date : start?.toLocal())?.day,
+          );
     return switch (kind) {
       TaskScheduleKind.allDay => TaskSchedule.allDay(
-        _addRecurrence(date!, repeat),
-        recurrence: repeat,
+        _addRecurrence(date!, effectiveRepeat),
+        recurrence: effectiveRepeat,
       ),
       TaskScheduleKind.timed => () {
         final localStart = start!.toLocal();
-        final nextStart = _addRecurrence(localStart, repeat);
+        final nextStart = _addRecurrence(localStart, effectiveRepeat);
         return TaskSchedule.timed(
           start: nextStart,
           end: nextStart.add(duration!),
           timeZone: timeZone,
-          recurrence: repeat,
+          recurrence: effectiveRepeat,
         );
       }(),
     };
@@ -283,20 +291,82 @@ class TaskSchedule {
   }
 
   static DateTime _addRecurrence(DateTime value, TaskRecurrence recurrence) {
+    if (value.isUtc) {
+      return switch (recurrence.unit) {
+        TaskRecurrenceUnit.day => DateTime.utc(
+          value.year,
+          value.month,
+          value.day + recurrence.interval,
+          value.hour,
+          value.minute,
+          value.second,
+          value.millisecond,
+          value.microsecond,
+        ),
+        TaskRecurrenceUnit.week => DateTime.utc(
+          value.year,
+          value.month,
+          value.day + (7 * recurrence.interval),
+          value.hour,
+          value.minute,
+          value.second,
+          value.millisecond,
+          value.microsecond,
+        ),
+        TaskRecurrenceUnit.month => _addMonths(
+          value,
+          recurrence.interval,
+          targetDay: recurrence.anchorDay,
+        ),
+      };
+    }
     return switch (recurrence.unit) {
-      TaskRecurrenceUnit.day => value.add(Duration(days: recurrence.interval)),
-      TaskRecurrenceUnit.week => value.add(
-        Duration(days: 7 * recurrence.interval),
+      TaskRecurrenceUnit.day => DateTime(
+        value.year,
+        value.month,
+        value.day + recurrence.interval,
+        value.hour,
+        value.minute,
+        value.second,
+        value.millisecond,
+        value.microsecond,
       ),
-      TaskRecurrenceUnit.month => _addMonths(value, recurrence.interval),
+      TaskRecurrenceUnit.week => DateTime(
+        value.year,
+        value.month,
+        value.day + (7 * recurrence.interval),
+        value.hour,
+        value.minute,
+        value.second,
+        value.millisecond,
+        value.microsecond,
+      ),
+      TaskRecurrenceUnit.month => _addMonths(
+        value,
+        recurrence.interval,
+        targetDay: recurrence.anchorDay,
+      ),
     };
   }
 
-  static DateTime _addMonths(DateTime value, int months) {
+  static DateTime _addMonths(DateTime value, int months, {int? targetDay}) {
     final targetMonth = value.month + months;
     final year = value.year + (targetMonth - 1) ~/ 12;
     final month = (targetMonth - 1) % 12 + 1;
-    final day = value.day.clamp(1, _lastDayOfMonth(year, month)).toInt();
+    final preferredDay = targetDay ?? value.day;
+    final day = preferredDay.clamp(1, _lastDayOfMonth(year, month)).toInt();
+    if (value.isUtc) {
+      return DateTime.utc(
+        year,
+        month,
+        day,
+        value.hour,
+        value.minute,
+        value.second,
+        value.millisecond,
+        value.microsecond,
+      );
+    }
     return DateTime(
       year,
       month,
@@ -345,15 +415,23 @@ class TaskRecurrence {
     required this.interval,
     required this.unit,
     required this.seriesId,
+    this.anchorDay,
   }) : assert(interval >= 1 && interval <= 999),
-       assert(seriesId.length > 0);
+       assert(seriesId.length > 0),
+       assert(anchorDay == null || (anchorDay >= 1 && anchorDay <= 31));
 
   final int interval;
   final TaskRecurrenceUnit unit;
   final String seriesId;
+  final int? anchorDay;
 
   Map<String, Object?> toJson() {
-    return {'interval': interval, 'unit': unit.name, 'seriesId': seriesId};
+    return {
+      'interval': interval,
+      'unit': unit.name,
+      'seriesId': seriesId,
+      if (anchorDay != null) 'anchorDay': anchorDay,
+    };
   }
 
   static TaskRecurrence? fromJson(Object? raw) {
@@ -370,6 +448,8 @@ class TaskRecurrence {
       }
     }
     final seriesId = json['seriesId'];
+    final anchorDay =
+        json['anchorDay'] is int ? json['anchorDay'] as int : null;
     if (interval is! int ||
         interval < 1 ||
         interval > 999 ||
@@ -378,7 +458,14 @@ class TaskRecurrence {
         seriesId.trim().isEmpty) {
       return null;
     }
-    return TaskRecurrence(interval: interval, unit: unit, seriesId: seriesId);
+    return TaskRecurrence(
+      interval: interval,
+      unit: unit,
+      seriesId: seriesId,
+      anchorDay: anchorDay != null && anchorDay >= 1 && anchorDay <= 31
+          ? anchorDay
+          : null,
+    );
   }
 
   @override
@@ -387,11 +474,12 @@ class TaskRecurrence {
         other is TaskRecurrence &&
             other.interval == interval &&
             other.unit == unit &&
-            other.seriesId == seriesId;
+            other.seriesId == seriesId &&
+            other.anchorDay == anchorDay;
   }
 
   @override
-  int get hashCode => Object.hash(interval, unit, seriesId);
+  int get hashCode => Object.hash(interval, unit, seriesId, anchorDay);
 }
 
 enum TaskRecurrenceUnit { day, week, month }

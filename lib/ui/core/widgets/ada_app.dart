@@ -20,12 +20,16 @@ import 'package:ada/ui/settings/view_models/theme_settings_view_model.dart';
 import 'package:ada/ui/core/themes/app_motion.dart';
 import 'package:ada/ui/core/themes/macos_glass.dart';
 import 'package:ada/ui/core/widgets/keyboard_dismiss_region.dart';
+import 'package:ada/config/startup_wiring.dart';
+import 'package:ada/config/account_providers.dart';
 
 class AdaApp extends ConsumerWidget {
   const AdaApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(startupBackgroundWiringProvider);
+    ref.watch(guestDataStartupProvider);
     final app = ref.watch(appViewModelProvider);
     final themeMode = ref.watch(appThemeModeProvider);
     final dateFormat = ref.watch(appDateFormatProvider);

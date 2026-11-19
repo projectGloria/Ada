@@ -25,8 +25,13 @@ final class CompleteExpiredFocusIntervalUseCase {
     }
     _completingIntervalId = interval.id;
     try {
+      final expectedEnd = calculateExpectedEndAt(
+        startedAt: interval.startedAt,
+        plannedSeconds: interval.plannedSeconds,
+        pausedTotalSeconds: interval.pausedTotalSeconds,
+      );
       (await _focus.completeActiveInterval(
-        now: now,
+        now: expectedEnd,
         expiredIntervalId: interval.id,
       )).getOrThrow();
     } finally {
