@@ -3,7 +3,10 @@
 ; =====================================================================
 
 #define MyAppName "Ada"
-#define MyAppVersion "1.1.8"
+; CI passes the release version with /DMyAppVersion=<version>.
+#ifndef MyAppVersion
+  #define MyAppVersion "1.1.8"
+#endif
 #define MyAppPublisher "Ada"
 #define MyAppURL "https://github.com"
 #define MyAppExeName "ada.exe"

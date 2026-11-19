@@ -1,0 +1,130 @@
+name: Build installers
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+# Each job widens this only where it needs to.
+permissions:
+  contents: read
+
+concurrency:
+  group: build-installers-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  APP_NAME: Ada
+  FLUTTER_VERSION: "3.47.9"
+
+jobs:
+  windows:
+    name: Windows installer (x64)
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: pwsh
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Work out the version
+        id: version
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $version = $env:GITHUB_REF_NAME -replace '^v', ''
+          } else {
+            $line = Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)' | Select-Object -First 1
+            $version = ($line.Matches[0].Groups[1].Value -split '\+')[0]
+          }
+          # Windows file versions must be numeric, so "1.2.0-beta.1" builds as 1.2.0.
+          if (-not ($version -match '^(\d+\.\d+\.\d+)')) {
+            throw "Version '$version' must start with MAJOR.MINOR.PATCH (tag like v1.2.0)."
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "build_name=$($Matches[1])" >> $env:GITHUB_OUTPUT
+          Write-Host "Building version $version"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true # caches the Flutter SDK and the pub package cache
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Windows release
+        env:
+          # Optional repository variables (Settings > Secrets and variables >
+          # Actions > Variables). Leave them all unset for an offline-only build.
+          ADA_ENVIRONMENT: ${{ vars.ADA_ENVIRONMENT }}
+          WEB_APP_URL: ${{ vars.WEB_APP_URL }}
+          TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+          SENTRY_DSN: ${{ vars.SENTRY_DSN }}
+        run: |
+          $buildArgs = @(
+            'build', 'windows', '--release',
+            "--build-name=${{ steps.version.outputs.build_name }}",
+            "--dart-define=ADA_RELEASE=$env:GITHUB_SHA"
+          )
+          foreach ($name in 'ADA_ENVIRONMENT', 'WEB_APP_URL', 'TURNSTILE_SITE_KEY', 'SENTRY_DSN') {
+            $value = [Environment]::GetEnvironmentVariable($name)
+            if ($value) { $buildArgs += "--dart-define=$name=$value" }
+          }
+          flutter @buildArgs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Install Inno Setup if missing
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup --yes --no-progress
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          "ISCC=$iscc" >> $env:GITHUB_ENV
+
+      - name: Build installer
+        run: |
+          $version = '${{ steps.version.outputs.version }}'
+          $name = "$env:APP_NAME-$version-windows-x64"
+          & $env:ISCC "/DMyAppVersion=$version" "/Oinstallers" "/F$name" installer.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-ChildItem installers
+
+      - name: Upload installers
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: installers
+          path: installers/
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: GitHub Release
+    if: github.ref_type == 'tag'
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download installers
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: installers
+          path: installers
+
+      - name: Create release
+        uses: softprops/action-gh-release@28ab305d0ffa26d60ec4bd614126329e26c7a0ec # v3.0.4
+        with:
+          name: ${{ env.APP_NAME }} ${{ needs.windows.outputs.version }}
+          files: installers/*
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}

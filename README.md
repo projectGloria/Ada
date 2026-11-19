@@ -73,6 +73,23 @@
 
 ---
 
+## 📦 How to release
+
+Installers are built by GitHub Actions ([`.github/workflows/build-installers.yml`](.github/workflows/build-installers.yml)). Right now it builds the Windows installer only.
+
+1. Bump `version:` in `pubspec.yaml` and commit.
+2. Tag the commit and push the tag:
+   ```bash
+   git tag v1.0.0 && git push --tags
+   ```
+3. When the workflow finishes, download the installer (`Ada-1.0.0-windows-x64.exe`) from:
+   * the **Releases** page of the repository (tag builds only), or
+   * the run's **Artifacts** section, as `installers` (Actions tab → *Build installers* → the run).
+
+You can also start a build without tagging: Actions tab → *Build installers* → **Run workflow**. That build uses the version from `pubspec.yaml` and only uploads the `installers` artifact; it doesn't create a release.
+
+---
+
 ## 📂 Project Structure
 
 ```
