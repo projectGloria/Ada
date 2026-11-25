@@ -4,6 +4,9 @@ use rusqlite::{params, Connection, OptionalExtension, Row, Transaction};
 use serde::{Deserialize, Serialize};
 use std::{error::Error, path::Path};
 
+mod planner;
+use planner::{Project, Status, Task, TaskDraft};
+
 const MINUTE: i64 = 60_000;
 const GAP: i64 = 15_000;
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
@@ -22,14 +25,24 @@ pub struct Store {
 )]
 pub enum Action {
     Read,
-    AddTask {
-        title: String,
-        due: Option<String>,
-        tag_ids: Vec<i64>,
+    SaveTask {
+        id: Option<i64>,
+        draft: TaskDraft,
     },
     Complete {
         id: i64,
         done: bool,
+    },
+    SetStatus {
+        id: i64,
+        status: Status,
+    },
+    AddProject {
+        name: String,
+    },
+    ArchiveProject {
+        id: i64,
+        archived: bool,
     },
     AddTag {
         name: String,
@@ -84,17 +97,6 @@ pub struct Settings {
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-struct Task {
-    id: i64,
-    title: String,
-    due: Option<String>,
-    done: bool,
-    tag_ids: Vec<i64>,
-    last_tag_id: Option<i64>,
-}
-
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
 struct Tag {
     id: i64,
     name: String,
@@ -108,6 +110,7 @@ struct Session {
     id: i64,
     tag_id: i64,
     task_id: Option<i64>,
+    project_id: Option<i64>,
     activity: String,
     target_ms: Option<i64>,
     started_at: i64,
@@ -148,6 +151,7 @@ pub struct Snapshot {
     demo: bool,
     pub settings: Settings,
     tasks: Vec<Task>,
+    projects: Vec<Project>,
     tags: Vec<Tag>,
     sessions: Vec<Session>,
     active: Option<Session>,
@@ -158,7 +162,7 @@ pub struct Snapshot {
 
 const SESSION_SQL: &str = "SELECT id, tag_id, task_id, activity, target_ms, started_at, ended_at,
     running_since, heartbeat_at, recovery_to,
-    (SELECT COALESCE(SUM(end-start), 0) FROM intervals WHERE session_id = sessions.id)
+    (SELECT COALESCE(SUM(end-start), 0) FROM intervals WHERE session_id = sessions.id), project_id
     FROM sessions";
 
 fn read_session(row: &Row<'_>) -> rusqlite::Result<Session> {
@@ -174,6 +178,7 @@ fn read_session(row: &Row<'_>) -> rusqlite::Result<Session> {
         heartbeat_at: row.get(8)?,
         recovery_to: row.get(9)?,
         credited_ms: row.get(10)?,
+        project_id: row.get(11)?,
     })
 }
 
@@ -305,16 +310,21 @@ impl Store {
         )?;
         let tx = db.transaction()?;
         let version: i64 = tx.query_row("PRAGMA user_version", [], |r| r.get(0))?;
-        match version {
-            0 => {
-                tx.execute_batch(include_str!("schema.sql"))?;
-                if demo {
-                    seed(&tx, zone, now)?;
-                }
-                tx.pragma_update(None, "user_version", 1)?;
+        if !(0..=2).contains(&version) {
+            return Err("This database needs a newer version of Ada.".into());
+        }
+        if version == 0 {
+            tx.execute_batch(include_str!("schema.sql"))?;
+            if demo {
+                seed(&tx, zone, now)?;
             }
-            1 => {}
-            _ => return Err("This database needs a newer version of Ada.".into()),
+        }
+        if version < 2 {
+            tx.execute_batch(include_str!("planner.sql"))?;
+            if version == 0 && demo {
+                planner::seed(&tx)?;
+            }
+            tx.pragma_update(None, "user_version", 2)?;
         }
         checkpoint(&tx, now, true)?;
         tx.commit()?;
@@ -345,35 +355,13 @@ impl Store {
 fn mutate(tx: &Transaction<'_>, action: Action, now: i64) -> Result<()> {
     match action {
         Action::Read => {}
-        Action::AddTask {
-            title,
-            due,
-            tag_ids,
-        } => {
-            let title = text(&title, "Task title", 200)?;
-            let due = due
-                .as_deref()
-                .map(|value| {
-                    NaiveDate::parse_from_str(value, "%Y-%m-%d")
-                        .map(|date| date.to_string())
-                        .map_err(|_| "Choose a valid due date.")
-                })
-                .transpose()?;
-            tx.execute(
-                "INSERT INTO tasks(title, due) VALUES (?1, ?2)",
-                params![title, due],
-            )?;
-            let id = tx.last_insert_rowid();
-            for tag_id in tag_ids {
-                tx.execute(
-                    "INSERT OR IGNORE INTO task_tags VALUES (?1, ?2)",
-                    params![id, tag_id],
-                )?;
-            }
-        }
+        Action::SaveTask { id, draft } => planner::save_task(tx, id, draft)?,
         Action::Complete { id, done } => {
-            tx.execute("UPDATE tasks SET done=?1 WHERE id=?2", params![done, id])?;
+            planner::set_status(tx, id, if done { Status::Done } else { Status::Todo })?;
         }
+        Action::SetStatus { id, status } => planner::set_status(tx, id, status)?,
+        Action::AddProject { name } => planner::create_project(tx, &name)?,
+        Action::ArchiveProject { id, archived } => planner::archive_project(tx, id, archived)?,
         Action::AddTag { name } => {
             lot_tag(tx, &text(&name, "Tag", 40)?)?;
         }
@@ -392,10 +380,12 @@ fn mutate(tx: &Transaction<'_>, action: Action, now: i64) -> Result<()> {
             }
             let tag: String =
                 tx.query_row("SELECT name FROM tags WHERE id=?1", [tag_id], |r| r.get(0))?;
-            let activity = if let Some(id) = task_id {
-                let title = tx.query_row("SELECT title FROM tasks WHERE id=?1", [id], |r| {
-                    r.get::<_, String>(0)
-                })?;
+            let (activity, project_id) = if let Some(id) = task_id {
+                let (title, project_id) = tx.query_row(
+                    "SELECT title, project_id FROM tasks WHERE id=?1",
+                    [id],
+                    |r| Ok((r.get::<_, String>(0)?, r.get::<_, Option<i64>>(1)?)),
+                )?;
                 let (count, has_tag): (i64, bool) = tx.query_row(
                     "SELECT COUNT(*), COALESCE(MAX(tag_id=?2), 0) FROM task_tags WHERE task_id=?1",
                     params![id, tag_id],
@@ -410,12 +400,12 @@ fn mutate(tx: &Transaction<'_>, action: Action, now: i64) -> Result<()> {
                     "UPDATE tasks SET last_tag_id=?1 WHERE id=?2",
                     params![tag_id, id],
                 )?;
-                title
+                (title, project_id)
             } else {
-                tag
+                (tag, None)
             };
-            tx.execute("INSERT INTO sessions(tag_id, task_id, activity, target_ms, started_at, running_since, heartbeat_at)
-                       VALUES (?1, ?2, ?3, ?4, ?5, ?5, ?5)", params![tag_id, task_id, activity, target_ms, now])?;
+            tx.execute("INSERT INTO sessions(tag_id, task_id, project_id, activity, target_ms, started_at, running_since, heartbeat_at)
+                       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?6, ?6)", params![tag_id, task_id, project_id, activity, target_ms, now])?;
             tx.execute(
                 "UPDATE settings SET last_target_ms=?1 WHERE id=1",
                 [target_ms],
@@ -537,27 +527,7 @@ fn day_start(zone: Tz, date: NaiveDate) -> i64 {
 
 fn snapshot(db: &Connection, demo: bool, zone: Tz, now: i64) -> Result<Snapshot> {
     let today = local_date(zone, now);
-    let tasks = collect(
-        db,
-        "SELECT id, title, due, done, last_tag_id FROM tasks ORDER BY done, id DESC",
-        [],
-        |r| {
-            let id: i64 = r.get(0)?;
-            Ok(Task {
-                id,
-                title: r.get(1)?,
-                due: r.get(2)?,
-                done: r.get(3)?,
-                last_tag_id: r.get(4)?,
-                tag_ids: collect(
-                    db,
-                    "SELECT tag_id FROM task_tags WHERE task_id=?1 ORDER BY tag_id",
-                    [id],
-                    |r| r.get(0),
-                )?,
-            })
-        },
-    )?;
+    let tasks = planner::tasks(db)?;
     let tags = collect(
         db,
         "SELECT tags.id, name, lot, COALESCE(SUM(intervals.end-intervals.start), 0)
@@ -647,6 +617,7 @@ fn snapshot(db: &Connection, demo: bool, zone: Tz, now: i64) -> Result<Snapshot>
         demo,
         settings: settings(db)?,
         tasks,
+        projects: planner::projects(db)?,
         tags,
         sessions,
         active: current(db)?,

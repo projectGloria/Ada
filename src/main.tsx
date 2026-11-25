@@ -2,14 +2,16 @@ import { getCurrentWindow } from '@tauri-apps/api/window'
 import {
   ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, BarChart3, CalendarClock, CalendarDays, Check, ChevronDown,
   CircleHelp, CircleUserRound, Clock3, Crosshair, Focus, Inbox, Layers3, Maximize, Minus, Mountain, Pause, Play,
-  Plus, Search, Settings2, Square, Sun, Trees, X,
+  Plus, Search, Settings2, Square, Sun, Trees, X, Columns3, Grid2X2, Folder, ListFilter, Repeat, ListChecks,
 } from 'lucide-react'
 import { createContext, useContext, useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { lotAt, TownArt, type Lot } from './town-art'
+import { Board, Browse, Calendar, Projects, statusLabels } from './planner'
 import {
   dateLabel, duration, elapsed, minute, send, timer,
   type Action, type Page, type Preferences, type Session, type Snapshot, type Startup, type Tag, type Task,
+  type Project, type TaskDraft, type TaskStatus,
 } from './workspace'
 import './styles.css'
 
@@ -18,6 +20,9 @@ const destinations = [
   { label: 'Planner', links: [
     { page: 'inbox', name: 'Inbox', icon: Inbox }, { page: 'today', name: 'Today', icon: CalendarDays },
     { page: 'upcoming', name: 'Upcoming', icon: CalendarClock },
+    { page: 'calendar', name: 'Calendar', icon: CalendarDays },
+    { page: 'kanban', name: 'Kanban', icon: Columns3 }, { page: 'matrix', name: 'Priority Matrix', icon: Grid2X2 },
+    { page: 'projects', name: 'Projects', icon: Folder }, { page: 'browse', name: 'Browse', icon: ListFilter },
   ] },
   { label: 'Focus & reflection', links: [
     { page: 'focus', name: 'Focus', icon: Focus }, { page: 'town', name: 'Town', icon: Trees },
@@ -82,12 +87,16 @@ function WindowBar() {
   </header>
 }
 
-type Overlay = 'task' | 'todayTask' | 'search' | 'profile' | 'startup' | 'tag' | 'finish' | null
+type Overlay = 'task' | 'project' | 'search' | 'profile' | 'startup' | 'tag' | 'finish' | null
 
 function App() {
   const [data, setData] = useState<Snapshot>()
   const [page, setPage] = useState<Page>('today')
   const [overlay, setOverlay] = useState<Overlay>(null)
+  const [taskForm, setTaskForm] = useState<{ id?: number; due?: string; fromSearch?: boolean }>({})
+  const [searchQuery, setSearchQuery] = useState('')
+  const [calendarDay, setCalendarDay] = useState<string | null>(null)
+  const [projectId, setProjectId] = useState<number | null>(null)
   const [detail, setDetail] = useState<number | null>(null)
   const [chosenTask, setChosenTask] = useState<Task | null>(null)
   const [chosenTag, setChosenTag] = useState<number | null>(null)
@@ -102,9 +111,11 @@ function App() {
   const lastData = useRef<Snapshot>(undefined)
   const pending = useRef(false)
   const pane = useRef<HTMLElement>(null)
+  const navigation = useRef<HTMLElement>(null)
   const scroll = useRef<Partial<Record<Page, number>>>({})
   const revision = useRef(0)
   const focusHeading = useRef(false)
+  const ready = data !== undefined
 
   function accept(snapshot: Snapshot) {
     lastData.current = snapshot
@@ -176,7 +187,10 @@ function App() {
     const onKey = (event: KeyboardEvent) => {
       if (event.ctrlKey && !event.altKey && !event.metaKey && ['k', 'n'].includes(event.key.toLowerCase())) {
         event.preventDefault()
-        if (!document.querySelector('dialog[open]') && lastData.current) setOverlay(event.key.toLowerCase() === 'k' ? 'search' : 'task')
+        if (!document.querySelector('dialog[open]') && lastData.current) {
+          if (event.key.toLowerCase() === 'k') setOverlay('search')
+          else openTask({})
+        }
       }
     }
     window.addEventListener('keydown', onKey)
@@ -194,6 +208,10 @@ function App() {
       focusHeading.current = false
     }
   }, [page])
+
+  useEffect(() => {
+    navigation.current?.querySelector('[aria-current=page]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [page, ready])
 
   useEffect(() => {
     if (!notice) return
@@ -216,15 +234,24 @@ function App() {
     go('focus')
   }
 
+  function openTask(form: { id?: number; due?: string; fromSearch?: boolean }) {
+    setTaskForm(form)
+    setOverlay('task')
+  }
+
   const displayNotice = error || notice
   if (!data) return <><WindowBar /><main className="initial">{error || 'Opening your local workspace…'}</main></>
 
   const active = data.active
   const activeTag = data.tags.find(tag => tag.id === active?.tagId)
   const activeMinutes = active ? elapsed(active, now) : 0
+  const constructionTag = activeTag ?? data.tags.find(tag => tag.id === chosenTag && tag.totalMs > 0)
+  const constructionMs = (constructionTag?.totalMs ?? 0) + activeMinutes
   const clock = active && timer(active.targetMs === null ? activeMinutes : active.targetMs - activeMinutes, active.targetMs !== null)
   const session = data.sessions.find(item => item.id === detail)
   const tagsById = new Map(data.tags.map(tag => [tag.id, tag]))
+  const projectsById = new Map(data.projects.map(project => [project.id, project]))
+  const projectName = (id: number | null | undefined) => id == null ? undefined : projectsById.get(id)?.name
   const founded = data.tags.filter(tag => tag.totalMs > 0)
   const currentDistrict = founded.find(tag => tag.id === district) ?? founded[0]
   const stage = (ms: number) => data.milestones.filter(item => ms >= item.minutes * minute).at(-1)?.stage ?? 0
@@ -233,8 +260,21 @@ function App() {
   const doneToday = data.tasks.filter(task => task.due === data.today && task.done)
   const todaysTime = data.week.at(-1)?.totalMs ?? 0
   const focusTask = chosenTask && data.tasks.find(task => task.id === chosenTask.id)
+  const runningTask = active && data.tasks.find(task => task.id === active.taskId)
+  const upcoming = data.tasks.filter(task => task.due !== null && task.due > data.today)
+  const upcomingDays = [...new Set(upcoming.map(task => task.due!))].sort()
   const available = focusTask?.tagIds.length ? data.tags.filter(tag => focusTask.tagIds.includes(tag.id)) : data.tags
   const finishedTag = (tagId: number) => { setDistrict(tagId); go('town') }
+  const openProject = (id: number) => { setProjectId(id); go('projects') }
+
+  async function changeStatus(task: Task, status: TaskStatus) {
+    const hadNext = data!.tasks.some(item => item.previousId === task.id)
+    const next = await save({ type: 'setStatus', id: task.id, status })
+    const occurrence = next?.tasks.find(item => item.previousId === task.id)
+    if (occurrence?.due && !hadNext) {
+      setNotice('Next occurrence · ' + dateLabel(occurrence.due, { month: 'short', day: 'numeric' }))
+    }
+  }
 
   async function finish() {
     if (!active) return
@@ -253,20 +293,28 @@ function App() {
     if (saved) setNotice('Focus saved · ' + duration(saved.creditedMs))
   }
 
-  function taskList(tasks: Task[], empty: ReactNode) {
-    return tasks.length ? <ul className="tasks">{tasks.map(task => <li className={task.done ? 'task is-done' : 'task'} key={task.id}>
+  function taskList(tasks: Task[], empty: ReactNode, board = false) {
+    return tasks.length ? <ul className="tasks">{tasks.map(task => <li className={'task' + (task.done ? ' is-done' : '') + (board ? ' board-task' : '')} key={task.id}>
       <button className="check-task" aria-label={task.done ? 'Reopen ' + task.title : 'Complete ' + task.title}
-        title={task.done ? 'Reopen task' : 'Complete task'} aria-pressed={task.done} onClick={() => void save({ type: 'complete', id: task.id, done: !task.done })}>
+        title={task.done ? 'Reopen task' : 'Complete task'} aria-pressed={task.done} disabled={busy} onClick={() => void changeStatus(task, task.done ? 'todo' : 'done')}>
         {task.done && <Check size={13} />}
       </button>
-      <div className="task-content"><strong>{task.title}</strong>
+      <div className="task-content"><button className="task-title" onClick={() => openTask({ id: task.id })} title="Edit task"><strong>{task.title}</strong></button>
         <span className="task-meta">
           {task.due && task.due < data!.today && !task.done && <span className="overdue">Overdue</span>}
           {task.due && task.due > data!.today && <span>{dateLabel(task.due, { month: 'short', day: 'numeric' })}</span>}
+          {!board && task.status === 'inProgress' && <span className="task-in-progress">In progress</span>}
           {task.tagIds.map(id => <Badge key={id} tag={tagsById.get(id)} />)}
+          {projectName(task.projectId) && <span className="task-indicator"><Folder size={11} />{projectName(task.projectId)}</span>}
+          {task.recurrence && <span className="task-indicator" title={'Repeats ' + task.recurrence}><Repeat size={11} /><span className="visually-hidden">{'Repeats ' + task.recurrence}</span></span>}
+          {task.subtasks.length > 0 && <span className="task-indicator"><ListChecks size={12} />{task.subtasks.filter(item => item.done).length}/{task.subtasks.length}</span>}
         </span>
       </div>
       {!task.done && <IconButton label={'Focus on ' + task.title} className="play-task" onClick={() => configure(task)}><Play size={16} /></IconButton>}
+      {board && <select className="board-status" aria-label={'Status for ' + task.title} value={task.status} disabled={busy}
+        onChange={event => void changeStatus(task, event.target.value as TaskStatus)}>
+        {Object.entries(statusLabels).map(([status, label]) => <option key={status} value={status}>{label}</option>)}
+      </select>}
     </li>)}</ul> : empty
   }
 
@@ -281,9 +329,9 @@ function App() {
         </button>
         <div className="quick-actions">
           <button className="nav-link" title="Search (Ctrl+K)" aria-label="Search" onClick={() => setOverlay('search')}><Search size={17} /><span>Search</span><kbd>Ctrl K</kbd></button>
-          <button className="primary add-task" title="Add task (Ctrl+N)" aria-label="Add task" onClick={() => setOverlay('task')}><Plus size={18} /><span>Add task</span></button>
+          <button className="primary add-task" title="Add task (Ctrl+N)" aria-label="Add task" onClick={() => openTask({})}><Plus size={18} /><span>Add task</span></button>
         </div>
-        <nav className="navigation" aria-label="Main navigation">
+        <nav className="navigation" ref={navigation} aria-label="Main navigation">
           {destinations.map(group => <div className="nav-group" key={group.label}><div className="nav-heading">{group.label}</div>
             {group.links.map(({ page: id, name, icon: Icon }) =>
               <button className="nav-link" key={id} aria-current={id === page ? 'page' : undefined} aria-label={name} title={name} onClick={() => go(id)}>
@@ -317,8 +365,8 @@ function App() {
           </section>
           <div className="today-columns">
             <section className="card task-card">
-              <div className="card-heading"><h2>Your tasks</h2><IconButton label="Add a task for today" onClick={() => setOverlay('todayTask')}><Plus size={18} /></IconButton></div>
-              {taskList([...openToday, ...doneToday], <div className="inline-empty"><CalendarDays size={23} /><strong>Nothing scheduled today</strong><p>Give a task today’s date to see it here.</p><button className="text-button" onClick={() => setOverlay('todayTask')}>Add a task <ArrowRight size={14} /></button></div>)}
+              <div className="card-heading"><h2>Your tasks</h2><IconButton label="Add a task for today" onClick={() => openTask({ due: data.today })}><Plus size={18} /></IconButton></div>
+              {taskList([...openToday, ...doneToday], <div className="inline-empty"><CalendarDays size={23} /><strong>Nothing scheduled today</strong><p>Give a task today’s date to see it here.</p><button className="text-button" onClick={() => openTask({ due: data.today })}>Add a task <ArrowRight size={14} /></button></div>)}
             </section>
             <section className="card time-card">
               <div className="card-heading"><h2>Time tracked</h2><IconButton label="Open today’s report" onClick={() => { setReportDay(data.today); go('reports') }}><ArrowUpRight size={17} /></IconButton></div>
@@ -333,12 +381,22 @@ function App() {
           <header className="page-header"><h1>{page === 'inbox' ? 'Inbox' : 'Upcoming'}<span className="title-period">.</span></h1>
             <p>{page === 'inbox' ? 'A place for tasks without a due date.' : 'Tasks scheduled for the days ahead.'}</p>
           </header>
-          <section className="card task-card"><div className="card-heading"><h2>Tasks</h2><IconButton label="Add task" onClick={() => setOverlay('task')}><Plus size={18} /></IconButton></div>
-            {taskList(data.tasks.filter(task => page === 'inbox' ? !task.due : task.due && task.due > data.today)
-              .sort((a,b) => (a.due ?? '').localeCompare(b.due ?? '')), <div className="inline-empty"><Inbox size={22} /><strong>No tasks here yet</strong>
-              <button className="text-button" onClick={() => setOverlay('task')}>Add a task <ArrowRight size={14} /></button></div>)}
-          </section>
+          {page === 'upcoming' && upcomingDays.length ? upcomingDays.map(date => <section className="card task-card planner-panel" key={date}>
+            <div className="card-heading"><h2>{dateLabel(date)}</h2><IconButton label={'Add a task for ' + dateLabel(date)} onClick={() => openTask({ due: date })}><Plus size={18} /></IconButton></div>
+            {taskList(upcoming.filter(task => task.due === date), null)}
+          </section>) : <section className="card task-card">
+            <div className="card-heading"><h2>Tasks</h2><IconButton label="Add task" onClick={() => openTask({})}><Plus size={18} /></IconButton></div>
+            {taskList(page === 'inbox' ? data.tasks.filter(task => !task.due) : [], <div className="inline-empty"><Inbox size={22} /><strong>No tasks here yet</strong>
+              <button className="text-button" onClick={() => openTask({})}>Add a task <ArrowRight size={14} /></button></div>)}
+          </section>}
         </div>}
+
+        {page === 'calendar' && <Calendar data={data} selected={calendarDay ?? data.today} setSelected={setCalendarDay} tasks={taskList} add={due => openTask({ due })} />}
+        {(page === 'kanban' || page === 'matrix') && <Board kind={page} data={data} tasks={taskList} />}
+        {page === 'browse' && <Browse data={data} tasks={taskList} />}
+        {page === 'projects' && <Projects data={data} selected={projectId} select={setProjectId} add={() => setOverlay('project')} busy={busy}
+          archive={project => void save({ type: 'archiveProject', id: project.id, archived: !project.archived })}
+          tasks={taskList} sessions={items => <SessionList sessions={items} tags={tagsById} open={setDetail} zone={data.zone} />} />}
 
         {page === 'focus' && <div className="content focus-page">
           <header className="page-header"><h1>Focus<span className="title-period">.</span></h1><p>Give one activity your attention and watch it take shape.</p></header>
@@ -347,7 +405,7 @@ function App() {
               {active ? <>
                 <div className="session-state"><i className={active.runningSince === null || active.recoveryTo !== null ? 'paused-dot' : ''} />
                   {active.recoveryTo !== null ? 'Needs review' : active.runningSince === null ? 'Paused' : 'In focus'}</div>
-                <h2>{active.activity}</h2><Badge tag={activeTag} />
+                <h2>{active.activity}</h2><div className="focus-meta"><Badge tag={activeTag} />{projectName(active.projectId) && <span className="task-indicator"><Folder size={14} />{projectName(active.projectId)}</span>}</div>
                 <div className="timer" aria-label={active.targetMs === null ? 'Elapsed time' : 'Time remaining'}>{clock}</div>
                 <div className="timer-actions">
                   <button className="secondary" disabled={busy || active.recoveryTo !== null}
@@ -360,11 +418,14 @@ function App() {
                   <p>“{focusTask.title}” is ready when you are.</p>
                   <button className="text-button" onClick={() => setOverlay('finish')}>Finish and set up the next session <ArrowRight size={15} /></button>
                 </div>}
-                {active.taskId !== null && <button className="text-button mark-done" disabled={busy || data.tasks.some(task => task.id === active.taskId && task.done)}
-                  onClick={() => void save({ type: 'complete', id: active.taskId!, done: true })}><Check size={15} /> {data.tasks.some(task => task.id === active.taskId && task.done) ? 'Task complete' : 'Mark task complete'}</button>}
+                {runningTask && <button className="text-button mark-done" disabled={busy || runningTask.done}
+                  onClick={() => void changeStatus(runningTask, 'done')}><Check size={15} /> {runningTask.done ? 'Task complete' : 'Mark task complete'}</button>}
               </> : <>
                 <h2>{focusTask?.title ?? 'Set up a session'}</h2>
-                {focusTask && <button className="text-button remove-task" onClick={() => { setChosenTask(null); setChosenTag(null) }}>Focus without this task</button>}
+                {focusTask && <div className="focus-meta focus-task-links">
+                  {projectName(focusTask.projectId) && <span className="task-indicator"><Folder size={14} />{projectName(focusTask.projectId)}</span>}
+                  <button className="text-button remove-task" onClick={() => { setChosenTask(null); setChosenTag(null) }}>Focus without this task</button>
+                </div>}
                 <fieldset><legend>Focus tag</legend>
                   <div className="choice-row">
                     {available.map(tag => <button className="choice" aria-pressed={chosenTag === tag.id} key={tag.id} onClick={() => setChosenTag(tag.id)}><Badge tag={tag} /></button>)}
@@ -393,10 +454,9 @@ function App() {
               </>}
             </section>
             {data.settings.townVisibility === 'focus' && <section className="card construction">
-              <TownArt lots={activeTag ? [{ lot: 0, color: activeTag.lot, stage: stage(activeTag.totalMs + activeMinutes) }] : chosenTag !== null && tagsById.get(chosenTag)?.totalMs ?
-                [{ lot: 0, color: tagsById.get(chosenTag)!.lot, stage: stage(tagsById.get(chosenTag)!.totalMs) }] : emptyLots} />
-              <div><p className="eyebrow"><Mountain size={14} /> Construction</p><h2>{activeTag?.name || 'Room to grow'}</h2>
-                {activeTag ? <Progress data={data} total={activeTag.totalMs + activeMinutes} /> : <p>A focus session starts a site for its tag.</p>}
+              <TownArt lots={constructionTag ? [{ lot: 0, color: constructionTag.lot, stage: stage(constructionMs) }] : emptyLots} />
+              <div><p className="eyebrow"><Mountain size={14} /> Construction</p><h2>{constructionTag?.name || 'Room to grow'}</h2>
+                {constructionTag ? <Progress data={data} total={constructionMs} /> : <p>A focus session starts a site for its tag.</p>}
               </div>
             </section>}
           </div>
@@ -449,15 +509,30 @@ function App() {
       const next = await save({ type: 'saveSettings', ...data.settings, startup })
       if (next) { setOverlay(null); if (!active) go(startup) }
     }} />}
-    {(overlay === 'task' || overlay === 'todayTask') && <AddTask tags={data.tags} today={data.today} preselect={overlay === 'todayTask'} busy={busy}
-      close={() => setOverlay(null)} submit={async action => { if (await save(action)) { setOverlay(null); setNotice('Task added') } }} />}
+    {overlay === 'task' && <TaskEditor tags={data.tags} projects={data.projects} due={taskForm.due}
+      task={data.tasks.find(item => item.id === taskForm.id)} busy={busy} close={() => setOverlay(taskForm.fromSearch ? 'search' : null)}
+      submit={async draft => {
+        if (await save({ type: 'saveTask', id: taskForm.id ?? null, draft })) {
+          if (page === 'calendar' && draft.due) setCalendarDay(draft.due)
+          setOverlay(taskForm.fromSearch ? 'search' : null)
+          setNotice(taskForm.id ? 'Task updated' : 'Task added')
+        }
+      }} />}
+    {overlay === 'project' && <AddProject busy={busy} close={() => setOverlay(null)} submit={async name => {
+      const next = await save({ type: 'addProject', name })
+      if (next) {
+        setProjectId(next.projects.find(project => project.name === name.trim())?.id ?? null)
+        setOverlay(null)
+      }
+    }} />}
     {overlay === 'tag' && <NewTag busy={busy} close={() => setOverlay(null)} submit={async name => {
       const next = await save({ type: 'addTag', name })
       if (!next) return
       setChosenTag(next.tags.find(tag => tag.name.toLowerCase() === name.trim().toLowerCase())?.id ?? null)
       setOverlay(null)
     }} />}
-    {overlay === 'search' && <SearchDialog data={data} close={() => setOverlay(null)} task={task => { setOverlay(null); configure(task) }}
+    {overlay === 'search' && <SearchDialog data={data} query={searchQuery} setQuery={setSearchQuery} close={() => setOverlay(null)} task={id => openTask({ id, fromSearch: true })}
+      project={id => { setOverlay(null); openProject(id) }}
       tag={id => { setOverlay(null); if (founded.some(tag => tag.id === id)) finishedTag(id); else configure(null, id) }} />}
     {overlay === 'profile' && <Modal title={data.demo ? 'Demo workspace' : 'My workspace'} close={() => setOverlay(null)}>
       <p>{data.demo ? 'This workspace contains sample activity and uses its own local database.' : 'You’re using Ada offline. Your workspace is saved on this PC.'}</p>
@@ -610,22 +685,104 @@ function StartupDialog({ settings, busy, submit }: { settings: Preferences; busy
   </Modal>
 }
 
-function AddTask({ tags, today, preselect, busy, close, submit }: {
-  tags: Tag[]; today: string; preselect: boolean; busy: boolean; close: () => void
-  submit: (action: Extract<Action, { type: 'addTask' }>) => void
+function TaskEditor({ task, due, tags, projects, busy, close, submit }: {
+  task?: Task; due?: string; tags: Tag[]; projects: Project[]; busy: boolean; close: () => void
+  submit: (draft: TaskDraft) => void
 }) {
-  const [title, setTitle] = useState('')
-  const [due, setDue] = useState(preselect ? today : '')
-  const [tagIds, setTags] = useState<number[]>([])
-  return <Modal title="Add task" close={close}><form onSubmit={event => { event.preventDefault(); submit({ type: 'addTask', title, due: due || null, tagIds }) }}>
-    <label className="form-field">Task name<input value={title} onChange={event => setTitle(event.target.value)} placeholder="What needs doing?" maxLength={200} required data-initial /></label>
-    <label className="form-field">Due date <small>Optional</small><input type="date" value={due} onChange={event => setDue(event.target.value)} /></label>
-    {tags.length > 0 && <fieldset><legend>Tags <small>Optional</small></legend><div className="choice-row">
-      {tags.map(tag => <button type="button" key={tag.id} className="choice" aria-pressed={tagIds.includes(tag.id)}
-        onClick={() => setTags(ids => ids.includes(tag.id) ? ids.filter(id => id !== tag.id) : [...ids, tag.id])}><Badge tag={tag} /></button>)}</div></fieldset>}
-    <p className="field-hint">{due ? 'Scheduled tasks appear in Today or Upcoming.' : 'Tasks without a date go to Inbox.'}</p>
+  const [draft, setDraft] = useState<TaskDraft>(task ? {
+    title: task.title, due: task.due, notes: task.notes, tagIds: task.tagIds, newTags: [], projectId: task.projectId,
+    important: task.important, urgent: task.urgent, recurrence: task.recurrence, subtasks: task.subtasks,
+  } : {
+    title: '', due: due ?? null, notes: '', tagIds: [], newTags: [], projectId: null,
+    important: false, urgent: false, recurrence: null, subtasks: [],
+  })
+  const [tagNames, setTagNames] = useState('')
+  const [subtasks, setSubtasks] = useState(() => draft.subtasks.map((item, key) => ({ ...item, key })))
+  const nextSubtask = useRef(subtasks.length)
+  const focusSubtask = useRef<number | null>(null)
+  const set = <K extends keyof TaskDraft,>(key: K, value: TaskDraft[K]) => setDraft(old => ({ ...old, [key]: value }))
+  const editSubtask = (key: number, edit: { title?: string; done?: boolean }) =>
+    setSubtasks(items => items.map(item => item.key === key ? { ...item, ...edit } : item))
+
+  return <Modal title={task ? 'Edit task' : 'Add task'} close={close} variant="task-editor">
+    <form onSubmit={event => {
+      event.preventDefault()
+      submit({
+        ...draft,
+        newTags: tagNames.split(',').map(name => name.trim()).filter(Boolean),
+        subtasks: subtasks.filter(item => item.title.trim()).map(({ title, done }) => ({ title, done })),
+      })
+    }}>
+      <label className="form-field">Task name<input value={draft.title} onChange={event => set('title', event.target.value)}
+        placeholder="What needs doing?" maxLength={200} required data-initial /></label>
+      <div className="editor-grid">
+        <label className="form-field">Due date<input type="date" required={draft.recurrence !== null} value={draft.due ?? ''}
+          onChange={event => set('due', event.target.value || null)} /></label>
+        <label className="form-field">Project<select value={draft.projectId ?? ''} onChange={event => set('projectId', Number(event.target.value) || null)}>
+          <option value="">No project</option>
+          {projects.filter(project => !project.archived || project.id === draft.projectId).map(project =>
+            <option key={project.id} value={project.id}>{project.name}{project.archived ? ' (archived)' : ''}</option>)}
+        </select></label>
+      </div>
+      <details className="editor-details" open={Boolean(task)}>
+        <summary>Task details</summary>
+        <label className="form-field">Notes<textarea value={draft.notes} maxLength={10000} rows={2}
+          onChange={event => set('notes', event.target.value)} /></label>
+        <div className="editor-grid">
+          <label className="form-field">Repeat<select value={draft.recurrence ?? ''}
+            onChange={event => set('recurrence', (event.target.value || null) as TaskDraft['recurrence'])}>
+            <option value="">Doesn’t repeat</option><option value="daily">Daily</option>
+            <option value="weekly">Weekly</option><option value="monthly">Monthly</option>
+          </select></label>
+          <fieldset className="priorities"><legend>Priority</legend>
+            <label><input type="checkbox" checked={draft.important} onChange={event => set('important', event.target.checked)} /> Important</label>
+            <label><input type="checkbox" checked={draft.urgent} onChange={event => set('urgent', event.target.checked)} /> Urgent</label>
+          </fieldset>
+        </div>
+        <fieldset><legend>Tags</legend>
+          <div className="choice-row">
+            {tags.map(tag => <button type="button" key={tag.id} className="choice" aria-pressed={draft.tagIds.includes(tag.id)}
+              onClick={() => set('tagIds', draft.tagIds.includes(tag.id) ? draft.tagIds.filter(id => id !== tag.id) : [...draft.tagIds, tag.id])}><Badge tag={tag} /></button>)}
+          </div>
+          <label className="form-field">New tags<input value={tagNames} maxLength={500} placeholder="Separate names with commas"
+            onChange={event => setTagNames(event.target.value)} /></label>
+        </fieldset>
+        <fieldset><legend>Subtasks</legend>
+          {subtasks.map((item, index) => <div className="subtask-row" key={item.key}>
+            <input type="checkbox" checked={item.done} aria-label={'Complete subtask ' + (index + 1)}
+              onChange={event => editSubtask(item.key, { done: event.target.checked })} />
+            <input ref={input => {
+              if (input && focusSubtask.current === item.key) {
+                focusSubtask.current = null
+                input.focus()
+              }
+            }} value={item.title} aria-label={'Subtask ' + (index + 1)} placeholder="Subtask name" maxLength={200}
+              onChange={event => editSubtask(item.key, { title: event.target.value })} />
+            <button type="button" className="icon-button" aria-label={'Remove subtask ' + (index + 1)} title="Remove subtask"
+              onClick={() => setSubtasks(items => items.filter(subtask => subtask.key !== item.key))}><X size={15} /></button>
+          </div>)}
+          <button type="button" className="text-button" onClick={() => {
+            const key = nextSubtask.current++
+            focusSubtask.current = key
+            setSubtasks(items => [...items, { key, title: '', done: false }])
+          }}><Plus size={15} /> Add subtask</button>
+        </fieldset>
+      </details>
+      {!draft.due && !task && <p className="field-hint">Tasks without a date go to Inbox.</p>}
+      <div className="dialog-actions"><button className="secondary" type="button" onClick={close}>Cancel</button>
+        <button type="submit" className="primary" disabled={busy || !draft.title.trim()}>{task ? <Check size={16} /> : <Plus size={16} />}
+          {task ? 'Save task' : 'Add task'}</button></div>
+    </form>
+  </Modal>
+}
+
+function AddProject({ busy, close, submit }: { busy: boolean; close: () => void; submit: (name: string) => void }) {
+  const [name, setName] = useState('')
+  return <Modal title="New project" close={close}><form onSubmit={event => { event.preventDefault(); submit(name) }}>
+    <label className="form-field">Project name<input value={name} maxLength={80} required data-initial
+      onChange={event => setName(event.target.value)} /></label>
     <div className="dialog-actions"><button className="secondary" type="button" onClick={close}>Cancel</button>
-      <button type="submit" className="primary" disabled={busy || !title.trim()}><Plus size={16} /> Add task</button></div>
+      <button className="primary" disabled={busy || !name.trim()}><Plus size={16} /> Create project</button></div>
   </form></Modal>
 }
 
@@ -639,16 +796,23 @@ function NewTag({ busy, close, submit }: { busy: boolean; close: () => void; sub
   </form></Modal>
 }
 
-function SearchDialog({ data, close, task, tag }: { data: Snapshot; close: () => void; task: (task: Task) => void; tag: (id: number) => void }) {
-  const [query, setQuery] = useState('')
+function SearchDialog({ data, query, setQuery, close, task, tag, project }: {
+  data: Snapshot; query: string; setQuery: (query: string) => void; close: () => void
+  task: (id: number) => void; tag: (id: number) => void; project: (id: number) => void
+}) {
   const search = query.trim().toLocaleLowerCase()
-  const tasks = search ? data.tasks.filter(item => item.title.toLocaleLowerCase().includes(search)) : []
+  const tasks = search ? data.tasks.filter(item => [item.title, item.notes, ...item.subtasks.map(subtask => subtask.title)]
+    .some(value => value.toLocaleLowerCase().includes(search))) : []
   const tags = search ? data.tags.filter(item => item.name.toLocaleLowerCase().includes(search)) : []
+  const projects = search ? data.projects.filter(item => item.name.toLocaleLowerCase().includes(search)) : []
   return <Modal title="Search workspace" close={close}>
-    <input className="search-input" value={query} placeholder="Search tasks and tags" aria-label="Search tasks and tags" data-initial
+    <input className="search-input" value={query} placeholder="Search tasks, projects, and tags" aria-label="Search tasks, projects, and tags" data-initial
       onChange={event => setQuery(event.target.value)} />
-    {search && !tasks.length && !tags.length && <p>No tasks or tags match “{query}”.</p>}
-    <div className="search-results">{tasks.map(item => <button key={'task-' + item.id} onClick={() => task(item)}><Play size={15} />{item.title}<ArrowDownRight size={15} /></button>)}
+    {search && !tasks.length && !tags.length && !projects.length && <p>No results for “{query}”.</p>}
+    <div className="search-results">{tasks.map(item => <button key={'task-' + item.id} onClick={() => task(item.id)}>
+      <ListChecks size={15} /><span>{item.title}<small>{item.due ? dateLabel(item.due, { month: 'short', day: 'numeric' }) : 'Inbox'} · {statusLabels[item.status]}</small></span><ArrowDownRight size={15} />
+    </button>)}
+      {projects.map(item => <button key={'project-' + item.id} onClick={() => project(item.id)}><Folder size={15} /><span>{item.name}<small>{item.archived ? 'Archived project' : 'Project'}</small></span><ArrowDownRight size={15} /></button>)}
       {tags.map(item => <button key={'tag-' + item.id} onClick={() => tag(item.id)}><Trees size={15} />{item.name}<ArrowDownRight size={15} /></button>)}</div>
   </Modal>
 }
@@ -659,11 +823,13 @@ function SessionDetail({ session, data, busy, close, save }: {
   const [confirm, setConfirm] = useState(false)
   const [tagId, setTagId] = useState(session.tagId)
   const [taskId, setTaskId] = useState(session.taskId)
+  const project = data.projects.find(project => project.id === session.projectId)
   const intervals = data.sessionIntervals[session.id] ?? []
   const formatter = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: data.zone })
   return <Modal title={session.activity} close={close}>
     <div className="session-summary"><strong className="total">{duration(session.creditedMs)}</strong>
-      <p>{new Date(session.startedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short', timeZone: data.zone })} · {session.targetMs === null ? 'Stopwatch' : duration(session.targetMs) + ' countdown'}</p></div>
+      <p>{new Date(session.startedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short', timeZone: data.zone })} · {session.targetMs === null ? 'Stopwatch' : duration(session.targetMs) + ' countdown'}
+        {project && ' · ' + project.name}</p></div>
     <label className="form-field">District tag<select value={tagId} onChange={event => setTagId(Number(event.target.value))}>
       {data.tags.map(tag => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
     </select></label>
