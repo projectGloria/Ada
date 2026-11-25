@@ -3,14 +3,17 @@ import {
   ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, BarChart3, CalendarClock, CalendarDays, Check, ChevronDown,
   CircleHelp, CircleUserRound, Clock3, Crosshair, Focus, Inbox, Layers3, Maximize, Minus, Mountain, Pause, Play,
   Plus, Search, Settings2, Square, Sun, Trees, X, Columns3, Grid2X2, Folder, ListFilter, Repeat, ListChecks,
+  LogIn, UserPlus, Trash2,
 } from 'lucide-react'
-import { createContext, useContext, useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { lotAt, TownArt, type Lot } from './town-art'
 import { Board, Browse, Calendar, Projects, statusLabels } from './planner'
+import { AccountDialog, type AccountMode } from './account'
+import { IconButton, Modal, SaveError } from './ui'
 import {
-  dateLabel, duration, elapsed, minute, send, timer,
-  type Action, type Page, type Preferences, type Session, type Snapshot, type Startup, type Tag, type Task,
+  accountRequest, activeToday, dateLabel, duration, elapsed, minute, send, timer,
+  type AccountView, type Action, type Page, type Preferences, type Session, type Snapshot, type Startup, type Tag, type Task,
   type Project, type TaskDraft, type TaskStatus,
 } from './workspace'
 import './styles.css'
@@ -38,38 +41,10 @@ const startupOptions: { id: Startup; title: string; note: string; icon: typeof F
 const tones = ['clay', 'sage', 'gold', 'mauve']
 const numberText = new Intl.NumberFormat()
 const emptyLots: { lot: number; stage: number }[] = []
-const SaveError = createContext('')
+const offlineAccount: AccountView = { configured: false, demo: false, email: null, merge: null, recovering: false, step: 'idle', reload: false }
 
 function Badge({ tag }: { tag?: Tag }) {
   return tag ? <span className={'badge ' + tones[tag.lot % tones.length]}><i />{tag.name}</span> : null
-}
-
-function IconButton({ label, children, onClick, className = '', disabled = false }: {
-  label: string; children: ReactNode; onClick: () => void; className?: string; disabled?: boolean
-}) {
-  return <button className={'icon-button ' + className} aria-label={label} title={label} onClick={onClick} disabled={disabled}>{children}</button>
-}
-
-function Modal({ title, children, close, variant = '' }: {
-  title: string; children: ReactNode; close?: () => void; variant?: string
-}) {
-  const ref = useRef<HTMLDialogElement>(null)
-  const error = useContext(SaveError)
-  useEffect(() => {
-    const dialog = ref.current!
-    const origin = document.activeElement instanceof HTMLElement ? document.activeElement : null
-    dialog.showModal()
-    dialog.querySelector<HTMLElement>('[data-initial]')?.focus()
-    return () => { dialog.close(); origin?.focus({ preventScroll: true }) }
-  }, [])
-  return <dialog ref={ref} className={variant} aria-label={title} onCancel={event => { event.preventDefault(); close?.() }}
-    onClick={event => { if (event.target === ref.current) close?.() }}>
-    <article>
-      <header className="modal-heading"><h2>{title}</h2>{close && <IconButton label="Close dialog" onClick={close}><X size={18} /></IconButton>}</header>
-      {children}
-      {error && <p className="modal-error" role="alert">{error}</p>}
-    </article>
-  </dialog>
 }
 
 function Brand() {
@@ -87,7 +62,7 @@ function WindowBar() {
   </header>
 }
 
-type Overlay = 'task' | 'project' | 'search' | 'profile' | 'startup' | 'tag' | 'finish' | null
+type Overlay = 'task' | 'project' | 'search' | 'profile' | 'startup' | 'tag' | 'finish' | 'account' | null
 
 function App() {
   const [data, setData] = useState<Snapshot>()
@@ -108,8 +83,11 @@ function App() {
   const [notice, setNotice] = useState('')
   const [busy, setBusy] = useState(false)
   const [now, setNow] = useState(Date.now())
+  const [account, setAccount] = useState<AccountView>()
+  const [accountMode, setAccountMode] = useState<AccountMode>('signIn')
   const lastData = useRef<Snapshot>(undefined)
-  const pending = useRef(false)
+  const pending = useRef(0)
+  const queue = useRef<Promise<unknown>>(Promise.resolve())
   const pane = useRef<HTMLElement>(null)
   const navigation = useRef<HTMLElement>(null)
   const scroll = useRef<Partial<Record<Page, number>>>({})
@@ -123,22 +101,32 @@ function App() {
     setNow(Date.now())
   }
 
-  async function save(action: Action) {
-    if (pending.current) return
-    pending.current = true
+  // Changes run one at a time in the order they were made, so a quick second change is never lost.
+  function save(action: Action): Promise<Snapshot | undefined> {
+    pending.current += 1
     revision.current += 1
     setBusy(true)
-    setError('')
-    try {
-      const snapshot = await send(action)
-      accept(snapshot)
-      return snapshot
-    } catch (cause) {
-      setError('Ada could not save this change. ' + String(cause))
-    } finally {
-      pending.current = false
-      setBusy(false)
+    const run = async () => {
+      setError('')
+      try {
+        const snapshot = await send(action)
+        accept(snapshot)
+        return snapshot
+      } catch (cause) {
+        setError('Ada could not save this change. ' + String(cause))
+      } finally {
+        pending.current -= 1
+        if (!pending.current) setBusy(false)
+      }
     }
+    const result = queue.current.then(run, run)
+    queue.current = result
+    return result
+  }
+
+  function openAccount(mode: AccountMode) {
+    setAccountMode(mode)
+    setOverlay('account')
   }
 
   useEffect(() => {
@@ -171,6 +159,11 @@ function App() {
       }
     }
     void refresh()
+    accountRequest({ type: 'read' }).then(view => {
+      if (closed) return
+      setAccount(view)
+      if (view.step === 'merge') { setAccountMode('merge'); setOverlay('account') }
+    }).catch(() => {})
     const sync = window.setInterval(refresh, 2200)
     const display = window.setInterval(() => setNow(Date.now()), 240)
     const onVisible = () => { if (!document.hidden) void refresh() }
@@ -257,13 +250,14 @@ function App() {
   const stage = (ms: number) => data.milestones.filter(item => ms >= item.minutes * minute).at(-1)?.stage ?? 0
   const townLots = founded.map(tag => ({ lot: tag.lot, stage: stage(tag.totalMs), selected: tag.id === currentDistrict?.id }))
   const openToday = data.tasks.filter(task => task.due !== null && task.due <= data.today && !task.done)
-  const doneToday = data.tasks.filter(task => task.due === data.today && task.done)
-  const todaysTime = data.week.at(-1)?.totalMs ?? 0
+  const doneToday = data.tasks.filter(task => task.done && (task.due === data.today || (task.completedAt ?? 0) >= data.todayStart))
+  const liveToday = activeToday(data, now)
+  const todaysTime = (data.week.at(-1)?.totalMs ?? 0) + liveToday
   const focusTask = chosenTask && data.tasks.find(task => task.id === chosenTask.id)
   const runningTask = active && data.tasks.find(task => task.id === active.taskId)
   const upcoming = data.tasks.filter(task => task.due !== null && task.due > data.today)
   const upcomingDays = [...new Set(upcoming.map(task => task.due!))].sort()
-  const available = focusTask?.tagIds.length ? data.tags.filter(tag => focusTask.tagIds.includes(tag.id)) : data.tags
+  const available = (focusTask?.tagIds.length ? data.tags.filter(tag => focusTask.tagIds.includes(tag.id)) : data.tags).filter(tag => !tag.archived)
   const finishedTag = (tagId: number) => { setDistrict(tagId); go('town') }
   const openProject = (id: number) => { setProjectId(id); go('projects') }
 
@@ -322,9 +316,10 @@ function App() {
     <WindowBar />
     <div className="shell">
       <aside className="sidebar" aria-label="Workspace">
-        <button className="profile" title={data.demo ? 'Demo workspace' : 'Local workspace'} onClick={() => setOverlay('profile')}>
-          <span className="avatar">{data.demo ? 'D' : 'A'}</span>
-          <span className="profile-copy"><strong>{data.demo ? 'Sample week' : 'My workspace'}</strong><small>On this PC</small></span>
+        <button className="profile" title={account?.email ?? (data.demo ? 'Demo workspace' : 'Local workspace')} onClick={() => setOverlay('profile')}>
+          <span className="avatar">{data.demo ? 'D' : (account?.email?.[0] ?? 'A').toUpperCase()}</span>
+          <span className="profile-copy"><strong>{data.demo ? 'Sample week' : account?.email ?? 'My workspace'}</strong>
+            <small>{data.demo ? 'Sample data' : account?.email ? 'Signed in' : 'Not signed in'}</small></span>
           <ChevronDown className="profile-chevron" size={14} />
         </button>
         <div className="quick-actions">
@@ -344,7 +339,7 @@ function App() {
           <button className="nav-link" title="Settings" aria-label="Settings" aria-current={page === 'settings' ? 'page' : undefined} onClick={() => go('settings')}>
             <Settings2 size={17} /><span>Settings</span>
           </button>
-          <div className="local-status"><i /> Stored locally</div>
+          <div className="local-status"><i /> Stored on this PC</div>
         </div>
       </aside>
 
@@ -372,7 +367,7 @@ function App() {
               <div className="card-heading"><h2>Time tracked</h2><IconButton label="Open today’s report" onClick={() => { setReportDay(data.today); go('reports') }}><ArrowUpRight size={17} /></IconButton></div>
               <strong className="total">{duration(todaysTime)}</strong>
               <p className="time-note">Focused today</p>
-              <WeekChart data={data} />
+              <WeekChart data={data} live={liveToday} />
             </section>
           </div>
         </div>}
@@ -393,7 +388,9 @@ function App() {
 
         {page === 'calendar' && <Calendar data={data} selected={calendarDay ?? data.today} setSelected={setCalendarDay} tasks={taskList} add={due => openTask({ due })} />}
         {(page === 'kanban' || page === 'matrix') && <Board kind={page} data={data} tasks={taskList} />}
-        {page === 'browse' && <Browse data={data} tasks={taskList} />}
+        {page === 'browse' && <Browse data={data} tasks={taskList} busy={busy}
+          rename={(id, name) => save({ type: 'renameTag', id, name })}
+          archive={(id, archived) => void save({ type: 'archiveTag', id, archived })} />}
         {page === 'projects' && <Projects data={data} selected={projectId} select={setProjectId} add={() => setOverlay('project')} busy={busy}
           archive={project => void save({ type: 'archiveProject', id: project.id, archived: !project.archived })}
           tasks={taskList} sessions={items => <SessionList sessions={items} tags={tagsById} open={setDetail} zone={data.zone} />} />}
@@ -492,8 +489,8 @@ function App() {
               onChange={event => void save({ type: 'saveSettings', ...data.settings, notifications: event.target.checked })} /></label>
             <div className="setting-row"><span>Reporting time zone</span><strong>{data.zone}</strong></div>
           </section>
-          <section className="card settings-card"><h2>Workspace</h2><p>Your tasks, sessions, and town are saved on this PC.</p>
-            <button className="secondary" onClick={() => setOverlay('profile')}><CircleUserRound size={16} /> View workspace</button>
+          <section className="card settings-card"><h2>Account</h2>
+            <AccountSummary account={account} demo={data.demo} open={openAccount} />
           </section>
         </div>}
       </main>
@@ -510,6 +507,13 @@ function App() {
       if (next) { setOverlay(null); if (!active) go(startup) }
     }} />}
     {overlay === 'task' && <TaskEditor tags={data.tags} projects={data.projects} due={taskForm.due}
+      remove={async id => {
+        if (await save({ type: 'deleteTask', id })) {
+          setOverlay(taskForm.fromSearch ? 'search' : null)
+          setNotice('Task deleted · its focus time is kept')
+          if (chosenTask?.id === id) setChosenTask(null)
+        }
+      }}
       task={data.tasks.find(item => item.id === taskForm.id)} busy={busy} close={() => setOverlay(taskForm.fromSearch ? 'search' : null)}
       submit={async draft => {
         if (await save({ type: 'saveTask', id: taskForm.id ?? null, draft })) {
@@ -534,10 +538,17 @@ function App() {
     {overlay === 'search' && <SearchDialog data={data} query={searchQuery} setQuery={setSearchQuery} close={() => setOverlay(null)} task={id => openTask({ id, fromSearch: true })}
       project={id => { setOverlay(null); openProject(id) }}
       tag={id => { setOverlay(null); if (founded.some(tag => tag.id === id)) finishedTag(id); else configure(null, id) }} />}
-    {overlay === 'profile' && <Modal title={data.demo ? 'Demo workspace' : 'My workspace'} close={() => setOverlay(null)}>
-      <p>{data.demo ? 'This workspace contains sample activity and uses its own local database.' : 'You’re using Ada offline. Your workspace is saved on this PC.'}</p>
-      <div className="dialog-actions"><button className="secondary" onClick={() => { setOverlay(null); go('settings') }}><Settings2 size={16} /> Settings</button></div>
+    {overlay === 'profile' && <Modal title={data.demo ? 'Demo workspace' : account?.email ?? 'My workspace'} close={() => setOverlay(null)}>
+      {data.demo && <p>This workspace contains sample activity and uses its own local database.</p>}
+      <AccountSummary account={account} demo={data.demo} open={openAccount} />
+      <div className="dialog-actions"><button className="text-button" onClick={() => { setOverlay(null); go('settings') }}><Settings2 size={16} /> Settings</button></div>
     </Modal>}
+    {overlay === 'account' && <AccountDialog mode={accountMode} account={account ?? offlineAccount} active={active !== null}
+      close={() => setOverlay(null)} changed={(view, message) => {
+        if (view.reload) { window.location.reload(); return }
+        setAccount(view)
+        if (message) { setOverlay(null); setNotice(message) }
+      }} />}
     {overlay === 'finish' && active && <Modal title="Finish the current session?" close={() => setOverlay(null)}>
       <p>Ada will save the time you’ve already focused on {active.activity}.</p>
       <div className="dialog-actions"><button className="secondary" onClick={() => { setChosenTask(null); setOverlay(null) }}>Return to timer</button>
@@ -554,6 +565,25 @@ function App() {
       </div>
     </Modal>}
   </div></SaveError.Provider>
+}
+
+function AccountSummary({ account, demo, open }: {
+  account?: AccountView; demo: boolean; open: (mode: AccountMode) => void
+}) {
+  if (demo) return <p>Accounts aren’t available in the sample week. Open Ada normally to sign in.</p>
+  if (account?.email) return <>
+    <p>Signed in as <strong>{account.email}</strong>. This account’s tasks, sessions, and town are saved on this PC.
+      Syncing between PCs isn’t available yet.</p>
+    <div className="dialog-actions start"><button className="secondary" onClick={() => open('manage')}><CircleUserRound size={16} /> Manage account</button></div>
+  </>
+  return <>
+    <p>You’re using Ada without an account. Your workspace is saved on this PC.
+      {account && !account.configured && ' Accounts aren’t connected in this copy of Ada yet.'}</p>
+    <div className="dialog-actions start">
+      <button className="primary" onClick={() => open('signIn')}><LogIn size={16} /> Sign in</button>
+      <button className="secondary" onClick={() => open('signUp')}><UserPlus size={16} /> Create account</button>
+    </div>
+  </>
 }
 
 function Theme({ value }: { value: Preferences['theme'] }) {
@@ -573,10 +603,13 @@ function Progress({ data, total }: { data: Snapshot; total: number }) {
   </div>
 }
 
-function WeekChart({ data, select, selected }: { data: Snapshot; select?: (date: string) => void; selected?: string | null }) {
-  const max = Math.max(30 * minute, ...data.week.map(day => day.totalMs))
+function WeekChart({ data, select, selected, live = 0 }: {
+  data: Snapshot; select?: (date: string) => void; selected?: string | null; live?: number
+}) {
+  const week = live ? data.week.map(day => day.date === data.today ? { ...day, totalMs: day.totalMs + live } : day) : data.week
+  const max = Math.max(30 * minute, ...week.map(day => day.totalMs))
   return <div className={'week-chart ' + (select ? 'interactive' : '')} aria-label="Focused time over the last seven days">
-    {data.week.map(day => {
+    {week.map(day => {
       const label = dateLabel(day.date, { weekday: 'short' })
       const description = label + ', ' + duration(day.totalMs)
       const children = <><span className="bar-area"><i style={{ height: Math.max(4, day.totalMs / max * 100) + '%' }} /></span><span>{label}</span></>
@@ -685,10 +718,11 @@ function StartupDialog({ settings, busy, submit }: { settings: Preferences; busy
   </Modal>
 }
 
-function TaskEditor({ task, due, tags, projects, busy, close, submit }: {
+function TaskEditor({ task, due, tags, projects, busy, close, submit, remove }: {
   task?: Task; due?: string; tags: Tag[]; projects: Project[]; busy: boolean; close: () => void
-  submit: (draft: TaskDraft) => void
+  submit: (draft: TaskDraft) => void; remove: (id: number) => void
 }) {
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const [draft, setDraft] = useState<TaskDraft>(task ? {
     title: task.title, due: task.due, notes: task.notes, tagIds: task.tagIds, newTags: [], projectId: task.projectId,
     important: task.important, urgent: task.urgent, recurrence: task.recurrence, subtasks: task.subtasks,
@@ -741,7 +775,7 @@ function TaskEditor({ task, due, tags, projects, busy, close, submit }: {
         </div>
         <fieldset><legend>Tags</legend>
           <div className="choice-row">
-            {tags.map(tag => <button type="button" key={tag.id} className="choice" aria-pressed={draft.tagIds.includes(tag.id)}
+            {tags.filter(tag => !tag.archived || draft.tagIds.includes(tag.id)).map(tag => <button type="button" key={tag.id} className="choice" aria-pressed={draft.tagIds.includes(tag.id)}
               onClick={() => set('tagIds', draft.tagIds.includes(tag.id) ? draft.tagIds.filter(id => id !== tag.id) : [...draft.tagIds, tag.id])}><Badge tag={tag} /></button>)}
           </div>
           <label className="form-field">New tags<input value={tagNames} maxLength={500} placeholder="Separate names with commas"
@@ -769,9 +803,15 @@ function TaskEditor({ task, due, tags, projects, busy, close, submit }: {
         </fieldset>
       </details>
       {!draft.due && !task && <p className="field-hint">Tasks without a date go to Inbox.</p>}
-      <div className="dialog-actions"><button className="secondary" type="button" onClick={close}>Cancel</button>
+      {confirmDelete && task ? <div className="confirm-row" role="group" aria-label="Confirm deletion">
+        <p>Delete “{task.title}”? Its focus sessions stay in Reports and Town.</p>
+        <div className="dialog-actions"><button type="button" className="secondary" onClick={() => setConfirmDelete(false)} data-initial>Keep task</button>
+          <button type="button" className="danger" disabled={busy} onClick={() => remove(task.id)}><Trash2 size={15} /> Delete task</button></div>
+      </div> : <div className={'dialog-actions' + (task ? ' split' : '')}>
+        {task && <button type="button" className="text-button danger-text" onClick={() => setConfirmDelete(true)}><Trash2 size={15} /> Delete</button>}
+        <span className="action-group"><button className="secondary" type="button" onClick={close}>Cancel</button>
         <button type="submit" className="primary" disabled={busy || !draft.title.trim()}>{task ? <Check size={16} /> : <Plus size={16} />}
-          {task ? 'Save task' : 'Add task'}</button></div>
+          {task ? 'Save task' : 'Add task'}</button></span></div>}
     </form>
   </Modal>
 }
@@ -831,7 +871,7 @@ function SessionDetail({ session, data, busy, close, save }: {
       <p>{new Date(session.startedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short', timeZone: data.zone })} · {session.targetMs === null ? 'Stopwatch' : duration(session.targetMs) + ' countdown'}
         {project && ' · ' + project.name}</p></div>
     <label className="form-field">District tag<select value={tagId} onChange={event => setTagId(Number(event.target.value))}>
-      {data.tags.map(tag => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
+      {data.tags.map(tag => <option key={tag.id} value={tag.id}>{tag.name}{tag.archived ? ' (archived)' : ''}</option>)}
     </select></label>
     {tagId !== session.tagId && <button className="secondary" disabled={busy} onClick={() => void save({ type: 'correctTag', id: session.id, tagId })}>Save tag correction</button>}
     <label className="form-field">Linked task<select value={taskId ?? ''} onChange={event => setTaskId(event.target.value ? Number(event.target.value) : null)}>

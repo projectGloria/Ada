@@ -10,6 +10,7 @@ Ada is an offline Windows focus tracker and task planner that grows a town from 
 - Test the Rust store: `cargo test --manifest-path src-tauri/Cargo.toml`
 - Test countdown expiry: `cargo test --manifest-path src-tauri/Cargo.toml expiry_credits_the_target_once_even_when_the_checkpoint_is_late`
 - Build the Windows executable: `npm run desktop -- build --no-bundle`
+- Enable accounts in a build: set `ADA_SUPABASE_URL` and `ADA_SUPABASE_PUBLISHABLE_KEY` before building (or before `npm run desktop -- dev`). Without them, Sign in and Create account explain that accounts aren't connected.
 
 ## Architecture
 - `src/main.tsx` renders the React shell, task views, timer, town, and reports. `src/styles.css` owns the responsive layout and themes.
@@ -17,6 +18,9 @@ Ada is an offline Windows focus tracker and task planner that grows a town from 
 - `src-tauri/src/main.rs` opens and locks the workspace database, registers the Tauri command, and checkpoints the timer in a background thread.
 - `src-tauri/src/store.rs` owns SQLite transactions, timer recovery, and credited intervals. `src-tauri/src/schema.sql` defines the tables, the single-active-session constraint, and progression thresholds.
 - `src/town-art.tsx` renders the isometric town on Canvas and supplies the lot hit testing.
+- `src/account.tsx` is the sign-in, registration, verification, recovery, merge, and account management dialog. `src/ui.tsx` holds the shared `Modal` and `IconButton`.
+- `src-tauri/src/account.rs` talks to Supabase Auth from Rust (the web view has no network access), keeps the refresh token in Windows Credential Manager, and switches between the guest workspace (`ada.sqlite3`) and per-account workspaces (`account-<user id>.sqlite3`). `src-tauri/src/store/merge.rs` moves one workspace's data into another.
+- `supabase/migrations/` holds the SQL the owner applies to the shared Supabase project (currently `delete_own_account`). Confirmation and recovery email templates must include `{{ .Token }}` so people can type the code into Ada.
 - **Version Manifests:** Keep `package.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json` in sync. Update the root package entries in `package-lock.json` and `src-tauri/Cargo.lock` with them.
 
 ## Personal Rules (Brain)
@@ -37,7 +41,8 @@ Ada is an offline Windows focus tracker and task planner that grows a town from 
 - **GitHub Actions & Releases:** Read `.brain/github-actions.md` before creating/modifying `.github/workflows/*.yml`, setting up release automation, or debugging a failed release.
 
 ## Repo Guardrails & Gotchas
-- **Workspace Isolation:** `--demo` uses `demo.sqlite3`, while normal runs use `ada.sqlite3`. Set `ADA_LOCAL_DATA_DIR` to use a separate data directory for manual checks.
+- **Workspace Isolation:** `--demo` uses `demo.sqlite3`, while normal runs use `ada.sqlite3`, or `account-<user id>.sqlite3` while signed in (recorded in `account.json`). Set `ADA_LOCAL_DATA_DIR` to use a separate data directory for manual checks. Normal runs are single-instance; `--demo` and `ADA_LOCAL_DATA_DIR` runs are not.
+- **Accounts:** Signing in, signing out, and deleting an account are refused while a focus session is active, so a running timer never changes workspace. Sync between PCs is not implemented yet.
 - **Focus Credit:** Each session has one tag. Reports and town progression use the same credited intervals. Split reports at local day boundaries and cap countdown credit at the target.
 - **Desktop Capabilities:** Keep custom window controls aligned with the permissions in `src-tauri/capabilities/main.json`.
 - **Product Plan:** Use `INITIAL_PLAN.md` for milestone scope and the Windows interaction checks.

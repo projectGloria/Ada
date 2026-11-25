@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight, Folder, Plus } from 'lucide-react'
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { Archive, ArchiveRestore, Check, ChevronLeft, ChevronRight, Folder, Plus } from 'lucide-react'
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { dateLabel, duration, type Project, type Session, type Snapshot, type Task, type TaskStatus } from './workspace'
 
 export type RenderTasks = (tasks: Task[], empty: ReactNode, board?: boolean) => ReactNode
@@ -93,8 +93,11 @@ export function Calendar({ data, selected, setSelected, tasks, add }: {
   </div>
 }
 
+const doneShown = 12
+
 export function Board({ kind, data, tasks }: { kind: 'kanban' | 'matrix'; data: Snapshot; tasks: RenderTasks }) {
   const kanban = kind === 'kanban'
+  const [allDone, setAllDone] = useState(false)
   const columns: { title: string; note?: string; tone: string; match: (task: Task) => boolean }[] = kanban ? [
     { title: statusLabels.todo, tone: 'neutral', match: task => task.status === 'todo' },
     { title: statusLabels.inProgress, tone: 'gold', match: task => task.status === 'inProgress' },
@@ -110,10 +113,15 @@ export function Board({ kind, data, tasks }: { kind: 'kanban' | 'matrix'; data: 
     <div className={kanban ? 'planner-board kanban-board' : 'planner-board'}>
       {columns.map(({ title, note, tone, match }) => {
         const items = data.tasks.filter(task => (kanban || !task.done) && match(task))
+        const done = kanban && title === statusLabels.done
+        // Completed work piles up; show the most recent and keep the rest one click away.
+        const shown = done && !allDone ? [...items].sort((a, b) => (b.completedAt ?? 0) - (a.completedAt ?? 0)).slice(0, doneShown) : items
         return <section className="card task-card board-column" key={title}>
           <div className="board-heading"><h2><i className={tone} />{title}</h2><span className="board-count">{items.length}</span></div>
           {note && <p className="board-note">{note}</p>}
-          {tasks(items, <p className="planner-empty">No tasks here.</p>, kanban)}
+          {tasks(shown, <p className="planner-empty">No tasks here.</p>, kanban)}
+          {done && items.length > doneShown && <button className="text-button board-more" onClick={() => setAllDone(value => !value)}>
+            {allDone ? 'Show recent only' : 'Show all ' + items.length + ' completed tasks'}</button>}
         </section>
       })}
     </div>
@@ -157,7 +165,28 @@ export function Projects({ data, selected, select, add, archive, tasks, sessions
   </div>
 }
 
-export function Browse({ data, tasks }: { data: Snapshot; tasks: RenderTasks }) {
+function TagTools({ tag, busy, rename, archive }: {
+  tag: Snapshot['tags'][number]; busy: boolean
+  rename: (id: number, name: string) => Promise<unknown>; archive: (id: number, archived: boolean) => void
+}) {
+  const [name, setName] = useState(tag.name)
+  useEffect(() => setName(tag.name), [tag.id, tag.name])
+  const changed = name.trim() !== '' && name.trim() !== tag.name
+  function save(event: FormEvent) { event.preventDefault(); if (changed) void rename(tag.id, name) }
+  return <form className="tag-tools" onSubmit={save}>
+    <label className="form-field">Tag name<input value={name} maxLength={40} onChange={event => setName(event.target.value)} /></label>
+    <button className="secondary" disabled={busy || !changed}><Check size={15} /> Rename</button>
+    <button type="button" className="secondary" disabled={busy} onClick={() => archive(tag.id, !tag.archived)}>
+      {tag.archived ? <><ArchiveRestore size={15} /> Restore tag</> : <><Archive size={15} /> Archive tag</>}</button>
+    <p className="field-hint">{tag.archived ? 'Archived tags keep their district and history but can’t start new sessions.'
+      : 'Renaming or archiving keeps this tag’s district and focus history.'} {duration(tag.totalMs)} focused so far.</p>
+  </form>
+}
+
+export function Browse({ data, tasks, busy, rename, archive }: {
+  data: Snapshot; tasks: RenderTasks; busy: boolean
+  rename: (id: number, name: string) => Promise<unknown>; archive: (id: number, archived: boolean) => void
+}) {
   const [filter, setFilter] = useState<'completed' | 'overdue' | number>('overdue')
   const selectedTag = data.tags.find(tag => tag.id === filter)
   const items = data.tasks.filter(task => filter === 'completed' ? task.done :
@@ -168,8 +197,10 @@ export function Browse({ data, tasks }: { data: Snapshot; tasks: RenderTasks }) 
       <div className="choice-row">
         <button className="choice" aria-pressed={filter === 'overdue'} onClick={() => setFilter('overdue')}>Overdue</button>
         <button className="choice" aria-pressed={filter === 'completed'} onClick={() => setFilter('completed')}>Completed</button>
-        {data.tags.map(tag => <button className="choice" key={tag.id} aria-pressed={filter === tag.id} onClick={() => setFilter(tag.id)}>{tag.name}</button>)}
+        {data.tags.map(tag => <button className={'choice' + (tag.archived ? ' archived' : '')} key={tag.id} aria-pressed={filter === tag.id}
+          onClick={() => setFilter(tag.id)}>{tag.name}{tag.archived && <span className="visually-hidden"> (archived)</span>}</button>)}
       </div>
+      {selectedTag && <TagTools tag={selectedTag} busy={busy} rename={rename} archive={archive} />}
     </section>
     <section className="card task-card planner-panel"><div className="card-heading">
       <h2>{selectedTag?.name ?? (filter === 'completed' ? 'Completed tasks' : 'Overdue tasks')}</h2>

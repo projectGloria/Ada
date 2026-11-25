@@ -1,4 +1,4 @@
-use super::{collect, lot_tag, text, Result};
+use super::{collect, text, use_tag, Result};
 use chrono::{Datelike, Days, Months, NaiveDate};
 use rusqlite::{params, Connection, Row};
 use serde::{Deserialize, Serialize};
@@ -49,11 +49,12 @@ pub struct Task {
     recurrence: Option<String>,
     pub(super) subtasks: Vec<Subtask>,
     pub(super) previous_id: Option<i64>,
+    completed_at: Option<i64>,
 }
 
 #[derive(Serialize)]
 pub struct Project {
-    id: i64,
+    pub(super) id: i64,
     name: String,
     archived: bool,
 }
@@ -97,7 +98,7 @@ pub fn tasks(db: &Connection) -> Result<Vec<Task>> {
     Ok(collect(
         db,
         "SELECT id, title, due, done, last_tag_id, notes, project_id, important, urgent,
-        in_progress, recurrence, previous_id FROM tasks ORDER BY done, id DESC",
+        in_progress, recurrence, previous_id, completed_at FROM tasks ORDER BY done, id DESC",
         [],
         |row| read_task(db, row),
     )?)
@@ -119,6 +120,7 @@ fn read_task(db: &Connection, row: &Row<'_>) -> rusqlite::Result<Task> {
         urgent: row.get(8)?,
         recurrence: row.get(10)?,
         previous_id: row.get(11)?,
+        completed_at: row.get(12)?,
         status: if done {
             Status::Done
         } else if in_progress {
@@ -216,7 +218,7 @@ pub fn save_task(db: &Connection, id: Option<i64>, draft: TaskDraft) -> Result<(
     };
     let mut tag_ids = draft.tag_ids;
     for name in draft.new_tags {
-        tag_ids.push(lot_tag(db, &text(&name, "Tag", 40)?)?);
+        tag_ids.push(use_tag(db, &text(&name, "Tag", 40)?)?);
     }
     for tag_id in tag_ids {
         db.execute(
@@ -243,33 +245,11 @@ pub fn save_task(db: &Connection, id: Option<i64>, draft: TaskDraft) -> Result<(
     Ok(())
 }
 
-pub fn set_status(db: &Connection, id: i64, status: Status) -> Result<()> {
-    let (was_done, due, recurrence, anchor): (bool, Option<String>, Option<String>, Option<u32>) =
-        db.query_row(
-            "SELECT done, due, recurrence, recurrence_day FROM tasks WHERE id=?1",
-            [id],
-            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
-        )?;
-    let done = matches!(status, Status::Done);
-    db.execute(
-        "UPDATE tasks SET done=?1, in_progress=?2 WHERE id=?3",
-        params![done, matches!(status, Status::InProgress), id],
-    )?;
-    if !done || was_done || recurrence.is_none() {
-        return Ok(());
-    }
-    if db.query_row(
-        "SELECT EXISTS(SELECT 1 FROM tasks WHERE previous_id=?1)",
-        [id],
-        |row| row.get::<_, bool>(0),
-    )? {
-        return Ok(());
-    }
-    let date = parse_due(due.as_deref())?.ok_or("This recurring task has no due date.")?;
-    let next = match recurrence.as_deref() {
-        Some("daily") => date.checked_add_days(Days::new(1)),
-        Some("weekly") => date.checked_add_days(Days::new(7)),
-        Some("monthly") => date
+fn following(date: NaiveDate, recurrence: &str, anchor: Option<u32>) -> Option<NaiveDate> {
+    match recurrence {
+        "daily" => date.checked_add_days(Days::new(1)),
+        "weekly" => date.checked_add_days(Days::new(7)),
+        "monthly" => date
             .with_day(1)
             .and_then(|first| first.checked_add_months(Months::new(1)))
             .and_then(|first| {
@@ -279,7 +259,55 @@ pub fn set_status(db: &Connection, id: i64, status: Status) -> Result<()> {
         _ => None,
     }
     .filter(|date| date.year() <= 9999)
-    .ok_or("The next due date is outside the supported calendar.")?;
+}
+
+/// The first date on the task's schedule after both its due date and today, so completing
+/// overdue work never creates an occurrence that is already overdue.
+fn next_occurrence(
+    due: NaiveDate,
+    recurrence: &str,
+    anchor: Option<u32>,
+    today: NaiveDate,
+) -> Option<NaiveDate> {
+    let mut next = following(due, recurrence, anchor)?;
+    while next <= today {
+        next = following(next, recurrence, anchor)?;
+    }
+    Some(next)
+}
+
+pub fn set_status(
+    db: &Connection,
+    id: i64,
+    status: Status,
+    now: i64,
+    today: NaiveDate,
+) -> Result<()> {
+    let (was_done, due, recurrence, anchor): (bool, Option<String>, Option<String>, Option<u32>) =
+        db.query_row(
+            "SELECT done, due, recurrence, recurrence_day FROM tasks WHERE id=?1",
+            [id],
+            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
+        )?;
+    let done = matches!(status, Status::Done);
+    db.execute(
+        "UPDATE tasks SET done=?1, in_progress=?2,
+        completed_at=CASE WHEN ?1 THEN COALESCE(completed_at, ?3) END WHERE id=?4",
+        params![done, matches!(status, Status::InProgress), now, id],
+    )?;
+    let Some(recurrence) = recurrence.filter(|_| done && !was_done) else {
+        return Ok(());
+    };
+    if db.query_row(
+        "SELECT EXISTS(SELECT 1 FROM tasks WHERE previous_id=?1)",
+        [id],
+        |row| row.get::<_, bool>(0),
+    )? {
+        return Ok(());
+    }
+    let date = parse_due(due.as_deref())?.ok_or("This recurring task has no due date.")?;
+    let next = next_occurrence(date, &recurrence, anchor, today)
+        .ok_or("The next due date is outside the supported calendar.")?;
     db.execute("INSERT INTO tasks(title, due, last_tag_id, notes, project_id, important, urgent, recurrence, recurrence_day, previous_id)
         SELECT title, ?1, last_tag_id, notes, project_id, important, urgent, recurrence, recurrence_day, id
         FROM tasks WHERE id=?2", params![next.to_string(), id])?;
@@ -292,6 +320,21 @@ pub fn set_status(db: &Connection, id: i64, status: Status) -> Result<()> {
         "INSERT INTO subtasks SELECT ?1, position, title, 0 FROM subtasks WHERE task_id=?2",
         params![next_id, id],
     )?;
+    Ok(())
+}
+
+/// Removes a task while keeping its focus history: sessions keep their activity name,
+/// tag, project, and credited time, and simply lose the link.
+pub fn delete_task(db: &Connection, id: i64) -> Result<()> {
+    db.execute("UPDATE sessions SET task_id=NULL WHERE task_id=?1", [id])?;
+    db.execute(
+        "UPDATE tasks SET previous_id=NULL WHERE previous_id=?1",
+        [id],
+    )?;
+    db.execute("DELETE FROM task_tags WHERE task_id=?1", [id])?;
+    if db.execute("DELETE FROM tasks WHERE id=?1", [id])? == 0 {
+        return Err("That task no longer exists.".into());
+    }
     Ok(())
 }
 

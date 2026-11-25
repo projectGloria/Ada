@@ -335,6 +335,29 @@ input, select, textarea, summary { transition: border-color .15s ease, backgroun
 input:not(:disabled):hover, select:not(:disabled):hover, textarea:not(:disabled):hover { border-color: var(--dim); }
 input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: default; }
 
+.action-group { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dialog-actions.start { justify-content: flex-start; }
+.dialog-actions > span:empty { display: none; }
+.confirm-row { margin-top: 15px; padding: 11px 12px 12px; border: 1px solid color-mix(in srgb, #963c32 45%, var(--line)); border-radius: 9px; background: color-mix(in srgb, #963c32 7%, transparent); }
+.confirm-row .dialog-actions { margin-top: 10px; }
+.account-unavailable, .account-notice { padding: 9px 11px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--raised); font-size: 11.5px; }
+.account-notice { color: var(--green); }
+.account-switch { margin-top: 14px; font-size: 11.5px; }
+.account-switch .text-button { display: inline; }
+.account-options { margin: 10px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
+.account-options li + li { margin-top: 7px; }
+.account-options strong { color: var(--text); }
+.account-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+.account-actions .danger-text { margin-left: auto; }
+.inline-icon { vertical-align: -2px; margin-right: 3px; color: var(--accent); }
+.form-field .field-hint { display: block; margin: 6px 0 0; font-weight: 550; }
+.form-field input[aria-invalid=true] { border-color: var(--accent); }
+.tag-tools { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.tag-tools .form-field { flex: 1 1 200px; margin: 0; }
+.tag-tools .field-hint { flex-basis: 100%; margin: 2px 0 0; }
+.choice.archived { border-style: dashed; color: var(--dim); }
+.board-more { margin: 4px 14px 14px; }
+
 @media (max-width: 1050px) {
   .kanban-board { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 }

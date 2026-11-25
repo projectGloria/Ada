@@ -18,9 +18,10 @@ export type TaskDraft = {
 }
 export type Task = Omit<TaskDraft, 'newTags'> & {
   id: number; done: boolean; status: TaskStatus; lastTagId: number | null; previousId: number | null
+  completedAt: number | null
 }
 export type Project = { id: number; name: string; archived: boolean }
-export type Tag = { id: number; name: string; lot: number; totalMs: number }
+export type Tag = { id: number; name: string; lot: number; totalMs: number; archived: boolean }
 export type Session = {
   id: number; tagId: number; taskId: number | null; projectId: number | null; activity: string; targetMs: number | null
   startedAt: number; endedAt: number | null; runningSince: number | null
@@ -30,7 +31,7 @@ export type Interval = { start: number; end: number }
 export type Day = { date: string; totalMs: number; credits: Record<number, number> }
 export type Milestone = { stage: number; minutes: number; label: string }
 export type Snapshot = {
-  now: number; today: string; zone: string; demo: boolean; settings: Settings
+  now: number; today: string; todayStart: number; zone: string; demo: boolean; settings: Settings
   tasks: Task[]; projects: Project[]; tags: Tag[]; sessions: Session[]; active: Session | null; week: Day[]
   milestones: Milestone[]; sessionIntervals: Record<number, Interval[]>
 }
@@ -39,6 +40,9 @@ export type Action =
   | { type: 'saveTask'; id: number | null; draft: TaskDraft }
   | { type: 'complete'; id: number; done: boolean }
   | { type: 'setStatus'; id: number; status: TaskStatus }
+  | { type: 'deleteTask'; id: number }
+  | { type: 'renameTag'; id: number; name: string }
+  | { type: 'archiveTag'; id: number; archived: boolean }
   | { type: 'addProject'; name: string }
   | { type: 'archiveProject'; id: number; archived: boolean }
   | { type: 'addTag'; name: string }
@@ -51,6 +55,35 @@ export type Action =
 
 export const minute = 60_000
 export const send = (action: Action) => invoke<Snapshot>('workspace', { action })
+
+export type Counts = { tasks: number; sessions: number; tags: number; projects: number }
+export type AccountStep = 'idle' | 'verify' | 'merge' | 'recoveryCode' | 'newPassword' | 'passwordChanged'
+  | 'signedIn' | 'signedOut' | 'deleted'
+export type AccountView = {
+  configured: boolean; demo: boolean; email: string | null; merge: Counts | null
+  recovering: boolean; step: AccountStep; reload: boolean
+}
+export type AccountRequest =
+  | { type: 'read' | 'cancelMerge' | 'signOut' }
+  | { type: 'signUp' | 'signIn'; email: string; password: string }
+  | { type: 'verify' | 'verifyRecovery'; email: string; code: string }
+  | { type: 'resend' | 'recover'; email: string }
+  | { type: 'setPassword'; password: string }
+  | { type: 'chooseMerge'; merge: boolean }
+  | { type: 'delete'; password: string }
+export const accountRequest = (request: AccountRequest) => invoke<AccountView>('account', { request })
+
+/** Time focused today in the running session, which reports only include once it finishes. */
+export function activeToday(data: Snapshot, now: number) {
+  const session = data.active
+  if (!session) return 0
+  const overlap = (start: number, end: number) => Math.max(0, end - Math.max(start, data.todayStart))
+  const credited = (data.sessionIntervals[session.id] ?? []).reduce((sum, item) => sum + overlap(item.start, item.end), 0)
+  const end = session.recoveryTo === null ? now : session.heartbeatAt ?? now
+  const running = session.runningSince === null ? 0 : overlap(session.runningSince, end)
+  const limit = session.targetMs === null ? Infinity : Math.max(0, session.targetMs - session.creditedMs)
+  return credited + Math.min(running, limit)
+}
 
 export function duration(ms: number) {
   const minutes = Math.floor(ms / minute)

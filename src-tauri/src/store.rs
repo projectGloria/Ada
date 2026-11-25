@@ -4,7 +4,9 @@ use rusqlite::{params, Connection, OptionalExtension, Row, Transaction};
 use serde::{Deserialize, Serialize};
 use std::{error::Error, path::Path};
 
+mod merge;
 mod planner;
+pub use merge::Counts;
 use planner::{Project, Status, Task, TaskDraft};
 
 const MINUTE: i64 = 60_000;
@@ -36,6 +38,17 @@ pub enum Action {
     SetStatus {
         id: i64,
         status: Status,
+    },
+    DeleteTask {
+        id: i64,
+    },
+    RenameTag {
+        id: i64,
+        name: String,
+    },
+    ArchiveTag {
+        id: i64,
+        archived: bool,
     },
     AddProject {
         name: String,
@@ -102,6 +115,7 @@ struct Tag {
     name: String,
     lot: i64,
     total_ms: i64,
+    archived: bool,
 }
 
 #[derive(Serialize)]
@@ -147,6 +161,7 @@ struct Milestone {
 pub struct Snapshot {
     now: i64,
     today: String,
+    today_start: i64,
     zone: String,
     demo: bool,
     pub settings: Settings,
@@ -225,6 +240,54 @@ fn lot_tag(db: &Connection, name: &str) -> rusqlite::Result<i64> {
     db.query_row("SELECT id FROM tags WHERE name = ?1", [name], |r| r.get(0))
 }
 
+/// Adds a tag by name. Choosing an archived tag's name again brings its district back
+/// instead of founding a twin.
+fn use_tag(db: &Connection, name: &str) -> rusqlite::Result<i64> {
+    let id = lot_tag(db, name)?;
+    db.execute("UPDATE tags SET archived=0 WHERE id=?1", [id])?;
+    Ok(id)
+}
+
+/// Turns a store error into a sentence for the person using Ada. Every action runs in one
+/// transaction, so a failed action never leaves a partial change behind.
+pub fn describe(error: &(dyn Error + 'static)) -> String {
+    use rusqlite::ErrorCode;
+    match error.downcast_ref::<rusqlite::Error>() {
+        Some(rusqlite::Error::QueryReturnedNoRows) => {
+            "That item no longer exists. Nothing was changed.".into()
+        }
+        Some(rusqlite::Error::SqliteFailure(failure, _))
+            if failure.code == ErrorCode::ConstraintViolation =>
+        {
+            "This change conflicts with something already saved. Nothing was changed.".into()
+        }
+        Some(rusqlite::Error::SqliteFailure(failure, _))
+            if matches!(
+                failure.code,
+                ErrorCode::DatabaseBusy | ErrorCode::DatabaseLocked
+            ) =>
+        {
+            "Ada's local database is busy. Nothing was changed; try again in a moment.".into()
+        }
+        Some(other) => {
+            format!("Ada's local database reported a problem, and nothing was changed. ({other})")
+        }
+        None => error.to_string(),
+    }
+}
+
+fn require(found: bool, message: &str) -> Result<()> {
+    if found {
+        Ok(())
+    } else {
+        Err(message.into())
+    }
+}
+
+fn exists(db: &Connection, sql: &str, id: i64) -> rusqlite::Result<bool> {
+    db.query_row(&format!("SELECT EXISTS({sql})"), [id], |r| r.get(0))
+}
+
 fn find_current(db: &Connection, id: i64) -> Result<Session> {
     current(db)?
         .filter(|session| session.id == id)
@@ -261,7 +324,7 @@ fn finish(db: &Connection, session: &Session, at: i64) -> Result<()> {
     Ok(())
 }
 
-fn checkpoint(db: &Connection, now: i64, reopening: bool) -> Result<bool> {
+fn checkpoint(db: &Connection, now: i64) -> Result<bool> {
     let Some(session) = current(db)? else {
         return Ok(false);
     };
@@ -271,10 +334,24 @@ fn checkpoint(db: &Connection, now: i64, reopening: bool) -> Result<bool> {
     if session.recovery_to.is_some() {
         return Ok(false);
     }
-    if reopening || now - heartbeat > GAP || now < heartbeat {
+    if now < heartbeat {
+        // The clock moved backwards. Keep the time Ada verified and pause, so a later
+        // interval can never overlap one that is already credited.
+        if session
+            .target_ms
+            .is_some_and(|target| session.credited_ms + heartbeat - start >= target)
+        {
+            finish(db, &session, heartbeat)?;
+            return Ok(true);
+        }
+        end_running(db, &session, heartbeat)?;
+        return Ok(false);
+    }
+    // A short gap, such as restarting Ada, counts normally. Longer unverified gaps need review.
+    if now - heartbeat > GAP {
         db.execute(
             "UPDATE sessions SET recovery_to=?1 WHERE id=?2",
-            params![now.max(heartbeat), session.id],
+            params![now, session.id],
         )?;
         return Ok(false);
     }
@@ -293,13 +370,20 @@ fn checkpoint(db: &Connection, now: i64, reopening: bool) -> Result<bool> {
     Ok(false)
 }
 
+fn system_zone() -> Option<Tz> {
+    iana_time_zone::get_timezone()
+        .ok()
+        .and_then(|name| name.parse().ok())
+}
+
 impl Store {
     pub fn open(path: impl AsRef<Path>, demo: bool) -> Result<Self> {
-        let zone = iana_time_zone::get_timezone()
-            .ok()
-            .and_then(|name| name.parse().ok())
-            .unwrap_or(chrono_tz::UTC);
+        let zone = system_zone().unwrap_or(chrono_tz::UTC);
         Self::open_in_zone(path, demo, zone, Utc::now().timestamp_millis())
+    }
+
+    pub fn has_active_session(&self) -> Result<bool> {
+        Ok(current(&self.db)?.is_some())
     }
 
     fn open_in_zone(path: impl AsRef<Path>, demo: bool, zone: Tz, now: i64) -> Result<Self> {
@@ -310,7 +394,7 @@ impl Store {
         )?;
         let tx = db.transaction()?;
         let version: i64 = tx.query_row("PRAGMA user_version", [], |r| r.get(0))?;
-        if !(0..=2).contains(&version) {
+        if !(0..=3).contains(&version) {
             return Err("This database needs a newer version of Ada.".into());
         }
         if version == 0 {
@@ -324,46 +408,75 @@ impl Store {
             if version == 0 && demo {
                 planner::seed(&tx)?;
             }
-            tx.pragma_update(None, "user_version", 2)?;
         }
-        checkpoint(&tx, now, true)?;
+        if version < 3 {
+            tx.execute_batch(include_str!("catalog.sql"))?;
+            tx.pragma_update(None, "user_version", 3)?;
+        }
+        checkpoint(&tx, now)?;
         tx.commit()?;
         Ok(Self { db, demo, zone })
     }
 
     pub fn tick(&mut self) -> Result<bool> {
         let tx = self.db.transaction()?;
-        let expired = checkpoint(&tx, Utc::now().timestamp_millis(), false)?;
+        let expired = checkpoint(&tx, Utc::now().timestamp_millis())?;
         let should_notify = expired && settings(&tx)?.notifications;
         tx.commit()?;
         Ok(should_notify)
     }
 
     pub fn apply(&mut self, action: Action) -> Result<Snapshot> {
+        // Follow Windows time zone changes without a restart.
+        if let Some(zone) = system_zone() {
+            self.zone = zone;
+        }
         self.apply_at(action, Utc::now().timestamp_millis())
     }
 
     fn apply_at(&mut self, action: Action, now: i64) -> Result<Snapshot> {
         let tx = self.db.transaction()?;
-        mutate(&tx, action, now)?;
+        mutate(&tx, action, now, local_date(self.zone, now))?;
         let snapshot = snapshot(&tx, self.demo, self.zone, now)?;
         tx.commit()?;
         Ok(snapshot)
     }
 }
 
-fn mutate(tx: &Transaction<'_>, action: Action, now: i64) -> Result<()> {
+fn mutate(tx: &Transaction<'_>, action: Action, now: i64, today: NaiveDate) -> Result<()> {
     match action {
         Action::Read => {}
         Action::SaveTask { id, draft } => planner::save_task(tx, id, draft)?,
         Action::Complete { id, done } => {
-            planner::set_status(tx, id, if done { Status::Done } else { Status::Todo })?;
+            let status = if done { Status::Done } else { Status::Todo };
+            planner::set_status(tx, id, status, now, today)?;
         }
-        Action::SetStatus { id, status } => planner::set_status(tx, id, status)?,
+        Action::SetStatus { id, status } => planner::set_status(tx, id, status, now, today)?,
+        Action::DeleteTask { id } => planner::delete_task(tx, id)?,
         Action::AddProject { name } => planner::create_project(tx, &name)?,
         Action::ArchiveProject { id, archived } => planner::archive_project(tx, id, archived)?,
         Action::AddTag { name } => {
-            lot_tag(tx, &text(&name, "Tag", 40)?)?;
+            use_tag(tx, &text(&name, "Tag", 40)?)?;
+        }
+        Action::RenameTag { id, name } => {
+            let name = text(&name, "Tag", 40)?;
+            let taken: bool = tx.query_row(
+                "SELECT EXISTS(SELECT 1 FROM tags WHERE name=?1 AND id<>?2)",
+                params![name, id],
+                |r| r.get(0),
+            )?;
+            if taken {
+                return Err("Another tag already uses that name.".into());
+            }
+            let changed = tx.execute("UPDATE tags SET name=?1 WHERE id=?2", params![name, id])?;
+            require(changed > 0, "That tag no longer exists.")?;
+        }
+        Action::ArchiveTag { id, archived } => {
+            let changed = tx.execute(
+                "UPDATE tags SET archived=?1 WHERE id=?2",
+                params![archived, id],
+            )?;
+            require(changed > 0, "That tag no longer exists.")?;
         }
         Action::Start {
             task_id,
@@ -378,14 +491,26 @@ fn mutate(tx: &Transaction<'_>, action: Action, now: i64) -> Result<()> {
             if target_ms.is_some_and(|target| !(MINUTE..=1_440 * MINUTE).contains(&target)) {
                 return Err("Choose a countdown between 1 and 1,440 minutes.".into());
             }
-            let tag: String =
-                tx.query_row("SELECT name FROM tags WHERE id=?1", [tag_id], |r| r.get(0))?;
+            let (tag, archived): (String, bool) = tx
+                .query_row(
+                    "SELECT name, archived FROM tags WHERE id=?1",
+                    [tag_id],
+                    |r| Ok((r.get(0)?, r.get(1)?)),
+                )
+                .optional()?
+                .ok_or("That tag no longer exists. Choose another tag.")?;
+            if archived {
+                return Err("Restore this tag before focusing with it.".into());
+            }
             let (activity, project_id) = if let Some(id) = task_id {
-                let (title, project_id) = tx.query_row(
-                    "SELECT title, project_id FROM tasks WHERE id=?1",
-                    [id],
-                    |r| Ok((r.get::<_, String>(0)?, r.get::<_, Option<i64>>(1)?)),
-                )?;
+                let (title, project_id) = tx
+                    .query_row(
+                        "SELECT title, project_id FROM tasks WHERE id=?1",
+                        [id],
+                        |r| Ok((r.get::<_, String>(0)?, r.get::<_, Option<i64>>(1)?)),
+                    )
+                    .optional()?
+                    .ok_or("That task no longer exists. Choose another task.")?;
                 let (count, has_tag): (i64, bool) = tx.query_row(
                     "SELECT COUNT(*), COALESCE(MAX(tag_id=?2), 0) FROM task_tags WHERE task_id=?1",
                     params![id, tag_id],
@@ -460,22 +585,39 @@ fn mutate(tx: &Transaction<'_>, action: Action, now: i64) -> Result<()> {
             }
         }
         Action::CorrectTag { id, tag_id } => {
-            tx.execute(
+            require(
+                exists(tx, "SELECT 1 FROM tags WHERE id=?1", tag_id)?,
+                "That tag no longer exists. Choose another tag.",
+            )?;
+            let changed = tx.execute(
                 "UPDATE sessions SET tag_id=?1 WHERE id=?2 AND ended_at IS NOT NULL",
                 params![tag_id, id],
             )?;
+            require(changed > 0, "Only finished sessions can be corrected.")?;
         }
         Action::CorrectTask { id, task_id } => {
-            tx.execute(
-                "UPDATE sessions SET task_id=?1 WHERE id=?2 AND ended_at IS NOT NULL",
-                params![task_id, id],
+            // A session's project follows its linked task, so project time moves with the correction.
+            let project_id: Option<i64> = match task_id {
+                Some(task) => tx
+                    .query_row("SELECT project_id FROM tasks WHERE id=?1", [task], |r| {
+                        r.get(0)
+                    })
+                    .optional()?
+                    .ok_or("That task no longer exists. Choose another task.")?,
+                None => None,
+            };
+            let changed = tx.execute(
+                "UPDATE sessions SET task_id=?1, project_id=?2 WHERE id=?3 AND ended_at IS NOT NULL",
+                params![task_id, project_id, id],
             )?;
+            require(changed > 0, "Only finished sessions can be corrected.")?;
         }
         Action::DeleteSession { id } => {
-            tx.execute(
+            let changed = tx.execute(
                 "DELETE FROM sessions WHERE id=?1 AND ended_at IS NOT NULL",
                 [id],
             )?;
+            require(changed > 0, "Only finished sessions can be deleted.")?;
         }
         Action::SaveSettings {
             startup,
@@ -530,7 +672,7 @@ fn snapshot(db: &Connection, demo: bool, zone: Tz, now: i64) -> Result<Snapshot>
     let tasks = planner::tasks(db)?;
     let tags = collect(
         db,
-        "SELECT tags.id, name, lot, COALESCE(SUM(intervals.end-intervals.start), 0)
+        "SELECT tags.id, name, lot, COALESCE(SUM(intervals.end-intervals.start), 0), archived
         FROM tags LEFT JOIN sessions ON sessions.tag_id=tags.id AND sessions.ended_at IS NOT NULL
         LEFT JOIN intervals ON intervals.session_id=sessions.id GROUP BY tags.id ORDER BY lot",
         [],
@@ -540,6 +682,7 @@ fn snapshot(db: &Connection, demo: bool, zone: Tz, now: i64) -> Result<Snapshot>
                 name: r.get(1)?,
                 lot: r.get(2)?,
                 total_ms: r.get(3)?,
+                archived: r.get(4)?,
             })
         },
     )?;
@@ -613,6 +756,7 @@ fn snapshot(db: &Connection, demo: bool, zone: Tz, now: i64) -> Result<Snapshot>
     Ok(Snapshot {
         now,
         today: today.to_string(),
+        today_start: day_start(zone, today),
         zone: zone.name().to_owned(),
         demo,
         settings: settings(db)?,
@@ -784,10 +928,10 @@ mod tests {
         let mut store = store(now, chrono_tz::UTC);
         let id = start(&mut store, now, Some(MINUTE));
         for second in 1..60 {
-            assert!(!checkpoint(&store.db, now + second * 1_000, false).unwrap());
+            assert!(!checkpoint(&store.db, now + second * 1_000).unwrap());
         }
-        assert!(checkpoint(&store.db, now + 65_000, false).unwrap());
-        assert!(!checkpoint(&store.db, now + 66_000, false).unwrap());
+        assert!(checkpoint(&store.db, now + 65_000).unwrap());
+        assert!(!checkpoint(&store.db, now + 66_000).unwrap());
         let saved = store.apply_at(Action::Read, now + 66_000).unwrap();
         assert_eq!(saved.sessions[0].credited_ms, MINUTE);
         assert_eq!(saved.sessions[0].ended_at, Some(now + MINUTE));
@@ -800,9 +944,9 @@ mod tests {
         for count in [false, true] {
             let mut store = store(now, chrono_tz::UTC);
             let id = start(&mut store, now, Some(MINUTE));
-            checkpoint(&store.db, now + 8_000, false).unwrap();
-            checkpoint(&store.db, now + 10_000, false).unwrap();
-            checkpoint(&store.db, now + 90_000, true).unwrap();
+            checkpoint(&store.db, now + 8_000).unwrap();
+            checkpoint(&store.db, now + 10_000).unwrap();
+            checkpoint(&store.db, now + 90_000).unwrap();
             assert!(store.apply_at(Action::Finish { id }, now + 90_000).is_err());
             let saved = store
                 .apply_at(Action::Recover { id, count }, now + 90_000)
@@ -837,5 +981,253 @@ mod tests {
         assert_eq!(following_day.week.last().unwrap().total_ms, 0);
         assert_eq!(following_day.tags[0].lot, saved.tags[0].lot);
         assert_eq!(following_day.tags[0].total_ms, 140 * MINUTE);
+    }
+
+    #[test]
+    fn a_quick_restart_keeps_the_timer_running_without_review() {
+        let now = 1_800_000_000_000;
+        let directory = std::env::temp_dir().join(format!(
+            "ada-restart-{}-{}",
+            std::process::id(),
+            chrono::Utc::now().timestamp_nanos_opt().unwrap()
+        ));
+        std::fs::create_dir(&directory).unwrap();
+        let path = directory.join("ada.sqlite3");
+        let id = {
+            let mut store = Store::open_in_zone(&path, false, chrono_tz::UTC, now).unwrap();
+            store
+                .apply_at(
+                    Action::AddTag {
+                        name: "Reading".into(),
+                    },
+                    now,
+                )
+                .unwrap();
+            start(&mut store, now, None)
+        };
+        let mut store = Store::open_in_zone(&path, false, chrono_tz::UTC, now + 8_000).unwrap();
+        let active = store
+            .apply_at(Action::Read, now + 8_000)
+            .unwrap()
+            .active
+            .unwrap();
+        assert_eq!(active.id, id);
+        assert!(active.recovery_to.is_none());
+        assert!(active.running_since.is_some());
+        drop(store);
+        let store = Store::open_in_zone(&path, false, chrono_tz::UTC, now + 60_000).unwrap();
+        assert!(current(&store.db).unwrap().unwrap().recovery_to.is_some());
+        drop(store);
+        std::fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn a_backward_clock_pauses_at_the_last_verified_moment() {
+        let now = 1_800_000_000_000;
+        let mut store = store(now, chrono_tz::UTC);
+        let id = start(&mut store, now, None);
+        checkpoint(&store.db, now + 10_000).unwrap();
+        checkpoint(&store.db, now + 4_000).unwrap();
+        let active = store
+            .apply_at(Action::Read, now + 4_000)
+            .unwrap()
+            .active
+            .unwrap();
+        assert!(active.running_since.is_none());
+        assert!(active.recovery_to.is_none());
+        assert_eq!(active.credited_ms, 10_000);
+        assert!(store.apply_at(Action::Resume { id }, now + 5_000).is_err());
+        store.apply_at(Action::Resume { id }, now + 11_000).unwrap();
+    }
+
+    #[test]
+    fn corrections_move_project_time_and_explain_missing_items() {
+        let now = 1_800_000_000_000;
+        let mut store = store(now, chrono_tz::UTC);
+        let project = store
+            .apply_at(
+                Action::AddProject {
+                    name: "Study".into(),
+                },
+                now,
+            )
+            .unwrap()
+            .projects[0]
+            .id;
+        let mut draft: planner::TaskDraft = serde_json::from_value(serde_json::json!({
+            "title": "Read", "due": null, "tagIds": [1], "newTags": [], "notes": "",
+            "projectId": project, "important": false, "urgent": false, "recurrence": null, "subtasks": []
+        }))
+        .unwrap();
+        let task = store
+            .apply_at(Action::SaveTask { id: None, draft }, now)
+            .unwrap()
+            .tasks[0]
+            .id;
+        let id = start(&mut store, now, None);
+        store
+            .apply_at(Action::Finish { id }, now + 5 * MINUTE)
+            .unwrap();
+
+        let linked = store
+            .apply_at(
+                Action::CorrectTask {
+                    id,
+                    task_id: Some(task),
+                },
+                now + 5 * MINUTE,
+            )
+            .unwrap();
+        assert_eq!(linked.sessions[0].project_id, Some(project));
+        let unlinked = store
+            .apply_at(Action::CorrectTask { id, task_id: None }, now + 5 * MINUTE)
+            .unwrap();
+        assert_eq!(unlinked.sessions[0].project_id, None);
+
+        let missing = store
+            .apply_at(Action::CorrectTag { id, tag_id: 99 }, now)
+            .err()
+            .unwrap();
+        assert_eq!(
+            describe(&*missing),
+            "That tag no longer exists. Choose another tag."
+        );
+        let missing = store
+            .apply_at(
+                Action::Start {
+                    task_id: None,
+                    tag_id: 99,
+                    target_ms: None,
+                },
+                now,
+            )
+            .err()
+            .unwrap();
+        assert!(describe(&*missing).starts_with("That tag no longer exists"));
+
+        // Deleting the task keeps its focus history.
+        store
+            .apply_at(
+                Action::CorrectTask {
+                    id,
+                    task_id: Some(task),
+                },
+                now,
+            )
+            .unwrap();
+        let deleted = store
+            .apply_at(Action::DeleteTask { id: task }, now)
+            .unwrap();
+        assert!(deleted.tasks.is_empty());
+        assert_eq!(deleted.sessions[0].task_id, None);
+        assert_eq!(deleted.sessions[0].credited_ms, 5 * MINUTE);
+        draft = serde_json::from_value(serde_json::json!({
+            "title": "Again", "due": null, "tagIds": [42], "newTags": [], "notes": "",
+            "projectId": null, "important": false, "urgent": false, "recurrence": null, "subtasks": []
+        }))
+        .unwrap();
+        let conflict = store
+            .apply_at(Action::SaveTask { id: None, draft }, now)
+            .err()
+            .unwrap();
+        assert!(describe(&*conflict).contains("Nothing was changed"));
+        assert!(store.apply_at(Action::Read, now).unwrap().tasks.is_empty());
+    }
+
+    #[test]
+    fn tags_can_be_renamed_archived_and_restored_without_losing_their_district() {
+        let now = 1_800_000_000_000;
+        let mut store = store(now, chrono_tz::UTC);
+        let id = start(&mut store, now, None);
+        store.apply_at(Action::Finish { id }, now + MINUTE).unwrap();
+        assert!(store
+            .apply_at(
+                Action::RenameTag {
+                    id: 1,
+                    name: "design".into()
+                },
+                now
+            )
+            .is_err());
+        store
+            .apply_at(
+                Action::RenameTag {
+                    id: 1,
+                    name: "Books".into(),
+                },
+                now,
+            )
+            .unwrap();
+        let archived = store
+            .apply_at(
+                Action::ArchiveTag {
+                    id: 1,
+                    archived: true,
+                },
+                now,
+            )
+            .unwrap();
+        assert!(archived.tags[0].archived);
+        assert_eq!(archived.tags[0].total_ms, MINUTE);
+        assert!(store
+            .apply_at(
+                Action::Start {
+                    task_id: None,
+                    tag_id: 1,
+                    target_ms: None
+                },
+                now
+            )
+            .is_err());
+        let restored = store
+            .apply_at(
+                Action::AddTag {
+                    name: "books".into(),
+                },
+                now,
+            )
+            .unwrap();
+        assert_eq!(restored.tags.len(), 2);
+        assert!(!restored.tags[0].archived);
+        assert_eq!(restored.tags[0].lot, 0);
+    }
+
+    #[test]
+    fn completing_overdue_recurring_work_schedules_the_next_future_date() {
+        let now = 1_800_000_000_000; // 2027-01-15 UTC
+        for (due, recurrence, expected) in [
+            ("2027-01-10", "daily", "2027-01-16"),
+            ("2027-01-01", "weekly", "2027-01-22"),
+            ("2026-10-31", "monthly", "2027-01-31"),
+            ("2027-01-15", "daily", "2027-01-16"),
+        ] {
+            let mut store = store(now, chrono_tz::UTC);
+            let draft = serde_json::from_value(serde_json::json!({
+                "title": "Water plants", "due": due, "tagIds": [], "newTags": [], "notes": "",
+                "projectId": null, "important": false, "urgent": false, "recurrence": recurrence,
+                "subtasks": []
+            }))
+            .unwrap();
+            let id = store
+                .apply_at(Action::SaveTask { id: None, draft }, now)
+                .unwrap()
+                .tasks[0]
+                .id;
+            let done = store
+                .apply_at(Action::Complete { id, done: true }, now)
+                .unwrap();
+            let next = done
+                .tasks
+                .iter()
+                .find(|task| task.previous_id == Some(id))
+                .unwrap();
+            assert_eq!(
+                serde_json::to_value(next).unwrap()["due"],
+                expected,
+                "{recurrence} from {due}"
+            );
+            let completed = done.tasks.iter().find(|task| task.id == id).unwrap();
+            assert_eq!(serde_json::to_value(completed).unwrap()["completedAt"], now);
+        }
     }
 }
