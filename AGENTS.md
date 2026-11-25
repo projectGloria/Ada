@@ -20,21 +20,21 @@ Ada is an offline Windows focus tracker and task planner that grows a town from 
 - **Version Manifests:** Keep `package.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json` in sync. Update the root package entries in `package-lock.json` and `src-tauri/Cargo.lock` with them.
 
 ## Personal Rules (Brain)
-- **Commit Format:** Write one plain sentence stating what changed and why. Omit conventional-commit prefixes.
-- **Commit & Push Policy:** Commit, tag, or push only when explicitly asked. Never force-push to `main`. For a requested commit and push, verify the build and tests and verify the version bump and alignment for runtime or packaging changes. Commit on `main` and push to `origin main`. Use the release workflow for release tags once configured.
-- **Path Privacy:** Use `C:\Users\you` for Windows user paths in documentation, comments, and examples.
-- **Release Workflow Check:** Before pushing to `main`, verify the release workflow against `.brain/github-actions.md`. If missing or misconfigured, bring it into line in the same push and report the change.
-- **Window Chrome:** Use an integrated frameless title bar with dragging, double-click maximize, and custom minimize, maximize, and close controls.
-- **Desktop Shell Lock:** Keep the shell at `100vw × 100vh` with shell overflow hidden, internal scroll panes, and `user-select: none` on UI chrome.
-- **Scrollbars:** Use themed 4–6 px scrollbars with transparent tracks and no layout shift.
-- **Interactive Controls:** Style form controls with explicit hover, active, keyboard-focus, and disabled states and 120–180 ms transitions.
-- **Git Branching:** Work directly on `main`. Create branches or worktrees only when explicitly directed.
-- **Versioning (Minimal Changes):** Bump an existing alpha number once per uncommitted runtime or packaging change set. Compare with `HEAD` before bumping. Skip docs-only and read-only work.
-- **Versioning (Major/Minor Changes):** Ask for the exact target version before changing major or minor versions or dropping the alpha suffix.
+- **Commit Format:** Write one plain sentence stating what changed and why; do not use `feat:`/`fix:`/`chore:` prefixes.
+- **Commit & Push Policy:** Never run `git commit`, `git tag`, or `git push` unless explicitly asked; never force-push to `main`. When asked to "commit and push", verify the build and tests pass, commit on `main`, and push to `origin main`. Pushing never releases anything.
+- **Releases:** Releases happen only through `/monjita-github-release`, which bumps the version, pushes, runs `gh workflow run release.yml`, and watches it until the GitHub Release is live. Never create release tags or releases by hand.
+- **Path Privacy:** Use `C:\Users\you` in documentation, comments, and examples, never the local machine's real username.
+- **Release Workflow:** `.github/workflows/release.yml` must be a copy of `GloriaSetup/templates/release.yml`. Don't hand-write release workflows or pin `gloria-setup`; see `.brain/github-actions.md`.
+- **Window Chrome:** Disable native OS titlebars; build an integrated frameless titlebar with drag region, double-click maximize, and custom min/max/close controls.
+- **Desktop Shell Lock:** Lock the app shell to `100vw x 100vh` (`overflow: hidden`) with internal scroll panes and `user-select: none` on UI chrome.
+- **Scrollbars:** Ban raw OS scrollbars; use thin (4–6px) themed scrollbars with transparent tracks and zero layout shift.
+- **Interactive Controls:** Custom-style all form controls; define explicit `hover`, `active`, `focus-visible`, and `disabled` states with 120–180ms transitions.
+- **Git Branching:** Never create new branches or git worktrees. Work directly on `main` until explicitly told otherwise.
+- **Versioning:** Never bump versions during normal work. The user picks the version at release time and `/monjita-github-release` sets it in every version file at once; keep version files in sync with each other otherwise.
 
 ## Playbooks (Read Before Task)
 - **Building & Packaging:** Read `.brain/building-the-project.md` before packaging, compiling release binaries, or building an installer.
-- **GitHub Actions & Releases:** Read `.brain/github-actions.md` before editing GitHub Actions workflows, setting up release automation, or preparing a first release push.
+- **GitHub Actions & Releases:** Read `.brain/github-actions.md` before creating/modifying `.github/workflows/*.yml`, setting up release automation, or debugging a failed release.
 
 ## Repo Guardrails & Gotchas
 - **Workspace Isolation:** `--demo` uses `demo.sqlite3`, while normal runs use `ada.sqlite3`. Set `ADA_LOCAL_DATA_DIR` to use a separate data directory for manual checks.
@@ -47,4 +47,4 @@ Ada is an offline Windows focus tracker and task planner that grows a town from 
 - For UI changes, verify Today → Focus → Town → session detail in the desktop app with both a fresh workspace and demo data. Check compact and maximized layouts, keyboard navigation, and Windows scaling at 100% and 150%.
 - When bumping versions, compare the three manifests and both lockfiles before reporting completion.
 
-<!-- brain-sync: d9fdf3731a37 -->
+<!-- brain-sync: 31e69a675214 -->
