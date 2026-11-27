@@ -1,10 +1,10 @@
 import { invoke } from '@tauri-apps/api/core'
 
 export type Startup = 'today' | 'focus' | 'town' | 'reports'
-export type Page = Startup | 'inbox' | 'upcoming' | 'calendar' | 'kanban' | 'matrix' | 'projects' | 'browse' | 'settings'
+export type Page = Startup | 'inbox' | 'upcoming' | 'calendar' | 'kanban' | 'matrix' | 'projects' | 'browse' | 'notes' | 'settings'
 export type Preferences = {
   startup: Startup
-  theme: 'dark' | 'light' | 'system'
+  theme: 'dark' | 'light' | 'system' | 'gloria'
   townVisibility: 'focus' | 'town'
   notifications: boolean
 }
@@ -33,7 +33,21 @@ export type Milestone = { stage: number; minutes: number; label: string }
 export type Snapshot = {
   now: number; today: string; todayStart: number; zone: string; demo: boolean; settings: Settings
   tasks: Task[]; projects: Project[]; tags: Tag[]; sessions: Session[]; active: Session | null; week: Day[]
-  milestones: Milestone[]; sessionIntervals: Record<number, Interval[]>
+  milestones: Milestone[]; sessionIntervals: Record<number, Interval[]>; sync: SyncInfo; notes: NoteMeta[]; noteFolders: string[]
+}
+export type NoteMeta = {
+  id: number; uid: string; title: string; folder: string; pinned: boolean; createdAt: number; updatedAt: number
+  excerpt: string; words: number; links: string[]; tags: string[]
+}
+export type NoteBody = { id: number; body: string; updatedAt: number }
+export type NoteHit = { id: number; title: string; folder: string; snippet: string }
+export type Conflict = {
+  id: number; kind: 'tag' | 'project' | 'task' | 'session' | 'note'; item: string; field: string
+  mine: string; theirs: string; at: number
+}
+export type SyncInfo = {
+  pending: number; conflicts: Conflict[]; lastSyncedAt: number | null; lastError: string | null
+  problem: 'offline' | 'setup' | 'other' | null; syncing: boolean
 }
 export type Action =
   | { type: 'read' }
@@ -52,11 +66,26 @@ export type Action =
   | { type: 'correctTag'; id: number; tagId: number }
   | { type: 'correctTask'; id: number; taskId: number | null }
   | ({ type: 'saveSettings' } & Preferences)
+  | { type: 'resolveConflict'; id: number; keepMine: boolean }
+  | { type: 'createNote'; uid: string; title: string; folder: string; body: string }
+  | { type: 'saveNote'; id: number; body: string }
+  | { type: 'renameNote'; id: number; title: string }
+  | { type: 'moveNote'; id: number; folder: string }
+  | { type: 'pinNote'; id: number; pinned: boolean }
+  | { type: 'deleteNote'; id: number }
+  | { type: 'renameFolder'; from: string; to: string }
+  | { type: 'createFolder'; path: string }
+  | { type: 'deleteFolder'; path: string }
+  | { type: 'dailyNote' }
 
 export const minute = 60_000
 export const send = (action: Action) => invoke<Snapshot>('workspace', { action })
+export const syncNow = () => invoke<void>('sync_now')
+export const readNote = (id: number) => invoke<NoteBody>('note', { id })
+export const searchNotes = (query: string) => invoke<NoteHit[]>('search_notes', { query })
+export const openUrl = (url: string) => invoke<void>('open_url', { url })
 
-export type Counts = { tasks: number; sessions: number; tags: number; projects: number }
+export type Counts = { tasks: number; sessions: number; tags: number; projects: number; notes: number }
 export type AccountStep = 'idle' | 'verify' | 'merge' | 'recoveryCode' | 'newPassword' | 'passwordChanged'
   | 'signedIn' | 'signedOut' | 'deleted'
 export type AccountView = {

@@ -13,11 +13,12 @@ pub struct Counts {
     pub sessions: i64,
     pub tags: i64,
     pub projects: i64,
+    pub notes: i64,
 }
 
 impl Counts {
     pub fn is_empty(&self) -> bool {
-        self.tasks + self.sessions + self.tags + self.projects == 0
+        self.tasks + self.sessions + self.tags + self.projects + self.notes == 0
     }
 }
 
@@ -42,7 +43,8 @@ impl Store {
     pub fn counts(&self) -> Result<Counts> {
         Ok(self.db.query_row(
             "SELECT (SELECT COUNT(*) FROM tasks), (SELECT COUNT(*) FROM sessions),
-            (SELECT COUNT(*) FROM tags), (SELECT COUNT(*) FROM projects)",
+            (SELECT COUNT(*) FROM tags), (SELECT COUNT(*) FROM projects),
+            (SELECT COUNT(*) FROM notes)",
             [],
             |r| {
                 Ok(Counts {
@@ -50,6 +52,7 @@ impl Store {
                     sessions: r.get(1)?,
                     tags: r.get(2)?,
                     projects: r.get(3)?,
+                    notes: r.get(4)?,
                 })
             },
         )?)
@@ -280,8 +283,46 @@ fn copy(tx: &Transaction<'_>) -> Result<()> {
         }
     }
 
+    // Notes keep their text; a title that's taken here gets a number.
+    for (title, body, folder, pinned, created, updated) in collect(
+        tx,
+        "SELECT title, body, folder, pinned, created_at, updated_at FROM source.notes ORDER BY id",
+        [],
+        |r| {
+            Ok((
+                r.get::<_, String>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+                r.get::<_, bool>(3)?,
+                r.get::<_, i64>(4)?,
+                r.get::<_, i64>(5)?,
+            ))
+        },
+    )? {
+        let mut name = title.clone();
+        let mut n = 2;
+        while tx.query_row(
+            "SELECT EXISTS(SELECT 1 FROM main.notes WHERE title=?1 COLLATE NOCASE)",
+            [&name],
+            |r| r.get::<_, bool>(0),
+        )? {
+            name = format!("{title} {n}");
+            n += 1;
+        }
+        tx.execute(
+            "INSERT INTO main.notes(title, body, folder, pinned, created_at, updated_at)
+            VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            params![name, body, folder, pinned, created, updated],
+        )?;
+    }
+
+    tx.execute(
+        "INSERT OR IGNORE INTO main.note_folders(path) SELECT path FROM source.note_folders",
+        [],
+    )?;
+
     tx.execute_batch(
-        "DELETE FROM source.intervals; DELETE FROM source.sessions; DELETE FROM source.subtasks;
+        "DELETE FROM source.note_folders; DELETE FROM source.notes; DELETE FROM source.intervals; DELETE FROM source.sessions; DELETE FROM source.subtasks;
         DELETE FROM source.task_tags; UPDATE source.tasks SET previous_id=NULL; DELETE FROM source.tasks;
         DELETE FROM source.projects; DELETE FROM source.tags;",
     )?;
@@ -351,6 +392,8 @@ mod tests {
         let total: i64 = merged.tags.iter().map(|tag| tag.total_ms).sum();
         assert_eq!(total, 265 * MINUTE);
         assert!(merged.tasks.iter().any(|task| task.subtasks.len() == 1));
+        // Windows can't remove a database file that is still open.
+        drop((guest, account));
         std::fs::remove_dir_all(directory).unwrap();
     }
 
@@ -387,6 +430,7 @@ mod tests {
         .unwrap();
         assert!(account.absorb(&guest_path).is_err());
         assert_eq!(guest.counts().unwrap().sessions, 1);
+        drop((guest, account));
         std::fs::remove_dir_all(directory).unwrap();
     }
 }

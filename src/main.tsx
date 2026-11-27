@@ -1,9 +1,10 @@
+import { listen } from '@tauri-apps/api/event'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import {
   ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, BarChart3, CalendarClock, CalendarDays, Check, ChevronDown,
   CircleHelp, CircleUserRound, Clock3, Crosshair, Focus, Inbox, Layers3, Maximize, Minus, Mountain, Pause, Play,
   Plus, Search, Settings2, Square, Sun, Trees, X, Columns3, Grid2X2, Folder, ListFilter, Repeat, ListChecks,
-  LogIn, UserPlus, Trash2,
+  LogIn, UserPlus, Trash2, RefreshCw, NotebookPen, FileText,
 } from 'lucide-react'
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -11,10 +12,12 @@ import { lotAt, TownArt, type Lot } from './town-art'
 import { Board, Browse, Calendar, Projects, statusLabels } from './planner'
 import { AccountDialog, type AccountMode } from './account'
 import { IconButton, Modal, SaveError } from './ui'
+import { CyberspaceBg, GloriaFigure } from './cyberspace'
+import { Notes } from './notes'
 import {
-  accountRequest, activeToday, dateLabel, duration, elapsed, minute, send, timer,
+  accountRequest, activeToday, dateLabel, duration, elapsed, minute, send, syncNow, timer,
   type AccountView, type Action, type Page, type Preferences, type Session, type Snapshot, type Startup, type Tag, type Task,
-  type Project, type TaskDraft, type TaskStatus,
+  type Project, type SyncInfo, type TaskDraft, type TaskStatus,
 } from './workspace'
 import './styles.css'
 
@@ -27,6 +30,7 @@ const destinations = [
     { page: 'kanban', name: 'Kanban', icon: Columns3 }, { page: 'matrix', name: 'Priority Matrix', icon: Grid2X2 },
     { page: 'projects', name: 'Projects', icon: Folder }, { page: 'browse', name: 'Browse', icon: ListFilter },
   ] },
+  { label: 'Notes', links: [{ page: 'notes', name: 'Notes', icon: NotebookPen }] },
   { label: 'Focus & reflection', links: [
     { page: 'focus', name: 'Focus', icon: Focus }, { page: 'town', name: 'Town', icon: Trees },
     { page: 'reports', name: 'Reports', icon: BarChart3 },
@@ -81,6 +85,7 @@ function App() {
   const [reportDay, setReportDay] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
+  const [noteUid, setNoteUid] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [now, setNow] = useState(Date.now())
   const [account, setAccount] = useState<AccountView>()
@@ -164,12 +169,15 @@ function App() {
       setAccount(view)
       if (view.step === 'merge') { setAccountMode('merge'); setOverlay('account') }
     }).catch(() => {})
+    // The sync worker announces each round, so pulled changes appear without waiting for the next poll.
+    const unlisten = listen('sync-changed', () => void refresh())
     const sync = window.setInterval(refresh, 2200)
     const display = window.setInterval(() => setNow(Date.now()), 240)
     const onVisible = () => { if (!document.hidden) void refresh() }
     document.addEventListener('visibilitychange', onVisible)
     return () => {
       closed = true
+      void unlisten.then(stop => stop())
       window.clearInterval(sync)
       window.clearInterval(display)
       document.removeEventListener('visibilitychange', onVisible)
@@ -319,7 +327,8 @@ function App() {
         <button className="profile" title={account?.email ?? (data.demo ? 'Demo workspace' : 'Local workspace')} onClick={() => setOverlay('profile')}>
           <span className="avatar">{data.demo ? 'D' : (account?.email?.[0] ?? 'A').toUpperCase()}</span>
           <span className="profile-copy"><strong>{data.demo ? 'Sample week' : account?.email ?? 'My workspace'}</strong>
-            <small>{data.demo ? 'Sample data' : account?.email ? 'Signed in' : 'Not signed in'}</small></span>
+            <small className={account?.email && !data.demo && (data.sync.conflicts.length || data.sync.lastError) ? 'attention' : undefined}>
+              {data.demo ? 'Sample data' : account?.email ? syncLabel(data.sync, now) : 'Not signed in'}</small></span>
           <ChevronDown className="profile-chevron" size={14} />
         </button>
         <div className="quick-actions">
@@ -334,16 +343,21 @@ function App() {
               </button>)}
           </div>)}
         </nav>
+        {data.settings.theme === 'gloria' && <GloriaFigure />}
         <div className="sidebar-bottom">
           {active && page !== 'focus' && <button className="mini-timer" title="Return to focus" onClick={() => go('focus')}><Clock3 size={16} /><span>{clock}</span></button>}
           <button className="nav-link" title="Settings" aria-label="Settings" aria-current={page === 'settings' ? 'page' : undefined} onClick={() => go('settings')}>
             <Settings2 size={17} /><span>Settings</span>
           </button>
-          <div className="local-status"><i /> Stored on this PC</div>
+          {account?.email && !data.demo
+            ? <div className={'local-status' + (data.sync.problem ? ' attention' : '')}><i />
+              {data.sync.problem ? 'Stored on this PC · not synced' : 'Synced with your account'}</div>
+            : <div className="local-status"><i /> Stored on this PC</div>}
         </div>
       </aside>
 
-      <main className="pane" ref={pane} id="main">
+      <main className={'pane' + (page === 'notes' ? ' is-notes' : '')} ref={pane} id="main">
+        {page === 'notes' && <Notes data={data} save={save} selected={noteUid} select={setNoteUid} />}
         {page === 'today' && <div className="content today">
           <header className="page-header">
             <p className="eyebrow"><Sun size={15} /> {dateLabel(data.today)}</p>
@@ -481,7 +495,7 @@ function App() {
           <section className="card settings-card"><h2>Preferences</h2>
             <SettingChoice label="Open Ada on" value={data.settings.startup} options={startupOptions.map(item => [item.id, item.title])}
               onChange={value => void save({ type: 'saveSettings', ...data.settings, startup: value as Startup })} />
-            <SettingChoice label="Appearance" value={data.settings.theme} options={[['dark', 'Dark'], ['light', 'Light'], ['system', 'Follow Windows']]}
+            <SettingChoice label="Appearance" value={data.settings.theme} options={[['dark', 'Dark'], ['light', 'Light'], ['system', 'Follow Windows'], ['gloria', 'Gloria']]}
               onChange={value => void save({ type: 'saveSettings', ...data.settings, theme: value as Preferences['theme'] })} />
             <SettingChoice label="Show the town" value={data.settings.townVisibility} options={[['focus', 'Focus and Town'], ['town', 'Town page only']]}
               onChange={value => void save({ type: 'saveSettings', ...data.settings, townVisibility: value as Preferences['townVisibility'] })} />
@@ -492,6 +506,8 @@ function App() {
           <section className="card settings-card"><h2>Account</h2>
             <AccountSummary account={account} demo={data.demo} open={openAccount} />
           </section>
+          {account?.email && !data.demo && <SyncCard sync={data.sync} now={now} busy={busy}
+            resolve={(id, keepMine) => void save({ type: 'resolveConflict', id, keepMine })} />}
         </div>}
       </main>
     </div>
@@ -537,10 +553,13 @@ function App() {
     }} />}
     {overlay === 'search' && <SearchDialog data={data} query={searchQuery} setQuery={setSearchQuery} close={() => setOverlay(null)} task={id => openTask({ id, fromSearch: true })}
       project={id => { setOverlay(null); openProject(id) }}
+      note={uid => { setOverlay(null); setNoteUid(uid); go('notes') }}
       tag={id => { setOverlay(null); if (founded.some(tag => tag.id === id)) finishedTag(id); else configure(null, id) }} />}
     {overlay === 'profile' && <Modal title={data.demo ? 'Demo workspace' : account?.email ?? 'My workspace'} close={() => setOverlay(null)}>
       {data.demo && <p>This workspace contains sample activity and uses its own local database.</p>}
       <AccountSummary account={account} demo={data.demo} open={openAccount} />
+      {account?.email && !data.demo && <p className="sync-line"><RefreshCw size={14} /> {syncLabel(data.sync, now)}
+        {data.sync.conflicts.length > 0 && <> · <button className="text-button" onClick={() => { setOverlay(null); go('settings') }}>Review</button></>}</p>}
       <div className="dialog-actions"><button className="text-button" onClick={() => { setOverlay(null); go('settings') }}><Settings2 size={16} /> Settings</button></div>
     </Modal>}
     {overlay === 'account' && <AccountDialog mode={accountMode} account={account ?? offlineAccount} active={active !== null}
@@ -572,8 +591,8 @@ function AccountSummary({ account, demo, open }: {
 }) {
   if (demo) return <p>Accounts aren’t available in the sample week. Open Ada normally to sign in.</p>
   if (account?.email) return <>
-    <p>Signed in as <strong>{account.email}</strong>. This account’s tasks, sessions, and town are saved on this PC.
-      Syncing between PCs isn’t available yet.</p>
+    <p>Signed in as <strong>{account.email}</strong>. This account’s tasks, sessions, and town are saved on this PC
+      and synced to your other PCs when you’re online.</p>
     <div className="dialog-actions start"><button className="secondary" onClick={() => open('manage')}><CircleUserRound size={16} /> Manage account</button></div>
   </>
   return <>
@@ -586,9 +605,68 @@ function AccountSummary({ account, demo, open }: {
   </>
 }
 
+function ago(ms: number) {
+  const minutes = Math.floor(ms / minute)
+  if (minutes < 1) return 'just now'
+  if (minutes < 60) return minutes + ' min ago'
+  const hours = Math.floor(minutes / 60)
+  return hours < 24 ? hours + ' h ago' : Math.floor(hours / 24) + ' d ago'
+}
+
+function syncLabel(sync: SyncInfo, now: number) {
+  const count = sync.conflicts.length
+  if (sync.syncing) return 'Syncing…'
+  if (count) return count + (count === 1 ? ' edit' : ' edits') + ' to review'
+  if (sync.problem === 'setup') return 'Sync not set up · changes saved on this PC'
+  if (sync.problem === 'offline') return 'Offline · changes saved on this PC'
+  if (sync.problem) return 'Not synced · changes saved on this PC'
+  if (sync.lastSyncedAt === null) return sync.pending ? 'Waiting to sync' : 'Not synced yet'
+  return 'Synced · ' + ago(now - sync.lastSyncedAt)
+}
+
+function SyncCard({ sync, now, busy, resolve }: {
+  sync: SyncInfo; now: number; busy: boolean; resolve: (id: number, keepMine: boolean) => void
+}) {
+  const [asked, setAsked] = useState(false)
+  useEffect(() => { if (sync.syncing) setAsked(false) }, [sync.syncing])
+  useEffect(() => {
+    if (!asked) return
+    const timeout = window.setTimeout(() => setAsked(false), 4000)
+    return () => window.clearTimeout(timeout)
+  }, [asked])
+  const kinds = { tag: 'Tag', project: 'Project', task: 'Task', session: 'Session', note: 'Note' }
+  return <section className="card settings-card sync-card"><h2>Sync</h2>
+    <div className="setting-row"><span>Status</span><strong>{syncLabel(sync, now)}</strong></div>
+    <div className="setting-row"><span>Last synced</span>
+      <strong>{sync.lastSyncedAt === null ? 'Never' : new Date(sync.lastSyncedAt).toLocaleString()}</strong></div>
+    {sync.pending > 0 && <div className="setting-row"><span>Waiting to upload</span>
+      <strong>{sync.pending} {sync.pending === 1 ? 'change' : 'changes'}</strong></div>}
+    {sync.lastError && <p className="sync-error" role="status">{sync.lastError} Your changes are saved on this PC and will sync later.</p>}
+    <div className="dialog-actions start">
+      <button className="secondary" disabled={sync.syncing || asked} onClick={() => { setAsked(true); void syncNow().catch(() => setAsked(false)) }}>
+        <RefreshCw size={16} className={sync.syncing ? 'spinning' : undefined} /> {sync.syncing ? 'Syncing…' : 'Sync now'}</button>
+    </div>
+    {sync.conflicts.length > 0 && <>
+      <h3 className="sync-heading">Edits to review</h3>
+      <p>The same thing was changed on two PCs. Ada is showing the other PC’s version for now; choose which one to keep.</p>
+      <ul className="conflicts">{sync.conflicts.map(item => <li key={item.id} className="conflict">
+        <div className="conflict-title"><strong>{item.item}</strong><small>{kinds[item.kind]} · {item.field}</small></div>
+        <dl>
+          <div><dt>This PC</dt><dd>{item.mine || '—'}</dd></div>
+          <div><dt>Other PC</dt><dd>{item.theirs || '—'}</dd></div>
+        </dl>
+        <div className="conflict-actions">
+          <button className="secondary" disabled={busy} onClick={() => resolve(item.id, true)}>Keep this PC’s</button>
+          <button className="secondary" disabled={busy} onClick={() => resolve(item.id, false)}>Keep other PC’s</button>
+        </div>
+      </li>)}</ul>
+    </>}
+  </section>
+}
+
 function Theme({ value }: { value: Preferences['theme'] }) {
   useEffect(() => { document.documentElement.dataset.theme = value }, [value])
-  return null
+  return value === 'gloria' ? <CyberspaceBg /> : null
 }
 
 function Progress({ data, total }: { data: Snapshot; total: number }) {
@@ -836,22 +914,24 @@ function NewTag({ busy, close, submit }: { busy: boolean; close: () => void; sub
   </form></Modal>
 }
 
-function SearchDialog({ data, query, setQuery, close, task, tag, project }: {
+function SearchDialog({ data, query, setQuery, close, task, tag, project, note }: {
   data: Snapshot; query: string; setQuery: (query: string) => void; close: () => void
-  task: (id: number) => void; tag: (id: number) => void; project: (id: number) => void
+  task: (id: number) => void; tag: (id: number) => void; project: (id: number) => void; note: (uid: string) => void
 }) {
   const search = query.trim().toLocaleLowerCase()
   const tasks = search ? data.tasks.filter(item => [item.title, item.notes, ...item.subtasks.map(subtask => subtask.title)]
     .some(value => value.toLocaleLowerCase().includes(search))) : []
   const tags = search ? data.tags.filter(item => item.name.toLocaleLowerCase().includes(search)) : []
   const projects = search ? data.projects.filter(item => item.name.toLocaleLowerCase().includes(search)) : []
+  const notes = search ? data.notes.filter(item => [item.title, item.excerpt, ...item.tags].some(value => value.toLocaleLowerCase().includes(search))).slice(0, 20) : []
   return <Modal title="Search workspace" close={close}>
-    <input className="search-input" value={query} placeholder="Search tasks, projects, and tags" aria-label="Search tasks, projects, and tags" data-initial
+    <input className="search-input" value={query} placeholder="Search tasks, notes, projects, and tags" aria-label="Search tasks, notes, projects, and tags" data-initial
       onChange={event => setQuery(event.target.value)} />
-    {search && !tasks.length && !tags.length && !projects.length && <p>No results for “{query}”.</p>}
+    {search && !tasks.length && !tags.length && !projects.length && !notes.length && <p>No results for “{query}”.</p>}
     <div className="search-results">{tasks.map(item => <button key={'task-' + item.id} onClick={() => task(item.id)}>
       <ListChecks size={15} /><span>{item.title}<small>{item.due ? dateLabel(item.due, { month: 'short', day: 'numeric' }) : 'Inbox'} · {statusLabels[item.status]}</small></span><ArrowDownRight size={15} />
     </button>)}
+      {notes.map(item => <button key={'note-' + item.uid} onClick={() => note(item.uid)}><FileText size={15} /><span>{item.title}<small>{item.folder || 'Notes'} · {item.words.toLocaleString()} words</small></span><ArrowDownRight size={15} /></button>)}
       {projects.map(item => <button key={'project-' + item.id} onClick={() => project(item.id)}><Folder size={15} /><span>{item.name}<small>{item.archived ? 'Archived project' : 'Project'}</small></span><ArrowDownRight size={15} /></button>)}
       {tags.map(item => <button key={'tag-' + item.id} onClick={() => tag(item.id)}><Trees size={15} />{item.name}<ArrowDownRight size={15} /></button>)}</div>
   </Modal>

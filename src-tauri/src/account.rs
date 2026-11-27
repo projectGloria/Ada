@@ -4,18 +4,19 @@
 //! refresh token lives in Windows Credential Manager. `account.json` only remembers which
 //! account this PC is signed in to, so the right local workspace opens offline.
 
-use crate::store::{Counts, Store};
+use crate::store::{
+    sync::{Op, Outcome, Record, Remote, RemoteError, OFFLINE, SYNC_MISSING},
+    Counts, Store,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
     fs,
     path::{Path, PathBuf},
     sync::Mutex,
-    time::Duration,
+    time::{Duration, Instant},
 };
 
-const OFFLINE: &str =
-    "Ada couldn't reach the account service. Check your connection. Your work is still saved on this PC.";
 const NOT_CONFIGURED: &str =
     "This copy of Ada isn't connected to an account service yet. Your work stays on this PC.";
 
@@ -42,6 +43,9 @@ pub struct Session {
     pub access_token: String,
     pub refresh_token: String,
     pub user: User,
+    /// Seconds until the access token expires.
+    #[serde(default)]
+    pub expires_in: Option<u64>,
 }
 
 pub enum SignUp {
@@ -49,6 +53,7 @@ pub enum SignUp {
     Verify,
 }
 
+#[derive(Clone)]
 pub struct Service {
     base: String,
     key: String,
@@ -227,6 +232,74 @@ impl Service {
     }
 }
 
+
+/// Sync calls for one signed-in account, made without holding any lock.
+pub struct SyncRemote {
+    service: Service,
+    access: String,
+}
+
+impl SyncRemote {
+    fn send(&self, method: &str, path: &str, body: Option<Value>) -> Result<Value, RemoteError> {
+        let request = self
+            .service
+            .agent
+            .request(method, &format!("{}{path}", self.service.base))
+            .set("apikey", &self.service.key)
+            .set("Accept", "application/json")
+            .set("Authorization", &format!("Bearer {}", self.access));
+        let reply = match body {
+            Some(body) => request.send_json(body),
+            None => request.call(),
+        };
+        match reply {
+            Ok(response) => response
+                .into_json()
+                .map_err(|_| RemoteError::new("The account service sent a reply Ada couldn't read.")),
+            Err(ureq::Error::Status(401, _)) => Err(RemoteError {
+                expired: true,
+                message: "Your sign-in has expired. Sign in again.".into(),
+            }),
+            Err(ureq::Error::Status(status, response)) => {
+                let body = response.into_json().unwrap_or(Value::Null);
+                let code = body.get("code").and_then(Value::as_str).unwrap_or_default();
+                Err(RemoteError::new(
+                    if ["PGRST202", "PGRST205", "42P01", "42883"].contains(&code) || status == 404 {
+                        SYNC_MISSING.to_owned()
+                    } else {
+                        explain(status, &body).message
+                    },
+                ))
+            }
+            Err(ureq::Error::Transport(_)) => Err(RemoteError::new(OFFLINE)),
+        }
+    }
+}
+
+impl Remote for SyncRemote {
+    fn push(&self, device: &str, ops: &[Op]) -> Result<Vec<Outcome>, RemoteError> {
+        let reply = self.send(
+            "POST",
+            "/rest/v1/rpc/ada_push",
+            Some(json!({ "device": device, "ops": ops })),
+        )?;
+        serde_json::from_value(reply)
+            .map_err(|_| RemoteError::new("The account service sent a reply Ada couldn't read."))
+    }
+
+    fn pull(&self, since: i64, limit: usize) -> Result<Vec<Record>, RemoteError> {
+        let reply = self.send(
+            "GET",
+            &format!(
+                "/rest/v1/ada_records?select=kind,id,fields,deleted,revision&revision=gt.{since}&order=revision.asc&limit={limit}"
+            ),
+            None,
+        )?;
+        serde_json::from_value(reply)
+            .map_err(|_| RemoteError::new("The account service sent a reply Ada couldn't read."))
+    }
+}
+
 fn failure(code: &str, message: &str) -> Failure {
     Failure {
         code: code.into(),
@@ -353,7 +426,7 @@ pub struct View {
     /// What the account dialog should show next.
     step: &'static str,
     /// True when the open workspace changed and the window should reload it.
-    reload: bool,
+    pub reload: bool,
 }
 
 pub struct Accounts {
@@ -364,6 +437,8 @@ pub struct Accounts {
     saved: Saved,
     pending: Option<Session>,
     recovering: Option<Session>,
+    /// The signed-in account's access token and when to stop using it.
+    access: Option<(String, Instant)>,
 }
 
 fn valid_email(email: &str) -> Result<String, String> {
@@ -411,7 +486,29 @@ impl Accounts {
             saved,
             pending: None,
             recovering: None,
+            access: None,
         }
+    }
+
+    /// What a sync round needs: the account service with a current access token, and the
+    /// workspace it belongs to. `None` when this workspace doesn't sync.
+    pub fn sync_target(&mut self) -> Result<Option<(SyncRemote, PathBuf)>, String> {
+        if self.demo || self.service.is_none() || self.saved.current.is_none() {
+            return Ok(None);
+        }
+        let access = self.access()?;
+        Ok(Some((
+            SyncRemote {
+                service: self.service()?.clone(),
+                access,
+            },
+            self.workspace_path(),
+        )))
+    }
+
+    /// Drops the cached access token after the service refused it.
+    pub fn forget_access(&mut self) {
+        self.access = None;
     }
 
     pub fn guest_path(&self) -> PathBuf {
@@ -603,6 +700,7 @@ impl Accounts {
                     let _ = self.service()?.sign_out(&access);
                 }
                 self.vault.clear(&user.id);
+                self.access = None;
                 self.saved.current = None;
                 self.persist()?;
                 self.switch(store, self.guest_path())?;
@@ -636,6 +734,7 @@ impl Accounts {
                     let _ = fs::remove_file(format!("{}{suffix}", account_path.display()));
                 }
                 self.vault.clear(&user.id);
+                self.access = None;
                 self.saved.current = None;
                 self.saved.kept_separate.retain(|id| id != &user.id);
                 self.persist()?;
@@ -652,16 +751,32 @@ impl Accounts {
         }
     }
 
-    /// A fresh access token for the signed-in account, from the stored refresh token.
+    /// An access token for the signed-in account, refreshed from the stored refresh token
+    /// when the last one is close to expiring.
     fn access(&mut self) -> Result<String, String> {
         let user = self.saved.current.clone().ok_or("You're not signed in.")?;
+        if let Some((token, until)) = &self.access {
+            if Instant::now() < *until {
+                return Ok(token.clone());
+            }
+        }
         let token = self
             .vault
             .load(&user.id)
             .ok_or("Your sign-in has expired. Sign in again.")?;
         let session = self.service()?.refresh(&token)?;
         self.vault.save(&user.id, &session.refresh_token)?;
+        self.remember(&session);
         Ok(session.access_token)
+    }
+
+    fn remember(&mut self, session: &Session) {
+        // Stop a minute early so a token never expires halfway through a sync round.
+        let seconds = session.expires_in.unwrap_or(3600).saturating_sub(60);
+        self.access = Some((
+            session.access_token.clone(),
+            Instant::now() + Duration::from_secs(seconds),
+        ));
     }
 
     /// Finishes signing in: asks about this PC's guest work if there is any, otherwise opens
@@ -671,6 +786,7 @@ impl Accounts {
             return Err("The account service sent a reply Ada couldn't read.".into());
         }
         self.vault.save(&session.user.id, &session.refresh_token)?;
+        self.remember(&session);
         let guest = lock(store)?.counts().map_err(|error| error.to_string())?;
         if !guest.is_empty() && !self.saved.kept_separate.contains(&session.user.id) {
             self.pending = Some(session);
@@ -950,6 +1066,8 @@ mod tests {
             .unwrap()
             .iter()
             .any(|(path, _, _)| path.starts_with("/auth/v1/logout")));
+        // Windows can't remove a database file that is still open.
+        drop(store);
         fs::remove_dir_all(root).unwrap();
     }
 

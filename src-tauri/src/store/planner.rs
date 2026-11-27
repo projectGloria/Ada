@@ -36,13 +36,13 @@ pub struct Subtask {
 #[serde(rename_all = "camelCase")]
 pub struct Task {
     pub(super) id: i64,
-    title: String,
+    pub(super) title: String,
     due: Option<String>,
-    done: bool,
-    status: Status,
+    pub(super) done: bool,
+    pub(super) status: Status,
     pub(super) tag_ids: Vec<i64>,
     last_tag_id: Option<i64>,
-    notes: String,
+    pub(super) notes: String,
     pub(super) project_id: Option<i64>,
     important: bool,
     urgent: bool,

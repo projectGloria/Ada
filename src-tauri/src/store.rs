@@ -2,11 +2,17 @@ use chrono::{DateTime, Days, NaiveDate, TimeZone, Utc};
 use chrono_tz::Tz;
 use rusqlite::{params, Connection, OptionalExtension, Row, Transaction};
 use serde::{Deserialize, Serialize};
-use std::{error::Error, path::Path};
+use std::{
+    error::Error,
+    path::{Path, PathBuf},
+};
 
 mod merge;
+mod notes;
 mod planner;
+pub mod sync;
 pub use merge::Counts;
+pub use notes::{NoteBody, NoteHit};
 use planner::{Project, Status, Task, TaskDraft};
 
 const MINUTE: i64 = 60_000;
@@ -17,6 +23,8 @@ pub struct Store {
     db: Connection,
     demo: bool,
     zone: Tz,
+    path: PathBuf,
+    syncing: bool,
 }
 
 #[derive(Deserialize)]
@@ -89,6 +97,46 @@ pub enum Action {
     DeleteSession {
         id: i64,
     },
+    ResolveConflict {
+        id: i64,
+        keep_mine: bool,
+    },
+    CreateNote {
+        uid: String,
+        title: String,
+        folder: String,
+        body: String,
+    },
+    SaveNote {
+        id: i64,
+        body: String,
+    },
+    RenameNote {
+        id: i64,
+        title: String,
+    },
+    MoveNote {
+        id: i64,
+        folder: String,
+    },
+    PinNote {
+        id: i64,
+        pinned: bool,
+    },
+    DeleteNote {
+        id: i64,
+    },
+    RenameFolder {
+        from: String,
+        to: String,
+    },
+    CreateFolder {
+        path: String,
+    },
+    DeleteFolder {
+        path: String,
+    },
+    DailyNote,
     SaveSettings {
         startup: String,
         theme: String,
@@ -173,6 +221,9 @@ pub struct Snapshot {
     week: Vec<Day>,
     milestones: Vec<Milestone>,
     session_intervals: std::collections::BTreeMap<i64, Vec<Interval>>,
+    sync: sync::SyncInfo,
+    notes: Vec<notes::NoteMeta>,
+    note_folders: Vec<String>,
 }
 
 const SESSION_SQL: &str = "SELECT id, tag_id, task_id, activity, target_ms, started_at, ended_at,
@@ -382,19 +433,38 @@ impl Store {
         Self::open_in_zone(path, demo, zone, Utc::now().timestamp_millis())
     }
 
+    pub fn note(&self, id: i64) -> Result<NoteBody> {
+        notes::body_of(&self.db, id)
+    }
+
+    pub fn search_notes(&self, query: &str) -> Result<Vec<NoteHit>> {
+        notes::search(&self.db, query)
+    }
+
     pub fn has_active_session(&self) -> Result<bool> {
         Ok(current(&self.db)?.is_some())
     }
 
     fn open_in_zone(path: impl AsRef<Path>, demo: bool, zone: Tz, now: i64) -> Result<Self> {
-        let mut db = Connection::open(path)?;
+        let path = path.as_ref().to_path_buf();
+        let mut db = Connection::open(&path)?;
+        db.create_scalar_function(
+            "ada_uuid",
+            2,
+            rusqlite::functions::FunctionFlags::SQLITE_UTF8,
+            |ctx| {
+                let kind: Option<String> = ctx.get(0)?;
+                let name: Option<String> = ctx.get(1)?;
+                Ok(sync::uuid(kind.as_deref(), name.as_deref()))
+            },
+        )?;
         db.busy_timeout(std::time::Duration::from_secs(5))?;
         db.execute_batch(
             "PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;",
         )?;
         let tx = db.transaction()?;
         let version: i64 = tx.query_row("PRAGMA user_version", [], |r| r.get(0))?;
-        if !(0..=3).contains(&version) {
+        if !(0..=6).contains(&version) {
             return Err("This database needs a newer version of Ada.".into());
         }
         if version == 0 {
@@ -413,9 +483,30 @@ impl Store {
             tx.execute_batch(include_str!("catalog.sql"))?;
             tx.pragma_update(None, "user_version", 3)?;
         }
+        if version < 4 {
+            tx.execute_batch(include_str!("sync.sql"))?;
+            tx.pragma_update(None, "user_version", 4)?;
+        }
+        if version < 5 {
+            tx.execute_batch(include_str!("notes.sql"))?;
+            if version == 0 && demo {
+                notes::seed(&tx, now)?;
+            }
+            tx.pragma_update(None, "user_version", 5)?;
+        }
+        if version < 6 {
+            tx.execute_batch(include_str!("folders.sql"))?;
+            tx.pragma_update(None, "user_version", 6)?;
+        }
         checkpoint(&tx, now)?;
         tx.commit()?;
-        Ok(Self { db, demo, zone })
+        Ok(Self {
+            db,
+            demo,
+            zone,
+            path,
+            syncing: false,
+        })
     }
 
     pub fn tick(&mut self) -> Result<bool> {
@@ -437,7 +528,8 @@ impl Store {
     fn apply_at(&mut self, action: Action, now: i64) -> Result<Snapshot> {
         let tx = self.db.transaction()?;
         mutate(&tx, action, now, local_date(self.zone, now))?;
-        let snapshot = snapshot(&tx, self.demo, self.zone, now)?;
+        let mut snapshot = snapshot(&tx, self.demo, self.zone, now)?;
+        snapshot.sync.syncing = self.syncing;
         tx.commit()?;
         Ok(snapshot)
     }
@@ -453,6 +545,22 @@ fn mutate(tx: &Transaction<'_>, action: Action, now: i64, today: NaiveDate) -> R
         }
         Action::SetStatus { id, status } => planner::set_status(tx, id, status, now, today)?,
         Action::DeleteTask { id } => planner::delete_task(tx, id)?,
+        Action::ResolveConflict { id, keep_mine } => sync::resolve(tx, id, keep_mine)?,
+        Action::CreateNote {
+            uid,
+            title,
+            folder,
+            body,
+        } => notes::create(tx, &uid, &title, &folder, body, now)?,
+        Action::SaveNote { id, body } => notes::save(tx, id, body, now)?,
+        Action::RenameNote { id, title } => notes::rename(tx, id, &title, now)?,
+        Action::MoveNote { id, folder } => notes::move_to(tx, id, &folder, now)?,
+        Action::PinNote { id, pinned } => notes::pin(tx, id, pinned)?,
+        Action::DeleteNote { id } => notes::delete(tx, id)?,
+        Action::RenameFolder { from, to } => notes::rename_folder(tx, &from, &to, now)?,
+        Action::CreateFolder { path } => notes::create_folder(tx, &path)?,
+        Action::DeleteFolder { path } => notes::delete_folder(tx, &path)?,
+        Action::DailyNote => notes::daily(tx, today, now)?,
         Action::AddProject { name } => planner::create_project(tx, &name)?,
         Action::ArchiveProject { id, archived } => planner::archive_project(tx, id, archived)?,
         Action::AddTag { name } => {
@@ -626,7 +734,7 @@ fn mutate(tx: &Transaction<'_>, action: Action, now: i64, today: NaiveDate) -> R
             notifications,
         } => {
             if !["today", "focus", "town", "reports"].contains(&startup.as_str())
-                || !["dark", "light", "system"].contains(&theme.as_str())
+                || !["dark", "light", "system", "gloria"].contains(&theme.as_str())
                 || !["focus", "town"].contains(&town_visibility.as_str())
             {
                 return Err("Choose one of the available settings.".into());
@@ -768,6 +876,9 @@ fn snapshot(db: &Connection, demo: bool, zone: Tz, now: i64) -> Result<Snapshot>
         week,
         milestones,
         session_intervals,
+        sync: sync::info(db, zone)?,
+        notes: notes::notes(db)?,
+        note_folders: notes::folders(db)?,
     })
 }
 

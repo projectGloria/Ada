@@ -21,7 +21,7 @@ const done: Partial<Record<AccountView['step'], string>> = {
 const plural = (count: number, word: string) => count + ' ' + word + (count === 1 ? '' : 's')
 
 function countsText(counts: Counts) {
-  const parts = [plural(counts.tasks, 'task'), plural(counts.sessions, 'focus session'), plural(counts.tags, 'tag'), plural(counts.projects, 'project')]
+  const parts = [plural(counts.tasks, 'task'), plural(counts.sessions, 'focus session'), plural(counts.tags, 'tag'), plural(counts.projects, 'project'), plural(counts.notes, 'note')]
   return parts.slice(0, -1).join(', ') + ', and ' + parts.at(-1)
 }
 
